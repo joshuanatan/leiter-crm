@@ -28,7 +28,7 @@
         
             <style>
         body {
-            background: transparent;
+            /*background: transparent;*/
         }
         </style>
         <!-- Fonts -->

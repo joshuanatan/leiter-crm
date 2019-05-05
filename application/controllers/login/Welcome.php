@@ -9,8 +9,8 @@ class Welcome extends CI_Controller{
         $this->load->view("login/login-open");
         $this->load->view("login/main-logo");
         $this->load->view("login/main-form");
+        //$this->load->view("req/footer");
         $this->load->view("login/login-close");
-        $this->load->view("req/footer");
         $this->load->view("req/script");
         $this->load->view("req/html-close");
     }
