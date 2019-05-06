@@ -28,8 +28,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -42,8 +42,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -57,8 +57,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -72,8 +72,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -87,8 +87,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -102,8 +102,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -117,8 +117,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -132,8 +132,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -147,8 +147,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -162,8 +162,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -177,8 +177,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -192,8 +192,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -207,8 +207,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -222,8 +222,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -237,8 +237,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -252,8 +252,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -267,8 +267,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -282,8 +282,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -297,8 +297,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -312,8 +312,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -327,8 +327,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -342,8 +342,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -357,8 +357,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -372,8 +372,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -387,8 +387,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -402,8 +402,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -417,8 +417,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -432,8 +432,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -447,8 +447,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -462,8 +462,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -480,8 +480,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -495,8 +495,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -510,8 +510,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -525,8 +525,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <tr class="gradeA">
@@ -540,8 +540,8 @@
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+                    <button class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
         </tbody>

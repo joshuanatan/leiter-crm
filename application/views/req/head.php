@@ -25,24 +25,11 @@
         <link rel="stylesheet" href="<?php echo base_url();?>global/vendor/slidepanel/slidePanel.css">
         <link rel="stylesheet" href="<?php echo base_url();?>global/vendor/flag-icon-css/flag-icon.css">
         
-            <style>
-        body {
-            /*background: transparent;*/
-        }
-        </style>
         <!-- Fonts -->
         <link rel="stylesheet" href="<?php echo base_url();?>global/fonts/web-icons/web-icons.min.css">
         <link rel="stylesheet" href="<?php echo base_url();?>global/fonts/brand-icons/brand-icons.min.css">
         <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
-        
-        <!--[if lt IE 9]>
-        <script src="<?php echo base_url();?>global/vendor/html5shiv/html5shiv.min.js"></script>
-        <![endif]-->
-        
-        <!--[if lt IE 10]>
-        <script src="<?php echo base_url();?>global/vendor/media-match/media.match.min.js"></script>
-        <script src="<?php echo base_url();?>global/vendor/respond/respond.min.js"></script>
-        <![endif]-->
+       
         
         <!-- Scripts -->
         <script src="<?php echo base_url();?>global/vendor/breakpoints/breakpoints.js"></script>

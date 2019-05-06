@@ -97,34 +97,40 @@
                             <span class="site-menu-arrow"></span>
                         </a>
                         <ul class="site-menu-sub">
-                            <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/statistics.html">
-                                <span class="site-menu-title">Quotation</span>
+                        <li class="site-menu-item">
+                                <a class="animsition-link" href="<?php echo base_url();?>crm/request">
+                                <span class="site-menu-title">Price Request</span>
                                 </a>
                             </li>
                             <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/data.html">
+                                <a class="animsition-link" href="<?php echo base_url();?>crm/vendor">
                                 <span class="site-menu-title">Vendor's Deal</span>
                                 </a>
                             </li>
                             <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/blog.html">
+                                <a class="animsition-link" href="<?php echo base_url();?>crm/quotation">
+                                <span class="site-menu-title">Quotation</span>
+                                </a>
+                            </li>
+                            
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="<?php echo base_url();?>crm/oc">
                                 <span class="site-menu-title">Order Confirmation</span>
                                 </a>
                             </li>
                             <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/chart.html">
+                                <a class="animsition-link" href="<?php echo base_url();?>crm/po">
                                 <span class="site-menu-title">Purchase Order</span>
                                 </a>
                             </li>
                             <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/social.html">
+                                <a class="animsition-link" href="<?php echo base_url();?>crm/invoice">
                                 <span class="site-menu-title">Invoice</span>
                                 </a>
                             </li>
                             <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/weather.html">
-                                <span class="site-menu-title">Delivery</span>
+                                <a class="animsition-link" href="<?php echo base_url();?>crm/od">
+                                <span class="site-menu-title">Order Delivery</span>
                                 </a>
                             </li>
                         </ul>
