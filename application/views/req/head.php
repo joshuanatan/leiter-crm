@@ -50,4 +50,3 @@
         <script>
         Breakpoints();
         </script>
-    </head>

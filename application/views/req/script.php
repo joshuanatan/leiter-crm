@@ -12,7 +12,6 @@
 <script src="<?php echo base_url();?>global/vendor/intro-js/intro.js"></script>
 <script src="<?php echo base_url();?>global/vendor/screenfull/screenfull.js"></script>
 <script src="<?php echo base_url();?>global/vendor/slidepanel/jquery-slidePanel.js"></script>
-    <script src="<?php echo base_url();?>global/vendor/jquery-placeholder/jquery.placeholder.js"></script>
 
 <!-- Scripts -->
 <script src="<?php echo base_url();?>global/js/Component.js"></script>
@@ -35,15 +34,4 @@
 <script src="<?php echo base_url();?>global/js/Plugin/asscrollable.js"></script>
 <script src="<?php echo base_url();?>global/js/Plugin/slidepanel.js"></script>
 <script src="<?php echo base_url();?>global/js/Plugin/switchery.js"></script>
-    <script src="<?php echo base_url();?>global/js/Plugin/jquery-placeholder.js"></script>
-
-<script>
-(function(document, window, $){
-    'use strict';
-
-    var Site = window.Site;
-    $(document).ready(function(){
-    Site.run();
-    });
-})(document, window, jQuery);
-</script>
+    

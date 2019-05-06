@@ -1,3 +1,23 @@
+<script src="<?php echo base_url();?>global/vendor/datatables.net/jquery.dataTables.js"></script>
+<script src="<?php echo base_url();?>global/vendor/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+<script src="<?php echo base_url();?>global/vendor/datatables.net-fixedheader/dataTables.fixedHeader.js"></script>
+<script src="<?php echo base_url();?>global/vendor/datatables.net-fixedcolumns/dataTables.fixedColumns.js"></script>
+<script src="<?php echo base_url();?>global/vendor/datatables.net-rowgroup/dataTables.rowGroup.js"></script>
+<script src="<?php echo base_url();?>global/vendor/datatables.net-scroller/dataTables.scroller.js"></script>
+<script src="<?php echo base_url();?>global/vendor/datatables.net-responsive/dataTables.responsive.js"></script>
+<script src="<?php echo base_url();?>global/vendor/datatables.net-responsive-bs4/responsive.bootstrap4.js"></script>
+<script src="<?php echo base_url();?>global/vendor/datatables.net-buttons/dataTables.buttons.js"></script>
+<script src="<?php echo base_url();?>global/vendor/datatables.net-buttons/buttons.html5.js"></script>
+<script src="<?php echo base_url();?>global/vendor/datatables.net-buttons/buttons.flash.js"></script>
+<script src="<?php echo base_url();?>global/vendor/datatables.net-buttons/buttons.print.js"></script>
+<script src="<?php echo base_url();?>global/vendor/datatables.net-buttons/buttons.colVis.js"></script>
+<script src="<?php echo base_url();?>global/vendor/datatables.net-buttons-bs4/buttons.bootstrap4.js"></script>
+<script src="<?php echo base_url();?>global/vendor/asrange/jquery-asRange.min.js"></script>
+<script src="<?php echo base_url();?>global/vendor/bootbox/bootbox.js"></script>
+<script src="<?php echo base_url();?>global/js/Plugin/datatables.js"></script>
+<!--<script src="<?php echo base_url();?>assets/examples/js/tables/datatable.js"></script>-->
+
+<script>
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
     define("/tables/datatable", ["jquery", "Site"], factory);
@@ -19,79 +39,7 @@
   }); // Fixed Header Example
   // --------------------
 
-  (function () {
-    var offsetTop = 0;
-
-    if ((0, _jquery.default)('.site-navbar').length > 0) {
-      offsetTop = (0, _jquery.default)('.site-navbar').eq(0).innerHeight();
-    } // initialize datatable
-
-
-    var table = (0, _jquery.default)('#exampleFixedHeader').DataTable({
-      responsive: true,
-      fixedHeader: {
-        header: true,
-        headerOffset: offsetTop
-      },
-      "bPaginate": false,
-      "sDom": "t" // just show table, no other controls
-
-    }); // redraw fixedHeaders as necessary
-    // $(window).resize(function() {
-    //   fixedHeader._fnUpdateClones(true);
-    //   fixedHeader._fnUpdatePositions();
-    // });
-  })(); // Individual column searching
-  // ---------------------------
-
-
-  (function () {
-    (0, _jquery.default)(document).ready(function () {
-      var defaults = Plugin.getDefaults("dataTable");
-
-      var options = _jquery.default.extend(true, {}, defaults, {
-        initComplete: function initComplete() {
-          this.api().columns().every(function () {
-            var column = this;
-            var select = (0, _jquery.default)('<select class="form-control w-full"><option value=""></option></select>').appendTo((0, _jquery.default)(column.footer()).empty()).on('change', function () {
-              var val = _jquery.default.fn.dataTable.util.escapeRegex((0, _jquery.default)(this).val());
-
-              column.search(val ? '^' + val + '$' : '', true, false).draw();
-            });
-            column.data().unique().sort().each(function (d, j) {
-              select.append('<option value="' + d + '">' + d + '</option>');
-            });
-          });
-        }
-      });
-
-      (0, _jquery.default)('#exampleTableSearch').DataTable(options);
-    });
-  })(); // Table Tools
-  // -----------
-
-
-  (function () {
-    (0, _jquery.default)(document).ready(function () {
-      var defaults = Plugin.getDefaults("dataTable");
-
-      var options = _jquery.default.extend(true, {}, defaults, {
-        "aoColumnDefs": [{
-          'bSortable': false,
-          'aTargets': [-1]
-        }],
-        "iDisplayLength": 5,
-        "aLengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
-        "sDom": '<"dt-panelmenu clearfix"Bfr>t<"dt-panelfooter clearfix"ip>',
-        "buttons": ['copy', 'excel', 'csv', 'pdf', 'print'],
-      });
-
-      (0, _jquery.default)('#exampleAddRow').dataTable(options);
-    });
-  })(); // Table Add Row
-  // -------------
-
-
+  
   (function ($$$1) {
     var EditableTable = {
       options: {
@@ -246,9 +194,9 @@
 
           if ($this.hasClass('actions')) {
             _self.rowSetActionsDefault($row);
+
             return _self.datatable.cell(this).data();
-          } 
-          else {
+          } else {
             return $$$1.trim($this.find('input').val());
           }
         });
@@ -289,3 +237,4 @@
     });
   }).apply(undefined, [jQuery]);
 });
+</script>
