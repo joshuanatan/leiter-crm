@@ -146,7 +146,7 @@
                             <thead>
                                 <tr>
                                     <th>Item</th>
-                                    <th>Quantity</th>
+                                    <th>Vendor</th>
                                     <th>Price</th>
                                     <th>Quantity</th>
                                     <th>Min Qty</th>
@@ -156,7 +156,7 @@
                             <tbody id = "t1">
                                 <tr class='gradeA'>
                                     <td>Meja Tulis</td>
-                                    <td>5</td>
+                                    <td><select class = "form-control" data-plugin="select2"><option disabled selected>Choose Vendor ID</option><option>PT Mitra Abc</option></select></td>
                                     <td><input type="text" class="form-control" name="touchSpinVertical" data-plugin="TouchSpin"  data-verticalbuttons="true" value="0" /></td>
                                     <td><input type="text" class="form-control" name="touchSpinVertical" data-plugin="TouchSpin"  data-verticalbuttons="true" value="0" /></td>
                                     <td><input type="text" class="form-control" name="touchSpinVertical" data-plugin="TouchSpin"  data-verticalbuttons="true" value="0" /></td>
@@ -167,7 +167,7 @@
                                 </tr>
                                 <tr class='gradeA'>
                                     <td>Kursi Kayu</td>
-                                    <td>15</td>
+                                    <td><select class = "form-control" data-plugin="select2"><option disabled selected>Choose Vendor ID</option><option>PT Mitra Abc</option></select></td>
                                     <td><input type="text" class="form-control" name="touchSpinVertical" data-plugin="TouchSpin"  data-verticalbuttons="true" value="0" /></td>
                                     <td><input type="text" class="form-control" name="touchSpinVertical" data-plugin="TouchSpin"  data-verticalbuttons="true" value="0" /></td>
                                     <td><input type="text" class="form-control" name="touchSpinVertical" data-plugin="TouchSpin"  data-verticalbuttons="true" value="0" /></td>

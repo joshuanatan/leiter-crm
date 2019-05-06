@@ -28,6 +28,7 @@ class Quotation extends CI_Controller{
         $this->load->view("crm/quotation/js/jqtabledit-js");
         $this->load->view("crm/quotation/js/page-datatable-js");
         $this->load->view("crm/quotation/js/form-js");
+        $this->load->view("crm/quotation/js/dynamic-form-js");
         $this->load->view("crm/crm-close");
         $this->load->view("req/html-close");
     }
