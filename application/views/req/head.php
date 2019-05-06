@@ -24,7 +24,6 @@
         <link rel="stylesheet" href="<?php echo base_url();?>global/vendor/intro-js/introjs.css">
         <link rel="stylesheet" href="<?php echo base_url();?>global/vendor/slidepanel/slidePanel.css">
         <link rel="stylesheet" href="<?php echo base_url();?>global/vendor/flag-icon-css/flag-icon.css">
-            <link rel="stylesheet" href="<?php echo base_url();?>assets/examples/css/pages/login-v2.css">
         
             <style>
         body {

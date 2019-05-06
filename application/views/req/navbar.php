@@ -27,22 +27,22 @@
                         </a>
                         <ul class="site-menu-sub">
                             <li class="site-menu-item">
-                                <a class="animsition-link" href="../forms/general.html">
+                                <a class="animsition-link" href="<?php echo base_url();?>master/product/">
                                     <span class="site-menu-title">Product</span>
                                 </a>
                             </li>
                             <li class="site-menu-item">
-                                <a class="animsition-link" href="../forms/material.html">
+                                <a class="animsition-link" href="<?php echo base_url();?>master/customer/">
                                     <span class="site-menu-title">Customer</span>
                                 </a>
                             </li>
                             <li class="site-menu-item">
-                                <a class="animsition-link" href="../forms/advanced.html">
+                                <a class="animsition-link" href="<?php echo base_url();?>master/uom/">
                                     <span class="site-menu-title">Unit of Measures</span>
                                 </a>
                             </li>
                             <li class="site-menu-item">
-                                <a class="animsition-link" href="../forms/advanced.html">
+                                <a class="animsition-link" href="<?php echo base_url();?>master/expanses/">
                                     <span class="site-menu-title">Expanses Type</span>
                                 </a>
                             </li>
@@ -54,12 +54,12 @@
                                 </a>
                                 <ul class="site-menu-sub">
                                     <li class="site-menu-item">
-                                        <a class="animsition-link" href="../forms/editor-summernote.html">
+                                            <a class="animsition-link" href="<?php echo base_url();?>master/vendor/product">
                                             <span class="site-menu-title">Product</span>
                                         </a>
                                     </li>
                                     <li class="site-menu-item">
-                                        <a class="animsition-link" href="../forms/editor-markdown.html">
+                                            <a class="animsition-link" href="<?php echo base_url();?>master/vendor/shipping">
                                             <span class="site-menu-title">Shipping</span>
                                         </a>
                                     </li>
@@ -72,17 +72,17 @@
                                 </a>
                                 <ul class="site-menu-sub">
                                     <li class="site-menu-item">
-                                        <a class="animsition-link" href="../forms/editor-summernote.html">
+                                            <a class="animsition-link" href="<?php echo base_url();?>master/user/employee">
                                             <span class="site-menu-title">Employee</span>
                                         </a>
                                     </li>
                                     <li class="site-menu-item">
-                                        <a class="animsition-link" href="../forms/editor-markdown.html">
+                                            <a class="animsition-link" href="<?php echo base_url();?>master/user/sales">
                                             <span class="site-menu-title">Sales</span>
                                         </a>
                                     </li>
                                     <li class="site-menu-item">
-                                        <a class="animsition-link" href="../forms/editor-markdown.html">
+                                            <a class="animsition-link" href="<?php echo base_url();?>master/user/labor">
                                             <span class="site-menu-title">Labor</span>
                                         </a>
                                     </li>

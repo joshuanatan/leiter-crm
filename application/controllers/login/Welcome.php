@@ -6,6 +6,7 @@ class Welcome extends CI_Controller{
     }
     public function index(){
         $this->load->view("req/head");
+        $this->load->view("login/css/page-css");
         $this->load->view("req/head-close");
         $this->load->view("login/login-open");
         $this->load->view("login/main-logo");
