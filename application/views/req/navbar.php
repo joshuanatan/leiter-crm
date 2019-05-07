@@ -124,13 +124,18 @@
                                 </a>
                             </li>
                             <li class="site-menu-item">
-                                <a class="animsition-link" href="<?php echo base_url();?>crm/invoice">
-                                <span class="site-menu-title">Invoice</span>
+                                <a class="animsition-link" href="<?php echo base_url();?>crm/goods">
+                                <span class="site-menu-title">Goods In</span>
                                 </a>
                             </li>
                             <li class="site-menu-item">
                                 <a class="animsition-link" href="<?php echo base_url();?>crm/od">
                                 <span class="site-menu-title">Order Delivery</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="<?php echo base_url();?>crm/invoice">
+                                <span class="site-menu-title">Invoice</span>
                                 </a>
                             </li>
                         </ul>

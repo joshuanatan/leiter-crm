@@ -4,10 +4,10 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-        <meta name="description" content="bootstrap admin template">
+        <meta name="description" content="PT LEITER INDONESIA">
         <meta name="author" content="">
         
-        <title>Login V2 | Remark Admin Template</title>
+        <title>PT. LEITER INDONESIA</title>
         
         <link rel="apple-touch-icon" href="<?php echo base_url();?>assets/images/apple-touch-icon.png">
         <link rel="shortcut icon" href="<?php echo base_url();?>assets/images/favicon.ico">
