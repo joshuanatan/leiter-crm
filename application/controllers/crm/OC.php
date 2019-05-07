@@ -28,6 +28,7 @@ class OC extends CI_Controller{
         $this->load->view("crm/oc/js/jqtabledit-js");
         $this->load->view("crm/oc/js/page-datatable-js");
         $this->load->view("crm/oc/js/form-js");
+        $this->load->view("crm/oc/js/dynamic-form-js");
         $this->load->view("crm/crm-close");
         $this->load->view("req/html-close");
     }
