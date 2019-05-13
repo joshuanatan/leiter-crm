@@ -1,10 +1,10 @@
 <?php
 class Mdperusahaan extends CI_Model{
     public function select($data){
+        $this->db->join("contact_person","contact_person.id_perusahaan = perusahaan.id_perusahaan","inner");
         return $this->db->get_where("perusahaan",$data);
     }
     public function insert($data){
-        $this->db->join("contact_person","contact_person.id_perusahaan = perusahaan.id_perusahaan","inner");
         $this->db->insert("perusahaan",$data);
         return $this->db->insert_id();
     }
