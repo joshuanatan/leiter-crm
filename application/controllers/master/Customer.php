@@ -1,7 +1,8 @@
 <?php
 class Customer extends CI_Controller{
     public function __construct(){
-        parent::__construct();
+        parent::__construct();  
+        $this->load->model("Mdperusahaan");
 
     }
     private function req(){
@@ -19,7 +20,13 @@ class Customer extends CI_Controller{
         $this->req();
         $this->load->view("master/content-open");
         $this->load->view("master/Customer/category-header");
-        $this->load->view("master/Customer/category-body");
+        $where = array(
+            "perusahaan" => array()
+        );
+        $data = array(
+            "perusahaan" => $this->Mdperusahaan->select($where["perusahaan"])
+        );
+        $this->load->view("master/Customer/category-body",$data);
         $this->load->view("master/content-close");
         $this->close();
     }

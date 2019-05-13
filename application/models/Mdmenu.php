@@ -12,5 +12,9 @@ class Mdmenu extends CI_Model{
     public function delete($where){
         $this->db->delete("menu",$where);
     }
+    public function selectType($where){
+        $this->db->group_by("type_menu");
+        return $this->db->get_where("menu",$where);
+    }
 }
 ?>

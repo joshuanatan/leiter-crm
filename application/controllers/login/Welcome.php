@@ -28,6 +28,7 @@ class Welcome extends CI_Controller{
         foreach($result->result() as $a){
             $this->session->nama_user = $a->nama_user;
             $this->session->email_user = $a->email_user;
+            $this->session->id_user = $a->id_user;
             redirect("welcome");
         }
         redirect("login/welcome");

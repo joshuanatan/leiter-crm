@@ -4,6 +4,7 @@ class Employee extends CI_Controller{
         parent::__construct();
         $this->load->model("Mduser");
         $this->load->model("Mdmenu");
+        $this->load->model("Mdprivilage");
     }
     public function index(){
         $this->load->view("req/head");
@@ -33,6 +34,7 @@ class Employee extends CI_Controller{
         $this->load->view("master/employee/js/jqtabledit-js");
         $this->load->view("master/employee/js/page-datatable-js");
         $this->load->view("master/employee/js/form-js");
+        $this->load->view("master/employee/js/employee-additional-js");
         $this->load->view("master/master-close");
         $this->load->view("req/html-close");
     }
@@ -58,6 +60,9 @@ class Employee extends CI_Controller{
         $this->load->view("req/html-close");
     }
     public function register(){
+        $where = array(
+            "menuType" => array()
+        );
         $name = array(
             "nama_user",
             "email_user",
@@ -71,8 +76,33 @@ class Employee extends CI_Controller{
             $name[3] => md5($this->input->post($name[3])),
             "id_user_add" => $this->session->id_user
         );
-        $this->Mduser->insert($data);
-        $this->session->res_msg = "Data Recorded";
+        $insertID = $this->Mduser->insert($data); /*last user id*/
+        $data = array(
+            "id_user" => $insertID,
+            "id_tipe" => 0
+        );
+        $this->Mduser->insertTipe($data);
+        /*----------- end insert personal data ------------ */
+
+        /*----------- begin update privilege   ------------ */
+        $menuType = $this->Mdmenu->selectType($where["menuType"]);
+        foreach($menuType->result() as $a){
+            $category = $this->input->post(strtolower($a->type_menu));
+            count($category);
+            foreach($category as $a){
+                $data = array(
+                    "status_privilage" => 0,
+                    "id_user_edit" => $this->session->id_user,
+                    "date_user_edit" => date("Y-m-d H:i:s")
+                );
+                $where = array(
+                    "id_menu" => $a,
+                    "id_user" => $insertID
+                );
+                $this->Mdprivilage->update($data,$where);
+            }
+        }
+        /*----------- end update privilege   ------------ */
         redirect("master/user/employee");
     }
 }
