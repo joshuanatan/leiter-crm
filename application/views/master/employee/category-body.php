@@ -2,8 +2,8 @@
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-            <button data-target="#exampleAccrodionModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button">
-                <i class="icon wb-plus" aria-hidden="true"></i> Add Catalog
+            <button data-target="#TambahUser" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button">
+                <i class="icon wb-plus" aria-hidden="true"></i> Add Employee
             </button>
             </div>
         </div>
@@ -11,20 +11,24 @@
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" id="exampleAddRow">
         <thead>
             <tr>
-                <th>Rendering engine</th>
-                <th>Browser</th>
-                <th>Platform(s)</th>
-                <th>Actions</th>
+                <th>ID User</th>
+                <th>Employee Name</th>
+                <th>Employee Email</th>
+                <th>Employee Phone</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
+            <?php foreach($employee->result() as $a){ ?> 
             <tr class="gradeA">
-                <td>Trident</td>
-                <td>Internet Explorer 5.5</td>
-                <td>Win 95+</td>
+                <td><?php echo $a->id_user;?></td>
+                <td><?php echo $a->nama_user;?></td>
+                <td><?php echo $a->email_user?></td>
+                <td><?php echo $a->nohp_user;?></td>
                 <td class="actions">
                     
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
+                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" data-content="Detail Profile" data-trigger="hover" data-toggle="popover" aria-hidden="true"></i></button>
+
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
@@ -32,798 +36,209 @@
                     data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
                 </td>
             </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Internet Explorer 6</td>
-                <td>Win 98+</td>
-                <td class="actions">
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>AOL browser (AOL desktop)</td>
-                <td>Win XP</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Gecko</td>
-                <td>Firefox 1.0</td>
-                <td>Win 98+ / OSX.2+</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Camino 1.0</td>
-                <td>OSX.2+</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Netscape 7.2</td>
-                <td>Win 95+ / Mac OS 8.6-9.2</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Internet Explorer 5.5</td>
-                <td>Win 95+</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Internet Explorer 6</td>
-                <td>Win 98+</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>AOL browser (AOL desktop)</td>
-                <td>Win XP</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Gecko</td>
-                <td>Firefox 1.0</td>
-                <td>Win 98+ / OSX.2+</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Camino 1.0</td>
-                <td>OSX.2+</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Netscape 7.2</td>
-                <td>Win 95+ / Mac OS 8.6-9.2</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Camino 1.0</td>
-                <td>OSX.2+</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Netscape 7.2</td>
-                <td>Win 95+ / Mac OS 8.6-9.2</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Internet Explorer 5.5</td>
-                <td>Win 95+</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Internet Explorer 6</td>
-                <td>Win 98+</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>AOL browser (AOL desktop)</td>
-                <td>Win XP</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Gecko</td>
-                <td>Firefox 1.0</td>
-                <td>Win 98+ / OSX.2+</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Camino 1.0</td>
-                <td>OSX.2+</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Netscape 7.2</td>
-                <td>Win 95+ / Mac OS 8.6-9.2</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Netscape 7.2</td>
-                <td>Win 95+ / Mac OS 8.6-9.2</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Internet Explorer 5.5</td>
-                <td>Win 95+</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Internet Explorer 6</td>
-                <td>Win 98+</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>AOL browser (AOL desktop)</td>
-                <td>Win XP</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Gecko</td>
-                <td>Firefox 1.0</td>
-                <td>Win 98+ / OSX.2+</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Camino 1.0</td>
-                <td>OSX.2+</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Netscape 7.2</td>
-                <td>Win 95+ / Mac OS 8.6-9.2</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Camino 1.0</td>
-                <td>OSX.2+</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Netscape 7.2</td>
-                <td>Win 95+ / Mac OS 8.6-9.2</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Internet Explorer 5.5</td>
-                <td>Win 95+</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Internet Explorer 6</td>
-                <td>Win 98+</td>
-                <td class="actions">
-                    <a href="#" class="btn btn-sm btn-icon btn-pure btn-default on-editing save-row"
-                    data-toggle="tooltip" data-original-title="Save" hidden><i class="icon wb-trash" aria-hidden="true"></i></a>
-                    <a href="#" class="btn btn-sm btn-icon btn-pure btn-default on-editing cancel-row"
-                    data-toggle="tooltip" data-original-title="Delete" hidden><i class="icon wb-close" aria-hidden="true"></i></a>
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>AOL browser (AOL desktop)</td>
-                <td>Win XP</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Gecko</td>
-                <td>Firefox 1.0</td>
-                <td>Win 98+ / OSX.2+</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Camino 1.0</td>
-                <td>OSX.2+</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
-            <tr class="gradeA">
-                <td>Trident</td>
-                <td>Netscape 7.2</td>
-                <td>Win 95+ / Mac OS 8.6-9.2</td>
-                <td class="actions">
-                    
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/user/employee/detail" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
-                </td>
-            </tr>
+            <!-- here goes modal -->
+            <div class="modal fade" id="DetailUser" aria-hidden="true" aria-labelledby="DaftarUser" role="dialog" tabindex="-1">
+                <div class="modal-dialog modal-simple">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="exampleModalTabs">Tabs In Modal</h4>
+                        </div>
+
+                        <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+                            <li class="nav-item" role="presentation"><a class="nav-link active" data-toggle="tab" href="#exampleLine1"
+                                aria-controls="exampleLine1" role="tab">Home</a></li>
+                            <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#exampleLine2"
+                                aria-controls="exampleLine2" role="tab">Components</a></li>
+                            <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#exampleLine3"
+                                aria-controls="exampleLine3" role="tab">CSS</a></li>
+                            <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#exampleLine4"
+                                aria-controls="exampleLine4" role="tab">JavaScript</a></li>
+                        </ul>
+
+                        <div class="modal-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="exampleLine1" role="tabpanel">
+                                Insolens patientiamque recte caecilii gaudere alienae varias repetitis inscientia
+                                ipsos. Partiendo interpretum vult ludicra iam abest
+                                disputatum geometriaque inflammat probes, tandem
+                                ullum iuste texit mundus delicatissimi iactare,
+                                impeditur panaetium intellegentium afferat talem
+                                satisfacit numquid accedunt secumque perspiciatis,
+                                invenire inquam voluptaria virtute concederetur
+                                genus suavitate, inviti argumentum parentes, repudiandae
+                                aliud perspiciatis, latinas consul pluribus regula
+                                ceramico turbent, cogitavisse possunt suo tranquillitate.
+                                </div>
+
+                                <div class="tab-pane" id="exampleLine2" role="tabpanel">
+                                Tenuit omni magistra quale honoris, maluisti invidi, successerit feramus fere omnium
+                                impetum locus suscipiantur ullum, gessisse afranius
+                                stabilique repellendus longinquitate sentiamus
+                                torquatos rem. Bene continens, depulsa soluta domesticarum
+                                inscientia excruciant artes epicuri, huic similique
+                                constringendos probo animadversionis claris sententia
+                                atqui vocent constituit, epicuri hosti iniuste
+                                naturales multos, optimus animadvertat stoicis
+                                nullae, fieri futura tempore philosophia expleantur
+                                putarent doloris delectus viris.
+                                </div>
+
+                                <div class="tab-pane" id="exampleLine3" role="tabpanel">
+                                Cernimus nutu. Maioribus solet. Iustitiam conciliant reliquisti instituendarum
+                                solido quicquid, superstitione placet illis privatione
+                                clariora audeam repellat morbos accusantibus, quaeso
+                                copulationes. Percurri salutatus derigatur praeter
+                                involuta canes afflueret iam amotio quin. Dicent
+                                dialectica evertunt astris venire senserit. Vulgo
+                                supplicii amputata ipsarum ennius insolens meminerunt
+                                quisquam, volumus occulte l videor contenta numen,
+                                patrioque. Dixerit cernimus consequentium definitiones
+                                interrogari, maximo, avocent opes.
+                                </div>
+
+                                <div class="tab-pane" id="exampleLine4" role="tabpanel">
+                                Nec iste vellem, accusamus inesse exhorrescere tertium dominationis licebit perpetiuntur,
+                                adduci concederetur memoriter omnesque aliquem
+                                etsi salutatus administrari aliquid graviter, mandamus
+                                celeritas patet fortibus. Dolorum tantis nostram
+                                fortitudo probarentur utrumvis insipientiam, putent,
+                                esset p fortitudo repetitis concursionibus interiret
+                                clariora. Fabulae aperiri. Omnes aspernari placuit
+                                detraxit familias aeternum eum mediocritatem, videantur
+                                partis nondum indoctis, emancipaverat probatum
+                                intus iactant petulantes, levitatibus copiosae.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Modal -->
+            </div>
+        </div>
+            <!-- end modal -->
+            <?php } ?>
         </tbody>
     </table>
 </div>
-<div class="modal fade" id="exampleAccrodionModal" aria-hidden="true" aria-labelledby="exampleAccrodionModal" role="dialog" tabindex="-1">
-    <div class="modal-dialog">
+
+<!-- add user modal -->
+<div class="modal fade" id="TambahUser" aria-hidden="true" aria-labelledby="DaftarUser" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-simple">
         <div class="modal-content">
-            <div class="panel-group panel-group-continuous m-0" id="exampleAccrodion1" aria-multiselectable="true"
-            role="tablist">
-            <div class="panel">
-                <div class="panel-heading" id="exampleHeadingFirst" role="tab">
-                    <a class="panel-title" data-parent="#exampleAccrodion1" data-toggle="collapse" href="#exampleCollapseFirst" aria-expanded="true"><strong>Product Data</strong></a>
-                </div>
-                <div class="panel-collapse collapse show" id="exampleCollapseFirst" aria-labelledby="exampleHeadingFirst"
-                role="tabpanel">
-                    <div class="panel-body">
-                        <form autocomplete="off">
-                            <div class="form-group form-material floating" data-plugin="formMaterial">
-                                <input type="text" class="form-control" name="inputFloatingText" />
-                                <label class="floating-label">Text</label>
-                            </div>
-                            <div class="form-group form-material floating" data-plugin="formMaterial">
-                                <input type="email" class="form-control" name="inputFloatingEmail" />
-                                <label class="floating-label">Email</label>
-                            </div>
-                            <div class="form-group form-material floating" data-plugin="formMaterial">
-                                <input type="password" class="form-control" name="inputFloatingPassword" />
-                                <label class="floating-label">Password</label>
-                            </div>
-                            <div class="form-group form-material floating" data-plugin="formMaterial">
-                                <input type="text" class="form-control" readonly="" />
-                                <input type="file" name="inputFloatingFile" multiple="" />
-                                <label class="floating-label">Browse..</label>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="exampleModalTabs">Employee Data</h4>
             </div>
-            <div class="panel">
-                <div class="panel-heading" id="exampleHeadingSecond" role="tab">
-                    <a class="panel-title collapsed" data-parent="#exampleAccrodion1" data-toggle="collapse"
-                    href="#exampleCollapseSecond" aria-controls="exampleCollapseSecond"
-                    aria-expanded="false"><strong>Product Detail</strong></a>
-                </div>
-                <div class="panel-collapse collapse" id="exampleCollapseSecond" aria-labelledby="exampleHeadingSecond" role="tabpanel">
-                    <div class="panel-body">
-                        <form autocomplete="off">
-                            <div class="form-group form-material floating" data-plugin="formMaterial">
-                                <select class="form-control" data-plugin="select2">
-                                    <optgroup label="Alaskan/Hawaiian Time Zone">
-                                        <option value="AK">Alaska</option>
-                                        <option value="HI">Hawaii</option>
-                                    </optgroup>
-                                    <optgroup label="Pacific Time Zone">
-                                        <option value="CA">California</option>
-                                        <option value="NV">Nevada</option>
-                                        <option value="OR">Oregon</option>
-                                        <option value="WA">Washington</option>
-                                    </optgroup>
-                                    <optgroup label="Mountain Time Zone">
-                                        <option value="AZ">Arizona</option>
-                                        <option value="CO">Colorado</option>
-                                        <option value="ID">Idaho</option>
-                                        <option value="MT">Montana</option>
-                                        <option value="NE">Nebraska</option>
-                                        <option value="NM">New Mexico</option>
-                                        <option value="ND">North Dakota</option>
-                                        <option value="UT">Utah</option>
-                                        <option value="WY">Wyoming</option>
-                                    </optgroup>
-                                    <optgroup label="Central Time Zone">
-                                        <option value="AL">Alabama</option>
-                                        <option value="AR">Arkansas</option>
-                                        <option value="IL">Illinois</option>
-                                        <option value="IA">Iowa</option>
-                                        <option value="KS">Kansas</option>
-                                        <option value="KY">Kentucky</option>
-                                        <option value="LA">Louisiana</option>
-                                        <option value="MN">Minnesota</option>
-                                        <option value="MS">Mississippi</option>
-                                        <option value="MO">Missouri</option>
-                                        <option value="OK">Oklahoma</option>
-                                        <option value="SD">South Dakota</option>
-                                        <option value="TX">Texas</option>
-                                        <option value="TN">Tennessee</option>
-                                        <option value="WI">Wisconsin</option>
-                                    </optgroup>
-                                    <optgroup label="Eastern Time Zone">
-                                        <option value="CT">Connecticut</option>
-                                        <option value="DE">Delaware</option>
-                                        <option value="FL">Florida</option>
-                                        <option value="GA">Georgia</option>
-                                        <option value="IN">Indiana</option>
-                                        <option value="ME">Maine</option>
-                                        <option value="MD">Maryland</option>
-                                        <option value="MA">Massachusetts</option>
-                                        <option value="MI">Michigan</option>
-                                        <option value="NH">New Hampshire</option>
-                                        <option value="NJ">New Jersey</option>
-                                        <option value="NY">New York</option>
-                                        <option value="NC">North Carolina</option>
-                                        <option value="OH">Ohio</option>
-                                        <option value="PA">Pennsylvania</option>
-                                        <option value="RI">Rhode Island</option>
-                                        <option value="SC">South Carolina</option>
-                                        <option value="VT">Vermont</option>
-                                        <option value="VA">Virginia</option>
-                                        <option value="WV">West Virginia</option>
-                                    </optgroup>
-                                </select>
+
+            <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+                <li class="nav-item" role="presentation"><a class="nav-link active" data-toggle="tab" href="#primaryData"
+                    aria-controls="primaryData" role="tab">Primary Data</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#privilage"
+                    aria-controls="privilage" role="tab">Privilege</a></li>
+            </ul>
+            <form>    
+                <div class="modal-body">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="primaryData" role="tabpanel">
+                            <?php
+                            $title = array(
+                                "Full Name",
+                                "Email",
+                                "Mobile Number",
+                                "password"
+                            );
+                            $type = array(
+                                "text",
+                                "email",
+                                "text",
+                                "password"
+                            );
+                            $name = array(
+                                "nama_user",
+                                "email_user",
+                                "nohp_user",
+                                "password"
+                            );
+                            $help = array(
+                                "Please capitalize each word ex: Firstname Lastname",
+                                "Use the proper email format username@example.com. Email will be used for login and CRM",
+                                "Active mobile phone",
+                                "Default password:123456"
+                            );
+                            $value = array(
+                                "",
+                                "",
+                                "",
+                                "12345612345",
+                            );
+                            $placeholder = array(
+                                "Full Name",
+                                "username@example.com",
+                                "089612345678",
+                                ""
+                            );
+                            ?>
+                            <?php for($a = 0; $a<count($help); $a++){ ?>
+                            <div class = "form-group">
+                                <div class="col-md-12 col-lg-12">
+                                    <!-- Example With Help -->
+                                    <h4 class="example-title"><?php echo $title[$a];?></h4>
+                                    <input type="<?php echo $type[$a];?>" name = "<?php echo $name[$a];?>" class="form-control" id="inputHelpText" placeholder = "<?php echo $placeholder[$a];?>" required value = "<?php echo $value[$a];?>">
+                                    <span class="text-help"><?php echo $help[$a];?></span>
+                                </div>
                             </div>
-                            <div class="form-group form-material floating" data-plugin="formMaterial">
-                                <textarea class = "form-control" rows = 3></textarea>
-                                <label class="floating-label">Product Description</label>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="panel">
-                <div class="panel-heading" id="exampleHeadingThird" role="tab">
-                    <a class="panel-title collapsed" data-parent="#exampleAccrodion1" data-toggle="collapse"
-                        href="#exampleCollapseThird" aria-controls="exampleCollapseThird"
-                        aria-expanded="false">Unit of Measure</a>
-                </div>
-                <div class="panel-collapse collapse" id="exampleCollapseThird" aria-labelledby="exampleHeadingThird"
-                role="tabpanel">
-                    <div class="panel-body">
-                        <div class="form-group form-material floating" data-plugin="formMaterial">
-                            <input type="text" class="form-control" name="inputFloatingText" />
-                            <label class="floating-label">Text</label>
+                            <?php
+                            }
+                            ?>
+                            
                         </div>
-                        <div class="form-group form-material floating" data-plugin="formMaterial">
-                            <input type="text" class="form-control" name="inputFloatingText" />
-                            <label class="floating-label">Text</label>
+                        <div class="tab-pane" id="privilage" role="tabpanel">
+                            <?php
+                            $kategori = "";
+                            $mulai = 0;
+                            ?>
+                            <?php 
+                            foreach($menu->result() as $a){ 
+                                if($a->type_menu != $kategori){ /*kalau ganti kategori / mulai pertama*/
+                                    if($mulai == 1){ ?> <!-- kalau bukan lagi kategori pertama. Karena kalau kategori pertama, gaperlu di tutup-->
+                                                </div>
+                                                    <span class="text-help"></span>
+                                                </div>
+                                            </div>
+                                        </div>    
+                                    <?php
+                                    }
+                                    $kategori = $a->type_menu;
+                                    $mulai == 1;
+                                    ?>
+                                    <div class = "form-group">
+                                        <div class="col-md-12 col-lg-12">
+                                            <!-- Example With Help -->
+                                            <h4 class="example-title"><?php echo $kategori;?></h4>
+                                            <div class="col-md-12 col-xl-12">
+                                                <div class="example-wrap">
+                                                <!-- Example Checkboxes -->
+                                    <?php
+                                }
+                            ?> 
+                            <!-- selebihnya ngeload ini aja, ini checkbox -->
+                            <div class="checkbox-custom checkbox-primary">
+                                <input type="checkbox" id="inputUnchecked<?php echo $a->id_menu;?>" name = "<?php echo $kategori;?>[]";/>
+                                <label for="inputUnchecked<?php echo $a->id_menu;?>"><?php echo $a->nama_menu;?></label>
+                            </div>
+                            <!-- end checkboxnya -->  
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
-    <!-- End Modal -->
-    </div>
 </div>
-<div class="modal fade" id="editModal" aria-hidden="true" aria-labelledby="editModal" role="dialog" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="panel-group panel-group-continuous m-0" id="editModal" aria-multiselectable="true"
-            role="tablist">
-            <div class="panel">
-                <div class="panel-heading" id="exampleHeadingFirst" role="tab">
-                    <a class="panel-title" data-parent="#editModal" data-toggle="collapse" href="#exampleCollapseFirst" aria-expanded="true"><strong>Product Data</strong></a>
-                </div>
-                <div class="panel-collapse collapse show" id="exampleCollapseFirst" aria-labelledby="exampleHeadingFirst"
-                role="tabpanel">
-                    <div class="panel-body">
-                        <form autocomplete="off">
-                            <div class="form-group form-material floating" data-plugin="formMaterial">
-                                <input type="text" class="form-control" name="inputFloatingText" />
-                                <label class="floating-label">Text</label>
-                            </div>
-                            <div class="form-group form-material floating" data-plugin="formMaterial">
-                                <input type="email" class="form-control" name="inputFloatingEmail" />
-                                <label class="floating-label">Email</label>
-                            </div>
-                            <div class="form-group form-material floating" data-plugin="formMaterial">
-                                <input type="password" class="form-control" name="inputFloatingPassword" />
-                                <label class="floating-label">Password</label>
-                            </div>
-                            <div class="form-group form-material floating" data-plugin="formMaterial">
-                                <input type="text" class="form-control" readonly="" />
-                                <input type="file" name="inputFloatingFile" multiple="" />
-                                <label class="floating-label">Browse..</label>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="panel">
-                <div class="panel-heading" id="exampleHeadingSecond" role="tab">
-                    <a class="panel-title collapsed" data-parent="#editModal" data-toggle="collapse"
-                    href="#exampleCollapseSecond" aria-controls="exampleCollapseSecond"
-                    aria-expanded="false"><strong>Product Detail</strong></a>
-                </div>
-                <div class="panel-collapse collapse" id="exampleCollapseSecond" aria-labelledby="exampleHeadingSecond" role="tabpanel">
-                    <div class="panel-body">
-                        <form autocomplete="off">
-                            <div class="form-group form-material floating" data-plugin="formMaterial">
-                                <select class="form-control" data-plugin="select2">
-                                    <optgroup label="Alaskan/Hawaiian Time Zone">
-                                        <option value="AK">Alaska</option>
-                                        <option value="HI">Hawaii</option>
-                                    </optgroup>
-                                    <optgroup label="Pacific Time Zone">
-                                        <option value="CA">California</option>
-                                        <option value="NV">Nevada</option>
-                                        <option value="OR">Oregon</option>
-                                        <option value="WA">Washington</option>
-                                    </optgroup>
-                                    <optgroup label="Mountain Time Zone">
-                                        <option value="AZ">Arizona</option>
-                                        <option value="CO">Colorado</option>
-                                        <option value="ID">Idaho</option>
-                                        <option value="MT">Montana</option>
-                                        <option value="NE">Nebraska</option>
-                                        <option value="NM">New Mexico</option>
-                                        <option value="ND">North Dakota</option>
-                                        <option value="UT">Utah</option>
-                                        <option value="WY">Wyoming</option>
-                                    </optgroup>
-                                    <optgroup label="Central Time Zone">
-                                        <option value="AL">Alabama</option>
-                                        <option value="AR">Arkansas</option>
-                                        <option value="IL">Illinois</option>
-                                        <option value="IA">Iowa</option>
-                                        <option value="KS">Kansas</option>
-                                        <option value="KY">Kentucky</option>
-                                        <option value="LA">Louisiana</option>
-                                        <option value="MN">Minnesota</option>
-                                        <option value="MS">Mississippi</option>
-                                        <option value="MO">Missouri</option>
-                                        <option value="OK">Oklahoma</option>
-                                        <option value="SD">South Dakota</option>
-                                        <option value="TX">Texas</option>
-                                        <option value="TN">Tennessee</option>
-                                        <option value="WI">Wisconsin</option>
-                                    </optgroup>
-                                    <optgroup label="Eastern Time Zone">
-                                        <option value="CT">Connecticut</option>
-                                        <option value="DE">Delaware</option>
-                                        <option value="FL">Florida</option>
-                                        <option value="GA">Georgia</option>
-                                        <option value="IN">Indiana</option>
-                                        <option value="ME">Maine</option>
-                                        <option value="MD">Maryland</option>
-                                        <option value="MA">Massachusetts</option>
-                                        <option value="MI">Michigan</option>
-                                        <option value="NH">New Hampshire</option>
-                                        <option value="NJ">New Jersey</option>
-                                        <option value="NY">New York</option>
-                                        <option value="NC">North Carolina</option>
-                                        <option value="OH">Ohio</option>
-                                        <option value="PA">Pennsylvania</option>
-                                        <option value="RI">Rhode Island</option>
-                                        <option value="SC">South Carolina</option>
-                                        <option value="VT">Vermont</option>
-                                        <option value="VA">Virginia</option>
-                                        <option value="WV">West Virginia</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                            <div class="form-group form-material floating" data-plugin="formMaterial">
-                                <textarea class = "form-control" rows = 3></textarea>
-                                <label class="floating-label">Product Description</label>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="panel">
-                <div class="panel-heading" id="exampleHeadingThird" role="tab">
-                    <a class="panel-title collapsed" data-parent="#editModal" data-toggle="collapse"
-                        href="#exampleCollapseThird" aria-controls="exampleCollapseThird"
-                        aria-expanded="false">Unit of Measure</a>
-                </div>
-                <div class="panel-collapse collapse" id="exampleCollapseThird" aria-labelledby="exampleHeadingThird"
-                role="tabpanel">
-                    <div class="panel-body">
-                        <div class="form-group form-material floating" data-plugin="formMaterial">
-                            <input type="text" class="form-control" name="inputFloatingText" />
-                            <label class="floating-label">Text</label>
-                        </div>
-                        <div class="form-group form-material floating" data-plugin="formMaterial">
-                            <input type="text" class="form-control" name="inputFloatingText" />
-                            <label class="floating-label">Text</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Modal -->
-    </div>
-</div>
+<!-- end add customer modal -->

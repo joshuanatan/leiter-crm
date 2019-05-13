@@ -28,6 +28,7 @@ class Vendor extends CI_Controller{
         $this->load->view("crm/vendor-deal/js/jqtabledit-js");
         $this->load->view("crm/vendor-deal/js/page-datatable-js");
         $this->load->view("crm/vendor-deal/js/form-js");
+        $this->load->view("crm/vendor-deal/js/dynamic-form-js");
         $this->load->view("crm/crm-close");
         $this->load->view("req/html-close");
     }

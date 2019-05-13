@@ -5,6 +5,7 @@ class Welcome extends CI_Controller{
 
     }
     public function index(){
+        $this->session->sess_destroy();
         $this->load->view("req/head");
         $this->load->view("login/css/page-css");
         $this->load->view("req/head-close");
@@ -17,6 +18,9 @@ class Welcome extends CI_Controller{
         $this->load->view("login/js/page-js");
         $this->load->view("req/html-close");
         
+    }
+    public function logout(){
+        redirect("login/welcome/index");
     }
 }
 

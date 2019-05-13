@@ -63,6 +63,15 @@
                         <input type="text" class="form-control" name="firstName" value="23/11/2019" readonly>
                     </div>
                     <div class="col-xl-12 form-group">
+                        <select class = "form-control" placeholder="Last Name" data-plugin="select2">
+                            <option selected disabled>Choose Shipping Vendor ID</option> <!-- kalau pilih yang ini, auto generate nomor quotation baru -->
+                            <option>SHP-001</option> <!--kalau pilih yang ini, auto generate revisi ke berapa -->
+                        </select>
+                    </div>
+                    <div class="col-xl-12 form-group">
+                        <input type="text" class="form-control" name="firstName" placeholder="Shipping Vendor Name">
+                    </div>
+                    <div class="col-xl-12 form-group">
                         <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" id="DataPesanan">
                             <thead>
                                 <tr>

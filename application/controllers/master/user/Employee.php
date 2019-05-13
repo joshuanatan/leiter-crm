@@ -2,7 +2,8 @@
 class Employee extends CI_Controller{
     public function __construct(){
         parent::__construct();
-
+        $this->load->model("Mduser");
+        $this->load->model("Mdmenu");
     }
     public function index(){
         $this->load->view("req/head");
@@ -15,9 +16,17 @@ class Employee extends CI_Controller{
         $this->load->view("req/top-navbar");
         $this->load->view("req/navbar");
         /*--------------------------------------------------------*/
+        $where = array(
+            "employee" => array(),
+            "menu" => array()
+        );
+        $data = array(
+            "employee" => $this->Mduser->select($where["employee"]),
+            "menu" => $this->Mdmenu->select($where["menu"])
+        );
         $this->load->view("master/content-open");
         $this->load->view("master/employee/category-header");
-        $this->load->view("master/employee/category-body");
+        $this->load->view("master/employee/category-body",$data);
         $this->load->view("master/content-close");
         /*--------------------------------------------------------*/
         $this->load->view("req/script");
