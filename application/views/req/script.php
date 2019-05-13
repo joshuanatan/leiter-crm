@@ -34,4 +34,15 @@
 <script src="<?php echo base_url();?>global/js/Plugin/asscrollable.js"></script>
 <script src="<?php echo base_url();?>global/js/Plugin/slidepanel.js"></script>
 <script src="<?php echo base_url();?>global/js/Plugin/switchery.js"></script>
+
+<script>
+    (function(document, window, $){
+    'use strict';
+
+        var Site = window.Site;
+        $(document).ready(function(){
+            Site.run();
+        });
+    })(document, window, jQuery);
+</script>
     

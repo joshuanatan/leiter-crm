@@ -434,7 +434,7 @@
           <!-- End Navbar Toolbar Right -->
     
           <div class="navbar-brand navbar-brand-center">
-            <a href="<?php echo base_url();?>index.html">
+            <a href="<?php echo base_url();?>welcome">
               <img class="navbar-brand-logo navbar-brand-logo-normal" src="<?php echo base_url();?>assets/images/logo.png"
                 title="Remark">
               <img class="navbar-brand-logo navbar-brand-logo-special" src="<?php echo base_url();?>assets/images/logo-colored.png"

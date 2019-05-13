@@ -1,3 +1,4 @@
+
 <div class="panel-body col-lg-12">
     <div class="row">
         <div class="col-md-6">
@@ -210,30 +211,31 @@
                                                 </div>
                                                     <span class="text-help"></span>
                                                 </div>
-                                            </div>
-                                        </div>    
+                                        </div>   
+                                        <hr/> 
                                     <?php
                                     }
                                     $kategori = $a->type_menu;
-                                    $mulai == 1;
+                                    $mulai = 1;
                                     ?>
                                     <div class = "form-group">
                                         <div class="col-md-12 col-lg-12">
                                             <!-- Example With Help -->
                                             <h4 class="example-title"><?php echo $kategori;?></h4>
                                             <div class="col-md-12 col-xl-12">
-                                                <div class="example-wrap">
                                                 <!-- Example Checkboxes -->
                                     <?php
                                 }
                             ?> 
                             <!-- selebihnya ngeload ini aja, ini checkbox -->
                             <div class="checkbox-custom checkbox-primary">
-                                <input type="checkbox" id="inputUnchecked<?php echo $a->id_menu;?>" name = "<?php echo $kategori;?>[]";/>
+                                <input type="checkbox" id="inputUnchecked<?php echo $a->id_menu;?>" name = "<?php echo strtolower($kategori);?>[]";/>
                                 <label for="inputUnchecked<?php echo $a->id_menu;?>"><?php echo $a->nama_menu;?></label>
                             </div>
                             <!-- end checkboxnya -->  
                             <?php } ?>
+                            <hr/>
+                            <button class = "btn btn-primary btn-outline btn-sm">SUBMIT</button>
                         </div>
                     </div>
                 </div>

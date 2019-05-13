@@ -2,7 +2,7 @@
 class Welcome extends CI_Controller{
     public function __construct(){
         parent::__construct();
-
+        $this->load->model("Mduser");
     }
     public function index(){
         $this->session->sess_destroy();
@@ -18,6 +18,19 @@ class Welcome extends CI_Controller{
         $this->load->view("login/js/page-js");
         $this->load->view("req/html-close");
         
+    }
+    public function auth(){
+        $where = array(
+            "email_user" => $this->input->post("email"),
+            "password" => md5($this->input->post("password"))
+        );
+        $result = $this->Mduser->select($where);
+        foreach($result->result() as $a){
+            $this->session->nama_user = $a->nama_user;
+            $this->session->email_user = $a->email_user;
+            redirect("welcome");
+        }
+        redirect("login/welcome");
     }
     public function logout(){
         redirect("login/welcome/index");

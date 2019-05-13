@@ -5,7 +5,7 @@
     </div>
     <h3 class="font-size-24">Sign In</h3>
 
-    <form method="post" action="login-v2.html">
+    <form method="post" action="<?php echo base_url();?>login/welcome/auth">
         <div class="form-group">
         <label class="sr-only" for="inputEmail">Email</label>
         <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email">
