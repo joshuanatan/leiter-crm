@@ -86,5 +86,16 @@ class Customer extends CI_Controller{
         $this->Mdcontact_person->insert($data);
         redirect("master/customer");
     }
+    public function getcp(){
+        $where = array(
+            "id_perusahaan" => $this->input->post("id_perusahaan")
+        );
+        $result = $this->Mdcontact_person->select($where);
+        $html = "";
+        foreach($result->result() as $a){
+            $html .= "<option value = ".$a->id_cp.">".ucwords($a->nama_cp)."</option>";
+        }
+        echo json_encode($html);
+    }
 }
 ?>

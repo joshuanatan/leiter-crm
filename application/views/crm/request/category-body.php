@@ -12,70 +12,35 @@
         <thead>
             <tr>
                 <th>Request ID</th>
-                <th>Customer Name</th>
+                <th>Company Name</th>
+                <th>Contact Person</th>
                 <th>Request</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
+            <?php foreach($request->result() as $a){ ?> 
             <tr class="gradeA">
-                <td>REQ-001</td>
-                <td>Joshua Natan W</td>
-                <td><button data-target="#RequestData" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-book" aria-hidden="true"></i>Item's Price Request</button></td>
+                <td>REQ-<?php echo sprintf("%05d",$a->id_request) ?></td>
+                <td><?php echo $a->nama_perusahaan ?></td>
+                <td><?php echo $a->nama_cp ?></td>
+                <td><a href = "<?php echo base_url();?>crm/request/items/<?php echo $a->id_request;?>" class="btn btn-outline btn-primary"><i class="icon wb-book" aria-hidden="true"></i>Item's Price Request</a></td>
                 <td class="actions">
                     
                     <button data-target="#EditRequest" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
+                    <a href = "<?php echo base_url();?>crm/request/remove/<?php echo $a->id_request;?>" class="btn btn-outline btn-danger"
+                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
                     
                 </td>
             </tr>
+            <?php } ?>
         </tbody>
     </table>
 </div>
 
-<div class="modal fade" id="RequestData" aria-hidden="true" aria-labelledby="RequestData" role="dialog" tabindex="-1">
-    <div class="modal-dialog modal-simple modal-center">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-                </button>
-                <h4 class="modal-title">REQ-001/Joshua Natan W - Request for Price</h4>
-            </div>
-        <div class="modal-body">
-            <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" id="DataPesanan">
-                <thead>
-                    <tr>
-                        <th>Item ID</th>
-                        <th>Item Name</th>
-                        <th>Quantity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="gradeA">
-                        <td>ITM-001</td>
-                        <td>Meja Tulis</td>
-                        <td>5</td>
-                    </tr>
-                    <tr class="gradeA">
-                        <td>ITM-002</td>
-                        <td>Kursi Kayu</td>
-                        <td>7</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="modal fade" id="TambahRequest" aria-hidden="false" aria-labelledby="TambahRequestLabel" role="dialog">
     <div class="modal-dialog modal-simple">
-        <form class="modal-content">
+        <form class="modal-content" action = "<?php echo base_url();?>crm/request/insert" method = "post">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
@@ -85,20 +50,27 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-xl-12 form-group">
-                        <input type="text" class="form-control" name="firstName" placeholder="Request ID" readonly>
+                        <h6 style = "color:grey;opacity:0.7">REQUEST ID</h6>
+                        <input type="text" value = "REQ-<?php echo sprintf('%05d', $request_id);?>" class="form-control" name="asdf" placeholder="Request ID" readonly>
                     </div>
                     <div class="col-xl-12 form-group">
-                        <select class = "form-control" placeholder="Last Name" data-plugin="select2">
+                        <h6 style = "color:grey;opacity:0.7">CUSTOMER FIRM</h6>
+                        <select class = "form-control" data-plugin="select2" name = "id_perusahaan" id = "idperusahaan" onchange = "getContactPerson()">
                             <option disabled selected>Choose Customer</option>
-                            <option>Joshua Natan W</option>
-                            <option>PT Garuda Indonesia</option>
+                            <?php foreach($customer->result() as $a){ ?>
+                            <option value = "<?php echo $a->id_cp;?>"><?php echo strtoupper($a->nama_perusahaan);?></option>
+                            <?php } ?>
                         </select>
                     </div>
                     <div class="col-xl-12 form-group">
-                        <input type="text" class="form-control" name="firstName" placeholder="Customer ID" readonly>
+                        <h6 style = "color:grey;opacity:0.7">CUSTOMER CP</h6>
+                        <select class = "form-control" placeholder="Last Name" name = "id_cp" data-plugin="select2" id="cpperusahaan">
+                            <option disabled selected>Choose Contact Person</option>
+                        </select>
                     </div>
                     <div class="col-xl-12 form-group">
-                        <input type="date" class="form-control" name="email" placeholder="Dateline">
+                        <h6 style = "color:grey;opacity:0.7">DATELINE</h6>
+                        <input type="date" class="form-control" name="tgl_dateline_request" placeholder="Dateline">
                     </div>
                     <div class="col-xl-12 form-group">
                         <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" id="DataPesanan">
@@ -106,6 +78,7 @@
                                 <tr>
                                     <th>Item</th>
                                     <th>Quantity</th>
+                                    <th>UOM</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -114,67 +87,11 @@
                         </table>
                         <button type = "button" class = "btn btn-sm btn-success col-lg-12" onclick="add()">Add Item</button>
                     </div>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-<div class="modal fade" id="EditRequest" aria-hidden="false" aria-labelledby="TambahRequestLabel" role="dialog">
-    <div class="modal-dialog modal-simple">
-        <form class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-                <h4 class="modal-title" id="exampleFormModalLabel">Price Request</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
                     <div class="col-xl-12 form-group">
-                        <input type="text" class="form-control" name="firstName" value = "REQ-001" placeholder="Request ID" readonly>
-                    </div>
-                    <div class="col-xl-12 form-group">
-                        <select class = "form-control" placeholder="Last Name" data-plugin="select2">
-                            <option disabled >Choose Customer</option>
-                            <option selected>Joshua Natan W</option>
-                            <option>PT Garuda Indonesia</option>
-                        </select>
-                    </div>
-                    <div class="col-xl-12 form-group">
-                        <input type="text" class="form-control" name="firstName" placeholder="Customer ID" readonly>
-                    </div>
-                    <div class="col-xl-12 form-group">
-                        <input type="date" class="form-control" name="email" placeholder="Dateline">
-                    </div>
-                    <div class="col-xl-12 form-group">
-                        <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" id="DataPesanan">
-                            <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Quantity</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id = "t1">
-                                <tr class='gradeA'>
-                                    <td>
-                                        <select class = 'form-control' id ='items' placeholder='Last Name' data-plugin='select2'>
-                                            <option disabled >Choose Item</option>
-                                            <option selected>Meja Tulis</option>
-                                            <option>Kursi Kayu</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input type='text' class='form-control' name='touchSpinVertical' data-plugin='TouchSpin' data-verticalbuttons='true' value='5' />
-                                    </td>
-                                    <td>
-                                        <button class = 'btn btn-sm btn-danger col-lg-12' onclick='deleteRow(this)' >Remove</button></td>
-                                    </tr>
-                            </tbody>
-                        </table>
-                        <button type = "button" class = "btn btn-sm btn-success col-lg-12" onclick="add()">Add Item</button>
+                        <input type="hidden" value = "<?php echo $request_id;?>" class="form-control" name="id_request" placeholder="Customer ID" readonly>
                     </div>
                 </div>
+                <input type = "submit" class = "btn btn-primary btn-outline">
             </div>
         </form>
     </div>

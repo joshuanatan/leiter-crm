@@ -68,5 +68,14 @@ class Product extends CI_Controller{
         $this->Mdproduk->insert($data);
         redirect("master/product");
     }
+    public function getuom(){
+        $where = array(
+            "id_produk" => $this->input->post("id_produk")
+        );
+        $result = $this->Mdproduk->select($where);
+        foreach($result->result() as $a){
+            echo json_encode(strtoupper($a->satuan_produk));
+        }
+    }
 }
 ?>

@@ -10,16 +10,22 @@
         <thead>
             <tr>
                 <th>Request ID</th>
+                <th>Company Name</th>
                 <th>Customer Name</th>
                 <th>Request</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
+            <?php foreach($request->result() as $a){ ?>
             <tr class="gradeA">
-                <td>REQ-001</td>
-                <td>Joshua Natan W</td>
-                <td><button data-target="#RequestData" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-book" aria-hidden="true"></i>Item's Price Request</button></td>
+                <td>REQ-<?php echo sprintf("%05d",$a->id_request) ?></td>
+                <td><?php echo $a->nama_perusahaan;?></td>
+                <td><?php echo ucwords($a->nama_cp);?></td>
+                <td>
+                    <a href = "<?php echo base_url();?>crm/vendor/produk/<?php echo $a->id_request;?>" data-target="#RequestData" class="btn btn-outline btn-primary col-lg-5"><i class="icon wb-book" aria-hidden="true"></i>Product Vendor Price</a>
+                    <a href = "<?php echo base_url();?>crm/vendor/shipping/<?php echo $a->id_request;?>" data-target="#RequestData" class="btn btn-outline btn-primary col-lg-5"><i class="icon wb-book" aria-hidden="true"></i>Shipping Vendor Price</a>
+                </td>
                 <td class="actions">
                     
                     <button data-target="#EditRequest" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
@@ -29,7 +35,8 @@
                     data-toggle="popover"><i class="icon fa fa-check" aria-hidden="true"></i></button>
                     
                 </td>
-            </tr>
+            </tr> 
+            <?php } ?>
         </tbody>
     </table>
 </div>
