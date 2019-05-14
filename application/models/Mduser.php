@@ -1,7 +1,7 @@
 <?php
 class Mduser extends CI_Model{
     public function select($data){
-        $this->db->where("user.id_user in (select tipe_user.id_user from tipe_user where tipe_user.id_tipe = 0)");
+        $this->db->where("user.id_user in (select tipe_user.id_user from tipe_user)");
         return $this->db->get_where("user",$data);
     }
     public function insert($data){
