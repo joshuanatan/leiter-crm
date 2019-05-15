@@ -11,6 +11,7 @@ function detailPriceRequest(){
             success:function(respond){
                 $("#perusahaanCust").val(respond[0]);
                 $("#namaCust").val(respond[1]);
+                $("#idCust").val(respond[2]);
                 for(var a = 0; a<respond[respond.length-1].length; a++){
                     $("#itemsOrdered").append("<option value = '"+respond[respond.length-2][a]+"'>"+respond[respond.length-1][a]+"</option>");
                 }
@@ -18,6 +19,38 @@ function detailPriceRequest(){
 
         });
     });
+}
+var sudah = 0 ;
+function detailPriceRequestPageEdit(){
+    if(sudah == 0){
+    var id_request = $("#id_request").val();
+    var id_quo = $("#id_quo").val();
+    var versi_quo = $("#versi_quo").val();
+    $(document).ready(function(){
+        $.ajax({
+            data:{id_request:id_request},
+            url:"<?php echo base_url();?>crm/request/getRequestDetail",
+            type: "POST",
+            dataType: "JSON",
+            success:function(respond){
+                for(var a = 0; a<respond[respond.length-1].length; a++){
+                    $("#itemsOrdered").append("<option value = '"+respond[respond.length-2][a]+"'>"+respond[respond.length-1][a]+"</option>");
+                }
+            }
+
+        });
+        $.ajax({
+            data:{id_quotation:id_quo,quo_version:versi_quo},
+            url:"<?php echo base_url();?>crm/quotation/getQuotationItem",
+            dataType:"JSON",
+            type:"POST",
+            success:function(respond){
+                $("#t1").html(respond);
+            }
+        });
+    });
+    sudah = 1;
+    }
 }
 </script>
 <script>
@@ -120,18 +153,21 @@ function quotationItem(){
         var item_amount = $("#itemamount").val();
         var selling_price = $("#inputNominal").val();
         var margin_price = $("#totalMargin").val();
+        var versi_quo = $("#versi_quo").val();
+        alert(versi_quo);
         $.ajax({
-            data:{id_quotation:id_quotation,id_request_item:id_request_item,item_amount:item_amount,selling_price:selling_price,margin_price:margin_price},
+            data:{id_quotation:id_quotation,id_request_item:id_request_item,quo_version:versi_quo,item_amount:item_amount,selling_price:selling_price,margin_price:margin_price},
             url:"<?php echo base_url();?>crm/quotation/addItemToQuotation",
             type:"POST",
             success:function(respond){
                 alert("ITEM ADDED TO QUOTATION");
                 $.ajax({
-                    data:{id_quotation:id_quotation},
+                    data:{id_quotation:id_quotation,quo_version:versi_quo},
                     url:"<?php echo base_url();?>crm/quotation/getQuotationItem",
                     dataType:"JSON",
                     type:"POST",
                     success:function(respond){
+                        alert("uueay");
                         $("#t1").html(respond);
                     }
                 });

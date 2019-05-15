@@ -188,7 +188,8 @@ class Request extends CI_Controller{
         foreach($result->result() as $a){
             $value = array(
                 $a->nama_perusahaan,
-                $a->nama_cp
+                $a->nama_cp,
+                $a->id_cp
             );
         }
         $length = count($value);
