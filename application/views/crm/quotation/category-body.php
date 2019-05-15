@@ -62,7 +62,7 @@
 
                 <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#items" aria-controls="items" role="tab">Items</a></li>
             </ul>
-            <form action = "#" method = "post">    
+            <form action = "<?php echo base_url();?>crm/quotation/insertquotation" method = "post">    
                 <div class="modal-body">
                     <div class="tab-content">
                         <div class="tab-pane active" id="primaryData" role="tabpanel">
@@ -76,12 +76,16 @@
                                 </select>
                             </div>
                             <div class = "form-group">
-                                <h5 style = "color:darkgrey; opacity:0.8">Quotation No</h5>
-                                <input type ="text" class = "form-control">
+                                <h5 style = "color:darkgrey; opacity:0.8">Quotation No</h5> <!-- nanti ganti jadi select -->
+                                <input name = "no_quo" type ="text" class = "form-control" readonly value = "QUO-<?php echo sprintf('%05d',$quotation_id) ?>">
+                            </div>
+                            <div class = "form-group">
+                                <h5 style = "color:darkgrey; opacity:0.8">Quotation Versi</h5>
+                                <input name = "versi_quo" type ="text" class = "form-control">
                             </div>
                             <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">Quotation Perihal</h5>
-                                <input type ="text" class = "form-control">
+                                <input name = "hal_quo" type ="text" class = "form-control">
                             </div>
                             <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
@@ -89,73 +93,76 @@
                             </div>
                             <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">Nama Customer</h5>
-                                <input type ="text" class = "form-control" id ="namaCust" readonly>
+                                <input name = "id_cp" type ="text" class = "form-control" id ="namaCust" readonly>
                             </div>
                             <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">Up Nama Customer</h5>
-                                <input type ="text" class = "form-control">
+                                <input name = "up_cp" type ="text" class = "form-control">
                             </div>
                             <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">Jabatan Customer</h5>
-                                <input type ="text" class = "form-control">
+                                <input name = "jabatan_up" type ="text" class = "form-control">
                             </div>
                         </div>
                         <div class="tab-pane" id="pengiriman" role="tabpanel">
                             <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">Durasi Pengiriman</h5>
-                                <input type ="text" class = "form-control"> Minggu
+                                <input name = "durasi_pengiriman" type ="text" class = "form-control"> Minggu
                             </div>
                             <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">Trigger Pengiriman</h5>
-                                <input type ="text" class = "form-control"> 
+                                <input name = "trigger_pengiriman" type ="text" class = "form-control"> 
                             </div>
                             <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">Tambahan Detail Pengiriman</h5>
-                                <input type ="text" class = "form-control"> 
+                                <input name = "tambahan_pengiriman" type ="text" class = "form-control"> 
                             </div>
                             <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">Franco</h5>
-                                <input type ="text" class = "form-control"> 
+                                <input name = "franco" type ="text" class = "form-control"> 
                             </div>
                         </div>
                         <div class="tab-pane" id="produksi" role="tabpanel">
                             <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">Jadwal Produksi</h5>
-                                <input type ="text" class = "form-control">
+                                <input name = "jadwal_produksi" type ="text" class = "form-control">
                             </div>
                             <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">Jadwal Pengiriman</h5>
-                                <input type ="text" class = "form-control">
+                                <input name = "jadwal_pengiriman" type ="text" class = "form-control">
                             </div>
                             <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">Durasi Pembayaran</h5>
-                                <input type ="text" class = "form-control">
+                                <input name = "durasi_pembayaran" type ="text" class = "form-control">
                             </div>
                             <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">Trigger Pembayaran</h5>
-                                <input type ="text" class = "form-control">
+                                <input name = "trigger_pembayaran" type ="text" class = "form-control">
                             </div>
                             <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">Tambahan Detail Pembayaran</h5>
-                                <input type ="text" class = "form-control">
+                                <input name = "tambahan_pembayaran" type ="text" class = "form-control">
                             </div>
                         </div>
                         <div class="tab-pane" id="produksi2" role="tabpanel">
                             <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">Mata Uang Pembayaran</h5>
-                                <input type ="text" class = "form-control">
+                                <input name = "mata_uang_pembayaran" type ="text" class = "form-control">
                             </div>
                             <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">PPN</h5>
-                                <input type ="text" class = "form-control">
+                                <input name = "ppn" type ="text" class = "form-control">
                             </div>
                             <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">Termasuk PPN</h5>
-                                <select class = "form-control"></select>
+                                <select name = "termasuk_ppn" class = "form-control">
+                                    <option value = "0">Termasuk</option>
+                                    <option value = "1">Tidak Termasuk</option>
+                                </select>
                             </div>
                             <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">Dateline Quotation</h5>
-                                <input type ="text" class = "form-control">
+                                <input name = "dateline_quo" type ="date" class = "form-control">
                             </div>
                         </div>
                         <div class="tab-pane" id="items" role="tabpanel">
@@ -164,40 +171,48 @@
                                 <select class = "form-control" id = "itemsOrdered" onchange = "loadVendors()"><option selected disabled>Choose Item</option></select>
                             </div>
                             <div class = "form-group">
+                                <h5 style = "color:darkgrey; opacity:0.8">Quantity</h5>
+                                <input name = "Abc" type ="text" class = "form-control" id = "itemamount" value = "">
+                            </div>
+                            <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">Shipping</h5>
                                 <select class = "form-control" id="shippers" onchange = "getShippingPrice()"><option selected disabled>Choose Shipping Vendor</option></select>
                             </div>
                             <div class = "form-group">
-                                <input type ="text" id = "hargashipping" class = "form-control" disabled placeholder = "Shipping Price">
+                                <input name = "Abc" type ="text" id = "hargashipping" class = "form-control" disabled placeholder = "Shipping Price">
                             </div>
                             <div class = "form-group">
                                 <h5 style = "color:darkgrey; opacity:0.8">Product</h5>
                                 <select class = "form-control" id = "products" onchange = "getVendorPrice()"><option selected disabled>Choose Product Vendor</option></select>
                             </div>
                             <div class = "form-group">
-                                <input type ="text" id = "hargaProduk" class = "form-control" disabled placeholder = "Product Price">
+                                <input name = "Abc" type ="text" id = "hargaProduk" class = "form-control" disabled placeholder = "Product Price">
                             </div>
                             <div class = "form-group">
-                                <input type ="text" class = "form-control" id = "inputNominal" placeholder = "Selling Price">
+                                <input name = "Abc" type ="text" class = "form-control" id = "inputNominal" placeholder = "Selling Price">
                             </div>
                             <div class = "form-group" onclick = "getMargin()">
-                                <input  type ="text" class = "form-control" id = "totalMargin" disabled placeholder = "Margin">
+                                <input name = "Abc"  type ="text" class = "form-control" id = "totalMargin" disabled placeholder = "Margin">
                             </div>
                             <div class = "form-group">
-                                <button class = "btn btn-primary btn-outline">ADD TO QUOTATION</button>
+                                <button type = "button" onclick = "quotationItem()" class = "btn btn-primary btn-outline">ADD TO QUOTATION</button>
                             </div>
                             <div class = "form-group col-lg-12">
-                                <table class = "table table-stripped col-lg-12" data-plugin = "dataTable">
+                                <table class = "table table-stripped col-lg-12">
                                     <thead>
-                                        <th>Product ID</th>
-                                        <th>Price</th>
-                                        <th>Action</th>
+                                        <th>Item Request ID</th>
+                                        <th>Product Name</th>
+                                        <th>Amount</th>
+                                        <th>Selling Price</th>
+                                        <th>Margin</th>
                                     </thead>
                                     <tbody id ="t1">
 
                                     </tbody>
                                 </table>
                             </div>
+                            <input name = "Abc"  type ="hidden" value = "<?php echo $quotation_id;?>" id = "id_quo">
+                            
                             <button class = "btn btn-primary btn-outline btn-sm">SUBMIT</button>
                         </div>
                     </div>

@@ -15,5 +15,15 @@ class Mdquotation extends CI_Model{
     public function delete($where){
         $this->db->delete("quotation",$where);
     }
+    public function maxId(){
+        $this->db->select("max(id_quo) as a");
+        $row = $this->db->get("quotation");
+        foreach($row->result() as $a){
+            if($a->a != ""){
+                return $a->a+1;
+            }
+            else return 1;
+        }
+    }
 }
 ?>

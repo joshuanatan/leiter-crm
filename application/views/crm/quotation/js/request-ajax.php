@@ -42,6 +42,15 @@ function loadVendors(){
                 $("#products").html(respond);
             }
         });
+        $.ajax({
+            url:"<?php echo base_url();?>crm/request/getAmountOrders",
+            data: {id_request_item:id_request_item},
+            dataType: "JSON",
+            type: "POST",
+            success:function(respond){
+                $("#itemamount").val(respond);
+            }
+        });
     });
 }
 
@@ -69,7 +78,6 @@ function getShippingPrice(){
 function getVendorPrice(){
     $(document).ready(function(){
         var id_perusahaan = $("#products").val();
-        alert(id_perusahaan);
         $.ajax({
             data:{id_perusahaan:id_perusahaan},
             url: "<?php echo base_url();?>crm/vendor/getVendorPrices",
@@ -84,19 +92,51 @@ function getVendorPrice(){
 </script>
 <script>
 function getMargin(){
-    alert("hei");
     var shipper = $("#hargashipping").val();
+    var shipperfinal = "";
+    var produkfinal = "";
     var produk = $("#hargaProduk").val();
-    var splitShipper = shipper.split(".");
-    var splitProduk = produk.split(".");
+    var total = $("#itemamount").val();
+    var splitShipper = shipper.split(",");
+    var splitProduk = produk.split(",");
     for(var a= 0; a<splitShipper.length; a++){
-        shipper += splitShipper[a];
+        shipperfinal += splitShipper[a];
+        
     }
     for(var a= 0; a<splitProduk.length; a++){
-        produk += splitProduk[a];
+        produkfinal += splitProduk[a];
     }
     var input = $("#inputNominal").val();
-    var margin = input-parseInt(shipper)-parseInt(produk);
+    var margin = input-parseInt(shipperfinal)-(parseInt(produkfinal)*parseInt(total));
+
     $("#totalMargin").val(margin);
+}
+</script>
+<script>
+function quotationItem(){
+    $(document).ready(function(){
+        var id_quotation = $("#id_quo").val();
+        var id_request_item = <?php echo $this->session->id_request_item; ?>;
+        var item_amount = $("#itemamount").val();
+        var selling_price = $("#inputNominal").val();
+        var margin_price = $("#totalMargin").val();
+        $.ajax({
+            data:{id_quotation:id_quotation,id_request_item:id_request_item,item_amount:item_amount,selling_price:selling_price,margin_price:margin_price},
+            url:"<?php echo base_url();?>crm/quotation/addItemToQuotation",
+            type:"POST",
+            success:function(respond){
+                alert("ITEM ADDED TO QUOTATION");
+                $.ajax({
+                    data:{id_quotation:id_quotation},
+                    url:"<?php echo base_url();?>crm/quotation/getQuotationItem",
+                    dataType:"JSON",
+                    type:"POST",
+                    success:function(respond){
+                        $("#t1").html(respond);
+                    }
+                });
+            }
+        });
+    });
 }
 </script>

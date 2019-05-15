@@ -205,5 +205,14 @@ class Request extends CI_Controller{
         }
         echo json_encode($value);
     }
+    public function getAmountOrders(){
+        $where = array(
+            "id_request_item" => $this->input->post("id_request_item")
+        );
+        $result = $this->Mdprice_request_item->select($where);
+        foreach($result->result() as $a){
+            echo json_encode($a->jumlah_produk);
+        }
+    }
 }
 ?>
