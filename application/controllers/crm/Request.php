@@ -179,5 +179,31 @@ class Request extends CI_Controller{
         $this->Mdprice_request->update($data,$where);
         redirect("crm/request");
     }
+    public function getRequestDetail(){
+        $where = array(
+            "price_request.id_request" => $this->input->post("id_request")
+        );
+        $result = $this->Mdprice_request->select($where);
+        $value = array();
+        foreach($result->result() as $a){
+            $value = array(
+                $a->nama_perusahaan,
+                $a->nama_cp
+            );
+        }
+        $length = count($value);
+        $where = array(
+            "price_request.id_request" => $this->input->post("id_request"),
+            "price_request_item.status_request_item" => 0
+        );
+        $result = $this->Mdprice_request_item->select($where);
+        $count = 0;
+        foreach($result->result() as $a){
+            $value[$length][$count] = $a->id_request_item;
+            $value[$length+1][$count] = $a->nama_produk;
+            $count++;
+        }
+        echo json_encode($value);
+    }
 }
 ?>

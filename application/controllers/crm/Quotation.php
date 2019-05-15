@@ -2,7 +2,8 @@
 class Quotation extends CI_Controller{
     public function __construct(){
         parent::__construct();
-
+        $this->load->model("Mdquotation");
+        $this->load->model("Mdprice_request");
     }
     private function req(){
         $this->load->view("req/head");
@@ -17,9 +18,21 @@ class Quotation extends CI_Controller{
     }
     public function index(){
         $this->req();
+        $where = array(
+            "quotation" => array(
+                "status_quo" => 0  
+            ),
+            "price_request" => array(
+                "price_request.status_request" => 0
+            )
+        );
+        $data = array(
+            "quotation" => $this->Mdquotation->select($where["quotation"]),
+            "request" => $this->Mdprice_request->select($where["price_request"])
+        );
         $this->load->view("crm/content-open");
         $this->load->view("crm/quotation/category-header");
-        $this->load->view("crm/quotation/category-body");
+        $this->load->view("crm/quotation/category-body",$data);
         $this->load->view("crm/content-close");
         $this->close();
     }
@@ -29,6 +42,7 @@ class Quotation extends CI_Controller{
         $this->load->view("crm/quotation/js/page-datatable-js");
         $this->load->view("crm/quotation/js/form-js");
         $this->load->view("crm/quotation/js/dynamic-form-js");
+        $this->load->view("crm/quotation/js/request-ajax");
         $this->load->view("crm/crm-close");
         $this->load->view("req/html-close");
     }

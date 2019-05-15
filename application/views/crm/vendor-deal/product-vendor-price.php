@@ -25,4 +25,5 @@
         <tbody id = "t1">
         </tbody>
     </table>
+    <a href = "<?php echo base_url();?>crm/vendor" class = "btn btn-primary btn-outline">BACK</a>
 </div>

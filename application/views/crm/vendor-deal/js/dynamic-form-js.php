@@ -4,7 +4,9 @@ function add() {
 
     $("#items").select2({});
 }
-
+function addVariable(){
+  $("#shippingVariablePrice").append("<tr><td><input type = 'text' class = 'form-control' name = 'variable[]'></td><td><input type = 'text' class = 'form-control' name = 'biaya[]'></td><td><input type = 'text' class = 'form-control' name = 'kurs[]'></td><td><input type = 'text' class = 'form-control' name = 'total[]'></td><td><button class = 'btn btn-sm btn-primary btn-danger' onclick = 'deleteRow(this)'>REMOVE</button></td></tr>");
+}
 function deleteRow(e,v) {
   var tr = e.parentElement.parentElement;
   var tbl = e.parentElement.parentElement.parentElement;

@@ -34,3 +34,48 @@ function submitData(){
     });
 }
 </script>
+<script>
+function loadShippingMethod(){
+    var id_perusahaan = $("#shipper").val();
+    $(document).ready(function(){
+        $.ajax({
+            url:"<?php echo base_url();?>crm/vendor/getshippingmethod",
+            data:{id_perusahaan:id_perusahaan},
+            type: "POST",
+            dataType: "JSON",
+            success:function(respond){
+                $("#metodePengiriman").html(respond);
+            }
+        });
+    });
+    $(document).ready(function(){
+        $.ajax({
+            url:"<?php echo base_url();?>crm/vendor/getContactPerson",
+            data:{id_perusahaan:id_perusahaan},
+            type: "POST",
+            dataType: "JSON",
+            success:function(respond){
+                $("#cp").html(respond);
+            }
+        });
+    });
+}
+</script>
+<script>
+function loadShippingPrice(){
+    var id_perusahaan = $("#shipper").val();
+    var metode_pengiriman = $("#metodePengiriman").val();
+    var id_request_item = $("#items").val();
+    $(document).ready(function(){
+        $.ajax({
+            url:"<?php echo base_url();?>crm/vendor/getShippingPrice",
+            type: "POST",
+            dataType: "JSON",
+            data:{id_perusahaan:id_perusahaan,metode_pengiriman:metode_pengiriman,id_request_item:id_request_item},
+            success:function(respond){
+                $("#shippingVariablePrice").html(respond);
+            }
+        });
+    });
+}
+</script>
