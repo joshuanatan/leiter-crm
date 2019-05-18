@@ -8,13 +8,13 @@
             </div>
         </div>
     </div>
-    <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" id="exampleAddRow">
+    <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
                 <th>Request ID</th>
                 <th>Company Name</th>
                 <th>Contact Person</th>
-                <th>Request</th>
+                <th>Items Quantity</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -23,13 +23,15 @@
             <tr class="gradeA">
                 <td>REQ-<?php echo sprintf("%05d",$a->id_request) ?></td>
                 <td><?php echo $a->nama_perusahaan ?></td>
-                <td><?php echo $a->nama_cp ?></td>
-                <td><a href = "<?php echo base_url();?>crm/request/items/<?php echo $a->id_request;?>" class="btn btn-outline btn-primary"><i class="icon wb-book" aria-hidden="true"></i>Item's Price Request</a></td>
+                <td><?php echo ucwords($a->nama_cp) ?></td>
+                <td><?php echo $a->a." Items";?></td>
                 <td class="actions">
                     
-                    <button data-target="#EditRequest" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
+                    <a href = "<?php echo base_url();?>crm/request/items/<?php echo $a->id_request;?>" class="btn btn-outline btn-primary"><i class="icon wb-edit" aria-hidden="true"></i></a>
                     <a href = "<?php echo base_url();?>crm/request/remove/<?php echo $a->id_request;?>" class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
+                    <a href = "<?php echo base_url();?>crm/request/submit/<?php echo $a->id_request;?>" class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-check" aria-hidden="true"></i></a>
                     
                 </td>
             </tr>
@@ -58,7 +60,7 @@
                         <select class = "form-control" data-plugin="select2" name = "id_perusahaan" id = "idperusahaan" onchange = "getContactPerson()">
                             <option disabled selected>Choose Customer</option>
                             <?php foreach($customer->result() as $a){ ?>
-                            <option value = "<?php echo $a->id_cp;?>"><?php echo strtoupper($a->nama_perusahaan);?></option>
+                            <option value = "<?php echo $a->id_perusahaan;?>"><?php echo strtoupper($a->nama_perusahaan);?></option>
                             <?php } ?>
                         </select>
                     </div>

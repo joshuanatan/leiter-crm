@@ -130,5 +130,15 @@ class Quotation extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
+    public function loss($i){
+
+    }
+    public function accepted($i){
+        $where = array(
+            "quo_version" => $this->input->post("quo_version"),
+            "id_quo" => $i
+        );
+        
+    }
 }
 ?>

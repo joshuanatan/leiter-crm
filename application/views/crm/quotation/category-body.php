@@ -43,10 +43,13 @@
                 <td class="actions">
                     
                     <a href = "<?php echo base_url();?>crm/quotation/edit/<?php echo $a->id_quo;?>" class="btn btn-outline btn-primary"><i class="icon wb-edit" aria-hidden="true"></i></a>
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button> <!-- setelah email dikirim, gabisa di edit / dihapus -->
+                    <!-- setelah email dikirim, gabisa di edit / dihapus -->
                     <a href = "#" class = "btn btn-outline btn-warning" data-trigger="hover" data-content="Send to Customer" data-trigger="hover" data-toggle="popover"><i class = "icon wb-chat"></i></a>
+
                     <button class="btn btn-outline btn-success" data-content="Put & See Customer Feedback Here" data-trigger="hover" data-toggle="popover"><i class="icon wb-eye" aria-hidden="true" data-target="#FeedbackQuotation" data-toggle="modal"></i></button>
+
+                    <button class="btn btn-outline btn-danger" data-content="Quotation Loss" data-trigger="hover" data-toggle="popover"><i class="icon wb-trash" aria-hidden="true"></i></button> 
+                    
                     <button class="btn btn-outline btn-primary" data-content="Proceed to Order Confirmation" data-trigger="hover" data-toggle="popover"><i class="icon wb-briefcase" aria-hidden="true" data-target="#FeedbackQuotation" data-toggle="modal"></i></button>
                 </td>
             </tr>

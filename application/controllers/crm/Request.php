@@ -5,7 +5,8 @@ class Request extends CI_Controller{
         $this->load->model("Mdprice_request");
         $this->load->model("Mdperusahaan");
         $this->load->model("Mdproduk");
-        $this->load->model("Mdprice_request_item");
+        $this->load->model("Mdprice_request_item"); 
+        $this->load->model("Mdcontact_person"); 
     }
     private function req(){
         $this->load->view("req/head");
@@ -29,8 +30,9 @@ class Request extends CI_Controller{
                 "produk.status_produk" => 0
             ),
             "price_request" => array(
-                "price_request.status_request" => 0
-            )
+                "price_request.status_request" => 0,
+                "price_request_item.status_request_item" => 0
+            ),
         );
         $data = array(
             "request_id" => $this->Mdprice_request->maxId(),
@@ -81,19 +83,47 @@ class Request extends CI_Controller{
         $this->load->view("detail/detail-close");
         $this->load->view("req/html-close");
     }
+    public function insertitems($result){
+        $name = array("id_produk","jumlah_produk");
+        $produk = array();
+        $jumlah = array();
+        /*tujuannya mau ngisi kedua array ini */
+        $counts = 0;
+        foreach($this->input->post("id_produk") as $b){
+            $produk[$counts] = $b;
+            $array[0][$counts] = $b;
+            $counts++;
+        }
+        $counts = 0;
+        foreach($this->input->post("jumlah_produk") as $b){
+            $jumlah[$counts] = $b;
+            $counts++;
+        }
+        for($a = 0; $a<count($produk); $a++){ /*berapa field yang mau dimasukin*/
+            $data = array(
+                "id_request" => $result,
+                "id_produk" => $produk[$a],
+                "jumlah_produk" => $jumlah[$a],
+                "id_user_add" => $this->session->id_user
+            );
+            $this->Mdprice_request_item->insert($data);
+        }
+        redirect("crm/request/items/".$result);
+    }
     public function insert(){
         $name = array("id_request","tgl_dateline_request","id_perusahaan","id_cp","id_user_add");
         $data = array(
             $name[0] => $this->input->post($name[0]),
             $name[1] => $this->input->post($name[1]),
-            $name[2] => $this->input->post($name[0]),
+            $name[2] => $this->input->post($name[2]),
             $name[3] => $this->input->post($name[3]),
             $name[4] => $this->session->id_user,
         );
-        //$this->Mdprice_request->insert($data);
+        $this->Mdprice_request->insert($data);
+        echo 
         $result = $this->input->post($name[0]);
-        /* ------- insert barangnya --------- */
-        $name = array("id_produk","jumlah_produk");
+        echo "hello";
+        /* ------- insert barangnya --------- */$name = array("id_produk","jumlah_produk");
         $produk = array();
         $jumlah = array();
         /*tujuannya mau ngisi kedua array ini */
@@ -122,27 +152,32 @@ class Request extends CI_Controller{
     public function items($i){
         $this->session->id_detail = $i;
         $where = array(
-            "customer" => array(
-                "peran_perusahaan" => "CUSTOMER",
-                "status_perusahaan" => 0
-            ),
-            "produk" => array(
-                "produk.status_produk" => 0
-            ),
             "produkrequest" => array(
                 "price_request_item.id_request" => $i,
                 "status_request_item" => 0
             ),
-            "price_request" => array(
-                "price_request.status_request" => 0
+            "priceRequest" => array(
+                "price_request.id_request" => $i
+            ),
+            "produk" => array(
+                "status_produk" => 0
+            ),
+            "customer" => array(
+                "peran_perusahaan" => "CUSTOMER",
+                "status_perusahaan" => 0,
+            ),
+            "contactPerson" => array(
+                "id_request" => $i
             )
         );
         $data = array(
             "request_id" => $this->Mdprice_request->maxId(),
-            "customer" => $this->Mdperusahaan->select($where["customer"]),
-            "produk" => $this->Mdproduk->select($where["produk"]),
             "produkrequest" => $this->Mdprice_request_item->select($where["produkrequest"]),
-            "request" => $this->Mdprice_request->select($where["price_request"])
+            "request" => $this->Mdprice_request->select($where["priceRequest"]),
+            "id_request" => $i,
+            "produk" => $this->Mdproduk->select($where["produk"]),
+            "customer" => $this->Mdperusahaan->select($where["customer"]),
+            "contactPerson" => $this->Mdcontact_person->selectRequestCp($where["contactPerson"])
         );
 
         $this->req();
@@ -164,7 +199,7 @@ class Request extends CI_Controller{
             "id_request_item" => $i
         );
         $data = array(
-            "status_request_item" => 1
+            "status_request_item" => -1
         );
         $this->Mdprice_request_item->update($data,$where);
         redirect("crm/request/items/".$this->session->id_detail);
@@ -214,6 +249,33 @@ class Request extends CI_Controller{
         foreach($result->result() as $a){
             echo json_encode($a->jumlah_produk);
         }
+    }
+    public function submitedit(){
+        $name = array(
+            "id_request","tgl_dateline_request","id_perusahaan","id_cp"
+        );
+        $where = array(
+            $name[0] => $this->input->post($name[0]),
+        );
+        $data = array(
+            $name[1] => $this->input->post($name[1]),
+            $name[2] => $this->input->post($name[2]),
+            $name[3] => $this->input->post($name[3]),
+            "id_user_edit" => $this->session->id_user,
+            "date_request_edit" => date("Y-m-d H:i:s")
+        );
+        $this->Mdprice_request->update($data,$where);
+        redirect("crm/request/items/".$this->input->post($name[0]));
+    }
+    public function submit($i){
+        $where = array(
+            "id_request" => $i
+        );
+        $data = array(
+            "status_request" => 1
+        );
+        $this->Mdprice_request->update($data,$where);
+        redirect("crm/request");
     }
 }
 ?>
