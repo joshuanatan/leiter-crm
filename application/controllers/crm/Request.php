@@ -111,13 +111,15 @@ class Request extends CI_Controller{
         redirect("crm/request/items/".$result);
     }
     public function insert(){
-        $name = array("id_request","tgl_dateline_request","id_perusahaan","id_cp","id_user_add");
+        $name = array("id_request","tgl_dateline_request","id_perusahaan","id_cp","id_user_add","franco");
         $data = array(
             $name[0] => $this->input->post($name[0]),
             $name[1] => $this->input->post($name[1]),
             $name[2] => $this->input->post($name[2]),
             $name[3] => $this->input->post($name[3]),
             $name[4] => $this->session->id_user,
+            $name[5] => $this->input->post($name[5]),
+
         );
         $this->Mdprice_request->insert($data);
         echo 
@@ -199,7 +201,7 @@ class Request extends CI_Controller{
             "id_request_item" => $i
         );
         $data = array(
-            "status_request_item" => -1
+            "status_request_item" => 1
         );
         $this->Mdprice_request_item->update($data,$where);
         redirect("crm/request/items/".$this->session->id_detail);
@@ -252,7 +254,7 @@ class Request extends CI_Controller{
     }
     public function submitedit(){
         $name = array(
-            "id_request","tgl_dateline_request","id_perusahaan","id_cp"
+            "id_request","tgl_dateline_request","id_perusahaan","id_cp","franco"
         );
         $where = array(
             $name[0] => $this->input->post($name[0]),
@@ -261,6 +263,7 @@ class Request extends CI_Controller{
             $name[1] => $this->input->post($name[1]),
             $name[2] => $this->input->post($name[2]),
             $name[3] => $this->input->post($name[3]),
+            $name[4] => $this->input->post($name[4]),
             "id_user_edit" => $this->session->id_user,
             "date_request_edit" => date("Y-m-d H:i:s")
         );
@@ -272,7 +275,7 @@ class Request extends CI_Controller{
             "id_request" => $i
         );
         $data = array(
-            "status_request" => 1
+            "status_request" => 2
         );
         $this->Mdprice_request->update($data,$where);
         redirect("crm/request");

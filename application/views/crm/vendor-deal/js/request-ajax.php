@@ -8,23 +8,30 @@ function loadVendorPrice(){
             type: "POST",
             url: "<?php echo base_url();?>crm/vendor/getvendorprice",
             success:function(respond){
-                $("#t1").append(respond);
+                $("#t1").html(respond);
             }
         });
     });
 }
 </script>
 <script>
-function submitData(){
+function countKurs(a){
+    var price = $("#biaya"+a).val();
+    var kurs = $("#kurs"+a).val();
+    $("#total"+a).val(price*kurs);
+}
+</script>
+<script>
+function submitData(counterId){
     $(document).ready(function(){
-        var idcp = $("#cp").val();
-        var id_request_item = $("#id_request_item").val();
-        var price = $("#price").val();
-        var uom = $("#satuan").val();
-        var min = $("#minimum").val();
+        var idcp = $("#cp"+counterId).val();
+        var id_request_item = $("#id_request_item"+counterId).val();
+        var price = $("#price"+counterId).val();
+        var uom = $("#satuan_harga_produk"+counterId).val();
+        var rate = $("#vendor_price_rate"+counterId).val();
         $.ajax({
             url:"<?php echo base_url()?>crm/vendor/insertvendorprice/",
-            data:{idcp:idcp,id_request_item:id_request_item,price:price,uom:uom,min:min},
+            data:{idcp:idcp,id_request_item:id_request_item,price:price,uom:uom,rate:rate},
             type: "POST",
             success:function(respond){
 
@@ -66,12 +73,13 @@ function loadShippingPrice(){
     var id_perusahaan = $("#shipper").val();
     var metode_pengiriman = $("#metodePengiriman").val();
     var id_request_item = $("#items").val();
+    var purpose = $("#purpose").val();
     $(document).ready(function(){
         $.ajax({
             url:"<?php echo base_url();?>crm/vendor/getShippingPrice",
             type: "POST",
             dataType: "JSON",
-            data:{id_perusahaan:id_perusahaan,metode_pengiriman:metode_pengiriman,id_request_item:id_request_item},
+            data:{id_perusahaan:id_perusahaan,metode_pengiriman:metode_pengiriman,id_request_item:id_request_item,purpose:purpose},
             success:function(respond){
                 $("#shippingVariablePrice").html(respond);
             }

@@ -14,6 +14,7 @@
                 <th>Request ID</th>
                 <th>Company Name</th>
                 <th>Contact Person</th>
+                <th>Franco</th>
                 <th>Items Quantity</th>
                 <th>Actions</th>
             </tr>
@@ -24,6 +25,7 @@
                 <td>REQ-<?php echo sprintf("%05d",$a->id_request) ?></td>
                 <td><?php echo $a->nama_perusahaan ?></td>
                 <td><?php echo ucwords($a->nama_cp) ?></td>
+                <td><?php echo ucwords($a->franco) ?></td>
                 <td><?php echo $a->a." Items";?></td>
                 <td class="actions">
                     
@@ -69,6 +71,10 @@
                         <select class = "form-control" placeholder="Last Name" name = "id_cp" data-plugin="select2" id="cpperusahaan">
                             <option disabled selected>Choose Contact Person</option>
                         </select>
+                    </div>
+                    <div class="col-xl-12 form-group">
+                        <h6 style = "color:grey;opacity:0.7">Franco</h6>
+                        <input type="text" class="form-control" name="franco" placeholder="Franco">
                     </div>
                     <div class="col-xl-12 form-group">
                         <h6 style = "color:grey;opacity:0.7">DATELINE</h6>

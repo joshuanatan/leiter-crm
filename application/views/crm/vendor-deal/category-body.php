@@ -24,7 +24,7 @@
                 <td><?php echo ucwords($a->nama_cp);?></td>
                 <td>
                     <a href = "<?php echo base_url();?>crm/vendor/produk/<?php echo $a->id_request;?>" data-target="#RequestData" class="btn btn-outline btn-primary col-lg-5"><i class="icon wb-book" aria-hidden="true"></i>Product Vendor Price</a>
-                    <a href = "<?php echo base_url();?>crm/vendor/shipping/<?php echo $a->id_request;?>" data-target="#RequestData" class="btn btn-outline btn-primary col-lg-5"><i class="icon wb-book" aria-hidden="true"></i>Shipping Vendor Price</a>
+                    <a href = "<?php echo base_url();?>crm/vendor/courier/<?php echo $a->id_request;?>" data-target="#RequestData" class="btn btn-outline btn-primary col-lg-5"><i class="icon wb-book" aria-hidden="true"></i>Courier Vendor Price</a>
                 </td>
                 <td class="actions">
                     

@@ -17,13 +17,15 @@ class Mdharga_vendor extends CI_Model{
         $this->db->delete("harga_vendor",$where);
     }
     public function selectPenawaran($where){
-        $this->db->join("produk","produk.id_produk = produk_vendor.id_produk","inner");
-        $this->db->join("perusahaan","perusahaan.id_perusahaan = produk_vendor.id_perusahaan","inner");
-        $this->db->join("price_request_item","price_request_item.id_produk = produk.id_produk","inner");
-        $this->db->join("harga_vendor","harga_vendor.id_request_item = price_request_item.id_request_item","left outer");
-        return $this->db->get_where("produk_vendor",$where);
-        /*query = SELECT * FROM `produk_vendor` inner join produk on produk.id_produk = produk_vendor.id_produk inner join perusahaan on perusahaan.id_perusahaan = produk_vendor.id_perusahaan inner join price_request_item on price_request_item.id_produk = produk.id_produk left outer join harga_vendor on harga_vendor.id_request_item = 
-        price_request_item.id_request_item where price_request_item.id_request_item = */
+        $this->db->join("produk","produk.id_produk = produk_vendor.id_produk","inner"); /*untuk tau detail produknya*/
+        $this->db->join("price_request_item","price_request_item.id_produk = produk.id_produk","inner"); /*nyaring dengan yang dipesan*/
+        $this->db->join("harga_vendor","harga_vendor.id_request_item = price_request_item.id_request_item","inner"); /*sambungin ke harga vendor sesuai barang yang dipesan */
+        $this->db->join("contact_person","contact_person.id_cp = harga_vendor.id_cp","inner"); /*detail contact person */
+        $this->db->join("perusahaan","perusahaan.id_perusahaan = contact_person.id_perusahaan","inner"); /*untuk tau detail perusahaan*/
+        $this->db->group_by("harga_vendor.id_cp");
+        return $this->db->get_where("produk_vendor",$where); /*menghubungkan antar produk dan vendor*/
+
+        //query = SELECT * FROM `produk_vendor` /*menghubungkan antar produk dan vendor*/ inner join produk on produk.id_produk = produk_vendor.id_produk /*untuk tau detail produknya*/ inner join price_request_item on price_request_item.id_produk = produk.id_produk /*nyaring dengan yang dipesan*/ inner join harga_vendor on harga_vendor.id_request_item = price_request_item.id_request_item /*sambungin ke harga vendor sesuai barang yang dipesan */ inner join contact_person on contact_person.id_cp = harga_vendor.id_cp /*detail contact person */ inner join perusahaan on perusahaan.id_perusahaan = contact_person.id_perusahaan /*untuk tau detail perusahaan*/ where price_request_item.id_request_item = 43 group BY harga_vendor.id_cp
     }
     public function selectVendorItem($where){
 

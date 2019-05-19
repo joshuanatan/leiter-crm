@@ -12,13 +12,14 @@
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
-                <th style = "width:15%">Vendor Name</th>
+                <th style = "width:10%">Vendor Name</th>
                 <th style = "width:10%">Contact Person Name</th>
-                <th style = "width:10%">Vendor B/N Product</th>
-                <th style = "width:20%">Vendor Product Name</th>
+                <th style = "width:15%">Vendor B/N</th>
+                <th style = "width:15%">Vendor Product Name</th>
                 <th style = "width:15%">Price</th>
+                <th style = "width:10%">Rate</th>
                 <th style = "width:10%">UOM</th>
-                <th style = "width:10%">Minimum</th>
+                <th style = "width:10%">Shipping Price</th>
                 <th style = "width:10%">Actions</th>
             </tr>
         </thead>

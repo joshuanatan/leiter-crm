@@ -25,7 +25,7 @@ class Vendor extends CI_Controller{
     public function index(){
         $where = array(
             "request" => array(
-                "price_request.status_request" => 0
+                "price_request.status_request" => 2
             )
         );
         $data = array(
@@ -48,6 +48,7 @@ class Vendor extends CI_Controller{
         $this->load->view("req/html-close");
     }
     public function produk($i){
+        $this->session->id_request = $i;
         $where = array(
             "requestitem" => array(
                 "price_request_item.id_request"=>$i,
@@ -69,7 +70,38 @@ class Vendor extends CI_Controller{
         $this->close();
         $this->load->view("crm/vendor-deal/js/request-ajax");
     }
-    public function shipping($i){
+    public function suppliershipping($i,$id_perusahaan){
+        $this->session->id_detail = $i;
+        $this->session->id_supplier = $id_perusahaan;
+        $where = array(
+            "requestitem" => array(
+                "price_request_item.id_request_item"=>$i,
+                "price_request_item.status_request_item" => 0
+            ),
+            "shipper" => array(
+                "perusahaan.peran_perusahaan" => "SHIPPING",
+                "perusahaan.status_perusahaan" => 0
+            ),
+            "supplier" => array(
+                "perusahaan.id_perusahaan" => $id_perusahaan 
+            )
+            
+        );
+        $data = array(
+            "requestitemid" => $i,
+            "requestitem" => $this->Mdprice_request_item->select($where["requestitem"]),
+            "shipper" => $this->Mdperusahaan->select($where["shipper"]),
+            "supplier" => $this->Mdperusahaan->select($where["supplier"])
+        );
+        $this->req();
+        $this->load->view("crm/content-open");
+        $this->load->view("crm/vendor-deal/category-header");
+        $this->load->view("crm/vendor-deal/shipping-vendor-price",$data);
+        $this->load->view("crm/content-close");
+        $this->close();
+        $this->load->view("crm/vendor-deal/js/request-ajax");
+    }
+    public function courier($i){
         $this->session->id_detail = $i;
         $where = array(
             "requestitem" => array(
@@ -89,47 +121,72 @@ class Vendor extends CI_Controller{
         $this->req();
         $this->load->view("crm/content-open");
         $this->load->view("crm/vendor-deal/category-header");
-        $this->load->view("crm/vendor-deal/shipping-vendor-price",$data);
+        $this->load->view("crm/vendor-deal/courier-vendor-price",$data);
         $this->load->view("crm/content-close");
         $this->close();
         $this->load->view("crm/vendor-deal/js/request-ajax");
     }
     public function getvendorprice(){
-        $where = array(
-            "price_request_item.id_request_item" => $this->input->post("id_request_item"),
-            "perusahaan.peran_perusahaan" => "PRODUK"
-        );
-        $result = $this->Mdharga_vendor->selectPenawaran($where);
+        
         $html = "";
-        foreach($result->result() as $a){
-            if($a->harga_produk == ""){
-                $harga = 0;
-            }
-            else{
-                $harga = $a->harga_produk;
-            }
-            if($a->satuan_harga_produk == ""){
-                $satuan = 0;
-            }
-            else{
-                $satuan = $a->satuan_harga_produk;
-            }
-            if($a->standar_minimal == ""){
-                $minimal = 0;
-            }
-            else{
-                $minimal = $a->standar_minimal;
-            }
+        $where = array(
+            "price_request_item.id_request_item" => $this->input->post("id_request_item")
+        );
+        $perusahaan = $this->Mdperusahaan->itemsupplier($where); 
+        /*untuk ambil semua perusahaan yang punya barang ini */
+        $counterId = 0;
+        foreach($perusahaan->result() as $b){
+            $where = array(
+                "price_request_item.id_request_item" => $this->input->post("id_request_item"),
+                "harga_vendor.id_cp" => $b->id_cp, /*butuh step ini untuk ngeload setiap cp nya */
+            );
             $where2 = array(
-                "id_perusahaan" => $a->id_perusahaan
+                "id_perusahaan" => $b->id_perusahaan
             );
             $resultCp = $this->Mdcontact_person->select($where2);
             $cp = "";
             foreach($resultCp->result() as $optionCp){
                 $cp .= "<option value = '".$optionCp->id_cp."'>".ucwords($optionCp->nama_cp)."</option>";
             }
-            $html .= "<tr><input type ='hidden' value = '".$this->input->post("id_request_item")."' id = 'id_request_item'><td>".$a->nama_perusahaan."</td><td><select class = 'form-control' id = 'cp'>".$cp."</select></td><td>".$a->bn_produk_vendor."</td><td>".$a->nama_produk_vendor."</td><td><input type ='number' id = 'price' class = 'form-control' value = '".$harga."'></td><td><input type ='number' id = 'satuan' class = 'form-control' value = '".$satuan."'></td><td><input type ='number' id = 'minimum' class = 'form-control' value = '".$minimal."'></td><td><button type = 'submit' class = 'btn btn-sm btn-primary btn-outline' onclick = 'submitData()'>SAVE</button></td></tr>";
+            $result = $this->Mdharga_vendor->selectPenawaran($where); 
+            $tracingError = "";
+            $tracingError .= "CPnya = ".$b->id_cp." id_request_item = ".$where["price_request_item.id_request_item"]." jumlah row = ".$result->num_rows();
+            if($result->num_rows() > 0){/*nah kalau misalnya udah ada di produk vendor dan ada di harga vendor */
+                $tracingError .= " Status:Masuk If ";
+                foreach($result->result() as $a){
+                    $harga=0;
+                    $satuan=0;
+                    $rate=0;
+                    if($a->harga_produk == ""){
+                        $harga = 0;
+                    }
+                    else{
+                        $harga = $a->harga_produk;
+                    }
+                    if($a->satuan_harga_produk == ""){
+                        $satuan = 0;
+                    }
+                    else{
+                        $satuan = $a->satuan_harga_produk;
+                    }
+                    if($a->vendor_price_rate == ""){
+                        $rate = 0;
+                    }
+                    else{
+                        $rate = $a->vendor_price_rate;
+                    }
+                    
+                    $html .= "<tr><input type ='hidden' value = '".$this->input->post("id_request_item")."' id = 'id_request_item".$counterId."'><td>".$a->nama_perusahaan."</td><td><select class = 'form-control' id = 'cp".$counterId."'>".$cp."</select></td><td>".$a->bn_produk_vendor."</td><td>".$a->nama_produk_vendor."</td><td><input type ='number' id = 'price".$counterId."' class = 'form-control' value = '".$harga."'></td><td><input type ='number' id = 'vendor_price_rate".$counterId."' class = 'form-control' value = '".$rate."'></td><td><input type ='number' id = 'satuan_harga_produk".$counterId."' class = 'form-control' value = '".$satuan."'></td><td><a href = '".base_url()."crm/vendor/suppliershipping/".$this->input->post("id_request_item")."/".$a->id_perusahaan."' class = 'btn btn-sm btn-outline btn-primary' >SHIPPING PRICE</a></td><td><button type = 'submit' class = 'btn btn-sm btn-primary btn-outline' onclick = 'submitData(".$counterId.")'>SAVE</button></td></tr>";
+                }
+            }
+            else{/*nah kalau misalnya udah ada di produk vendor dan belum masukin harga vendor */
+                $tracingError .= " Status:else ";
+                $html .= "<tr><input type ='hidden' value = '".$this->input->post("id_request_item")."' id = 'id_request_item".$counterId."'><td>".$b->nama_perusahaan."</td><td><select class = 'form-control' id = 'cp".$counterId."'>".$cp."</select></td><td>".$b->bn_produk_vendor."</td><td>".$b->nama_produk_vendor."</td><td><input type ='number' id = 'price".$counterId."' class = 'form-control' value = '0'></td><td><input type ='number' id = 'vendor_price_rate".$counterId."' class = 'form-control' value = '0'></td><td><input type ='number' id = 'satuan_harga_produk".$counterId."' class = 'form-control' value = '0'></td><td><a href = '".base_url()."crm/vendor/suppliershipping/".$this->input->post("id_request_item")."/".$b->id_perusahaan."' class = 'btn btn-sm btn-outline btn-primary' >SHIPPING PRICE</a></td><td><button type = 'submit' class = 'btn btn-sm btn-primary btn-outline' onclick = 'submitData(".$counterId.")'>SAVE</button></td></tr>";
+            }
+            $counterId++;
+            //echo $tracingError;
         }
+        
         echo json_encode($html);
     }
     public function insertvendorprice(){
@@ -146,7 +203,7 @@ class Vendor extends CI_Controller{
             "id_cp" => $this->input->post("idcp"),
             "harga_produk" => $this->input->post("price"),
             "satuan_harga_produk" => $this->input->post("uom"),
-            "standar_minimal" => $this->input->post("min"),
+            "vendor_price_rate" => $this->input->post("rate"),
             "id_user_add" => $this->session->id_user
         );
         
@@ -181,6 +238,8 @@ class Vendor extends CI_Controller{
             "id_perusahaan" => $this->input->post("id_perusahaan"),
             "metode_pengiriman" => $this->input->post("metode_pengiriman"),
             "id_request_item" => $this->input->post("id_request_item"),
+            "id_supplier" => $this->session->id_supplier,
+            "shipping_purpose" => $this->input->post("purpose"),
             "status_variable" => 0
         );
         $result = $this->Mdvariable_shipping_price->select($where);
@@ -198,23 +257,29 @@ class Vendor extends CI_Controller{
         $variablee = $this->input->post("variable");
         $biayae = $this->input->post("biaya");
         $kurse = $this->input->post("kurs");
-        echo var_dump($this->input->post("variable"));
+        //echo var_dump($this->input->post("variable"));
         $count = 0;
         foreach($variablee as $a){
             $nama[$count] = $a;
+            $count++;
         }
+        echo "countnya = ".$count;
         $count = 0;
         foreach($biayae as $a){
             $cost[$count] = $a;
+            $count++;
         }
         $count = 0;
         foreach($kurse as $a){
             $rate[$count] = $a;
+            $count++;
         }
         
         for($a = 0; $a<count($cost); $a++){
             $data = array(
                 "id_perusahaan" => $this->input->post("id_perusahaan"),
+                "shipping_purpose" => $this->input->post("shipping_purpose"),
+                "id_supplier" => $this->input->post("id_supplier"),
                 "id_cp" => $this->input->post("id_cp"),
                 "metode_pengiriman" => $this->input->post("metode_pengiriman"),
                 "nama_variable" => $nama[$a],
@@ -223,9 +288,52 @@ class Vendor extends CI_Controller{
                 "id_request_item" => $this->input->post("items"),
                 "id_user_add" => $this->session->id_user
             );
+            $this->Mdvariable_shipping_price->insert($data);
         }
-        $this->Mdvariable_shipping_price->insert($data);
-        redirect("crm/vendor/shipping/".$this->session->id_detail);
+        redirect("crm/vendor/suppliershipping/".$this->session->id_detail."/".$this->session->id_supplier);
+
+    }
+    public function insertcouriershippingdata(){
+        $nama = array();
+        $cost = array();
+        $rate = array();
+
+        $variablee = $this->input->post("variable");
+        $biayae = $this->input->post("biaya");
+        $kurse = $this->input->post("kurs");
+        //echo var_dump($this->input->post("variable"));
+        $count = 0;
+        foreach($variablee as $a){
+            $nama[$count] = $a;
+            $count++;
+        }
+        echo "countnya = ".$count;
+        $count = 0;
+        foreach($biayae as $a){
+            $cost[$count] = $a;
+            $count++;
+        }
+        $count = 0;
+        foreach($kurse as $a){
+            $rate[$count] = $a;
+            $count++;
+        }
+        
+        for($a = 0; $a<count($cost); $a++){
+            $data = array(
+                "shipping_purpose" => $this->input->post("shipping_purpose"),
+                "id_supplier" => $this->input->post("id_supplier"),
+                "id_cp" => $this->input->post("id_cp"),
+                "metode_pengiriman" => $this->input->post("metode_pengiriman"),
+                "nama_variable" => $nama[$a],
+                "biaya_variable" => $cost[$a],
+                "kurs_variable" => $rate[$a],
+                "id_request_item" => $this->input->post("items"),
+                "id_user_add" => $this->session->id_user
+            );
+            $this->Mdvariable_shipping_price->insert($data);
+        }
+        redirect("crm/vendor/suppliershipping/".$this->session->id_detail."/".$this->session->id_supplier);
 
     }
     public function removevariable($i){
@@ -236,7 +344,7 @@ class Vendor extends CI_Controller{
             "status_variable" => 1
         );
         $this->Mdvariable_shipping_price->update($data,$where);
-        redirect("crm/vendor/shipping/".$this->session->id_detail);
+        redirect("crm/vendor/suppliershipping/".$this->session->id_detail."/".$this->session->id_supplier);
     }
     public function getShippers(){
         $this->session->id_request_item = $this->input->post("id_request_item");

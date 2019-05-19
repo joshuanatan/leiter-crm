@@ -23,6 +23,13 @@
             </div>
             <div class="form-group">
                 <div class="example-wrap">
+                    <h4 class="example-title">Franco</h4>
+                    <input type="text" class="form-control" value = "<?php echo $a->franco;?>" name = "franco" id="inputHelpText">
+                    <span class="text-help">Before: <?php echo $a->franco;?></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="example-wrap">
                     <h4 class="example-title">Customer Firm Name</h4>
                     <select class = "form-control" data-plugin="select2" name = "id_perusahaan" id = "idperusahaan" onchange = "getContactPerson()">
                         <option disabled selected>Choose Customer</option>
