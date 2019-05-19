@@ -15,6 +15,21 @@ function loadVendorPrice(){
 }
 </script>
 <script>
+function loadItemData(){
+    loadVendorPrice();
+    var id_request_item = $("#items").val();
+    $.ajax({
+        data:{id_request_item:id_request_item},
+        dataType: "JSON",
+        type: "POST",
+        url: "<?php echo base_url();?>crm/vendor/getitemdimension",
+        success:function(respond){
+            $("#dimension").val(respond);
+        }
+    });
+}
+</script>
+<script>
 function countKurs(a){
     var price = $("#biaya"+a).val();
     var kurs = $("#kurs"+a).val();
@@ -77,6 +92,25 @@ function loadShippingPrice(){
     $(document).ready(function(){
         $.ajax({
             url:"<?php echo base_url();?>crm/vendor/getShippingPrice",
+            type: "POST",
+            dataType: "JSON",
+            data:{id_perusahaan:id_perusahaan,metode_pengiriman:metode_pengiriman,id_request_item:id_request_item,purpose:purpose},
+            success:function(respond){
+                $("#shippingVariablePrice").html(respond);
+            }
+        });
+    });
+}
+</script>
+<script>
+function loadCourierPrice(){
+    var id_perusahaan = $("#shipper").val();
+    var metode_pengiriman = $("#metodePengiriman").val();
+    var id_request_item = $("#items").val();
+    var purpose = $("#purpose").val();
+    $(document).ready(function(){
+        $.ajax({
+            url:"<?php echo base_url();?>crm/vendor/getCourierPrice",
             type: "POST",
             dataType: "JSON",
             data:{id_perusahaan:id_perusahaan,metode_pengiriman:metode_pengiriman,id_request_item:id_request_item,purpose:purpose},

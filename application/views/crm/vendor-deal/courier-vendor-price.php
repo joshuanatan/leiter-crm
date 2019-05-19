@@ -4,7 +4,7 @@
             <div class = "col-lg-12" style = "margin-left:0px; padding-left:0px">
                 <div class="form-group">
                     <h4 class="example-title">PRICE REQUEST ITEM ID</h4>    
-                    <select class = "form-control" id = "items" name = "items" onchange = "loadVendorPrice()" data-plugin="select2">
+                    <select class = "form-control" id = "items" name = "items" onchange = "loadItemData()" data-plugin="select2">
                         <option selected disabled>Choose Item List</option>
                         <?php foreach($requestitem->result() as $a){ ?> 
                         <option value = "<?php echo $a->id_request_item;?>"><?php echo $a->nama_produk;?></option>
@@ -12,6 +12,10 @@
                     </select>
                 </div>
                 <input type = "hidden" readonly class = "form-control" value = "CUSTOMER" name = "shipping_purpose" id = "purpose">
+                <div class="form-group">
+                    <h4 class="example-title">Product Dimension</h4>    
+                    <input type = "text" class = "form-control" readonly id = "dimension">
+                </div>
                 <div class="form-group">
                     <h4 class="example-title">Franco</h4>    
                     <input type = "text" readonly class = "form-control" value = "<?php echo $a->franco;?>">
@@ -33,7 +37,7 @@
                 </div>
                 <div class="form-group">
                     <h4 class="example-title">Shipping Method</h4>    
-                    <select class = "form-control" id = "metodePengiriman" name = "metode_pengiriman" onchange = "loadShippingPrice()" data-plugin="select2">
+                    <select class = "form-control" id = "metodePengiriman" name = "metode_pengiriman" onchange = "loadCourierPrice()" data-plugin="select2">
                         <option selected disabled>Choose Shipping Vendor CP</option>
                     </select>
                 </div>

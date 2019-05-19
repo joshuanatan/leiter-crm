@@ -10,6 +10,7 @@ class Vendor extends CI_Controller{
         $this->load->model("Mdmetode_pengiriman_shipping");
         $this->load->model("Mdperusahaan");
         $this->load->model("Mdvariable_shipping_price");
+        $this->load->model("Mdvariable_courier_price");
     }
     private function req(){
         $this->load->view("req/head");
@@ -249,6 +250,31 @@ class Vendor extends CI_Controller{
         }
         echo json_encode($html);
     }
+    public function getCourierPrice(){
+        $where = array(
+            "metode_pengiriman" => $this->input->post("metode_pengiriman"),
+            "id_request_item" => $this->input->post("id_request_item"),
+            "id_perusahaan" => $this->input->post("id_perusahaan"),
+            "shipping_purpose" => $this->input->post("purpose"),
+            "status_variable" => 0
+        );
+        $result = $this->Mdvariable_courier_price->select($where);
+        $html = "";
+        foreach($result->result() as $a){
+            $html .= "<tr><td>".$a->nama_variable."</td><td>".$a->biaya_variable."</td><td>".$a->kurs_variable."</td><td>".$a->biaya_variable*$a->kurs_variable."</td><td><a href = '".base_url()."crm/vendor/removecouriervariable/".$a->id_variable_courier."' class = 'btn btn-sm btn-primary btn-outline'>REMOVE</a></td></tr>";
+        }
+        echo json_encode($html);
+    }
+    public function removecouriervariable($i){
+        $where = array(
+            "id_variable_courier" => $i
+        );
+        $data = array(
+            "status_variable" => 1
+        );
+        $this->Mdvariable_courier_price->update($data,$where);
+        redirect("crm/vendor/courier/".$this->session->id_detail);
+    }
     public function insertshippingdata(){
         $nama = array();
         $cost = array();
@@ -322,7 +348,7 @@ class Vendor extends CI_Controller{
         for($a = 0; $a<count($cost); $a++){
             $data = array(
                 "shipping_purpose" => $this->input->post("shipping_purpose"),
-                "id_supplier" => $this->input->post("id_supplier"),
+                "id_perusahaan" => $this->input->post("id_perusahaan"),
                 "id_cp" => $this->input->post("id_cp"),
                 "metode_pengiriman" => $this->input->post("metode_pengiriman"),
                 "nama_variable" => $nama[$a],
@@ -331,9 +357,9 @@ class Vendor extends CI_Controller{
                 "id_request_item" => $this->input->post("items"),
                 "id_user_add" => $this->session->id_user
             );
-            $this->Mdvariable_shipping_price->insert($data);
+            $this->Mdvariable_courier_price->insert($data);
         }
-        redirect("crm/vendor/suppliershipping/".$this->session->id_detail."/".$this->session->id_supplier);
+        redirect("crm/vendor/courier/".$this->session->id_detail);
 
     }
     public function removevariable($i){
@@ -357,6 +383,15 @@ class Vendor extends CI_Controller{
             $html .= "<option value = '".$a->id_cp."-".$a->metode_pengiriman."'>".$a->nama_perusahaan." - ".$a->metode_pengiriman."</option>";
         }
         echo json_encode($html);
+    }
+    public function getitemdimension(){
+        $where = array(
+            "id_request_item" => $this->input->post("id_request_item")
+        );
+        $result = $this->Mdprice_request_item->select($where);
+        foreach($result->result() as $a){
+            echo json_encode($a->jumlah_produk." ".$a->satuan_produk);
+        }
     }
     public function getVendors(){
         $where = array(
