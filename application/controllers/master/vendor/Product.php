@@ -16,7 +16,6 @@ class Product extends CI_Controller{
         $this->load->view("plugin/breadcrumb/breadcrumb-css");
         $this->load->view("plugin/modal/modal-css");
         $this->load->view("plugin/form/form-css");
-        $this->load->view("plugin/contact/contact-css");
         $this->load->view("req/head-close");
         $this->load->view("master/master-open");
         $this->load->view("req/top-navbar");
@@ -123,7 +122,6 @@ class Product extends CI_Controller{
         $this->load->view("plugin/breadcrumb/breadcrumb-css");
         $this->load->view("plugin/modal/modal-css");
         $this->load->view("plugin/form/form-css");
-        $this->load->view("plugin/contact/contact-css");
         $this->load->view("req/head-close");
         $this->load->view("master/master-open");
         $this->load->view("req/top-navbar");

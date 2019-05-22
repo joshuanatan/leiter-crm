@@ -12,7 +12,6 @@
         <thead>
             <tr>
                 <th>Company ID</th>
-                <th>CP Name</th>
                 <th>Company Name</th>
                 <th>Company Field</th>
                 <th>Company Address</th>
@@ -27,22 +26,17 @@
                 ?> 
             <tr class="gradeA">
                 <td><?php echo $a->id_perusahaan;?></td>
-                <td><?php echo $a->nama_cp;?></td>
                 <td><?php echo $a->nama_perusahaan;?></td>
                 <td><?php echo $a->jenis_perusahaan;?></td>
                 <td><?php echo $a->alamat_perusahaan;?></td>
                 <td><?php echo $a->notelp_perusahaan;?></td>
                 <td class="actions">
                     
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
+                <a href = "<?php echo base_url();?>master/vendor/shipping/edit/<?php echo $a->id_perusahaan;?>" class = "btn btn-primary btn-outline"><i class="icon wb-edit" aria-hidden="true"></i></a>
 
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <a href = "<?php echo base_url();?>master/vendor/shipping/items/<?php echo $a->id_perusahaan;?>" class="btn btn-outline btn-dark"><i class="icon wb-grid-9" aria-hidden="true"></i></a>
-                    
-                    <button class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
+                <a href = "<?php echo base_url();?>master/vendor/shipping/delete/<?php echo $a->id_perusahaan;?>" class = "btn btn-danger btn-outline"><i class="icon wb-trash" aria-hidden="true"></i></a>
+
+                <a href = "<?php echo base_url();?>master/vendor/shipping/contact/<?php echo $a->id_perusahaan;?>" class = "btn btn-success btn-outline"><i class="icon wb-eye" aria-hidden="true"></i></a>
                 </td>
             </tr>
             <?php } ?>
