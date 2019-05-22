@@ -9,7 +9,40 @@ class Product extends CI_Controller{
         $this->load->model("Mdproduk");
 
     }
-    private function req(){
+    /*page*/
+    public function contact($i){
+        $this->load->view("req/head");
+        $this->load->view("master/vendor-product-item/css/datatable-css");
+        $this->load->view("master/vendor-product-item/css/breadcrumb-css");
+        $this->load->view("master/vendor-product-item/css/modal-css");
+        $this->load->view("master/vendor-product-item/css/form-css");
+        $this->load->view("master/vendor-product-item/css/contact-css");
+        $this->load->view("req/head-close");
+        $this->load->view("master/master-open");
+        $this->load->view("req/top-navbar");
+        $this->load->view("req/navbar");
+        /* ------------------------------------------------ */
+        $where = array(
+            "contact_person.id_perusahaan" => $i
+        );
+        $data = array(
+            "cp" => $this->Mdcontact_person->select($where)
+        );
+        $this->load->view("master/content-open");
+        $this->load->view("master/vendor-product-item/category-header",$data);
+        $this->load->view("master/vendor-product-item/category-body",$data);
+        $this->load->view("master/content-close");
+        /* ------------------------------------------------ */
+        $this->load->view("req/script");
+        $this->load->view("master/vendor-product-item/js/jqtabledit-js");
+        $this->load->view("master/vendor-product-item/js/page-datatable-js");
+        $this->load->view("master/vendor-product-item/js/form-js");
+        $this->load->view("master/vendor-product-item/js/contact-js");
+        $this->load->view("master/vendor-product-item/js/ajax-request");
+        $this->load->view("master/master-close");
+        $this->load->view("req/html-close");
+    }
+    public function index(){
         $this->load->view("req/head");
         $this->load->view("master/vendor-product/css/datatable-css");
         $this->load->view("master/vendor-product/css/breadcrumb-css");
@@ -19,9 +52,7 @@ class Product extends CI_Controller{
         $this->load->view("master/master-open");
         $this->load->view("req/top-navbar");
         $this->load->view("req/navbar");
-    }
-    public function index(){
-        $this->req();
+        /* ------------------------------------------------ */
         $where = array(
             "perusahaan" => array(
                 "peran_perusahaan" => "PRODUK"
@@ -34,15 +65,151 @@ class Product extends CI_Controller{
         $this->load->view("master/vendor-product/category-header");
         $this->load->view("master/vendor-product/category-body",$data);
         $this->load->view("master/content-close");
-        $this->close();
-    }
-    public function close(){
+        /* ------------------------------------------------ */
         $this->load->view("req/script");
         $this->load->view("master/vendor-product/js/jqtabledit-js");
         $this->load->view("master/vendor-product/js/page-datatable-js");
         $this->load->view("master/vendor-product/js/form-js");
         $this->load->view("master/master-close");
         $this->load->view("req/html-close");
+    }
+    public function items($i){
+        $this->load->view("req/head");
+        $this->load->view("master/vendor-product-item/css/datatable-css");
+        $this->load->view("master/vendor-product-item/css/breadcrumb-css");
+        $this->load->view("master/vendor-product-item/css/modal-css");
+        $this->load->view("master/vendor-product-item/css/form-css");
+        $this->load->view("req/head-close");
+        $this->load->view("master/master-open");
+        $this->load->view("req/top-navbar");
+        $this->load->view("req/navbar");
+        /* ------------------------------------------------ */
+        $where = array(
+            "items" => array(
+                "perusahaan.id_perusahaan" => $i
+            ),
+            "catalog" => array(),
+            "satuan" => array(),
+            "perusahaan" => array(
+                "perusahaan.id_perusahaan" => $i
+            )
+        );
+        $data = array(
+            "product" => $this->Mdproduk_vendor->select($where["items"]), /*catalog vendor*/
+            "catalog" => $this->Mdproduk->select($where["catalog"]), /*buat di form input, catalog vendor tersebut = barang apa */
+            "satuan" => $this->Mdsatuan->select($where["satuan"]), /*satuan dari vendor produk */
+            "perusahaan" => $this->Mdperusahaan->select($where["perusahaan"]), /*detail perusahaan, diload di category-header*/
+            "id_perusahaan" => $i
+        );  
+        $this->load->view("master/content-open");
+        $this->load->view("master/vendor-product-item/category-header",$data);
+        $this->load->view("master/vendor-product-item/category-body",$data);
+        $this->load->view("master/content-close");
+        /* ------------------------------------------------ */
+        $this->load->view("req/script");
+        $this->load->view("master/vendor-product-item/js/jqtabledit-js");
+        $this->load->view("master/vendor-product-item/js/page-datatable-js");
+        $this->load->view("master/vendor-product-item/js/form-js");
+        $this->load->view("master/vendor-product-item/js/ajax-request");
+        $this->load->view("master/master-close");
+        $this->load->view("req/html-close");
+    }
+    public function edit($i){
+        $this->load->view("req/head");
+        $this->load->view("master/vendor-product-item/css/datatable-css");
+        $this->load->view("master/vendor-product-item/css/breadcrumb-css");
+        $this->load->view("master/vendor-product-item/css/modal-css");
+        $this->load->view("master/vendor-product-item/css/form-css");
+        $this->load->view("req/head-close");
+        $this->load->view("master/master-open");
+        $this->load->view("req/top-navbar");
+        $this->load->view("req/navbar");
+        /* ------------------------------------------------ */
+        /*mau ngedit yang edit ini belum nemu cara lagi ga konsen*/
+        $where = array(
+            "items" => array(
+                "produk_vendor.id_produk_vendor" => $i
+            ),
+            "catalog" => array(),
+            "satuan" => array(),
+        );
+        $data = array(
+            "product" => $this->Mdproduk_vendor->select($where["items"]), /*catalog vendor*/
+            "catalog" => $this->Mdproduk->select($where["catalog"]), /*buat di form input, catalog vendor tersebut = barang apa */
+            "satuan" => $this->Mdsatuan->select($where["satuan"]), /*satuan dari vendor produk */
+            "perusahaan" => $this->Mdperusahaan->select($where["perusahaan"]), /*detail perusahaan, diload di category-header*/
+            "id_perusahaan" => $i
+        );    
+        $this->load->view("master/content-open");
+        $this->load->view("master/vendor-product-item/category-header",$data);
+        $this->load->view("master/vendor-product-item/edit-vendor-product-item",$data);
+        $this->load->view("master/content-close");
+        /* ------------------------------------------------ */
+        $this->load->view("req/script");
+        $this->load->view("master/vendor-product-item/js/jqtabledit-js");
+        $this->load->view("master/vendor-product-item/js/page-datatable-js");
+        $this->load->view("master/vendor-product-item/js/form-js");
+        $this->load->view("master/vendor-product-item/js/tabs-js");
+        $this->load->view("master/vendor-product-item/js/ajax-request");
+        $this->load->view("master/master-close");
+        $this->load->view("req/html-close");
+    }
+
+    /*functions*/
+    public function registeritem(){
+        /*register product first*/
+        $uom = "";
+        if($this->input->post("satuan_produk_new") != ""){
+            $data = array(
+                "nama_satuan" => $this->input->post("satuan_produk_new"),
+                "id_user_add" => $this->session->id_user
+            );
+            $this->Mdsatuan->insert($data);
+            $uom = $this->input->post("satuan_produk_new");
+        }
+        else{
+            $uom = $this->input->post("satuan_produk");
+        }
+        if($this->input->post("id_produk" == 0)){
+            $data = array(
+                "bn_produk" => $this->input->post("bn_produk"),
+                "nama_produk" => $this->input->post("nama_produk"),
+                "bn_produk" => $uom,
+                "deskripsi_produk" => $this->input->post("deskripsi_produk"),
+                "id_user_add" => $this->session->id_user,
+            );
+            $last_id = $this->Mdproduk->insert($data);
+        }
+        else{
+            $last_id = $this->input->post("id_produk");
+        }
+        /*end insert data, dapet last_id*/
+        if($this->input->post("satuan_produk_new_vendor") != ""){
+            $data = array(
+                "nama_satuan" => $this->input->post("satuan_produk_new_vendor"),
+                "id_user_add" => $this->session->id_user
+            );
+            $this->Mdsatuan->insert($data);
+            $uom = $this->input->post("satuan_produk_new_vendor");
+        }
+        else{
+            $uom = $this->input->post("satuan_produk_vendor");
+        }
+        $name = array(
+            "bn_produk_vendor","nama_produk_vendor","satuan_produk_vendor","id_produk","deskripsi_produk_vendor","id_perusahaan"
+        );
+        $data = array(
+            $name[0] => $this->input->post($name[0]),
+            $name[1] => $this->input->post($name[1]),
+            $name[2] => $uom,
+            $name[3] => $last_id,
+            $name[4] => $this->input->post($name[4]),
+            $name[5] => $this->input->post($name[5]),
+            
+            "id_user_add" => $this->session->id_user
+        );
+        $this->Mdproduk_vendor->insert($data);
+        redirect("master/vendor/product/items/".$this->input->post($name[5]));
     }
     public function register(){
         $name = array("nama_perusahaan","jenis_perusahaan","alamat_perusahaan","notelp_perusahaan");
@@ -67,74 +234,6 @@ class Product extends CI_Controller{
         );
         $this->Mdcontact_person->insert($data);
         redirect("master/vendor/product");
-    }
-    public function items($i){
-        $where = array(
-            "items" => array(
-                "perusahaan.id_perusahaan" => $i
-            ),
-            "catalog" => array(),
-            "satuan" => array(),
-            "perusahaan" => array(
-                "perusahaan.id_perusahaan" => $i
-            )
-        );
-        $data = array(
-            "product" => $this->Mdproduk_vendor->select($where["items"]), /*catalog vendor*/
-            "catalog" => $this->Mdproduk->select($where["catalog"]), /*buat di form input, catalog vendor tersebut = barang apa */
-            "satuan" => $this->Mdsatuan->select($where["satuan"]), /*satuan dari vendor produk */
-            "perusahaan" => $this->Mdperusahaan->select($where["perusahaan"]), /*detail perusahaan, diload di category-header*/
-        );    
-        $this->load->view("req/head");
-        $this->load->view("master/vendor-product-item/css/datatable-css");
-        $this->load->view("master/vendor-product-item/css/breadcrumb-css");
-        $this->load->view("master/vendor-product-item/css/modal-css");
-        $this->load->view("master/vendor-product-item/css/form-css");
-        $this->load->view("req/head-close");
-        $this->load->view("master/master-open");
-        $this->load->view("req/top-navbar");
-        $this->load->view("req/navbar");
-        /* ------------------------------------------------ */
-        $this->load->view("master/content-open");
-        $this->load->view("master/vendor-product-item/category-header",$data);
-        $this->load->view("master/vendor-product-item/category-body",$data);
-        $this->load->view("master/content-close");
-        /* ------------------------------------------------ */
-        $this->load->view("req/script");
-        $this->load->view("master/vendor-product-item/js/jqtabledit-js");
-        $this->load->view("master/vendor-product-item/js/page-datatable-js");
-        $this->load->view("master/vendor-product-item/js/form-js");
-        $this->load->view("master/master-close");
-        $this->load->view("req/html-close");
-    }
-    public function registeritem(){
-        $uom = "";
-        if($this->input->post("satuan_produk_vendor_add") != ""){
-            $data = array(
-                "nama_satuan" => $this->input->post("satuan_produk_vendor_add"),
-                "id_user_add" => $this->session->id_user
-            );
-            $this->Mdsatuan->insert($data);
-            $uom = $this->input->post("satuan_produk_vendor_add");
-        }
-        else{
-            $uom = $this->input->post("satuan_produk_vendor");
-        }
-        $name = array(
-            "bn_produk_vendor","nama_produk_vendor","satuan_produk_vendor","deskripsi_produk_vendor","id_produk","id_perusahaan"
-        );
-        $data = array(
-            $name[0] => $this->input->post($name[0]),
-            $name[1] => $this->input->post($name[1]),
-            $name[2] => $uom,
-            $name[3] => $this->input->post($name[3]),
-            $name[4] => $this->input->post($name[4]),
-            $name[5] => $this->input->post($name[5]),
-            
-            "id_user_add" => $this->session->id_user
-        );
-        $this->Mdproduk_vendor->insert($data);
-        redirect("master/vendor/product/items/".$this->input->post($name[5]));
     }
 }
 ?>

@@ -77,5 +77,22 @@ class Product extends CI_Controller{
             echo json_encode(strtoupper($a->satuan_produk));
         }
     }
+    public function getDetailProduct(){
+        $where = array(
+            "id_produk" => $this->input->post("id_produk")
+        );
+        $result = $this->Mdproduk->select($where);
+        foreach($result->result() as $a){
+            $data = array(
+                "id_produk" => $a->id_produk,
+                "bn_produk" => $a->bn_produk,
+                "nama_produk" => $a->nama_produk,
+                "satuan_produk" => $a->satuan_produk,
+                "deskripsi_produk" => $a->deskripsi_produk,
+                "status_produk" => $a->status_produk
+            );
+        }
+        echo json_encode($data);
+    }
 }
 ?>

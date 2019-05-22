@@ -427,5 +427,25 @@ class Vendor extends CI_Controller{
             echo json_encode(number_format(ceil($a->total)),2);
         }
     }
+    public function delete($i){
+        $where = array(
+            "price_request.id_request" => $i
+        );
+        $data = array(
+            "price_request.status_request" => 1
+        );
+        $this->Mdprice_request->update($data,$where);
+        redirect("crm/vendor");
+    }
+    public function submit($i){
+        $where = array(
+            "price_request.id_request" => $i
+        );
+        $data = array(
+            "price_request.status_request" => 3
+        );
+        $this->Mdprice_request->update($data,$where);
+        redirect("crm/vendor");
+    }
 }
 ?>

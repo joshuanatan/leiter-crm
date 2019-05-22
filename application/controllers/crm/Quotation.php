@@ -24,7 +24,7 @@ class Quotation extends CI_Controller{
                 "status_quo" => 0  
             ),
             "price_request" => array(
-                "price_request.status_request" => 0
+                "price_request.status_request" => 3
             )
         );
         $data = array(
@@ -96,7 +96,7 @@ class Quotation extends CI_Controller{
         echo json_encode($html);
     }
     public function insertquotation(){
-        $name = array("id_quo","no_quo","id_request","hal_quo","id_cp","up_cp","jabatan_up","durasi_pengiriman","trigger_pengiriman","tambahan_pengiriman","franco","jadwal_produksi","jadwal_pengiriman","durasi_pembayaran","trigger_pembayaran","tambahan_pembayaran","mata_uang_pembayaran","ppn","termasuk_ppn","dateline_quo","versi_quo","id_user_add");
+        $name = array("id_quo","no_quo","id_request","hal_quo","id_cp","up_cp","durasi_pengiriman","trigger_pengiriman","tambahan_pengiriman","franco","jadwal_produksi","jadwal_pengiriman","durasi_pembayaran","trigger_pembayaran","tambahan_pembayaran","mata_uang_pembayaran","dateline_quo","versi_quo","id_user_add");
         $data = array();
         for($a=0; $a<count($name)-1; $a++){
             $data += [$name[$a] => $this->input->post($name[$a])];

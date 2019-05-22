@@ -12,7 +12,6 @@
         <thead>
             <tr>
                 <th>Company ID</th>
-                <th>CP Name</th>
                 <th>Company Name</th>
                 <th>Company Field</th>
                 <th>Company Address</th>
@@ -24,19 +23,19 @@
             <?php foreach($perusahaan->result() as $a){ ?> 
             <tr class="gradeA">
                 <td><?php echo $a->id_perusahaan;?></td>
-                <td><?php echo $a->nama_cp;?></td>
-                <td><?php echo $a->nama_perusahaan;?></td>
+                <td><?php echo strtoupper($a->nama_perusahaan);?></td>
                 <td><?php echo $a->jenis_perusahaan;?></td>
                 <td><?php echo $a->alamat_perusahaan;?></td>
                 <td><?php echo $a->notelp_perusahaan;?></td>
                 <td class="actions">
                     
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
+                    <a href = "<?php echo base_url();?>master/customer/edit/<?php echo $a->id_perusahaan;?>" class="btn btn-outline btn-primary" ><i class="icon wb-edit"></i></a>
+
+                    <a href = "<?php echo base_url();?>master/customer/delete/<?php echo $a->id_perusahaan;?>" class="btn btn-outline btn-danger"
+                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
                     
-                    <button class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
+                    <a href = "<?php echo base_url();?>master/customer/contact/<?php echo $a->id_perusahaan;?>" class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
                 </td>
             </tr>
             <?php } ?>

@@ -224,8 +224,8 @@ class Request extends CI_Controller{
         $value = array();
         foreach($result->result() as $a){
             $value = array(
-                $a->nama_perusahaan,
-                $a->nama_cp,
+                strtoupper($a->nama_perusahaan),
+                ucwords($a->nama_cp),
                 $a->id_cp
             );
         }
@@ -238,7 +238,7 @@ class Request extends CI_Controller{
         $count = 0;
         foreach($result->result() as $a){
             $value[$length][$count] = $a->id_request_item;
-            $value[$length+1][$count] = $a->nama_produk;
+            $value[$length+1][$count] = ucwords($a->nama_produk);
             $count++;
         }
         echo json_encode($value);

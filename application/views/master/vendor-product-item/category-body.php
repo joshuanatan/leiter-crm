@@ -31,12 +31,10 @@
                 <td><?php echo $a->satuan_produk_vendor;?></td>
                 <td class="actions">
                     
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
+                    <a href = "<?php echo base_url();?>master/vendor/product/edit/<?php echo $a->id_produk_vendor;?>" class="btn btn-outline btn-primary"><i class="icon wb-edit" aria-hidden="true"></i></a >
                     <button class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
                     
-                    <button class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
             </tr>
             <?php } ?>
@@ -45,167 +43,94 @@
     <a href = "<?php echo base_url();?>master/vendor/product" class = "btn btn-outline btn-primary">BACK</a>
 </div>
 <!-- INSERT DATA MODAL -->
-<div class="modal fade" id="AddCatalog" aria-hidden="true" aria-labelledby="AddCatalog" role="dialog" tabindex="-1">
-    <div class="modal-dialog modal-simple modal-center">
+<div class="modal fade" id="AddCatalog" aria-hidden="true" aria-labelledby="DaftarUser" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-simple">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
+                    <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title">Catalog Data</h4>
+                <h4 class="modal-title" id="exampleModalTabs">Product Vendor Data</h4>
             </div>
-            <form action = "<?php echo base_url();?>master/vendor/product/registeritem" method="post">
+
+            <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+                <li class="nav-item" role="presentation"><a class="nav-link active" data-toggle="tab" href="#primaryData" aria-controls="primaryData" role="tab">LEITER Product Data</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#supplier" aria-controls="supplier" role="tab">Supplier Product Data</a></li>
+            </ul>
+            <form action = "<?php echo base_url();?>master/vendor/product/registeritem" method = "post">    
                 <div class="modal-body">
-                <?php
-                foreach($perusahaan->result() as $perusahaan){ 
-                    $id_perusahaan = $perusahaan->id_perusahaan;    
-                } 
-                $form_data = array(
-                    "input0" => array(
-                        "input" => "input",
-                        "type" => "text",
-                        "name" => "bn_produk_vendor",
-                        "title" => "B/N Product",
-                        "placeholder" => "",
-                        "value" => "",
-                        "help" => ""
-                    ),
-                    "input1" => array(
-                        "input" => "input",
-                        "type" => "text",
-                        "name" => "nama_produk_vendor",
-                        "title" => "Product Name",
-                        "placeholder" => "Enter your product name",
-                        "value" => "",
-                        "help" => ""
-                    ),
-                    "input2" => array(
-                        "input" => "select",
-                        "title" => "Catalog PT LEITER INDONESIA",
-                        "name" => "id_produk",
-                        "options" => $catalog,
-                        "opt" => "catalog", /*konten drop down*/
-                        "help" => "",
-                        "plugin" => "select2"
-                    ),
-                    "input3" => array(
-                        "input" => "select",
-                        "title" => "Unit of Measure",
-                        "name" => "satuan_produk_vendor",
-                        "options" => $satuan,
-                        "opt" => "satuan",/*konten drop down*/
-                        "help" => "",
-                        "plugin" => ""
-                    ),
-                    "input4" => array(
-                        "input" => "input",
-                        "type" => "text",
-                        "name" => "satuan_produk_vendor_add",
-                        "title" => "Adding Unit of Measure",
-                        "placeholder" => "Leave it blank if your choice is in the options above",
-                        "value" => "",
-                        "help" => "Type here if your choice is not in options above"
-                    ),
-                    "input5" => array(
-                        "input" => "textarea",
-                        "title" => "title",
-                        "name" => " deskripsi_produk_vendor",
-                        "placeholder" => "Product Description",
-                        "value" => "",
-                        "help" => "",
-                        "rows" => 5,
-                        "cols" => 0
-                    ),
-                    "input6" => array(
-                        "input" => "input",
-                        "type" => "hidden",
-                        "name" => "id_perusahaan",
-                        "title" => "",
-                        "placeholder" => "",
-                        "value" => $id_perusahaan,
-                        "help" => ""
-                    ),
-                );
-                ?>
-                <?php for($a = 0; $a<count($form_data); $a++){ 
-                    
-                    switch($form_data["input".$a]["input"]){
-                        case "input": ?>
-                        <div class = "form-group">
-                            <div class="col-md-12 col-lg-12">
-                                <!-- Example With Help -->
-                                <h4 class="example-title"><?php echo $form_data["input".$a]["title"];?></h4>
-                                <input type="<?php echo $form_data["input".$a]["type"];?>" name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" placeholder = "<?php echo $form_data["input".$a]["placeholder"];?>" value = "<?php echo $form_data["input".$a]["value"];?>">
-                                <span class="text-help"><?php echo $form_data["input".$a]["help"];?></span>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="primaryData" role="tabpanel">
+                            <div class="form-group">
+                                <h4 class="example-title">Product ID</h4>   
+                                <select class = "form-control" name = "id_produk" id = "id_produk" onchange = "getProductData()">
+                                    <option value = "0">New Product</option>
+                                <?php foreach($catalog->result() as $a){ ?>
+                                    <option value = "<?php echo $a->id_produk;?>"><?php echo $a->nama_produk;?></option>
+                                <?php
+                                }
+                                ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <h4 class="example-title">Product B/N</h4>    
+                                <input oninput="updateSupplierForm('bn_produk')" name = "bn_produk" type="text" class="form-control" id="bn_produk" placeholder="" >
+                            </div>
+                            <div class="form-group">
+                                <h4 class="example-title">Product Name</h4>    
+                                <input oninput="updateSupplierForm('nama_produk')" type="text" class="form-control" name = "nama_produk" id="nama_produk" placeholder="" >
+                            </div>
+                            <div class="form-group">
+                                <h4 class="example-title">Product UOM</h4>    
+                                <select  name = "satuan_produk" onchange="updateSupplierForm('satuan_produk')" class = "form-control" id = "satuan_produk">
+                                <?php foreach($satuan->result() as $a){ ?>
+                                    <option value = "<?php echo $a->nama_satuan;?>"><?php echo strtoupper($a->nama_satuan);?></option>
+                                <?php } ?>
+                                </select>
+                                <input type = "hidden" id = "satuan_produk_value">
+                            </div>
+                            <div class="form-group">
+                                <h4 class="example-title">New Product UOM</h4>    
+                                <input oninput="updateSupplierForm('satuan_produk_new')" type="text" class="form-control" name = "satuan_produk_new" id="satuan_produk_new" placeholder="" >
+                            </div>
+                            <div class="form-group">
+                                <h4 class="example-title">Product Description</h4>    
+                                <textarea oninput="updateSupplierForm('deskripsi_produk')" class="form-control" id="deskripsi_produk" name = "deskripsi_produk" placeholder="" ></textarea>
                             </div>
                         </div>
-                        <?php
-                        break;
-                        case "select": 
-                            switch($form_data["input".$a]["opt"]){
-                                case "satuan": 
-                                ?>
-                                <div class = "form-group">
-                                    <div class="col-md-12 col-lg-12">
-                                        <!-- Example With Help -->
-                                        <h4 class="example-title"><?php echo $form_data["input".$a]["title"];?></h4>
-                                        <select data-plugin = "<?php echo $form_data["input".$a]["plugin"];?>" name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" >
-                                        <?php 
-                                        foreach($form_data["input".$a]["options"]->result() as $option){ ?>
-                                            <option value = "<?php echo $option->nama_satuan;?>"><?php echo strtoupper($option->nama_satuan);?></option>
-                                        <?php 
-                                        } 
-                                        ?>
-                                        </select>
-                                        <span class="text-help"><?php echo $form_data["input".$a]["help"];?></span>
-                                    </div>
-                                </div>
-                                <?php
-                                break;
-                                case "catalog":
-                                ?>
-                                <div class = "form-group">
-                                    <div class="col-md-12 col-lg-12">
-                                        <!-- Example With Help -->
-                                        <h4 class="example-title"><?php echo $form_data["input".$a]["title"];?></h4>
-                                        <select data-plugin = "<?php echo $form_data["input".$a]["plugin"];?>" name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" >
-                                        <?php 
-                                        foreach($form_data["input".$a]["options"]->result() as $option){ ?>
-                                            <option value = "<?php echo $option->id_produk;?>"><?php echo ucwords($option->nama_produk);?></option>
-                                        <?php 
-                                        } 
-                                        ?>
-                                        </select>
-                                        <span class="text-help"><?php echo $form_data["input".$a]["help"];?></span>
-                                    </div>
-                                </div>
-                                <?php
-                                break;
-                            }
-                        ?>
-                        
-                        <?php
-                        break;
-                        case "textarea": ?>
-                        <div class = "form-group">
-                            <div class="col-md-12 col-lg-12">
-                                <!-- Example With Help -->
-                                <h4 class="example-title"><?php echo $form_data["input".$a]["title"];?></h4>
-                                <textarea name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" <?php if($form_data["input".$a]["rows"] != 0) echo "rows = ".$form_data["input".$a]["rows"];?> <?php if($form_data["input".$a]["cols"] != 0) echo "cols = ".$form_data["input".$a]["cols"];?> ><?php echo $form_data["input".$a]["value"];?></textarea>
-                                <span class="text-help"><?php echo $form_data["input".$a]["help"];?></span>
+                        <div class="tab-pane" id="supplier" role="tabpanel">
+                            <input type = "hidden" name = "id_perusahaan" value = "<?php echo $id_perusahaan;?>">
+                            <div class="form-group">
+                                <h4 class="example-title">Product B/N</h4>    
+                                <input type="text" class="form-control" name = "bn_produk_vendor" id="bn_produk_vendor" placeholder="" >
                             </div>
+                            <div class="form-group">
+                                <h4 class="example-title">Product Name</h4>    
+                                <input type="text" class="form-control" name = "nama_produk_vendor" id="nama_produk_vendor" placeholder="" >
+                            </div>
+                            <div class="form-group">
+                                <h4 class="example-title">Product UOM</h4>    
+                                <select class = "form-control" name = "satuan_produk_vendor" id = "satuan_produk_vendor">
+                                <?php foreach($satuan->result() as $a){ ?>
+                                    <option value = "<?php echo $a->nama_satuan;?>"><?php echo strtoupper($a->nama_satuan);?></option>
+                                <?php } ?>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <h4 class="example-title">New Product UOM</h4>    
+                                <input type="text" class="form-control" name = "satuan_produk_new_vendor" id="satuan_produk_new_vendor" placeholder="" >
+                            </div>
+                            <div class="form-group">
+                                <h4 class="example-title">Product Description</h4>    
+                                <textarea class="form-control" id="deskripsi_produk_vendor" name = "deskripsi_produk_vendor" placeholder="" ></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type = "submit" class = "btn btn-primary btn-outline">
+                            </div>
+
                         </div>
-                        <?php
-                        break;
-                    }
-                    ?>
-                    <?php
-                }
-                ?>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
                 </div>
             </form>
         </div>

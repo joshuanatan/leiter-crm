@@ -116,10 +116,6 @@
                                 <h5 style = "color:darkgrey; opacity:0.8">Up Nama Customer</h5>
                                 <input name = "up_cp" type ="text" class = "form-control">
                             </div>
-                            <div class = "form-group">
-                                <h5 style = "color:darkgrey; opacity:0.8">Jabatan Customer</h5>
-                                <input name = "jabatan_up" type ="text" class = "form-control">
-                            </div>
                         </div>
                         <div class="tab-pane" id="pengiriman" role="tabpanel">
                             <div class = "form-group">
