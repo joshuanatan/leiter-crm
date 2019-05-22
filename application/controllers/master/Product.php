@@ -7,18 +7,17 @@ class Product extends CI_Controller{
         $this->load->model("Mdsatuan");
 
     }
-    private function req(){
+    /*page*/
+    public function index(){
         $this->load->view("req/head");
-        $this->load->view("master/product/css/datatable-css");
-        $this->load->view("master/product/css/breadcrumb-css");
-        $this->load->view("master/product/css/modal-css");
-        $this->load->view("master/product/css/form-css");
+        $this->load->view("plugin/datatable/datatable-css");
+        $this->load->view("plugin/breadcrumb/breadcrumb-css");
+        $this->load->view("plugin/modal/modal-css");
+        $this->load->view("plugin/form/form-css");
         $this->load->view("req/head-close");
         $this->load->view("master/master-open");
         $this->load->view("req/top-navbar");
         $this->load->view("req/navbar");
-    }
-    public function index(){
         $where = array(
             "produk" => array(),
             "satuan" => array(),
@@ -27,21 +26,18 @@ class Product extends CI_Controller{
             "produk" => $this->Mdproduk->select($where["produk"]),
             "satuan" => $this->Mdsatuan->select($where["satuan"])
         );
-        $this->req();
         $this->load->view("master/content-open");
         $this->load->view("master/product/category-header");
         $this->load->view("master/product/category-body",$data);
         $this->load->view("master/content-close");
-        $this->close();
-    }
-    public function close(){
+
         $this->load->view("req/script");
-        $this->load->view("master/product/js/jqtabledit-js");
-        $this->load->view("master/product/js/page-datatable-js");
-        $this->load->view("master/product/js/form-js");
+        $this->load->view("plugin/datatable/page-datatable-js");
+        $this->load->view("plugin/form/form-js");
         $this->load->view("master/master-close");
         $this->load->view("req/html-close");
     }
+    /*function*/
     public function insert(){
         $uom = "";
         if($this->input->post("satuan_produk_add") != ""){
@@ -68,6 +64,7 @@ class Product extends CI_Controller{
         $this->Mdproduk->insert($data);
         redirect("master/product");
     }
+    /*ajax*/
     public function getuom(){
         $where = array(
             "id_produk" => $this->input->post("id_produk")

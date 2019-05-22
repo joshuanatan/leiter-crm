@@ -12,42 +12,43 @@ class Product extends CI_Controller{
     /*page*/
     public function contact($i){
         $this->load->view("req/head");
-        $this->load->view("master/vendor-product-item/css/datatable-css");
-        $this->load->view("master/vendor-product-item/css/breadcrumb-css");
-        $this->load->view("master/vendor-product-item/css/modal-css");
-        $this->load->view("master/vendor-product-item/css/form-css");
-        $this->load->view("master/vendor-product-item/css/contact-css");
+        $this->load->view("plugin/datatable/datatable-css");
+        $this->load->view("plugin/breadcrumb/breadcrumb-css");
+        $this->load->view("plugin/modal/modal-css");
+        $this->load->view("plugin/form/form-css");
+        $this->load->view("plugin/contact/contact-css");
         $this->load->view("req/head-close");
         $this->load->view("master/master-open");
         $this->load->view("req/top-navbar");
         $this->load->view("req/navbar");
         /* ------------------------------------------------ */
         $where = array(
-            "contact_person.id_perusahaan" => $i
+            "contact_person.id_perusahaan" => $i,
+            "contact_person.status_cp" => 0
         );
         $data = array(
-            "cp" => $this->Mdcontact_person->select($where)
+            "cp" => $this->Mdcontact_person->select($where),
+            "id_perusahaan" => $i
         );
         $this->load->view("master/content-open");
-        $this->load->view("master/vendor-product-item/category-header",$data);
-        $this->load->view("master/vendor-product-item/category-body",$data);
+        $this->load->view("master/vendor-product/category-header",$data);
+        $this->load->view("master/vendor-product/contact-vendor-product",$data);
         $this->load->view("master/content-close");
         /* ------------------------------------------------ */
         $this->load->view("req/script");
-        $this->load->view("master/vendor-product-item/js/jqtabledit-js");
-        $this->load->view("master/vendor-product-item/js/page-datatable-js");
-        $this->load->view("master/vendor-product-item/js/form-js");
-        $this->load->view("master/vendor-product-item/js/contact-js");
+        $this->load->view("plugin/jqtabledit/jqtabledit-js");
+        $this->load->view("plugin/datatable/page-datatable-js");
+        $this->load->view("plugin/form/form-js");
         $this->load->view("master/vendor-product-item/js/ajax-request");
         $this->load->view("master/master-close");
         $this->load->view("req/html-close");
     }
     public function index(){
         $this->load->view("req/head");
-        $this->load->view("master/vendor-product/css/datatable-css");
-        $this->load->view("master/vendor-product/css/breadcrumb-css");
-        $this->load->view("master/vendor-product/css/modal-css");
-        $this->load->view("master/vendor-product/css/form-css");
+        $this->load->view("plugin/datatable/datatable-css");
+        $this->load->view("plugin/breadcrumb/breadcrumb-css");
+        $this->load->view("plugin/modal/modal-css");
+        $this->load->view("plugin/form/form-css");
         $this->load->view("req/head-close");
         $this->load->view("master/master-open");
         $this->load->view("req/top-navbar");
@@ -55,7 +56,8 @@ class Product extends CI_Controller{
         /* ------------------------------------------------ */
         $where = array(
             "perusahaan" => array(
-                "peran_perusahaan" => "PRODUK"
+                "peran_perusahaan" => "PRODUK",
+                "perusahaan.status_perusahaan" => 0
             ),
         );
         $data = array(
@@ -67,18 +69,18 @@ class Product extends CI_Controller{
         $this->load->view("master/content-close");
         /* ------------------------------------------------ */
         $this->load->view("req/script");
-        $this->load->view("master/vendor-product/js/jqtabledit-js");
-        $this->load->view("master/vendor-product/js/page-datatable-js");
-        $this->load->view("master/vendor-product/js/form-js");
+        $this->load->view("plugin/jqtabledit/jqtabledit-js");
+        $this->load->view("plugin/datatable/page-datatable-js");
+        $this->load->view("plugin/form/form-js");
         $this->load->view("master/master-close");
         $this->load->view("req/html-close");
     }
     public function items($i){
         $this->load->view("req/head");
-        $this->load->view("master/vendor-product-item/css/datatable-css");
-        $this->load->view("master/vendor-product-item/css/breadcrumb-css");
-        $this->load->view("master/vendor-product-item/css/modal-css");
-        $this->load->view("master/vendor-product-item/css/form-css");
+        $this->load->view("plugin/datatable/datatable-css");
+        $this->load->view("plugin/breadcrumb/breadcrumb-css");
+        $this->load->view("plugin/modal/modal-css");
+        $this->load->view("plugin/form/form-css");
         $this->load->view("req/head-close");
         $this->load->view("master/master-open");
         $this->load->view("req/top-navbar");
@@ -107,50 +109,42 @@ class Product extends CI_Controller{
         $this->load->view("master/content-close");
         /* ------------------------------------------------ */
         $this->load->view("req/script");
-        $this->load->view("master/vendor-product-item/js/jqtabledit-js");
-        $this->load->view("master/vendor-product-item/js/page-datatable-js");
-        $this->load->view("master/vendor-product-item/js/form-js");
+        $this->load->view("plugin/jqtabledit/jqtabledit-js");
+        $this->load->view("plugin/datatable/page-datatable-js");
+        $this->load->view("plugin/form/form-js");
         $this->load->view("master/vendor-product-item/js/ajax-request");
         $this->load->view("master/master-close");
         $this->load->view("req/html-close");
     }
     public function edit($i){
+        
         $this->load->view("req/head");
-        $this->load->view("master/vendor-product-item/css/datatable-css");
-        $this->load->view("master/vendor-product-item/css/breadcrumb-css");
-        $this->load->view("master/vendor-product-item/css/modal-css");
-        $this->load->view("master/vendor-product-item/css/form-css");
+        $this->load->view("plugin/datatable/datatable-css");
+        $this->load->view("plugin/breadcrumb/breadcrumb-css");
+        $this->load->view("plugin/modal/modal-css");
+        $this->load->view("plugin/form/form-css");
+        $this->load->view("plugin/contact/contact-css");
         $this->load->view("req/head-close");
         $this->load->view("master/master-open");
         $this->load->view("req/top-navbar");
         $this->load->view("req/navbar");
-        /* ------------------------------------------------ */
-        /*mau ngedit yang edit ini belum nemu cara lagi ga konsen*/
+        /*--------------------------------------------------------*/
         $where = array(
-            "items" => array(
-                "produk_vendor.id_produk_vendor" => $i
-            ),
-            "catalog" => array(),
-            "satuan" => array(),
+            "perusahaan.id_perusahaan" => $i
         );
         $data = array(
-            "product" => $this->Mdproduk_vendor->select($where["items"]), /*catalog vendor*/
-            "catalog" => $this->Mdproduk->select($where["catalog"]), /*buat di form input, catalog vendor tersebut = barang apa */
-            "satuan" => $this->Mdsatuan->select($where["satuan"]), /*satuan dari vendor produk */
-            "perusahaan" => $this->Mdperusahaan->select($where["perusahaan"]), /*detail perusahaan, diload di category-header*/
-            "id_perusahaan" => $i
-        );    
+            "perusahaan" => $this->Mdperusahaan->select($where)
+        );  
         $this->load->view("master/content-open");
-        $this->load->view("master/vendor-product-item/category-header",$data);
-        $this->load->view("master/vendor-product-item/edit-vendor-product-item",$data);
+        $this->load->view("master/vendor-product/category-header");
+        $this->load->view("master/vendor-product/edit-vendor-product",$data);
         $this->load->view("master/content-close");
-        /* ------------------------------------------------ */
+        /*--------------------------------------------------------*/
         $this->load->view("req/script");
-        $this->load->view("master/vendor-product-item/js/jqtabledit-js");
-        $this->load->view("master/vendor-product-item/js/page-datatable-js");
-        $this->load->view("master/vendor-product-item/js/form-js");
-        $this->load->view("master/vendor-product-item/js/tabs-js");
-        $this->load->view("master/vendor-product-item/js/ajax-request");
+        $this->load->view("plugin/jqtabledit/jqtabledit-js");
+        $this->load->view("plugin/datatable/page-datatable-js");
+        $this->load->view("plugin/form/form-js");
+        $this->load->view("plugin/tabs/tabs-js");
         $this->load->view("master/master-close");
         $this->load->view("req/html-close");
     }
@@ -211,6 +205,31 @@ class Product extends CI_Controller{
         $this->Mdproduk_vendor->insert($data);
         redirect("master/vendor/product/items/".$this->input->post($name[5]));
     }
+    public function delete($i){
+        $where = array(
+            "perusahaan.id_perusahaan" => $i
+        );
+        $data = array(
+            "status_perusahaan" => 1,
+            "id_user_delete" => $this->session->id_user
+        );
+        $this->Mdperusahaan->update($data,$where);
+        redirect("master/vendor/product");
+    }
+    public function editvendor(){
+        $where = array(
+            "perusahaan.id_perusahaan" => $this->input->post("id_perusahaan")
+        );
+        $data = array(
+            "nama_perusahaan" => $this->input->post("nama_perusahaan"),
+            "jenis_perusahaan" => $this->input->post("jenis_perusahaan"),
+            "alamat_perusahaan" => $this->input->post("alamat_perusahaan"),
+            "notelp_perusahaan" => $this->input->post("notelp_perusahaan"),
+            "id_user_edit" => $this->session->id_user
+        );
+        $this->Mdperusahaan->update($data,$where);
+        redirect("master/vendor/product/edit/".$this->input->post("id_perusahaan"));
+    }
     public function register(){
         $name = array("nama_perusahaan","jenis_perusahaan","alamat_perusahaan","notelp_perusahaan");
         $nameCp = array("nama_cp","jk_cp","email_cp","nohp_cp","jabatan_cp");
@@ -234,6 +253,48 @@ class Product extends CI_Controller{
         );
         $this->Mdcontact_person->insert($data);
         redirect("master/vendor/product");
+    }
+    public function removecp($i,$page){
+        $data = array(
+            "status_cp" => 1,
+            "id_user_delete" => $this->session->id_user
+        );
+        $where = array(
+            "id_cp" => $i
+        );  
+        $this->Mdcontact_person->update($data,$where);
+        redirect("master/vendor/product/contact/".$page);
+    }
+    public function editcp(){
+        $nameCp = array("nama_cp","jk_cp","email_cp","nohp_cp","jabatan_cp","id_perusahaan","id_cp");
+        $where = array(
+            "id_cp" => $this->input->post($nameCp[6])
+        );
+        $data = array(
+            $nameCp[0] => $this->input->post($nameCp[0]),
+            $nameCp[1] => $this->input->post($nameCp[1]),
+            $nameCp[2] => $this->input->post($nameCp[2]),
+            $nameCp[3] => $this->input->post($nameCp[3]),
+            $nameCp[4] => $this->input->post($nameCp[4]),
+            $nameCp[5] => $this->input->post($nameCp[5]),
+            "id_user_edit" => $this->session->id_user
+        );
+        $this->Mdcontact_person->update($data,$where);
+        redirect("master/vendor/product/contact/".$this->input->post($nameCp[5]));
+    }
+    public function registercp(){
+        $nameCp = array("nama_cp","jk_cp","email_cp","nohp_cp","jabatan_cp","id_perusahaan");
+        $data = array(
+            $nameCp[0] => $this->input->post($nameCp[0]),
+            $nameCp[1] => $this->input->post($nameCp[1]),
+            $nameCp[2] => $this->input->post($nameCp[2]),
+            $nameCp[3] => $this->input->post($nameCp[3]),
+            $nameCp[4] => $this->input->post($nameCp[4]),
+            $nameCp[5] => $this->input->post($nameCp[5]),
+            "id_user_add" => $this->session->id_user
+        );
+        $this->Mdcontact_person->insert($data);
+        redirect("master/vendor/product/contact/".$this->input->post($nameCp[5]));
     }
 }
 ?>
