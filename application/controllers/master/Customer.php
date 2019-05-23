@@ -127,30 +127,7 @@ class Customer extends CI_Controller{
         $this->load->view("req/html-close");
     }
     /*function*/
-    public function register(){
-        $name = array("nama_perusahaan","jenis_perusahaan","alamat_perusahaan","notelp_perusahaan");
-        $nameCp = array("nama_cp","jk_cp","email_cp","nohp_cp","jabatan_cp");
-        $data = array(
-            $name[0] => $this->input->post($name[0]),
-            $name[1] => $this->input->post($name[1]),
-            $name[2] => $this->input->post($name[2]),
-            $name[3] => $this->input->post($name[3]),
-            "peran_perusahaan" => "CUSTOMER",
-            "id_user_add" => $this->session->id_user
-        );
-        $result = $this->Mdperusahaan->insert($data);
-        $data = array(
-            $nameCp[0] => $this->input->post($nameCp[0]),
-            $nameCp[1] => $this->input->post($nameCp[1]),
-            $nameCp[2] => $this->input->post($nameCp[2]),
-            $nameCp[3] => $this->input->post($nameCp[3]),
-            $nameCp[4] => $this->input->post($nameCp[4]),
-            "id_perusahaan" => $result,
-            "id_user_add" => $this->session->id_user
-        );
-        $this->Mdcontact_person->insert($data);
-        redirect("master/customer");
-    }
+    
     public function removecp($i,$page){
         $data = array(
             "status_cp" => 1,
@@ -192,6 +169,30 @@ class Customer extends CI_Controller{
         );
         $this->Mdcontact_person->insert($data);
         redirect("master/customer/contact/".$this->input->post($nameCp[5]));
+    }
+    public function register(){
+        $name = array("nama_perusahaan","jenis_perusahaan","alamat_perusahaan","notelp_perusahaan");
+        $nameCp = array("nama_cp","jk_cp","email_cp","nohp_cp","jabatan_cp");
+        $data = array(
+            $name[0] => $this->input->post($name[0]),
+            $name[1] => $this->input->post($name[1]),
+            $name[2] => $this->input->post($name[2]),
+            $name[3] => $this->input->post($name[3]),
+            "peran_perusahaan" => "CUSTOMER",
+            "id_user_add" => $this->session->id_user
+        );
+        $result = $this->Mdperusahaan->insert($data);
+        $data = array(
+            $nameCp[0] => $this->input->post($nameCp[0]),
+            $nameCp[1] => $this->input->post($nameCp[1]),
+            $nameCp[2] => $this->input->post($nameCp[2]),
+            $nameCp[3] => $this->input->post($nameCp[3]),
+            $nameCp[4] => $this->input->post($nameCp[4]),
+            "id_perusahaan" => $result,
+            "id_user_add" => $this->session->id_user
+        );
+        $this->Mdcontact_person->insert($data);
+        redirect("master/customer");
     }
     public function editcustomer(){
         $where = array(
