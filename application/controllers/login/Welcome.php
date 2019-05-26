@@ -22,7 +22,8 @@ class Welcome extends CI_Controller{
     public function auth(){
         $where = array(
             "email_user" => $this->input->post("email"),
-            "password" => md5($this->input->post("password"))
+            "password" => md5($this->input->post("password")),
+            "status_user" => 0
         );
         $result = $this->Mduser->select($where);
         foreach($result->result() as $a){

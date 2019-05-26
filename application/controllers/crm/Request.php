@@ -226,7 +226,9 @@ class Request extends CI_Controller{
             $value = array(
                 strtoupper($a->nama_perusahaan),
                 ucwords($a->nama_cp),
-                $a->id_cp
+                $a->id_cp,
+                $a->alamat_perusahaan,
+                $a->franco
             );
         }
         $length = count($value);

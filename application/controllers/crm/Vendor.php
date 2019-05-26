@@ -12,6 +12,7 @@ class Vendor extends CI_Controller{
         $this->load->model("Mdvariable_shipping_price");
         $this->load->model("Mdvariable_courier_price");
     }
+    /*default function*/
     private function req(){
         $this->load->view("req/head");
         $this->load->view("crm/vendor-deal/css/datatable-css");
@@ -23,6 +24,16 @@ class Vendor extends CI_Controller{
         $this->load->view("req/top-navbar");
         $this->load->view("req/navbar");
     }
+    public function close(){
+        $this->load->view("req/script");
+        $this->load->view("crm/vendor-deal/js/jqtabledit-js");
+        $this->load->view("crm/vendor-deal/js/page-datatable-js");
+        $this->load->view("crm/vendor-deal/js/form-js");
+        $this->load->view("crm/vendor-deal/js/dynamic-form-js");
+        $this->load->view("crm/crm-close");
+        $this->load->view("req/html-close");
+    }
+    /*page*/
     public function index(){
         $where = array(
             "request" => array(
@@ -38,15 +49,6 @@ class Vendor extends CI_Controller{
         $this->load->view("crm/vendor-deal/category-body",$data);
         $this->load->view("crm/content-close");
         $this->close();
-    }
-    public function close(){
-        $this->load->view("req/script");
-        $this->load->view("crm/vendor-deal/js/jqtabledit-js");
-        $this->load->view("crm/vendor-deal/js/page-datatable-js");
-        $this->load->view("crm/vendor-deal/js/form-js");
-        $this->load->view("crm/vendor-deal/js/dynamic-form-js");
-        $this->load->view("crm/crm-close");
-        $this->load->view("req/html-close");
     }
     public function produk($i){
         $this->session->id_request = $i;
@@ -127,6 +129,7 @@ class Vendor extends CI_Controller{
         $this->close();
         $this->load->view("crm/vendor-deal/js/request-ajax");
     }
+    /*ajax*/
     public function getvendorprice(){
         
         $html = "";
@@ -265,6 +268,86 @@ class Vendor extends CI_Controller{
         }
         echo json_encode($html);
     }
+    public function getitemdimension(){
+        $where = array(
+            "id_request_item" => $this->input->post("id_request_item")
+        );
+        $result = $this->Mdprice_request_item->select($where);
+        foreach($result->result() as $a){
+            echo json_encode($a->jumlah_produk." ".$a->satuan_produk);
+        }
+    }
+    public function getVendors(){
+        $where = array(
+            "harga_vendor.id_request_item" => $this->input->post("id_request_item")
+        );
+        $result = $this->Mdharga_vendor->selectVendorItem($where);
+        $html = "<option selected disabled>Choose Vendor</option>";
+        foreach($result->result() as $a){
+            $html .= "<option value = '".$a->id_cp."'>".$a->nama_perusahaan."</option>";
+        }
+        echo json_encode($html);
+    }
+    public function getVendorPrices(){
+        $where = array(
+            "harga_vendor.id_cp" => $this->input->post("id_perusahaan"),
+            "status_harga_vendor" => 0,
+            "id_request_item" => $this->session->id_request_item
+        );
+        $result = $this->Mdharga_vendor->countPrice($where);
+        foreach($result->result() as $a){
+            echo json_encode(number_format($a->total),2);
+        }
+    }
+    public function getShippers(){
+        $this->session->id_request_item = $this->input->post("id_request_item");
+        $where = array(
+            "variable_shipping_price.id_request_item" => $this->input->post("id_request_item")
+        );
+        $result = $this->Mdvariable_shipping_price->selectVendorShipping($where);
+        $html = "<option selected disabled>Choose Shippers</option>";
+        foreach($result->result() as $a){
+            $html .= "<option value = '".$a->id_cp."-".$a->metode_pengiriman."'>".$a->nama_perusahaan." - ".$a->metode_pengiriman."</option>";
+        }
+        echo json_encode($html);
+    }
+    public function getShipperPrice(){ /*ini yang ajax di quotation*/
+        $where = array(
+            "variable_shipping_price.id_request_item" => $this->session->id_request_item,
+            "variable_shipping_price.id_cp" => $this->input->post("id_cp"),
+            "variable_shipping_price.metode_pengiriman" => $this->input->post("metode_pengiriman"),
+            "status_variable" => 0
+        );
+        $result = $this->Mdvariable_shipping_price->countPrice($where);
+        foreach($result->result() as $a){
+            echo json_encode(number_format(ceil($a->total)),2);
+        }
+    }
+    public function getCouriers(){
+        $this->session->id_request_item = $this->input->post("id_request_item");
+        $where = array(
+            "variable_courier_price.id_request_item" => $this->input->post("id_request_item")
+        );
+        $result = $this->Mdvariable_courier_price->selectVendorShipping($where);
+        $html = "<option selected disabled>Choose Courier</option>";
+        foreach($result->result() as $a){
+            $html .= "<option value = '".$a->id_cp."-".$a->metode_pengiriman."'>".$a->nama_perusahaan." - ".$a->metode_pengiriman."</option>";
+        }
+        echo json_encode($html);
+    } 
+    public function getCourierPrices(){ /*ini yang ajax di quotation*/
+        $where = array(
+            "variable_courier_price.id_request_item" => $this->session->id_request_item,
+            "variable_courier_price.id_cp" => $this->input->post("id_cp"),
+            "variable_courier_price.metode_pengiriman" => $this->input->post("metode_pengiriman"),
+            "status_variable" => 0
+        );
+        $result = $this->Mdvariable_courier_price->countPrice($where);
+        foreach($result->result() as $a){
+            echo json_encode(number_format(ceil($a->total)),2);
+        }
+    }
+    /*function*/
     public function removecouriervariable($i){
         $where = array(
             "id_variable_courier" => $i
@@ -371,61 +454,6 @@ class Vendor extends CI_Controller{
         );
         $this->Mdvariable_shipping_price->update($data,$where);
         redirect("crm/vendor/suppliershipping/".$this->session->id_detail."/".$this->session->id_supplier);
-    }
-    public function getShippers(){
-        $this->session->id_request_item = $this->input->post("id_request_item");
-        $where = array(
-            "variable_shipping_price.id_request_item" => $this->input->post("id_request_item")
-        );
-        $result = $this->Mdvariable_shipping_price->selectVendorShipping($where);
-        $html = "<option selected disabled>Choose Shippers</option>";
-        foreach($result->result() as $a){
-            $html .= "<option value = '".$a->id_cp."-".$a->metode_pengiriman."'>".$a->nama_perusahaan." - ".$a->metode_pengiriman."</option>";
-        }
-        echo json_encode($html);
-    }
-    public function getitemdimension(){
-        $where = array(
-            "id_request_item" => $this->input->post("id_request_item")
-        );
-        $result = $this->Mdprice_request_item->select($where);
-        foreach($result->result() as $a){
-            echo json_encode($a->jumlah_produk." ".$a->satuan_produk);
-        }
-    }
-    public function getVendors(){
-        $where = array(
-            "harga_vendor.id_request_item" => $this->input->post("id_request_item")
-        );
-        $result = $this->Mdharga_vendor->selectVendorItem($where);
-        $html = "<option selected disabled>Choose Vendor</option>";
-        foreach($result->result() as $a){
-            $html .= "<option value = '".$a->id_cp."'>".$a->nama_perusahaan."</option>";
-        }
-        echo json_encode($html);
-    }
-    public function getVendorPrices(){
-        $where = array(
-            "harga_vendor.id_cp" => $this->input->post("id_perusahaan"),
-            "status_harga_vendor" => 0,
-            "id_request_item" => $this->session->id_request_item
-        );
-        $result = $this->Mdharga_vendor->countPrice($where);
-        foreach($result->result() as $a){
-            echo json_encode(number_format($a->total),2);
-        }
-    }
-    public function getShipperPrice(){ /*ini yang ajax di quotation*/
-        $where = array(
-            "variable_shipping_price.id_request_item" => $this->session->id_request_item,
-            "variable_shipping_price.id_cp" => $this->input->post("id_cp"),
-            "variable_shipping_price.metode_pengiriman" => $this->input->post("metode_pengiriman"),
-            "status_variable" => 0
-        );
-        $result = $this->Mdvariable_shipping_price->countPrice($where);
-        foreach($result->result() as $a){
-            echo json_encode(number_format(ceil($a->total)),2);
-        }
     }
     public function delete($i){
         $where = array(

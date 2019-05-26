@@ -6,10 +6,10 @@ class OC extends CI_Controller{
     }
     private function req(){
         $this->load->view("req/head");
-        $this->load->view("crm/oc/css/datatable-css");
-        $this->load->view("crm/oc/css/breadcrumb-css");
-        $this->load->view("crm/oc/css/modal-css");
-        $this->load->view("crm/oc/css/form-css");
+        $this->load->view("plugin/datatable/datatable-css");
+        $this->load->view("plugin/breadcrumb/breadcrumb-css");
+        $this->load->view("plugin/modal/modal-css");
+        $this->load->view("plugin/form/form-css");
         $this->load->view("req/head-close");
         $this->load->view("crm/crm-open");
         $this->load->view("req/top-navbar");
@@ -25,9 +25,8 @@ class OC extends CI_Controller{
     }
     public function close(){
         $this->load->view("req/script");
-        $this->load->view("crm/oc/js/jqtabledit-js");
-        $this->load->view("crm/oc/js/page-datatable-js");
-        $this->load->view("crm/oc/js/form-js");
+        $this->load->view("plugin/datatable/page-datatable-js");
+        $this->load->view("plugin/form/form-js");
         $this->load->view("crm/oc/js/dynamic-form-js");
         $this->load->view("crm/crm-close");
         $this->load->view("req/html-close");

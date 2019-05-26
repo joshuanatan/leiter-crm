@@ -36,7 +36,7 @@ class Mdharga_vendor extends CI_Model{
         
     }
     public function countPrice($where){
-        $this->db->select("(harga_produk/satuan_harga_produk) as 'total'");
+        $this->db->select("(harga_produk*vendor_price_rate/satuan_harga_produk) as 'total'");
         return $this->db->get_where("harga_vendor",$where);
     }
 }

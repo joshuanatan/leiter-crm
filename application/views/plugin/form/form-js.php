@@ -56,3 +56,28 @@
 <script src="<?php echo base_url();?>global/js/Plugin/jquery-placeholder.js"></script>
 
 <script src="<?php echo base_url();?>assets/examples/js/forms/advanced.js"></script>
+<script>
+function addCommas(nStr)
+{
+	nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+	return x1 + x2;
+}
+</script>
+
+<script>
+function splitter(str,sprt){
+    var finalValue = "";
+    var split = str.split(sprt);
+    for(var a = 0; a<split.length; a++){
+        finalValue += split[a];
+    }
+    return finalValue;
+}
+</script>
