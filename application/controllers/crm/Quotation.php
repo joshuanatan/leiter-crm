@@ -248,5 +248,79 @@ class Quotation extends CI_Controller{
             echo json_encode($a->totalTagihan);
         }
     }
+    public function getQuotationDetail(){
+        //echo $this->input->post("id_quo"); echo $this->input->post("versi_quo");
+        $where = array(
+            "id_quo" => $this->input->post("id_quo"),
+            "versi_quo" => $this->input->post("versi_quo")
+        );
+        $result = $this->Mdquotation->select($where);
+        $data = array();
+        foreach($result->result() as $a){   
+            $data = array(
+                "no_quo" => strtoupper($a->no_quo),
+                "id_quo" => $a->id_quo,
+                "versi_quo" => $a->versi_quo,
+                "nama_perusahaan" => strtoupper($a->nama_perusahaan),
+                "nama_cp" => ucwords($a->nama_cp),
+                "id_cp" => $a->id_cp,
+                "alamat_perusahaan" => $a->alamat_perusahaan,
+                "up_cp" => $a->up_cp,
+                "durasi_pengiriman" => $a->durasi_pengiriman,
+                "durasi_pembayaran" => $a->durasi_pembayaran,
+                "metode_courier" => $a->metode_courier,
+                "franco" => $a->franco,
+            );
+        }
+        echo json_encode($data);
+    }
+    public function getOrderedItem(){
+        $where = array(
+            "id_quotation" => $this->input->post("id_quo"),
+            "quo_version" => $this->input->post("versi_quo")
+        );  
+        $result = $this->Mdquotation_item->select($where);
+        $data = array();
+        $b = 0;
+        foreach($result->result() as $a){
+            $data[$b] = array(
+                "id_quotation_item" => $a->id_quotation_item,
+                "nama_produk" => $a->nama_produk,
+                "item_amount" => $a->item_amount,
+                "selling_price" => number_format($a->selling_price),
+                "status_oc_item" => $a->status_oc_item
+            );
+            $b++;
+        }
+        echo json_encode($data);
+    }
+    public function getMetodePembayaran(){
+        $where = array(
+            "id_quotation" => $this->input->post("id_quotation"),
+            "id_versi" => $this->input->post("id_versi")
+        );
+        $result = $this->Mdmetode_pembayaran->select($where);
+        $data = array();
+        $b = 0;
+        foreach($result->result() as $a){
+            $text = "";
+            switch($a->trigger_pembayaran){
+                case 1: $text = "SEBELUM BARANG DIKIRIMKAN";
+                break;
+                case 2: $text = "SESUDAH BARANG DIKIRIMKAN";
+                break;
+            }
+            $data[$b] = array(
+                "urutan_pembayaran" => $a->urutan_pembayaran,
+                "persentase_pembayaran" => $a->persentase_pembayaran,
+                "nominal_pembayaran" => number_format($a->nominal_pembayaran),
+                "trigger_pembayaran" => $text,
+                "kurs" => $a->kurs
+            );
+            $b++;
+        }
+        echo json_encode($data);
+
+    }
 }
 ?>
