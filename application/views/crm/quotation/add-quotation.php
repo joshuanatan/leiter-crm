@@ -60,16 +60,7 @@
                                     <input name = "Abc" type ="text" class = "form-control" id = "itemamount" value = "">
                                 </div>
                                 <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Shipping</h5>
-                                    <select class = "form-control" id="shippers" onchange = "getShippingPrice()">
-                                        <option selected disabled>Choose Shipping Vendor</option>
-                                    </select>
-                                </div>
-                                <div class = "form-group">
-                                    <input name = "Abc" type ="text" id = "hargashipping" class = "form-control" disabled placeholder = "Shipping Price">
-                                </div>
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Product</h5>
+                                    <h5 style = "color:darkgrey; opacity:0.8">Supplier</h5>
                                     <select class = "form-control" id = "products" onchange = "getVendorPrice()">
                                         <option selected disabled>Choose Product Vendor</option>
                                     </select>
@@ -77,6 +68,15 @@
                                 <div class = "form-group">
                                     <input name = "Abc" type ="text" id = "hargaProduk" class = "form-control" disabled placeholder = "Product Price">
                                 </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Shipping</h5>
+                                    <select class = "form-control" id="shippers" onchange = "getShippingPrice()">
+                                        <option selected disabled>Choose Shipping Vendor</option>
+                                    </select>
+                                </div><div class = "form-group">
+                                    <input name = "Abc" type ="text" id = "hargashipping" class = "form-control" disabled placeholder = "Shipping Price">
+                                </div>
+                                
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Courier</h5>
                                     <select class = "form-control" id = "courier" onchange = "getCourierPrice()">

@@ -31,9 +31,8 @@
                 <td><?php echo $a->satuan_produk_vendor;?></td>
                 <td class="actions">
                     
-                    <a href = "<?php echo base_url();?>master/vendor/product/edit/<?php echo $a->id_produk_vendor;?>" class="btn btn-outline btn-primary"><i class="icon wb-edit" aria-hidden="true"></i></a >
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
+                    <a href = "#" class="btn btn-outline btn-primary"><i class="icon wb-edit" aria-hidden="true"></i></a >
+                    <a href = "<?php echo base_url();?>master/vendor/product/deleteitem/<?php echo $a->id_produk_vendor;?>" class="btn btn-outline btn-danger" data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
                     
                 </td>
             </tr>

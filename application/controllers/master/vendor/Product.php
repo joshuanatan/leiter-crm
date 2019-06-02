@@ -75,6 +75,7 @@ class Product extends CI_Controller{
         $this->load->view("req/html-close");
     }
     public function items($i){
+        $this->session->id_supplier = $i;
         $this->load->view("req/head");
         $this->load->view("plugin/datatable/datatable-css");
         $this->load->view("plugin/breadcrumb/breadcrumb-css");
@@ -202,6 +203,13 @@ class Product extends CI_Controller{
         );
         $this->Mdproduk_vendor->insert($data);
         redirect("master/vendor/product/items/".$this->input->post($name[5]));
+    }
+    public function deleteitem($i){
+        $where = array(
+            "id_produk_vendor" => $i
+        );
+        $this->Mdproduk_vendor->delete($where);
+        redirect("master/vendor/product/items/".$this->session->id_supplier);
     }
     public function delete($i){
         $where = array(

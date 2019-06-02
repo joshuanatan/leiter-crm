@@ -67,7 +67,7 @@ class Product extends CI_Controller{
     /*ajax*/
     public function getuom(){
         $where = array(
-            "id_produk" => $this->input->post("id_produk")
+            "produk_vendor.id_produk" => $this->input->post("id_produk")
         );
         $result = $this->Mdproduk->select($where);
         foreach($result->result() as $a){

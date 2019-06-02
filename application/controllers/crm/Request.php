@@ -236,7 +236,7 @@ class Request extends CI_Controller{
             "price_request.id_request" => $this->input->post("id_request"),
             "price_request_item.status_request_item" => 0
         );
-        $result = $this->Mdprice_request_item->select($where);
+        $result = $this->Mdprice_request_item->selectFullPrice($where);
         $count = 0;
         foreach($result->result() as $a){
             $value[$length][$count] = $a->id_request_item;

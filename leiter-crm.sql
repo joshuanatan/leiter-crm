@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 23, 2019 at 04:52 AM
+-- Generation Time: Jun 02, 2019 at 11:06 PM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.10
 
@@ -69,7 +69,13 @@ INSERT INTO `contact_person` (`id_cp`, `nama_cp`, `jk_cp`, `email_cp`, `nohp_cp`
 (19, 'aefawefaef', 'Mr', 'aefaewf@gmail.com', '342342', 'CEO', 0, 13, 11, '2019-05-23 01:40:19', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (20, 'contactpersongaruda44444', 'Mr', 'aef444444@garuda.com', '132412344444444', 'ceo44444', 1, 9, 11, '2019-05-23 02:08:02', 11, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
 (21, 'Contactpersongaruda2', 'Mr', 'awef@garuda.co.id', '324234', 'awefwaef', 1, 9, 11, '2019-05-23 02:09:22', 0, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
-(22, 'ini yang test test itu', 'Mr', 'test@test.test', '1234', 'CEO', 0, 8, 11, '2019-05-23 02:10:09', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+(22, 'ini yang test test itu', 'Mr', 'test@test.test', '1234', 'CEO', 0, 8, 11, '2019-05-23 02:10:09', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(23, 'Joshua Natan Wijaya', 'Mr', 'joshuanatan.jn@gmail.com', '089616961915', 'CEO', 0, 14, 11, '2019-06-02 19:43:33', 11, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(24, 'Joshua R Luih', 'Mr', 'luih123.joshua@gmail.com', '08922331233', 'CTO', 0, 14, 11, '2019-06-02 19:46:20', 11, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(25, 'Stevan Nathan Wijaya', 'Ms', 'wijaya.stevanathan@gmail.com', '0896356175555', 'Chief Marketing', 0, 15, 11, '2019-06-02 19:52:51', 11, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(26, 'Davin Nathan', 'Mr', 'nathan.davin@gmail.com', '089767898765', 'CMO', 0, 15, 11, '2019-06-02 19:54:43', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(27, 'Roko Jijoko Nonoko', 'Mr', 'rokononoko@lionari.com', '111111111111112', 'CEO', 0, 16, 11, '2019-06-02 20:12:57', 11, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(28, 'Raka Jijaka', 'Ms', 'raka@gmail.com', '12342232132', 'CEO', 0, 16, 11, '2019-06-02 20:15:07', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -80,9 +86,10 @@ INSERT INTO `contact_person` (`id_cp`, `nama_cp`, `jk_cp`, `email_cp`, `nohp_cp`
 CREATE TABLE `harga_vendor` (
   `id_harga_vendor` int(11) NOT NULL,
   `id_request_item` int(11) NOT NULL,
+  `id_perusahaan` int(11) NOT NULL COMMENT 'nahan value harganya pake ini aja karena 1 item 1 perusahaan sama',
   `id_cp` int(11) NOT NULL COMMENT 'merujuk pada vendor mana yang ditanya terkait barang tersebut',
   `harga_produk` int(11) NOT NULL,
-  `satuan_harga_produk` int(11) NOT NULL,
+  `satuan_harga_produk` int(11) NOT NULL DEFAULT '1',
   `vendor_price_rate` int(11) NOT NULL DEFAULT '1',
   `status_harga_vendor` int(11) NOT NULL DEFAULT '0',
   `id_user_add` int(11) NOT NULL,
@@ -97,14 +104,21 @@ CREATE TABLE `harga_vendor` (
 -- Dumping data for table `harga_vendor`
 --
 
-INSERT INTO `harga_vendor` (`id_harga_vendor`, `id_request_item`, `id_cp`, `harga_produk`, `satuan_harga_produk`, `vendor_price_rate`, `status_harga_vendor`, `id_user_add`, `date_harga_vendor_add`, `id_user_edit`, `date_harga_vendor_edit`, `id_user_delete`, `date_harga_vendor_delete`) VALUES
-(5, 16, 2, 1000000, 1010, 100, 0, 11, '2019-05-15 03:21:23', 0, NULL, 0, NULL),
-(10, 43, 2, 20000, 1, 1500, 0, 11, '2019-05-19 18:12:00', 0, NULL, 0, NULL),
-(12, 43, 9, 123000, 1, 12000, 0, 11, '2019-05-19 19:10:26', 0, NULL, 0, NULL),
-(13, 43, 3, 111111, 0, 22223, 0, 11, '2019-05-19 19:34:58', 0, NULL, 0, NULL),
-(14, 42, 2, 10000, 0, 12000, 0, 11, '2019-05-19 19:35:21', 0, NULL, 0, NULL),
-(15, 42, 3, 15400, 0, 21000, 0, 11, '2019-05-19 19:35:24', 0, NULL, 0, NULL),
-(16, 42, 9, 14000, 0, 11000, 0, 11, '2019-05-19 19:35:25', 0, NULL, 0, NULL);
+INSERT INTO `harga_vendor` (`id_harga_vendor`, `id_request_item`, `id_perusahaan`, `id_cp`, `harga_produk`, `satuan_harga_produk`, `vendor_price_rate`, `status_harga_vendor`, `id_user_add`, `date_harga_vendor_add`, `id_user_edit`, `date_harga_vendor_edit`, `id_user_delete`, `date_harga_vendor_delete`) VALUES
+(5, 16, 0, 2, 1000000, 1010, 100, 0, 11, '2019-05-15 03:21:23', 0, NULL, 0, NULL),
+(10, 43, 0, 2, 20000, 1, 1500, 0, 11, '2019-05-19 18:12:00', 0, NULL, 0, NULL),
+(12, 43, 0, 9, 123000, 1, 12000, 0, 11, '2019-05-19 19:10:26', 0, NULL, 0, NULL),
+(13, 43, 0, 3, 111111, 1, 22223, 0, 11, '2019-05-19 19:34:58', 0, NULL, 0, NULL),
+(15, 42, 0, 3, 15400, 1, 21000, 0, 11, '2019-05-19 19:35:24', 0, NULL, 0, NULL),
+(16, 42, 0, 9, 14000, 1, 11000, 0, 11, '2019-05-19 19:35:25', 0, NULL, 0, NULL),
+(17, 42, 0, 2, 10000, 2, 12000, 0, 11, '2019-05-26 21:43:39', 0, NULL, 0, NULL),
+(21, 47, 4, 17, 13000000, 1, 120, 10, 11, '2019-06-03 01:24:58', 0, NULL, 0, NULL),
+(24, 47, 3, 16, 12000, 2, 10000, 0, 11, '2019-06-03 02:22:33', 0, NULL, 0, NULL),
+(25, 48, 15, 25, 15000, 1, 10000, 0, 11, '2019-06-03 02:28:49', 0, NULL, 0, NULL),
+(26, 42, 3, 14, 120000, 1, 10000, 0, 11, '2019-06-03 02:49:56', 0, NULL, 0, NULL),
+(27, 42, 4, 3, 16000, 1, 1200, 0, 11, '2019-06-03 02:50:53', 0, NULL, 0, NULL),
+(28, 43, 3, 14, 15000, 1, 100, 0, 11, '2019-06-03 02:51:23', 0, NULL, 0, NULL),
+(29, 43, 4, 3, 16000, 1, 1400, 0, 11, '2019-06-03 02:51:30', 0, NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -369,7 +383,42 @@ INSERT INTO `log_privilage` (`id_log_privilage`, `id_user`, `id_menu`, `status_p
 (241, 25, 11, 0, 11, '2019-05-23 09:48:21'),
 (242, 25, 1, 0, 11, '2019-05-23 09:48:21'),
 (243, 25, 2, 0, 11, '2019-05-23 09:48:21'),
-(244, 25, 3, 0, 11, '2019-05-23 09:48:21');
+(244, 25, 3, 0, 11, '2019-05-23 09:48:21'),
+(245, 26, 1, 1, 0, '2019-06-02 20:16:33'),
+(246, 26, 2, 1, 0, '2019-06-02 20:16:33'),
+(247, 26, 3, 1, 0, '2019-06-02 20:16:33'),
+(248, 26, 4, 1, 0, '2019-06-02 20:16:33'),
+(249, 26, 5, 1, 0, '2019-06-02 20:16:33'),
+(250, 26, 6, 1, 0, '2019-06-02 20:16:33'),
+(251, 26, 7, 1, 0, '2019-06-02 20:16:33'),
+(252, 26, 8, 1, 0, '2019-06-02 20:16:33'),
+(253, 26, 9, 1, 0, '2019-06-02 20:16:33'),
+(254, 26, 10, 1, 0, '2019-06-02 20:16:33'),
+(255, 26, 11, 1, 0, '2019-06-02 20:16:33'),
+(256, 26, 4, 0, 11, '2019-06-02 20:16:33'),
+(257, 26, 6, 0, 11, '2019-06-02 20:16:33'),
+(258, 26, 8, 0, 11, '2019-06-02 20:16:33'),
+(259, 26, 10, 0, 11, '2019-06-02 20:16:33'),
+(260, 26, 1, 0, 11, '2019-06-02 20:16:33'),
+(261, 26, 2, 0, 11, '2019-06-02 20:16:33'),
+(262, 26, 3, 0, 11, '2019-06-02 20:16:33'),
+(263, 26, 1, 1, 11, '2019-06-02 20:16:53'),
+(264, 26, 2, 1, 11, '2019-06-02 20:16:53'),
+(265, 26, 3, 1, 11, '2019-06-02 20:16:53'),
+(266, 26, 4, 1, 11, '2019-06-02 20:16:53'),
+(267, 26, 5, 1, 11, '2019-06-02 20:16:53'),
+(268, 26, 6, 1, 11, '2019-06-02 20:16:53'),
+(269, 26, 7, 1, 11, '2019-06-02 20:16:53'),
+(270, 26, 8, 1, 11, '2019-06-02 20:16:53'),
+(271, 26, 9, 1, 11, '2019-06-02 20:16:53'),
+(272, 26, 10, 1, 11, '2019-06-02 20:16:53'),
+(273, 26, 11, 1, 11, '2019-06-02 20:16:53'),
+(274, 26, 5, 0, 11, '2019-06-02 20:16:54'),
+(275, 26, 7, 0, 11, '2019-06-02 20:16:54'),
+(276, 26, 9, 0, 11, '2019-06-02 20:16:54'),
+(277, 26, 11, 0, 11, '2019-06-02 20:16:54'),
+(278, 26, 1, 0, 11, '2019-06-02 20:16:54'),
+(279, 26, 3, 0, 11, '2019-06-02 20:16:54');
 
 -- --------------------------------------------------------
 
@@ -409,7 +458,11 @@ INSERT INTO `log_user` (`id_log_user`, `id_user`, `nama_user`, `email_user`, `no
 (18, 24, 'Test Employee 4', 'asdf@gmail.com', '12341234', 0, 11, '2019-05-23 08:32:34'),
 (19, 24, 'Test Employee 444444444444444', 'asdf@gmail.com4444444444444444444', '12341234444444', 0, 11, '2019-05-23 08:32:34'),
 (20, 24, 'Test Employee 444444444444444', 'asdf@gmail.com4444444444444444444', '12341234444444', 1, 11, '2019-05-23 08:32:34'),
-(21, 25, 'test edit privilege', 'privilege@user.cin', '12341234', 0, 11, '2019-05-23 09:37:40');
+(21, 25, 'test edit privilege', 'privilege@user.cin', '12341234', 0, 11, '2019-05-23 09:37:40'),
+(22, 26, 'Stevan Nathan', 'stevannathanwijaya@gmail.com', '12332132132', 0, 11, '2019-06-02 20:16:33'),
+(23, 26, 'Stevan Nathan W', 'stevannathanwijaya@yahoo.com', '1111111111111', 0, 11, '2019-06-02 20:16:33'),
+(24, 23, 'Test account 3', 'testacoount@gmail.com', '123412341234', 1, 11, '2019-05-13 15:00:39'),
+(25, 25, 'test edit privilege', 'privilege@user.cin', '12341234', 1, 11, '2019-05-23 09:37:40');
 
 -- --------------------------------------------------------
 
@@ -456,6 +509,31 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `metode_pembayaran`
+--
+
+CREATE TABLE `metode_pembayaran` (
+  `id_metode_pembayaran` int(11) NOT NULL,
+  `urutan_pembayaran` int(11) NOT NULL,
+  `persentase_pembayaran` int(11) NOT NULL,
+  `nominal_pembayaran` bigint(11) NOT NULL,
+  `trigger_pembayaran` int(11) NOT NULL COMMENT '1: sesudah OC; 2: setelah OD;',
+  `id_quotation` int(11) NOT NULL,
+  `id_versi` int(11) NOT NULL,
+  `kurs` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `metode_pembayaran`
+--
+
+INSERT INTO `metode_pembayaran` (`id_metode_pembayaran`, `urutan_pembayaran`, `persentase_pembayaran`, `nominal_pembayaran`, `trigger_pembayaran`, `id_quotation`, `id_versi`, `kurs`) VALUES
+(2, 1, 25, 3, 1, 1, 1, 'IDR'),
+(3, 2, 75, 9, 1, 1, 1, 'IDR');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `metode_pengiriman_shipping`
 --
 
@@ -484,7 +562,38 @@ INSERT INTO `metode_pengiriman_shipping` (`id_perusahaan`, `metode_pengiriman`, 
 (8, 'SEA', 1, 11, '2019-05-14 16:12:58', 11, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (9, 'AIR', 0, 11, '2019-05-18 22:04:33', 11, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (9, 'LAND', 1, 11, '2019-05-18 22:04:33', 11, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(9, 'SEA', 1, 11, '2019-05-18 22:04:33', 11, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+(9, 'SEA', 1, 11, '2019-05-18 22:04:33', 11, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(16, 'AIR', 0, 11, '2019-06-02 20:12:57', 11, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(16, 'LAND', 0, 11, '2019-06-02 20:12:57', 11, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(16, 'SEA', 0, 11, '2019-06-02 20:12:57', 11, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_confirmation`
+--
+
+CREATE TABLE `order_confirmation` (
+  `id_oc` int(11) NOT NULL,
+  `no_oc` varchar(100) NOT NULL,
+  `id_quotation` int(11) NOT NULL,
+  `versi_quotation` int(11) NOT NULL,
+  `no_po_customer` varchar(200) NOT NULL,
+  `status_oc` int(11) NOT NULL DEFAULT '0',
+  `id_user_add` int(11) NOT NULL,
+  `date_oc_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id_user_edit` int(11) NOT NULL DEFAULT '0',
+  `date_oc_edit` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id_user_delete` int(11) NOT NULL DEFAULT '0',
+  `date_oc_delete` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `order_confirmation`
+--
+
+INSERT INTO `order_confirmation` (`id_oc`, `no_oc`, `id_quotation`, `versi_quotation`, `no_po_customer`, `status_oc`, `id_user_add`, `date_oc_add`, `id_user_edit`, `date_oc_edit`, `id_user_delete`, `date_oc_delete`) VALUES
+(0, '', 1, 1, '123123123123', 0, 11, '2019-05-27 23:06:05', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -520,9 +629,12 @@ INSERT INTO `perusahaan` (`id_perusahaan`, `nama_perusahaan`, `jenis_perusahaan`
 (8, 'test1', 'test2', 'test3', '123', 'SHIPPING', 1, 11, '2019-05-14 16:12:58', 11, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
 (9, 'PT GARUDA INDONESIA SINGA', 'PENERBANGAN LUAR ANGKASA', 'airport bandara  terminal 3', '1234567899999', 'SHIPPING', 0, 11, '2019-05-18 22:04:33', 11, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (10, 'PT VNDOR KETIGA', 'PERHUTANAN', 'aewfkjoaiejfoj', '12341324', 'PRODUK', 1, 11, '2019-05-19 14:16:35', 0, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
-(11, 'SIolam', 'Rumah Sakit', 'karawaci', '1233211', 'CUSTOMER', 0, 11, '2019-05-22 23:33:59', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(11, 'SIolam', 'Rumah Sakit', 'karawaci', '1233211', 'CUSTOMER', 1, 11, '2019-05-22 23:33:59', 0, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
 (12, 'buang', 'a', 'a', '3', 'PRODUK', 1, 11, '2019-05-23 01:19:18', 0, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
-(13, 'LETS TRY', 'Percakapan', 'airport', '12341234', 'SHIPPING', 1, 11, '2019-05-23 01:40:19', 0, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00');
+(13, 'LETS TRY', 'Percakapan', 'airport', '12341234', 'SHIPPING', 1, 11, '2019-05-23 01:40:19', 0, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
+(14, 'PT Isupport Indonesia', 'Technology', 'Kembang Molek IX\r\nBlok J 15 Nomor 5\r\nJakarta Barat', '12345678', 'CUSTOMER', 0, 11, '2019-06-02 19:43:32', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(15, 'PT Microsoft Indonesia', 'Technology', 'Jalan rasuna said \r\nnomor 5 blok B\r\nJakarta barat', '7654321', 'PRODUK', 0, 11, '2019-06-02 19:52:51', 11, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(16, 'PT Lion Air', 'Flight Transportation ', 'Kedoya raya nomor 15\r\nKembangan selatan\r\n11610', '11111111', 'SHIPPING', 0, 11, '2019-06-02 20:12:57', 11, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -554,8 +666,9 @@ INSERT INTO `price_request` (`id_request`, `tgl_dateline_request`, `status_reque
 (2, '0000-00-00', 0, 2, 1, '', 11, '2019-05-17 14:16:24', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (3, '0000-00-00', 1, 3, 1, '', 11, '2019-05-17 14:42:33', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (4, '2019-05-31', 1, 4, 1, '', 11, '2019-05-18 08:30:40', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(5, '2019-06-29', 1, 1, 1, 'Medans', 11, '2019-05-18 08:38:37', 11, '2019-05-19 16:13:39', 0, '0000-00-00 00:00:00'),
-(6, '2019-05-31', 3, 1, 1, 'Surabaya', 11, '2019-05-18 11:37:12', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+(5, '2019-06-29', 3, 1, 1, 'Medans', 11, '2019-05-18 08:38:37', 11, '2019-05-19 16:13:39', 0, '0000-00-00 00:00:00'),
+(6, '2019-05-31', 3, 1, 1, 'Surabaya', 11, '2019-05-18 11:37:12', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(7, '2019-06-20', 0, 11, 12, 'Surabaya', 11, '2019-06-02 20:20:35', 11, '2019-06-02 15:23:08', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -617,13 +730,16 @@ INSERT INTO `price_request_item` (`id_request_item`, `id_request`, `id_produk`, 
 (34, 3, 2, 100, 1, 11, '2019-05-17 15:34:55', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (35, 4, 5, 100, 0, 11, '2019-05-18 08:30:40', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (36, 4, 2, 50, 0, 11, '2019-05-18 08:30:40', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(37, 5, 4, 100, 1, 11, '2019-05-18 08:38:37', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(38, 5, 4, 120, 1, 11, '2019-05-18 09:51:25', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(39, 5, 2, 100, 0, 11, '2019-05-18 10:06:36', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(40, 5, 5, 10, 0, 11, '2019-05-18 10:22:41', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (41, 6, 5, 100, 0, 11, '2019-05-18 11:37:12', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (42, 6, 3, 20, 0, 11, '2019-05-18 11:37:12', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(43, 6, 4, 100, 0, 11, '2019-05-18 22:49:22', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+(43, 6, 4, 100, 0, 11, '2019-05-18 22:49:22', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(44, 7, 6, 15, 0, 11, '2019-06-02 20:20:35', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(45, 7, 5, 20, 0, 11, '2019-06-02 20:20:35', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(46, 7, 5, 20, 1, 11, '2019-06-02 20:24:17', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(47, 5, 4, 15, 0, 11, '2019-06-02 23:21:08', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(48, 5, 6, 100, 0, 11, '2019-06-02 23:40:49', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(49, 5, 1, 16, 0, 11, '2019-06-02 23:40:49', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(50, 7, 3, 20, 0, 11, '2019-06-02 23:41:14', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -809,7 +925,18 @@ INSERT INTO `privilage` (`id_privilage`, `id_menu`, `id_user`, `status_privilage
 (217, 8, 25, 0, 11, '2019-05-23 04:48:20'),
 (218, 9, 25, 0, 11, '2019-05-23 04:48:20'),
 (219, 10, 25, 0, 11, '2019-05-23 04:48:20'),
-(220, 11, 25, 0, 11, '2019-05-23 04:48:21');
+(220, 11, 25, 0, 11, '2019-05-23 04:48:21'),
+(221, 1, 26, 0, 11, '2019-06-02 15:16:54'),
+(222, 2, 26, 1, 11, '2019-06-02 15:16:53'),
+(223, 3, 26, 0, 11, '2019-06-02 15:16:54'),
+(224, 4, 26, 1, 11, '2019-06-02 15:16:53'),
+(225, 5, 26, 0, 11, '2019-06-02 15:16:54'),
+(226, 6, 26, 1, 11, '2019-06-02 15:16:53'),
+(227, 7, 26, 0, 11, '2019-06-02 15:16:54'),
+(228, 8, 26, 1, 11, '2019-06-02 15:16:53'),
+(229, 9, 26, 0, 11, '2019-06-02 15:16:54'),
+(230, 10, 26, 1, 11, '2019-06-02 15:16:53'),
+(231, 11, 26, 0, 11, '2019-06-02 15:16:54');
 
 --
 -- Triggers `privilage`
@@ -857,7 +984,8 @@ INSERT INTO `produk` (`id_produk`, `bn_produk`, `nama_produk`, `satuan_produk`, 
 (2, '0000-0000-000-00', 'Product Name', 'Roll', 'titleee', 0, 11, '2019-05-13 20:46:40', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (3, '0000-0000-000-00', 'asdf', 'Roll', 'letsgo', 0, 11, '2019-05-13 20:52:30', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (4, '0000-0000-000-00', 'letsgo', 'm', 'awef', 0, 11, '2019-05-13 20:52:53', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(5, '1234-1234-123-12', 'awefefefa', 'Roll', 'aewfawef', 0, 11, '2019-05-13 20:53:41', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+(5, '1234-1234-123-12', 'awefefefa', 'Roll', 'aewfawef', 0, 11, '2019-05-13 20:53:41', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(6, '1303-1303-133-13', 'Barang Serius', 'm', 'Test coba barang 1\r\nIni harusnya ke enter\r\n', 0, 11, '2019-06-02 19:42:22', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -893,7 +1021,10 @@ INSERT INTO `produk_vendor` (`id_produk_vendor`, `bn_produk_vendor`, `nama_produ
 (4, '4444-4444-444-44', 'Hore ini letsgo', 'Roll', 'sdafasdf\r\n', 0, 4, 4, 11, '2019-05-18 23:12:47', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (5, '231', 'EFAWEFAWEFAWEFAWF', 'Roll', 'AWEFAWEF', 0, 10, 4, 11, '2019-05-19 14:17:04', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (6, '32423423424', 'AEWFWAFE', 'Roll', 'AWFWAEFAWE', 0, 10, 3, 11, '2019-05-19 14:17:19', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(7, '1234-3422-5555-123', 'nama barang beda dong kan dari vendor', 'm', 'gelap kok ga putih2 banget', 0, 3, 1, 11, '2019-05-20 11:38:54', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+(7, '1234-3422-5555-123', 'nama barang beda dong kan dari vendor', 'm', 'gelap kok ga putih2 banget', 0, 3, 1, 11, '2019-05-20 11:38:54', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(8, '1404-1505-1606-1707', 'Barang Serius Vendor', 'm', 'Test coba barang 1\r\nIni harusnya ke enter\r\nDitambah ini lagi harusnya bisa', 0, 15, 6, 11, '2019-06-02 19:56:17', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(9, '1111-3333-5555-7777', 'Asus ROG', 'Pcs', 'Laptop Gaming profesional\r\n50hz speed', 0, 15, 0, 11, '2019-06-02 20:01:41', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(10, '5555-6666-7777-8888', 'Asus ROG x3948', 'Pcs', 'Laptop gaming 50hz\r\nram 200 gb', 0, 15, 0, 11, '2019-06-02 20:04:17', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -903,22 +1034,18 @@ INSERT INTO `produk_vendor` (`id_produk_vendor`, `bn_produk_vendor`, `nama_produ
 
 CREATE TABLE `quotation` (
   `id_quo` int(11) NOT NULL,
+  `versi_quo` int(11) NOT NULL,
   `id_request` int(11) NOT NULL,
   `no_quo` varchar(200) NOT NULL,
   `hal_quo` text NOT NULL,
   `id_cp` int(11) NOT NULL COMMENT 'nanti ini ambil data perusahaanya',
   `up_cp` varchar(200) NOT NULL,
   `durasi_pengiriman` int(11) NOT NULL,
-  `trigger_pengiriman` varchar(500) NOT NULL,
-  `tambahan_pengiriman` text NOT NULL COMMENT 'termasuk sabtu minggu atau tidak',
   `franco` varchar(200) NOT NULL,
   `durasi_pembayaran` int(11) NOT NULL,
-  `trigger_pembayaran` varchar(500) NOT NULL,
-  `tambahan_pembayaran` text NOT NULL COMMENT 'catatan tambahan',
   `mata_uang_pembayaran` varchar(100) NOT NULL,
   `dateline_quo` date NOT NULL,
   `status_quo` int(11) NOT NULL DEFAULT '0',
-  `versi_quo` int(11) NOT NULL,
   `id_user_add` int(11) NOT NULL,
   `date_quo_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_user_edit` int(11) NOT NULL DEFAULT '0',
@@ -926,6 +1053,13 @@ CREATE TABLE `quotation` (
   `id_user_delete` int(11) NOT NULL DEFAULT '0',
   `date_quo_delete` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `quotation`
+--
+
+INSERT INTO `quotation` (`id_quo`, `versi_quo`, `id_request`, `no_quo`, `hal_quo`, `id_cp`, `up_cp`, `durasi_pengiriman`, `franco`, `durasi_pembayaran`, `mata_uang_pembayaran`, `dateline_quo`, `status_quo`, `id_user_add`, `date_quo_add`, `id_user_edit`, `date_quo_edit`, `id_user_delete`, `date_quo_delete`) VALUES
+(1, 1, 6, 'QUO-00001', 'Penawaran', 1, 'Bapak Joni', 5, 'Surabaya', 5, '', '2019-05-27', 2, 11, '2019-05-27 05:02:33', 0, NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -938,27 +1072,25 @@ CREATE TABLE `quotation_item` (
   `id_quotation` int(11) NOT NULL,
   `quo_version` int(11) NOT NULL,
   `id_request_item` int(11) NOT NULL,
+  `id_cp_shipper` int(11) NOT NULL,
+  `metode_shipping` varchar(200) NOT NULL,
+  `id_cp_vendor` int(11) NOT NULL,
+  `id_cp_courier` int(11) NOT NULL,
+  `metode_courier` varchar(200) NOT NULL,
   `item_amount` int(11) NOT NULL,
-  `selling_price` int(11) NOT NULL,
-  `margin_price` int(11) NOT NULL
+  `selling_price` bigint(20) NOT NULL,
+  `final_amount` int(11) NOT NULL DEFAULT '0',
+  `final_selling_price` bigint(20) NOT NULL DEFAULT '0',
+  `margin_price` decimal(10,3) NOT NULL,
+  `status_oc_item` int(11) NOT NULL DEFAULT '1' COMMENT '1 : ga di accept di OC; 0 yang fixed dipesen'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `quotation_item`
 --
 
-INSERT INTO `quotation_item` (`id_quotation_item`, `id_quotation`, `quo_version`, `id_request_item`, `item_amount`, `selling_price`, `margin_price`) VALUES
-(6, 1, 1, 16, 20, 2147483647, 2147483647),
-(7, 1, 1, 16, 20, 1000000000, 992973548),
-(8, 3, 1, 16, 20, 100000000, 94648086),
-(9, 4, 1, 16, 20, 2147483647, 0),
-(10, 3, 2, 16, 20, 0, -5351914),
-(23, 3, 2, 16, 20, 100000000, 92973548),
-(24, 3, 2, 16, 20, 100000000, 92973548),
-(25, 3, 2, 16, 20, 0, 0),
-(26, 3, 2, 16, 20, 100000000, 94648086),
-(27, 4, 3, 16, 20, 100000000, 94648086),
-(28, 4, 3, 15, 20, 10000000, 4648086);
+INSERT INTO `quotation_item` (`id_quotation_item`, `id_quotation`, `quo_version`, `id_request_item`, `id_cp_shipper`, `metode_shipping`, `id_cp_vendor`, `id_cp_courier`, `metode_courier`, `item_amount`, `selling_price`, `final_amount`, `final_selling_price`, `margin_price`, `status_oc_item`) VALUES
+(63, 1, 1, 42, 7, 'SEA', 3, 7, 'SEA', 20, 12345679999, 15, 1111111111111111, '12.188', 0);
 
 -- --------------------------------------------------------
 
@@ -967,6 +1099,7 @@ INSERT INTO `quotation_item` (`id_quotation_item`, `id_quotation`, `quo_version`
 --
 
 CREATE TABLE `satuan` (
+  `id_satuan` int(11) NOT NULL,
   `nama_satuan` varchar(200) NOT NULL,
   `status_satuan` int(11) NOT NULL DEFAULT '0',
   `id_user_add` int(11) NOT NULL,
@@ -981,9 +1114,14 @@ CREATE TABLE `satuan` (
 -- Dumping data for table `satuan`
 --
 
-INSERT INTO `satuan` (`nama_satuan`, `status_satuan`, `id_user_add`, `date_satuan_add`, `id_user_edit`, `date_satuan_edit`, `id_user_delete`, `date-satuan_delete`) VALUES
-('m', 0, 11, '2019-05-14 08:26:44', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-('Roll', 0, 11, '2019-05-13 20:52:30', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+INSERT INTO `satuan` (`id_satuan`, `nama_satuan`, `status_satuan`, `id_user_add`, `date_satuan_add`, `id_user_edit`, `date_satuan_edit`, `id_user_delete`, `date-satuan_delete`) VALUES
+(1, 'm', 0, 11, '2019-05-14 08:26:44', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(2, 'Pcs', 0, 11, '2019-06-02 19:58:37', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(3, 'Roll', 0, 11, '2019-05-13 20:52:30', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(4, 'Pcs', 0, 11, '2019-06-02 20:01:41', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(5, 'Pcs', 0, 11, '2019-06-02 20:01:41', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(6, 'Pcs', 0, 11, '2019-06-02 20:04:16', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(7, 'Pcs', 0, 11, '2019-06-02 20:04:16', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1016,7 +1154,8 @@ INSERT INTO `tipe_user` (`id_user`, `id_tipe`) VALUES
 (23, 0),
 (11, 3),
 (24, 0),
-(25, 0);
+(25, 0),
+(26, 0);
 
 -- --------------------------------------------------------
 
@@ -1056,9 +1195,10 @@ INSERT INTO `user` (`id_user`, `nama_user`, `email_user`, `nohp_user`, `password
 (20, 'Test Account ', 'testaccount@example.com', '123412341234', 'e10adc3949ba59abbe56e057f20f883e', 0, 11, '2019-05-13 14:51:48', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (21, 'Test Account ', 'testaccount@example.com', '123412341234', 'e10adc3949ba59abbe56e057f20f883e', 0, 11, '2019-05-13 14:53:16', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (22, 'test acount 2', 'testaccount2@gmail.com', '123412341234', 'e10adc3949ba59abbe56e057f20f883e', 0, 11, '2019-05-13 14:54:20', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(23, 'Test account 3', 'testacoount@gmail.com', '123412341234', 'e10adc3949ba59abbe56e057f20f883e', 0, 11, '2019-05-13 15:00:39', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(23, 'Test account 3', 'testacoount@gmail.com', '123412341234', 'e10adc3949ba59abbe56e057f20f883e', 1, 11, '2019-05-13 15:00:39', 0, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
 (24, 'Test Employee 444444444444444', 'asdf@gmail.com4444444444444444444', '123412344444444', 'e10adc3949ba59abbe56e057f20f883e', 1, 11, '2019-05-23 08:32:34', 11, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
-(25, 'test edit privilege', 'privilege@user.cin', '12341234', 'e10adc3949ba59abbe56e057f20f883e', 0, 11, '2019-05-23 09:37:40', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+(25, 'test edit privilege', 'privilege@user.cin', '12341234', 'e10adc3949ba59abbe56e057f20f883e', 1, 11, '2019-05-23 09:37:40', 0, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
+(26, 'Stevan Nathan W', 'stevannathanwijaya@yahoo.com', '1111111111111', 'e10adc3949ba59abbe56e057f20f883e', 0, 11, '2019-06-02 20:16:33', 11, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 --
 -- Triggers `user`
@@ -1112,7 +1252,10 @@ INSERT INTO `variable_courier_price` (`id_variable_courier`, `shipping_purpose`,
 (2, 'CUSTOMER', 'LAND', 7, 8, 'test 1 land customer', 123000, 321000, 0, 42, 11, '2019-05-19 22:21:02', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (3, 'CUSTOMER', 'SEA', 8, 9, 'Sea garuda asdf ', 102000, 12000, 0, 42, 11, '2019-05-19 22:43:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (4, 'CUSTOMER', 'SEA', 7, 8, 'test1 sea asf', 120000, 15000, 0, 42, 11, '2019-05-19 22:43:37', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(5, 'CUSTOMER', 'SEA', 7, 8, 'test1 sea asf 2', 14000, 11000, 0, 42, 11, '2019-05-19 22:43:37', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+(5, 'CUSTOMER', 'SEA', 7, 8, 'test1 sea asf 2', 14000, 11000, 0, 42, 11, '2019-05-19 22:43:37', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(6, 'CUSTOMER', 'AIR', 8, 9, 'courier 1', 12000, 12000, 0, 47, 11, '2019-06-03 02:30:23', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(7, 'CUSTOMER', 'AIR', 8, 9, 'courier barang 2', 12000, 11000, 0, 48, 11, '2019-06-03 02:31:45', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(8, 'CUSTOMER', 'LAND', 28, 16, 'barang 2 courier 1', 12000, 11000, 0, 48, 11, '2019-06-03 02:33:22', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1160,7 +1303,17 @@ INSERT INTO `variable_shipping_price` (`id_variable_shipping`, `id_supplier`, `s
 (13, 4, 'SUPPLIER', 'SEA', 7, 8, 'test1 sea keduasetelahpertama asdf 1', 154000, 12000, 0, 42, 11, '2019-05-19 20:18:18', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (14, 4, 'SUPPLIER', 'SEA', 7, 8, 'test1 sea keduasetelahpertama asdf 2', 18000, 17000, 0, 42, 11, '2019-05-19 20:18:18', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (15, 4, 'SUPPLIER', 'AIR', 8, 9, 'garuda air keduasetelahpertama asdf 1', 12300, 12000, 0, 42, 11, '2019-05-19 20:19:34', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(16, 4, 'SUPPLIER', 'AIR', 8, 9, 'garuda air keduasetelahpertama asdf 2', 15000, 14000, 0, 42, 11, '2019-05-19 20:19:34', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+(16, 4, 'SUPPLIER', 'AIR', 8, 9, 'garuda air keduasetelahpertama asdf 2', 15000, 14000, 0, 42, 11, '2019-05-19 20:19:34', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(17, 3, 'SUPPLIER', 'AIR', 8, 9, 'letsgo garuda stevan air 1', 120000, 15000, 0, 47, 11, '2019-06-03 02:23:55', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(18, 3, 'SUPPLIER', 'AIR', 8, 9, 'letsgo garuda stevan air 2', 14000, 11000, 0, 47, 11, '2019-06-03 02:23:55', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(19, 3, 'SUPPLIER', 'LAND', 27, 16, 'letsgo lion rojo land 1', 15000, 12000, 0, 47, 11, '2019-06-03 02:24:39', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(20, 3, 'SUPPLIER', 'LAND', 27, 16, 'letsgo lion rojo land 2', 12000, 12000, 0, 47, 11, '2019-06-03 02:24:39', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(21, 3, 'SUPPLIER', 'AIR', 27, 16, 'letsgo lion rojo air 1', 12000, 11000, 0, 47, 11, '2019-06-03 02:25:57', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(22, 3, 'SUPPLIER', 'AIR', 27, 16, 'letsgo lion rojo air 2', 10000, 9000, 0, 47, 11, '2019-06-03 02:25:57', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(23, 3, 'SUPPLIER', 'AIR', 27, 16, 'letsgo lion rojo air 3', 15000, 12000, 0, 47, 11, '2019-06-03 02:25:57', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(24, 4, 'SUPPLIER', 'SEA', 28, 16, 'PT KEDUA SETELAH PERTAMA lion rojo sea 1', 12000, 100, 0, 47, 11, '2019-06-03 02:27:08', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(25, 4, 'SUPPLIER', 'SEA', 28, 16, 'PT KEDUA SETELAH PERTAMA lion rojo sea 2', 16000, 12000, 0, 47, 11, '2019-06-03 02:27:08', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(26, 15, 'SUPPLIER', 'AIR', 28, 16, 'PT Microsoft Indonesia lion air 1', 12000, 7700, 0, 48, 11, '2019-06-03 02:29:24', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 --
 -- Indexes for dumped tables
@@ -1197,10 +1350,22 @@ ALTER TABLE `menu`
   ADD PRIMARY KEY (`id_menu`);
 
 --
+-- Indexes for table `metode_pembayaran`
+--
+ALTER TABLE `metode_pembayaran`
+  ADD PRIMARY KEY (`id_metode_pembayaran`);
+
+--
 -- Indexes for table `metode_pengiriman_shipping`
 --
 ALTER TABLE `metode_pengiriman_shipping`
   ADD PRIMARY KEY (`id_perusahaan`,`metode_pengiriman`);
+
+--
+-- Indexes for table `order_confirmation`
+--
+ALTER TABLE `order_confirmation`
+  ADD PRIMARY KEY (`id_oc`);
 
 --
 -- Indexes for table `perusahaan`
@@ -1254,7 +1419,7 @@ ALTER TABLE `quotation_item`
 -- Indexes for table `satuan`
 --
 ALTER TABLE `satuan`
-  ADD PRIMARY KEY (`nama_satuan`);
+  ADD PRIMARY KEY (`id_satuan`);
 
 --
 -- Indexes for table `success_project`
@@ -1288,25 +1453,25 @@ ALTER TABLE `variable_shipping_price`
 -- AUTO_INCREMENT for table `contact_person`
 --
 ALTER TABLE `contact_person`
-  MODIFY `id_cp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_cp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `harga_vendor`
 --
 ALTER TABLE `harga_vendor`
-  MODIFY `id_harga_vendor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_harga_vendor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `log_privilage`
 --
 ALTER TABLE `log_privilage`
-  MODIFY `id_log_privilage` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=245;
+  MODIFY `id_log_privilage` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=280;
 
 --
 -- AUTO_INCREMENT for table `log_user`
 --
 ALTER TABLE `log_user`
-  MODIFY `id_log_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id_log_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `menu`
@@ -1315,46 +1480,58 @@ ALTER TABLE `menu`
   MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
+-- AUTO_INCREMENT for table `metode_pembayaran`
+--
+ALTER TABLE `metode_pembayaran`
+  MODIFY `id_metode_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `perusahaan`
 --
 ALTER TABLE `perusahaan`
-  MODIFY `id_perusahaan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_perusahaan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `price_request`
 --
 ALTER TABLE `price_request`
-  MODIFY `id_request` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_request` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `price_request_item`
 --
 ALTER TABLE `price_request_item`
-  MODIFY `id_request_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id_request_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `privilage`
 --
 ALTER TABLE `privilage`
-  MODIFY `id_privilage` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=225;
+  MODIFY `id_privilage` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=236;
 
 --
 -- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
-  MODIFY `id_produk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_produk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `produk_vendor`
 --
 ALTER TABLE `produk_vendor`
-  MODIFY `id_produk_vendor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_produk_vendor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `quotation_item`
 --
 ALTER TABLE `quotation_item`
-  MODIFY `id_quotation_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id_quotation_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+
+--
+-- AUTO_INCREMENT for table `satuan`
+--
+ALTER TABLE `satuan`
+  MODIFY `id_satuan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `success_project`
@@ -1366,19 +1543,19 @@ ALTER TABLE `success_project`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `variable_courier_price`
 --
 ALTER TABLE `variable_courier_price`
-  MODIFY `id_variable_courier` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_variable_courier` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `variable_shipping_price`
 --
 ALTER TABLE `variable_shipping_price`
-  MODIFY `id_variable_shipping` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_variable_shipping` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

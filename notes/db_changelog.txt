@@ -1,0 +1,41 @@
+seharusnya:
+-pilih item -> pilih supplier -> pilih shipper
+-pilih item -> pilih courier
+[pilih item] - (id_item_request) -> load supplier [pilih supplier] - (id_item_request, id_supplier) -> load shipper
+[pilih item] - (id_item_request) -> load courier
+=====================================
+Job to do: menampilkan barang yang hanya sudah ada harga supplier, shipping, courier
+crm/quotation/create
+strategy:
+-bikin inner join ke tabel-tabel terkait pada saat ajax terpanggil => trigger ajax adalah perubahaan pada id request 
+*ajax: detailPriceRequest()
+*php :crm/request/getRequestDetail
+changelog:
+-merubah function 
+	before: $this->Mdprice_request_item->select(where)
+	after : $this->Mdprice_request_item->selectFullPrice(where)
+
+-menambah function di Mdprice_request_item
+status: done
+=====================================
+Important and Big mission
+=====================================
+merubah struktur DB table harga vendor
+table id_cp -> id_perusahaan (sebagai key)
++table id_cp (sebagai penunjuk aja, selected kalau uda kedaftar)
+
+======================
+* = done
+- = to do list
+changelog:
+*tambahin tabel perusahaan (kasih komen)
+*ubah bagian insert harga vendor (php crm/vendor/insertvendorprice())
+*ubah bagian insert harga vendor (ajax submitData(counterId))
+*ubah bagian ngeload data table vendor (php (crm/vendor/getvendorprice())-> hasil panggil ajax (loadVendorPrice()))
+*tambahin cara transfer id perusahaan
+-ubah bagian select di select di harga vendor
+
+status: done
+
+
+

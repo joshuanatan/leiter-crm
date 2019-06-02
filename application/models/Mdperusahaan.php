@@ -22,6 +22,8 @@ class Mdperusahaan extends CI_Model{
         $this->db->join("perusahaan","perusahaan.id_perusahaan = produk_vendor.id_perusahaan","inner");
         $this->db->join("contact_person","contact_person.id_perusahaan = perusahaan.id_perusahaan","inner");
         $this->db->group_by("perusahaan.id_perusahaan");
+        $this->db->where("status_produk_vendor",0);
+        $this->db->where("status_perusahaan",0);
         return $this->db->get_where("price_request_item",$data);
     }
 }

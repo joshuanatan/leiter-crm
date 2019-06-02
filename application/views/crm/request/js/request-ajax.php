@@ -9,7 +9,7 @@ function getContactPerson(){
             type: "POST",
             dataType:"JSON",
             success:function(respond){
-                $("#cpperusahaan").append(respond);
+                $("#cpperusahaan").html(respond);
             }
         });
     });

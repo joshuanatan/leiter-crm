@@ -23,5 +23,17 @@ class Mdprice_request_item extends CI_Model{
     public function delete($where){
         $this->db->delete("price_request_item",$where);
     }
+    public function selectFullPrice($where){
+        $this->db->join("price_request","price_request.id_request = price_request_item.id_request","inner");
+        $this->db->join("produk","produk.id_produk = price_request_item.id_produk","inner");
+        $this->db->join("produk_vendor","produk_vendor.id_produk = produk.id_produk","inner");
+        $this->db->join("perusahaan","perusahaan.id_perusahaan = produk_vendor.id_perusahaan","inner");
+        $this->db->join("contact_person","contact_person.id_perusahaan = perusahaan.id_perusahaan","inner");
+        $this->db->join("harga_vendor","harga_vendor.id_request_item = price_request_item.id_request_item","inner");
+        $this->db->join("variable_shipping_price","variable_shipping_price.id_request_item = price_request_item.id_request_item","inner");
+        $this->db->join("variable_courier_price","variable_courier_price.id_request_item = price_request_item.id_request_item","inner");
+        $this->db->group_by("price_request_item.id_request_item");
+        return $this->db->get_where("price_request_item",$where);
+    }
 }
 ?>

@@ -60,6 +60,7 @@ function loadVendors(){
     $(document).ready(function(){
         $("#primaryData").attr("disabled","true");
         var id_request_item = $("#itemsOrdered").val();
+        alert(id_request_item);
         //alert(id_request_item);
         $.ajax({
             url:"<?php echo base_url();?>crm/vendor/getShippers",
@@ -67,7 +68,7 @@ function loadVendors(){
             dataType: "JSON",
             type: "POST",
             success:function(respond){
-                $("#shippers").html(respond);
+                //$("#shippers").html(respond);
             }
         });
         $.ajax({
@@ -123,6 +124,9 @@ function getShippingPrice(){
 function getVendorPrice(){
     $(document).ready(function(){
         var id_perusahaan = $("#products").val();
+        var id_request_item = $("#itemsOrdered").val();
+        alert(id_perusahaan);
+        alert(id_request_item);
         //alert(id_perusahaan);
         $.ajax({
             data:{id_perusahaan:id_perusahaan},
@@ -131,6 +135,16 @@ function getVendorPrice(){
             type: "POST",
             success:function(respond){
                 $("#hargaProduk").val(respond);
+                /*harus ngisi shipper*/
+                $.ajax({
+                    data:{id_perusahaan:id_perusahaan,id_request_item:id_request_item},
+                    url: "<?php echo base_url();?>crm/vendor/getShipper",
+                    dataType: "JSON",
+                    type: "POST",
+                    success:function(respond){
+                        $("#shippers").html(respond);
+                    }
+                })
             }
         }); 
     }); 

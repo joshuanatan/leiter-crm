@@ -29,11 +29,17 @@ class Mdharga_vendor extends CI_Model{
     }
     public function selectVendorItem($where){
 
-        $this->db->join("contact_person","contact_person.id_cp = harga_vendor.id_cp","inner");
-        $this->db->join("perusahaan","contact_person.id_perusahaan = perusahaan.id_perusahaan","inner");
+        //$this->db->join("contact_person","contact_person.id_cp = harga_vendor.id_cp","inner");
+        $this->db->select("harga_vendor.id_perusahaan,perusahaan.nama_perusahaan");
+        $this->db->join("perusahaan","harga_vendor.id_perusahaan = perusahaan.id_perusahaan","inner");
+        $this->db->join("price_request_item","price_request_item.id_request_item = harga_vendor.id_request_item","inner");
+        $this->db->join("produk","produk.id_produk = price_request_item.id_produk","inner");
+        $this->db->join("produk_vendor","produk_vendor.id_produk = produk.id_produk","inner");
         $this->db->group_by("perusahaan.id_perusahaan");
         return $this->db->get_where("harga_vendor",$where);
-        
+        /*
+        select * from harga_vendor inner join perusahaan on harga_vendor.id_perusahaan = perusahaan.id_perusahaan inner join price_request_item on price_request_item.id_request_item = harga_vendor.id_request_item inner join produk on produk.id_produk = price_request_item.id_produk inner join produk_vendor on produk_vendor.id_produk = produk.id_produk where harga_vendor.id_request_item = 42 group by perusahaan.id_perusahaan
+        */
     }
     public function countPrice($where){
         $this->db->select("(harga_produk*vendor_price_rate/satuan_harga_produk) as 'total'");

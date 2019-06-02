@@ -1,0 +1,59 @@
+Keterangan:
+* = sudah bisa
+- = belum bisa
+
+MASTER DATA
+==========================================================================================
+produk:
+*add produk
+-edit produk
+-view produk
+
+customer:
+*add perusahaan + contact person
+*edit perusahaan
+*lihat contact person
+*edit contact person
+*tambah contact person perusahaan
+
+vendor/product:
+*add perusahaan + contact person
+*edit perusahaan
+*lihat contact person
+*edit contact person
+*tambah contact person perusahaan
+*lihat item
+*tambahin item yang ada di catalog leiter, ke catalog vendor
+-tambahin item baru ke catalog vendor (tidak ketambah di catalog produk sendiri)
+-edit product catalog vendor
+
+vendor/shipping:
+*add perusahaan + contact person + method	
+*edit perusahaan
+*lihat contact person
+*tambah contact person perusahaan
+*edit contact person perusahaan
+
+user/employee:
+*add employee + privilege
+*edit privilege
+*edit employee
+*delete employee
+
+CRM
+==========================================================================================
+price request:
+*add price request
+*edit detail price request
+-list produk dalam detail price request
+
+=================================================================
+*relationship mapping , item request, supplier, shipper, courier*
+1 request - many item request
+each item request - many supplier
+each item request - many courier
+each supplier - many shipping
+*						 		*
+=================================================================
+
+
