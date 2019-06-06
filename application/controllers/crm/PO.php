@@ -53,7 +53,6 @@ class PO extends CI_Controller{
         $this->load->view("req/html-close");
     }
     public function create(){
-        
         $this->req();
         $this->load->view("crm/content-open");
         $this->load->view("crm/po/category-header");
@@ -66,6 +65,22 @@ class PO extends CI_Controller{
         $this->load->view("crm/content-open");
         $this->load->view("crm/po/category-header");
         $this->load->view("crm/po/setting-po");
+        $this->load->view("crm/content-close");
+        $this->close();
+    }
+    public function settingstock(){
+        $this->req();
+        $this->load->view("crm/content-open");
+        $this->load->view("crm/po/category-header");
+        $this->load->view("crm/po/setting-stock");
+        $this->load->view("crm/content-close");
+        $this->close();
+    }
+    public function stock(){
+        $this->req();
+        $this->load->view("crm/content-open");
+        $this->load->view("crm/po/category-header");
+        $this->load->view("crm/po/add-po-stock");
         $this->load->view("crm/content-close");
         $this->close();
     }

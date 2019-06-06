@@ -2,26 +2,34 @@
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-            <button data-target="#exampleAccrodionModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button">
+            <a href = "<?php echo base_url();?>crm/od/create" class="btn btn-outline btn-primary">
                 <i class="icon wb-plus" aria-hidden="true"></i> Add Order Delivery
-            </button>
+            </a>
             </div>
         </div>
     </div>
-    <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" id="exampleAddRow">
+    <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin="dataTable">
         <thead>
             <tr>
-                <th>Rendering engine</th>
-                <th>Browser</th>
-                <th>Platform(s)</th>
+                <th>Order Delivery ID</th>
+                <th>Order Confirmation ID</th>
+                <th>Customer Purchase Order ID</th>
+                <th>Customer Firm</th>
+                <th>Courier</th>
+                <th>Franco</th>
+                <th>Date Issued</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             <tr class="gradeA">
-                <td>Trident</td>
-                <td>Internet Explorer 5.5</td>
-                <td>Win 95+</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td class="actions">
                     
                     <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>

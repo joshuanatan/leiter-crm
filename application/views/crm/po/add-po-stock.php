@@ -1,21 +1,13 @@
 <div class="panel-body col-lg-12">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="mb-15">
-                <a class = "btn btn-primary btn-outline" href = "<?php echo base_url();?>crm/po/create">Create Purchase Order</a>
-                <a class = "btn btn-primary btn-outline" href = "<?php echo base_url();?>crm/po/stock">Purchase Order for Stock</a>
-            </div>
-        </div>
-    </div>
+    
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <!-- List OC yang sudah di selesaikan -->
         <thead>
             <tr>
-                <th>Purchase Order ID</th>
-                <th>Supplier Firm</th>
-                <th>Shipper Firm</th>
+                <th>Order Confirmation ID</th>
+                <th>Customer PO No</th>
+                <th>Customer Firm</th>
                 <th>Items Amount</th>
-                <th>Issued Date</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -25,9 +17,8 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
                 <td class="actions">
-                    <button class = "btn btn-outline btn-success" data-content="View PO Details" data-trigger="hover" data-toggle="popover"><i class = "icon wb-menu" data-toggle="modal" data-target="#DetailPO" aria-hidden="true"></i></button>
+                    <a href = "<?php echo base_url();?>crm/po/settingstock/"class = "btn btn-outline btn-success" data-content="Setting PO" data-trigger="hover" data-toggle="popover"><i class = "icon wb-menu" data-toggle="modal" data-target="#DetailPO" aria-hidden="true"></i></a>
                 </td>
             </tr>
         </tbody>
