@@ -45,9 +45,10 @@ function submitData(counterId){
         var uom = $("#satuan_harga_produk"+counterId).val();
         var rate = $("#vendor_price_rate"+counterId).val();
         var id_perusahaan = $("#idperusahaan"+counterId).val();
+        var mata_uang = $("#matauang"+counterId).val();
         $.ajax({
             url:"<?php echo base_url()?>crm/vendor/insertvendorprice/",
-            data:{idcp:idcp,id_request_item:id_request_item,price:price,uom:uom,rate:rate,id_perusahaan:id_perusahaan},
+            data:{idcp:idcp,id_request_item:id_request_item,price:price,uom:uom,rate:rate,id_perusahaan:id_perusahaan,mata_uang:mata_uang},
             type: "POST",
             success:function(respond){
 

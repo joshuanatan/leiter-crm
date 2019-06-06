@@ -44,7 +44,6 @@
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Nama Customer</h5>
                                     <input name = "" type ="text" class = "form-control namaCust" readonly>
-                                    <input name = "id_cp" value = "<?php echo $a->id_cp;?>" type ="hidden" class = "form-control" id ="idCust" readonly>
                                 </div>
                             </div>
                             <!-- fungsi -->

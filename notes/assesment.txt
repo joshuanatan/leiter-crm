@@ -51,7 +51,7 @@ price request:
 *relationship mapping , item request, supplier, shipper, courier*
 1 request - many item request
 each item request - many supplier
-each item request - many courier
+each item request - many courier 
 each supplier - many shipping
 *						 		*
 =================================================================

@@ -114,7 +114,8 @@ class Quotation extends CI_Controller{
                 "status_quo" => 0  
             ),
             "price_request" => array(
-                "price_request.status_request" => 3
+                "price_request.status_request" => 3,
+                "status_buatquo" => 1
             ),
         );
         $data = array(
@@ -174,6 +175,14 @@ class Quotation extends CI_Controller{
             );
             $this->Mdmetode_pembayaran->insert($data);
         }
+        /*update status buat quotation di price request supaya gabisa dibuat ulang yang udah pernah dibuat*/
+        $where = array(
+            "id_request" => $this->input->post("id_quo")
+        );
+        $data = array(
+            "status_buatquo" => 0
+        );
+        $this->Mdquotation->update($data,$where);
         redirect("crm/quotation");
     }
     public function loss($id,$ver){

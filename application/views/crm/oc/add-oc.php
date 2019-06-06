@@ -50,7 +50,7 @@
                             <div class="tab-pane" id="items" role="tabpanel">
                                 
                                 <div class = "form-group col-lg-12">
-                                    <table class = "table table-stripped col-lg-12" style = "width:100%" data-plugin = "dataTable">
+                                    <table class = "table table-stripped col-lg-12" style = "width:100%">
                                         <thead>
                                             <th>#</th>
                                             <th>Product Name</th>
@@ -102,8 +102,8 @@
                             <div class="tab-pane" id="detail" role="tabpanel">
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">No OC</h5>
-                                    <input value = "OC-<?php echo sprintf("%05d",$maxId);?>" type ="text" class = "form-control" readonly> <!-- keisi sendiri dari db max(), bentuknya berformat -->
-                                    <input value = "" type ="hidden" name = "no_oc" class = "form-control" readonly> <!-- buat isi dalam bentuk angka -->
+                                    <input name ="no_oc" value = "OC-<?php echo sprintf("%05d",$maxId);?>" type ="text" class = "form-control" readonly> <!-- keisi sendiri dari db max(), bentuknya berformat -->
+                                    <input value = "<?php echo $maxId;?>" type ="hidden" name = "id_oc" class = "form-control" readonly> <!-- buat isi dalam bentuk angka -->
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">No PO</h5>

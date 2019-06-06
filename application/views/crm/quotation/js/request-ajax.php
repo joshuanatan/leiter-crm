@@ -60,7 +60,7 @@ function loadVendors(){
     $(document).ready(function(){
         $("#primaryData").attr("disabled","true");
         var id_request_item = $("#itemsOrdered").val();
-        alert(id_request_item);
+        //alert(id_request_item);
         //alert(id_request_item);
         $.ajax({
             url:"<?php echo base_url();?>crm/vendor/getShippers",
@@ -125,8 +125,8 @@ function getVendorPrice(){
     $(document).ready(function(){
         var id_perusahaan = $("#products").val();
         var id_request_item = $("#itemsOrdered").val();
-        alert(id_perusahaan);
-        alert(id_request_item);
+        //alert(id_perusahaan);
+        //alert(id_request_item);
         //alert(id_perusahaan);
         $.ajax({
             data:{id_perusahaan:id_perusahaan},

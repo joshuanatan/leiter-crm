@@ -51,13 +51,14 @@
                     </select>
                 </div>
             </div>
-            <table class="table table-bordered table-hover table-striped w-full"  cellspacing="0" data-plugin = "dataTable">
+            <table class="table table-bordered table-hover table-striped w-full"  cellspacing="0">
                 <thead>
                     <tr>
                         <th>Variable Name</th>
                         <th>Variable Cost</th>
                         <th>Variable Rate</th>
                         <th>Variable Total Cost</th>
+                        <th>Variable Currency</th>
                         <th>Action</th>
                     </tr>
                 </thead>

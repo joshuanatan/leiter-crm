@@ -6,10 +6,10 @@ class PO extends CI_Controller{
     }
     private function req(){
         $this->load->view("req/head");
-        $this->load->view("crm/po/css/datatable-css");
-        $this->load->view("crm/po/css/breadcrumb-css");
-        $this->load->view("crm/po/css/modal-css");
-        $this->load->view("crm/po/css/form-css");
+        $this->load->view("plugin/datatable/datatable-css");
+        $this->load->view("plugin/breadcrumb/breadcrumb-css");
+        $this->load->view("plugin/modal/modal-css");
+        $this->load->view("plugin/form/form-css");
         $this->load->view("req/head-close");
         $this->load->view("crm/crm-open");
         $this->load->view("req/top-navbar");
@@ -25,9 +25,9 @@ class PO extends CI_Controller{
     }
     public function close(){
         $this->load->view("req/script");
-        $this->load->view("crm/po/js/jqtabledit-js");
-        $this->load->view("crm/po/js/page-datatable-js");
-        $this->load->view("crm/po/js/form-js");
+        $this->load->view("plugin/form/form-js");
+        $this->load->view("plugin/datatable/page-datatable-js");
+        $this->load->view("plugin/tabs/tabs-js");
         $this->load->view("crm/crm-close");
         $this->load->view("req/html-close");
     }
@@ -51,6 +51,23 @@ class PO extends CI_Controller{
         $this->load->view("detail/js/detail-js");
         $this->load->view("detail/detail-close");
         $this->load->view("req/html-close");
+    }
+    public function create(){
+        
+        $this->req();
+        $this->load->view("crm/content-open");
+        $this->load->view("crm/po/category-header");
+        $this->load->view("crm/po/add-po");
+        $this->load->view("crm/content-close");
+        $this->close();
+    }
+    public function setting(){
+        $this->req();
+        $this->load->view("crm/content-open");
+        $this->load->view("crm/po/category-header");
+        $this->load->view("crm/po/setting-po");
+        $this->load->view("crm/content-close");
+        $this->close();
     }
 }
 ?>

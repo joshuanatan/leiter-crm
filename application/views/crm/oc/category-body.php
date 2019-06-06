@@ -21,11 +21,11 @@
         <tbody>
             <?php foreach($oc->result() as $a){ ?>
             <tr>
-                <td><?php echo $a->id_oc;?></td>>
-                <td><?php echo $a->id_quo;?></td>>
-                <td><?php echo $a->versi_quotation;?></td>>
-                <td><?php echo $a->no_po_customer;?></td>>
-                <td><?php echo $a->id_oc;?></td>>
+                <td><?php echo $a->id_oc;?></td>
+                <td><?php echo $a->id_quo;?></td>
+                <td><?php echo $a->versi_quotation;?></td>
+                <td><?php echo $a->no_po_customer;?></td>
+                <td><?php echo $a->id_oc;?></td>
             </tr>     
             <?php
             }

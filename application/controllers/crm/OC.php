@@ -83,18 +83,18 @@ class OC extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
-
     /*function*/
     public function insertoc(){
         /*data OC*/
         $data = array(
             "id_quotation" => $this->input->post("id_quotation"),
+            "id_oc" => $this->input->post("id_oc"),
             "no_oc" => $this->input->post("no_oc"),
             "versi_quotation" => $this->input->post("versi_quo"),
             "no_po_customer" => $this->input->post("no_po"),
             "id_user_add" => $this->session->id_user
         );
-        //$this->Mdorder_confirmation->insert($data);
+        $this->Mdorder_confirmation->insert($data);
         $items = array(
             $this->input->post("id_quotation_item"),
             $this->input->post("amount"),

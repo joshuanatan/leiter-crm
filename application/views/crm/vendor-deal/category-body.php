@@ -6,7 +6,7 @@
             </div>
         </div>
     </div>
-    <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" id="exampleAddRow">
+    <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
                 <th>Request ID</th>

@@ -19,6 +19,7 @@
                 <th style = "width:15%">Price</th>
                 <th style = "width:10%">Rate</th>
                 <th style = "width:10%">UOM</th>
+                <th style = "width:10%">Currency</th>
                 <th style = "width:10%">Shipping Price</th>
                 <th style = "width:10%">Actions</th>
             </tr>
