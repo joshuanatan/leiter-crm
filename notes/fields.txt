@@ -1,0 +1,134 @@
+tambahin kursnya ini
+
+variable shipping price
+-tambahin kolom database dan default
+-fungsi insert sudah ada
+-tambahin form di insert, name form = "mata_uang"
+
+variable courier price
+-tambahin kolom database dan default
+-fungsi insert sudah
+
+harga vendor
+-tambahin kolom database dan default
+-fungsi insert sudah
+
+==================================================================
+PO: (table)
+-category body:
+*id po
+*id supplier
+*jumlah jenis item
+*id shipper
+*dateline supplier
+*dateline shipper
+*action
+•generate dokumen (ilang setelah send)
+•send to supplier
+•edit (ilang stelah send)
+•delete (ilang setelah send)
+
+-add-po: (table)
+*id oc
+*nama perusahaan
+*nama customer
+*no po customer
+*tgl oc
+*action:
+•create PO
+
+-create-po: 
+[Tab primary data] (form)
+*id oc (readonly)
+*nama perusahaan (readonly)
+*nama cust (readonly)
+*no po customer (readonly)
+
+[Tab items] (table)
+*nama item (td)
+*nama supplier (dropdown)
+*b/n supplier (ajax readonly)
+*harga (ajax) (sebelum kurs)
+*kurs (ajax)
+*dateline supplier
+*nama shipper (dropdown)
+*metode pengiriman (ajax dropdown)
+*harga (ajax) (sebelum kurs)
+*kurs (ajax)
+*dateline shippiling
+
+[Tab dokumen] (form)
+•liat dokumen yang uda jadi•
+
+-stock PO
+*id price request (dropdown)
+*ordered items (table)
+•nama barang
+•Id supplier
+•nama supplier
+•bn supplier
+•nama brg supplier
+•Amount
+•harga
+•rate
+•mata uang
+•dateline
+•id shipper
+•nama shipper
+•metode sjipper
+•harga
+•rate
+•dateline
+•mata uang
+
+Delivery order
+-category body:
+*id od
+*id oc
+*id po customer
+*jumlah jenis item
+*tgl dikeluarkan
+*franco
+*nama perusahaan
+*action:
+•generate dokumen
+•send
+•edit
+•delete
+
+-add-od:
+[Tab primary data]
+*id oc
+*id po
+*nama perusahaan
+*jumlah jenis barang
+*franco
+
+[Tab courier]
+*id courier (drop down)
+*nama courier
+*metode pengiriman
+*items (table)
+•id item
+•nama item
+•amount (editable, ajax)
+•biaya pengantaran (editable, ajax)
+•kurs (default 1)
+•mata uang (default idr)
+
+[Tab dokumen]
+*liat dokumen yang uda jadi•
+
+Invoice
+-category body:
+*id invoice
+*nominal
+*rate
+*mata uang
+*nama perusahaan
+*tanggal keluar
+*action:
+•generate dokumen
+•send
+•edit
+•delete

@@ -21,14 +21,16 @@
         </thead>
         <tbody>
             <tr class="gradeA">
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <?php for($a = 0; $a<count($purchase_order);$a++): ?>
+                <td><?php echo $purchase_order[$a]["no_po"];?></td>
+                <td><?php echo $purchase_order[$a]["supplier"];?></td>
+                <td><?php echo $purchase_order[$a]["shipper"];?></td>
+                <td><?php echo $purchase_order[$a]["items_amount"];?></td>
+                <td><?php echo $purchase_order[$a]["issued_date"];?></td>
                 <td class="actions">
                     <button class = "btn btn-outline btn-success" data-content="View PO Details" data-trigger="hover" data-toggle="popover"><i class = "icon wb-menu" data-toggle="modal" data-target="#DetailPO" aria-hidden="true"></i></button>
                 </td>
+                <?php endfor; ?>
             </tr>
         </tbody>
     </table>

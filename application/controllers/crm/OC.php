@@ -45,27 +45,6 @@ class OC extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
-    public function detail(){
-        $this->load->view("req/head");
-        $this->load->view("detail/css/detail-css");
-        $this->load->view("req/head-close");
-        $this->load->view("detail/detail-open");
-        $this->load->view("req/top-navbar");
-        $this->load->view("req/navbar");
-        /*--------------------------------------------------------*/
-        $this->load->view("detail/content-open");
-        $this->load->view("detail/oc/profile");
-        $this->load->view("detail/tab-open");
-        $this->load->view("detail/oc/tab-item");
-        $this->load->view("detail/oc/tab-content");
-        $this->load->view("detail/tab-close");
-        $this->load->view("detail/content-close");
-        /*--------------------------------------------------------*/
-        $this->load->view("req/script");
-        $this->load->view("detail/js/detail-js");
-        $this->load->view("detail/detail-close");
-        $this->load->view("req/html-close");
-    }
     public function create(){
         $where = array(
             "oc" => array(
@@ -125,6 +104,14 @@ class OC extends CI_Controller{
             );
             $this->Mdquotation_item->update($data,$where);
         }
+        $where = array(
+            "id_quotation" => $this->input->post("id_quotation"),
+            "versi_quotation" => $this->input->post("versi_quo"),
+        );
+        $data = array(
+            "status_quo" => 3 /*yang udah create oc, ditandain*/
+        );
+        $this->Mdquotation->update($data,$where);
         redirect("crm/oc");
     }   
 }

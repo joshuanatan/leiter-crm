@@ -363,7 +363,8 @@ class Vendor extends CI_Controller{
     public function getShipperPrice(){ /*ini yang ajax di quotation*/
         $where = array(
             "variable_shipping_price.id_request_item" => $this->session->id_request_item,
-            "variable_shipping_price.id_perusahaan" => $this->input->post("id_cp"),//harusnya id perusahaan
+            "variable_shipping_price.id_supplier" => $this->input->post("id_supplier"),
+            "variable_shipping_price.id_perusahaan" => $this->input->post("id_cp"),//harusnya id perusahaan si shippernya
             "variable_shipping_price.metode_pengiriman" => $this->input->post("metode_pengiriman"),
             "status_variable" => 0
         );
@@ -421,6 +422,70 @@ class Vendor extends CI_Controller{
             }
         }
         echo json_encode($echo);
+        
+    }
+    public function getSupplierPriceWithResult(){
+        //echo $this->input->post("id_perusahaan");
+        $where = array(
+            "harga_vendor.id_request_item" => $this->input->post("id_request_item"),
+            "harga_vendor.id_perusahaan" => $this->input->post("id_perusahaan"),
+        );
+        $result = $this->Mdharga_vendor->select($where);
+        $final = array();
+        switch(strtolower($this->input->post("result"))){
+            case "html":
+            break;
+            case "array":
+                foreach($result->result() as $a){
+                    $final = array(
+                        $a->harga_produk,
+                        $a->vendor_price_rate,
+                        $a->mata_uang,
+                        $a->satuan_harga_produk,
+                        $a->nama_perusahaan,
+                        $a->alamat_perusahaan
+                    );
+                }
+            break;
+        }
+        echo json_encode($final);
+    }
+    public function getShipperWithResult(){
+        $where = array(
+            "id_request_item" => $this->input->post("id_request_item"),
+            "id_supplier" => $this->input->post("id_supplier"),
+        );
+        $result = $this->Mdvariable_shipping_price->selectVendorShipping($where);
+        $final = array();
+        $count = 0;
+        switch(strtolower($this->input->post("result"))){
+            case "html":
+            break;
+            case "array":
+            foreach($result->result() as $a){
+                $final[$count] = array(
+                    "id_shipper" => $a->id_perusahaan,
+                    "nama_shipper" => $a->nama_perusahaan,
+                    "metode_pengiriman" => $a->metode_pengiriman
+                );  
+                $count++;
+            }
+            break;
+        }
+        echo json_encode($final);
+    }
+    public function getShipperPriceWithResult(){
+        $where = array(
+            "id_request_item" => $this->input->post("id_request_item"),
+            "id_supplier" => $this->input->post("id_supplier"),
+            "metode_pengiriman"=> $this->input->post("metode_pengiriman"),
+            "id_perusahaan"=> $this->input->post("id_perusahaan")
+        );
+        $result = $this->Mdvariable_shipping_price->countPrice($where);
+        $final = array();
+        $final += convertResultToKeyValueArray($result);
+        $final += ["currency" => "IDR"];
+        echo json_encode($final);
         
     }
     /*function*/

@@ -112,20 +112,33 @@ class Request extends CI_Controller{
     }
     public function insert(){
         $name = array("id_request","tgl_dateline_request","id_perusahaan","id_cp","id_user_add","franco");
-        $data = array(
-            $name[0] => $this->input->post($name[0]),
-            $name[1] => $this->input->post($name[1]),
-            $name[2] => $this->input->post($name[2]),
-            $name[3] => $this->input->post($name[3]),
-            $name[4] => $this->session->id_user,
-            $name[5] => $this->input->post($name[5]),
-
-        );
+        $stock = 1;
+        foreach($this->input->post("requeststock") as $a){
+            $stock = 0;
+            $data = array(
+                $name[0] => $this->input->post($name[0]),
+                $name[1] => $this->input->post($name[1]),
+                $name[2] => 0,
+                $name[3] => 0,
+                $name[4] => $this->session->id_user,
+                $name[5] => $this->input->post($name[5]),
+                "untuk_stock" => 0
+            );
+        }
+        if($stock == 1){
+            $data = array(
+                $name[0] => $this->input->post($name[0]),
+                $name[1] => $this->input->post($name[1]),
+                $name[2] => $this->input->post($name[2]),
+                $name[3] => $this->input->post($name[3]),
+                $name[4] => $this->session->id_user,
+                $name[5] => $this->input->post($name[5]),
+            );
+        }
         $this->Mdprice_request->insert($data);
-        echo 
         $result = $this->input->post($name[0]);
-        echo "hello";
-        /* ------- insert barangnya --------- */$name = array("id_produk","jumlah_produk");
+        /* ------- insert barangnya --------- */
+        $name = array("id_produk","jumlah_produk");
         $produk = array();
         $jumlah = array();
         /*tujuannya mau ngisi kedua array ini */

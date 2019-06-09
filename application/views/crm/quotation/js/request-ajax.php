@@ -58,6 +58,12 @@ function detailPriceRequestPageEdit(){
 <script>
 function loadVendors(){
     $(document).ready(function(){
+        $("#itemamount").val("");
+        $("#hargaProduk").val("");
+        $("#hargashipping").val("");
+        $("#hargaCourier").val("");
+        $("#totalMargin").val("");
+        $("#inputNominal").val("");
         $("#primaryData").attr("disabled","true");
         var id_request_item = $("#itemsOrdered").val();
         //alert(id_request_item);
@@ -103,13 +109,14 @@ function loadVendors(){
 </script>
 <script>
 function getShippingPrice(){
-    
+    $("#hargashipping").val("");
     $(document).ready(function(){
         var id_perusahaan = $("#shippers").val();
+        var id_supplier = $("#products").val();
         //alert(id_perusahaan);
         var comp = id_perusahaan.split("-");
         $.ajax({
-            data:{id_cp:comp[0],metode_pengiriman:comp[1]},
+            data:{id_cp:comp[0],metode_pengiriman:comp[1],id_supplier:id_supplier},
             url: "<?php echo base_url();?>crm/vendor/getShipperPrice",
             dataType: "JSON",
             type: "POST",
@@ -123,6 +130,8 @@ function getShippingPrice(){
 <script>
 function getVendorPrice(){
     $(document).ready(function(){
+        $("#hargaProduk").val("");
+        $("#hargashipping").val("");
         var id_perusahaan = $("#products").val();
         var id_request_item = $("#itemsOrdered").val();
         //alert(id_perusahaan);
@@ -152,6 +161,7 @@ function getVendorPrice(){
 </script>
 <script>
 function getCourierPrice(){
+    $("#hargaCourier").val("");
     $(document).ready(function(){
         var id_perusahaan = $("#courier").val();
         var comp = id_perusahaan.split("-");

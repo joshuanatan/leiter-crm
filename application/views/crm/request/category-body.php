@@ -81,7 +81,13 @@
                         <input type="date" class="form-control" name="tgl_dateline_request" placeholder="Dateline">
                     </div>
                     <div class="col-xl-12 form-group">
-                        <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" id="DataPesanan">
+                        <div class="checkbox-custom checkbox-primary">
+                            <input type="checkbox" id="inputChecked" name = "requeststock[]">
+                            <label for="inputChecked">STOCK</label>
+                        </div>
+                    </div>
+                    <div class="col-xl-12 form-group">
+                        <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
                             <thead>
                                 <tr>
                                     <th>Item</th>

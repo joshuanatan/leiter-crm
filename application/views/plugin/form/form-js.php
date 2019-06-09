@@ -81,3 +81,18 @@ function splitter(str,sprt){
     return finalValue;
 }
 </script>
+<script>
+function splitToArray(str,sprt){
+    var finalValue = [];
+    var split = str.split(sprt);
+    return split;
+}
+</script>
+<script>
+function commas(id){
+	var str = $("#"+id).val();
+	str = splitter(str,",");
+    str = addCommas(str);
+    $("#"+id).val(str);
+}
+</script>

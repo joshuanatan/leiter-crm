@@ -1,8 +1,7 @@
 <?php
 class Mdharga_vendor extends CI_Model{
     public function select($data){
-        $this->db->join("contact_person","contact_person.id_cp = harga_vendor.id_cp","inner");
-        $this->db->join("perusahaan","contact_person.id_perusahaan = perusahaan.id_perusahaan","inner");
+        $this->db->join("perusahaan","perusahaan.id_perusahaan = harga_vendor.id_perusahaan","inner");
         return $this->db->get_where("harga_vendor",$data);
         
     }

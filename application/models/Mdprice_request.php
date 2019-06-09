@@ -5,6 +5,7 @@ class Mdprice_request extends CI_Model{
         $this->db->join("price_request_item","price_request_item.id_request = price_request.id_request","inner");
         $this->db->join("contact_person","contact_person.id_cp = price_request.id_cp","inner");
         $this->db->join("perusahaan","contact_person.id_perusahaan = perusahaan.id_perusahaan","inner");
+        $this->db->join("user","user.id_user = price_request.id_user_add","inner");
         $this->db->where("price_request_item.status_request_item",0);
         $this->db->where("price_request_item.id_produk in (select id_produk from produk_vendor)",NULL,FALSE);
         $this->db->group_by("price_request_item.id_request");

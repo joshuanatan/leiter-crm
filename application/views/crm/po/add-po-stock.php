@@ -1,85 +1,33 @@
 <div class="panel-body col-lg-12">
-    
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <!-- List OC yang sudah di selesaikan -->
         <thead>
             <tr>
-                <th>Order Confirmation ID</th>
-                <th>Customer PO No</th>
-                <th>Customer Firm</th>
-                <th>Items Amount</th>
+                <th>Price Request ID</th>
+                <th>Dateline</th>
+                <th>Items Remaining</th>
+                <th>Requested By</th>
+                <th>Request Date</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             <tr class="gradeA">
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <?php for($a = 0 ; $a<count($price_request); $a++): ?>
+                <td><?php echo $price_request[$a]["id_request"];?></td>
+                <td><?php echo $price_request[$a]["tgl_dateline_request"];?></td>
+                <td><?php if($price_request[$a]["items_ordered"][1] != 0) echo $price_request[$a]["items_ordered"][1]." Items Remaining"; else echo "Ready to Order";?> </td> <!--jumlah item yang ga ada di PO Item -->
+                <td><?php echo $price_request[$a]["nama_user"];?></td>
+                <td><?php $date = date_create($price_request[$a]["date_request_add"]); echo date_format($date,"d/m/Y H:i:s");?></td>
                 <td class="actions">
-                    <a href = "<?php echo base_url();?>crm/po/settingstock/"class = "btn btn-outline btn-success" data-content="Setting PO" data-trigger="hover" data-toggle="popover"><i class = "icon wb-menu" data-toggle="modal" data-target="#DetailPO" aria-hidden="true"></i></a>
+                    <a href = "<?php if($price_request[$a]["already_setting"] == 1){ echo base_url();?>crm/po/settingstock/<?php echo $price_request[$a]["id_request"];} else echo "#";?>" class = "btn btn-outline btn-success" data-content="Setting PO" data-trigger="hover" data-toggle="popover"><i class = "icon wb-menu" data-toggle="modal" aria-hidden="true"></i></a>
+
+                    <?php if($price_request[$a]["already_setting"] == 0){ ?><a href = "<?php echo base_url();?>crm/po/generate/<?php echo $price_request[$a]["id_po_setting"];?>" class = "btn btn-outline btn-primary" data-content="Generate PO" data-trigger="hover" data-toggle="popover"><i class = "icon fa fa-briefcase" data-toggle="modal" aria-hidden="true"></i></a><?php } ?>
                 </td>
+                
+                <?php endfor;?>
             </tr>
         </tbody>
     </table>
-</div>
-<div class="modal fade" id="DetailPO" aria-hidden="false" aria-labelledby="TambahRequestLabel" role="dialog">
-    <div class="modal-dialog modal-simple">
-        <form class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-                <h4 class="modal-title" id="exampleFormModalLabel">Price Request</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    
-                    <div class="col-xl-12 form-group">
-                        <input type="text" class="form-control" name="firstName" value="PO-001" readonly>
-                    </div>
-                    <div class="col-xl-12 form-group">
-                        <input type="text" class="form-control" name="firstName" value="OC-001" readonly>
-                    </div>
-                    <div class="col-xl-12 form-group">
-                        <label>Shipper</label>
-                        <input type="text" class="form-control" name="firstName" value="SHP-001" readonly><br/>
-                        <input type="text" class="form-control" name="firstName" value="Garuda Packages" readonly>
-                    </div>
-                    <div class="col-xl-12 form-group">
-                        <label>Dateline</label>
-                        <input type="text" class="form-control" name="firstName" value="23/11/2019" readonly>
-                    </div>
-                    <div class="col-xl-12 form-group">
-                        <select class = "form-control" placeholder="Last Name" data-plugin="select2">
-                            <option selected disabled>Choose Shipping Vendor ID</option> <!-- kalau pilih yang ini, auto generate nomor quotation baru -->
-                            <option>SHP-001</option> <!--kalau pilih yang ini, auto generate revisi ke berapa -->
-                        </select>
-                    </div>
-                    <div class="col-xl-12 form-group">
-                        <input type="text" class="form-control" name="firstName" placeholder="Shipping Vendor Name">
-                    </div>
-                    <div class="col-xl-12 form-group">
-                        <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" id="DataPesanan">
-                            <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Quantity</th>
-                                    <th>Vendor Price</th>
-                                </tr>
-                            </thead>
-                            <tbody id = "t1">
-                                <tr class='gradeA'>
-                                    <td>Meja Tulis</td>
-                                    <td>5</td>
-                                    <td>15.000</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
+    <a href = "<?php echo base_url();?>crm/po" class = "btn btn-primary btn-outline col-lg-2">BACK</a>
 </div>

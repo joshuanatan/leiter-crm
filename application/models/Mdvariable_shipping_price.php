@@ -31,5 +31,6 @@ class Mdvariable_shipping_price extends CI_Model{
         $this->db->select("sum(biaya_variable*kurs_variable) as 'total'");
         return $this->db->get_where("variable_shipping_price",$where);
     }
+    
 }
 ?>

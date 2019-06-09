@@ -115,7 +115,8 @@ class Quotation extends CI_Controller{
             ),
             "price_request" => array(
                 "price_request.status_request" => 3,
-                "status_buatquo" => 1
+                "status_buatquo" => 1,
+                "untuk_stock" => 1
             ),
         );
         $data = array(
