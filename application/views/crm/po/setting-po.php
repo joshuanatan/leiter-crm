@@ -13,25 +13,22 @@
                     <form action = "<?php echo base_url();?>crm/oc/settingpo" method = "post">    
                         <div class="tab-content">
                             <div class="tab-pane active" id="primaryData" role="tabpanel">
-                                
                                 <div class = "form-group"> <!-- nanti bentuknya nomorquotation/versi -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Order Confirmation No</h5> 
-                                    <input name = "no_quo"  id="no_quo" type ="text" value = "" class = "form-control" readonly><!-- auto keisi dari onchange -->
-                                    <input name = "id_quo"  id = "id_quo"  type ="hidden" value = ""/> <!-- keisi setelah dia pilih dari select itu -->
-                                    <input name = "versi_quo" id = "versi_quo"  type ="hidden" value = ""/> <!-- keisi setelah dia pilih dari select itu -->
+                                    <input name = "no_oc"  id="nooc" type ="text" value = "<?php echo $primary_data["no_oc"]?>" class = "form-control" readonly>
+                                    <input name = "id_oc"  id = "idoc"  type ="hidden" value = "<?php echo $primary_data["id_oc"]?>"/>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">No PO Customer</h5>
-                                    <input type ="text" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
+                                    <input type ="text" name = "no_po" id = "nopo" class = "form-control perusahaanCust" value = "<?php echo $primary_data["no_po_customer"]?>" readonly>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
-                                    <input type ="text" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
+                                    <input type ="text" name = "nama_perusahaan" id = "namaperusahaan" value = "<?php echo $primary_data["perusahaan_customer"]?>" class = "form-control perusahaanCust" readonly>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Nama Customer</h5>
-                                    <input name = "" id = "namaCust" type ="text" class = "form-control namaCust" readonly>
-                                    <input name = "id_cp" id ="idCust" value = "" type ="hidden" class = "form-control"  readonly>
+                                    <input name = "" id = "namacp" type ="text" value = "<?php echo ucwords($primary_data["nama_customer"])?>" class = "form-control namaCust" readonly>
                                 </div>
                             </div>
                             <!-- fungsi -->
@@ -47,7 +44,8 @@
                                             <th>Action</th>
                                         </thead>
                                         <tbody id ="t1">
-                                            <td></td>
+                                            <?php for($a = 0; $a<count($items); $a++):?>
+                                            <td><?php echo ucwords($items[$a]["nama_produk"]);?></td>
                                             <td>
                                                 <button type = "Button" class = "col-lg-12 btn btn-primary btn-outline" data-target = "#exampleModalPrimary" data-toggle="modal">Quotation Item</button>
                                             </td>
@@ -63,31 +61,19 @@
                                                         <div class="modal-body">
                                                             <div class = "form-group">
                                                                 <h5 style = "color:darkgrey; opacity:0.8">Supplier</h5>
-                                                                <input type ="text" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
+                                                                <input type ="text" value = "<?php echo $items[$a]["supplier_oc"]["nama_perusahaan"]; ?>" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
                                                             </div>
                                                             <div class = "form-group">
                                                                 <h5 style = "color:darkgrey; opacity:0.8">Item Price</h5>
-                                                                <input type ="text" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
+                                                                <input type ="text" value = "<?php echo $items[$a]["supplier_oc"]["harga_supplier"]; ?>" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
                                                             </div>
                                                             <div class = "form-group">
                                                                 <h5 style = "color:darkgrey; opacity:0.8">Item Price Rate</h5>
-                                                                <input type ="text" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
+                                                                <input type ="text" value = "<?php echo $items[$a]["supplier_oc"]["rate_harga"]; ?>" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
                                                             </div>
                                                             <div class = "form-group">
-                                                                <h5 style = "color:darkgrey; opacity:0.8">Shipper</h5>
-                                                                <input type ="text" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
-                                                            </div>
-                                                            <div class = "form-group">
-                                                                <h5 style = "color:darkgrey; opacity:0.8">Shipping Method</h5>
-                                                                <input type ="text" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
-                                                            </div>
-                                                            <div class = "form-group">
-                                                                <h5 style = "color:darkgrey; opacity:0.8">Item Shipping Price</h5>
-                                                                <input type ="text" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
-                                                            </div>
-                                                            <div class = "form-group">
-                                                                <h5 style = "color:darkgrey; opacity:0.8">Item Shipping Price Rate</h5>
-                                                                <input type ="text" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
+                                                                <h5 style = "color:darkgrey; opacity:0.8">Currency</h5>
+                                                                <input type ="text" value = "<?php echo $items[$a]["supplier_oc"]["currency"]; ?>" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
@@ -109,18 +95,7 @@
                                                             <h4 class="modal-title">Detail Item</h4>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <div class = "form-group">
-                                                                <h5 style = "color:darkgrey; opacity:0.8">Supplier</h5>
-                                                                <input type ="text" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
-                                                            </div>
-                                                            <div class = "form-group">
-                                                                <h5 style = "color:darkgrey; opacity:0.8">Item Price</h5>
-                                                                <input type ="text" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
-                                                            </div>
-                                                            <div class = "form-group">
-                                                                <h5 style = "color:darkgrey; opacity:0.8">Item Price Rate</h5>
-                                                                <input type ="text" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
-                                                            </div>
+                                                            
                                                             <div class = "form-group">
                                                                 <h5 style = "color:darkgrey; opacity:0.8">Shipper</h5>
                                                                 <input type ="text" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
@@ -193,7 +168,7 @@
                                                 </div>
                                             </div>
                                             <td><button class = "col-lg-12 btn btn-primary btn-outline">SAVE</button></td>
-                                            
+                                            <?php endfor;?>
                                         </tbody>
                                     </table>
                                 </div>

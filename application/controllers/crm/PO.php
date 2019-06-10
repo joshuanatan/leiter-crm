@@ -9,6 +9,8 @@ class PO extends CI_Controller{
         $this->load->model("MdPo_setting");
         $this->load->model("MdPo_item");
         $this->load->model("MdPo_core");
+        $this->load->model("Mdorder_confirmation");
+        $this->load->model("Mdquotation_item");
     }
     private function req(){
         $this->load->view("req/head");
@@ -87,11 +89,25 @@ class PO extends CI_Controller{
     }
     public function create(){
         $where = array(
-            "order_confirmation" => array(
-                "status_oc" => 0,
-            )
+            "oc" => array(
+            ),
         );
-        $data = array();
+        $result["oc"] = $this->Mdorder_confirmation->select($where["oc"]);
+        $counter = 0 ;
+        foreach($result["oc"]->result() as $a){
+            $array["oc"][$counter] = array(
+                "no_oc" => $a->no_oc,
+                "id_oc" => $a->id_oc,
+                "customer_po" => $a->no_po_customer ,
+                "customer_firm" => get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $a->id_perusahaan)),
+                "items_amount" => getAmount("quotation_item","id_quotation_item",array("id_oc" => $a->id_oc)),
+                
+            );
+            $counter++;
+        }
+        $data = array(
+            "order_confirmation" => $array["oc"]
+        );
         $this->req();
         $this->load->view("crm/content-open");
         $this->load->view("crm/po/category-header");
@@ -99,11 +115,64 @@ class PO extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
-    public function setting(){
+    public function setting($id_oc){ 
+        /*load primary data*/
+        /*load items*/
+        $where = array(
+            "primary_data" => array(
+                "id_oc" => $id_oc
+            ),
+            "items" => array(
+                "id_oc" => $id_oc
+            )
+        );
+    /*primary data*/
+        $result["primary_data"] = $this->Mdorder_confirmation->select($where["primary_data"]);
+        foreach($result["primary_data"]->result() as $a){
+            $data["primary_data"] = array(
+                "id_oc" => $a->id_oc,
+                "no_oc" => $a->no_oc,
+                "no_po_customer" => $a->no_po_customer,
+                "perusahaan_customer" => get1value("perusahaan","nama_perusahaan",array("id_perusahaan" => $a->id_perusahaan)),
+                "nama_customer" => get1value("contact_person","nama_cp",array("id_cp" => $a->id_cp))
+            );
+        }
+    /*end primary data*/
+
+        $result["items"] = $this->Mdquotation_item->select($where["items"]);
+        $counter = 0;
+        foreach($result["items"]->result() as $a){
+            $where["supplier_product"] = array(
+                "harga_vendor.id_request_item" => $a->id_request_item
+            );
+            $id_supplier = get1value("contact_person","id_perusahaan", array("id_cp" => $a->id_cp_vendor));
+            echo $a->id_request_item;
+            $data["items"][$counter] = array(
+                "nama_produk" => $a->nama_produk,
+                "supplier_oc" => array( /*rekomendasi dari quotation*/
+                    "nama_perusahaan" => get1Value("perusahaan","nama_perusahaan", array("id_perusahaan" => $id_supplier)),
+                    "harga_jual" => number_format($a->final_selling_price), /*untuk ngasih tau, kita jual berapa ke customer. Gunanya supaya ga merugi*/
+                    "harga_supplier" => number_format(get1Value("harga_vendor","harga_produk",array("id_perusahaan" => $id_supplier, "id_request_item" => $a->id_request_item))), /*ini yang ngambil ke price request*/
+                    "rate_harga" => number_format(get1Value("harga_vendor","vendor_price_rate",array("id_perusahaan" => $id_supplier, "id_request_item" => $a->id_request_item))), /* ini harusnya harga vendor bukan harga quotation*/
+                    "currency" => get1Value("harga_vendor","mata_uang",array("id_perusahaan" => $id_supplier, "id_request_item" => $a->id_request_item)) /* ini harusnya harga vendor bukan harga quotation*/
+                ),
+                "shipping_oc" => array( /*rekomendasi dari quotation*/
+                    "nama_perusahaan" => "",
+                    "harga_shipper" => "",
+                    "currency" => "iDR"
+                ),
+                "supplier" => $this->Mdharga_vendor->selectVendorItem($where["supplier_product"])
+            );  
+            $counter++;
+        }
+        $data["max_id"] = $this->MdPo_setting->maxId();
+        $where["mata_uang"] = array();
+        $data["mata_uang"] = $this->Mdmata_uang->select($where["mata_uang"]);
+
         $this->req();
         $this->load->view("crm/content-open");
         $this->load->view("crm/po/category-header");
-        $this->load->view("crm/po/setting-po");
+        $this->load->view("crm/po/setting-po",$data);
         $this->load->view("crm/content-close");
         $this->close();
     }

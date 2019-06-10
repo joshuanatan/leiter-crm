@@ -23,22 +23,18 @@
         </thead>
         <tbody>
             <tr class="gradeA">
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <?php for($a = 0; $a<count($od); $a++): ?>
+                <td><?php echo $od[$a]["no_od"];?></td>
+                <td><?php echo $od[$a]["no_oc"];?></td>
+                <td><?php echo $od[$a]["no_po_cusomter"];?></td>
+                <td><?php echo $od[$a]["nama_courier"];?></td>
+                <td><?php echo $od[$a]["nama_perusahaan"];?></td>
+                <td><?php echo $od[$a]["franco"];?></td>
+                <td><?php echo $od[$a]["date_issued"];?></td>
                 <td class="actions">
                     
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
-                    
-                    <button class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
                 </td>
+                <?php endfor;?>
             </tr>
             
         </tbody>

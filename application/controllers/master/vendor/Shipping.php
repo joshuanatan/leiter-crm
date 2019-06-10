@@ -251,5 +251,17 @@ class Shipping extends CI_Controller{
         $this->Mdcontact_person->insert($data);
         redirect("master/vendor/shipping/contact/".$this->input->post($nameCp[5]));
     }
+    public function getShippingMethod(){
+        $where = array(
+            "id_perusahaan" => $this->input->post("id_perusahaan")
+        );
+        $result = $this->Mdmetode_pengiriman_shipping->select($where);
+        $counter = 0 ;
+        foreach($result->result() as $a){
+            $data[$counter]["method"] = $a->metode_pengiriman;
+            $counter++;
+        }
+        echo json_encode($data);
+    }
 }
 ?>

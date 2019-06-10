@@ -33,5 +33,27 @@ if ( ! function_exists('get1Value')){
         }
     }
 }
+if ( ! function_exists('getAmount')){
+    function getAmount($table,$coloumn,$where){
+        $CI =& get_instance();
+        $CI->db->select("count(".$coloumn.") as 'amount'");
+        $result = $CI->db->get_where($table,$where);
+        foreach($result->result() as $a){
+            return $a->amount;
+            break;
+        }
+    }
+}
+if ( ! function_exists('getTotal')){
+    function getTotal($table,$coloumn,$where){
+        $CI =& get_instance();
+        $CI->db->select("sum(".$coloumn.") as 'total'");
+        $result = $CI->db->get_where($table,$where);
+        foreach($result->result() as $a){
+            return $a->total;
+            break;
+        }
+    }
+}
 
 ?>

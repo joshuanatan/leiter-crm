@@ -13,13 +13,15 @@
         </thead>
         <tbody>
             <tr class="gradeA">
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <?php for($a = 0; $a<count($order_confirmation); $a++): ?>
+                <td><?php echo $order_confirmation[$a]["no_oc"];?></td>
+                <td><?php echo $order_confirmation[$a]["customer_po"];?></td>
+                <td><?php echo $order_confirmation[$a]["customer_firm"];?></td>
+                <td><?php echo $order_confirmation[$a]["items_amount"];?></td>
                 <td class="actions">
-                    <a href = "<?php echo base_url();?>crm/po/setting/"class = "btn btn-outline btn-success" data-content="Setting PO" data-trigger="hover" data-toggle="popover"><i class = "icon wb-menu" data-toggle="modal" data-target="#DetailPO" aria-hidden="true"></i></a>
+                    <a href = "<?php echo base_url();?>crm/po/setting/<?php echo $order_confirmation[$a]["id_oc"];?>"class = "btn btn-outline btn-success" data-content="Setting PO" data-trigger="hover" data-toggle="popover"><i class = "icon wb-menu" data-toggle="modal" data-target="#DetailPO" aria-hidden="true"></i></a>
                 </td>
+                <?php endfor;?>
             </tr>
         </tbody>
     </table>

@@ -5,6 +5,8 @@ class OC extends CI_Controller{
         $this->load->model("Mdquotation");
         $this->load->model("Mdorder_confirmation");
         $this->load->model("Mdquotation_item");
+        $this->load->model("Mdod_item");
+        $this->load->model("Mdod_core");
     }
     /*defaul function*/
     private function req(){
@@ -100,7 +102,8 @@ class OC extends CI_Controller{
             $data = array(
                 "final_amount" => $itemArray[1][$a],
                 "final_selling_price" => $itemArray[2][$a],
-                "status_oc_item" => 0
+                "status_oc_item" => 0,
+                "id_oc" => $this->input->post("id_oc")
             );
             $this->Mdquotation_item->update($data,$where);
         }
@@ -114,5 +117,51 @@ class OC extends CI_Controller{
         $this->Mdquotation->update($data,$where);
         redirect("crm/oc");
     }   
+    public function getOcDetail(){
+        $where = array(
+            "id_oc" => $this->input->post("id_oc")
+        );
+        $result = $this->Mdorder_confirmation->select($where);
+        foreach($result->result() as $a){
+            $data = array(
+                "no_po" => $a->no_po_customer,
+                "nama_perusahaan" => strtoupper($a->nama_perusahaan),
+                "nama_customer" => ucwords($a->nama_cp),
+                "franco" => $a->franco
+            );    
+        }
+        echo json_encode($data);
+    }
+    public function getOcItem(){
+        $where = array(
+            "item_oc" => array(
+                "id_oc" => $this->input->post("id_oc")
+            ),
+            "od" => array(
+                "id_oc" => $this->input->post("id_oc")
+            )
+        );
+        $result["item_oc"] = $this->Mdquotation_item->select($where["item_oc"]);
+        $counter = 0 ;
+        $result["od"] = $this->Mdod_core->select($where["od"]); /*ambil semua od yang ocnya terkair */
+        $result["jumlah"] = array();
+        foreach($result["od"]->result() as $idOd){
+            $result["jumlah"][$counter] = get1Value("od_item","item_qty",array("id_od" => $idOd->id_od));
+            $counter++;
+        }
+        $data = array();
+        $counter = 0;
+        foreach($result["item_oc"]->result() as $a){
+            $data[$counter] = array(
+                "id_quotation_item" => $a->id_quotation_item,
+                "nama_produk" => $a->nama_produk,
+                "jumlah_pesan" => $a->final_amount,
+                "terkirim" => array_sum($result["jumlah"]),
+                "uom" => $a->satuan_produk
+            );
+            $counter ++;
+        }
+        echo json_encode($data);
+    }
 }
 ?>

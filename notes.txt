@@ -1,0 +1,42 @@
+waktu buat oc kan ada yang di centang-centang itu, itu kan untuk nentuin barang mana yang emang akhirnya jadi dan harga deal terakhir sangat terakhirnya berapa jadinya
+
+===================================================
+*warning* ada potensi masalah di awal2 karena belum sadar kalau setiap hasil nego, kurs, dan mata uang harus dicatat
+===================================================
+
+waktu akan buat po, kita ngerefer ke barang-barang yang ada di oc.
+selain itu barang-barang dari OC merupakan barang-barang tawaran dari quotation sehingga akan baik apabila hasil quotation yang mendasari OC menjadi rekomendasi untuk setting PO
+
+oleh karena itu, rencana pengerjaan:
+-load semua item yang berhasil ke OC [DONE]
+
+-ambil data detail item-item tersebut dari quotation item (ambil supplier dan shipper yang dipilih) dan dari item price request untuk mendapatkan harga dari masing-masing barang.
+-lalu dari requeet item, cari vendor yang sudah dimasukan harga. Query ke table harga vendor untuk mendapatkan supplier dari item request tersebut
+
+==========
+untuk mendapatkan harga supplier, pake id_request_item dan id_perusahaan (ditable harga vendor) dan id_request_item & id cp vendor -> id perusahaan
+=======================================
+
+untuk OD
+starter:
+-load oc
+-load kurir
+
+process:
+-pilih oc, load semua item dari oc, 
+yang harus di load dari item oc:
+    -nama produk leiter (readonly)
+    -nama produk pesanan (readonly)
+    -sisa (readonly)
+setelah itu, diisi mau kirim berapa
+yang harus di load dari detail oc   
+    -nama id_perusahaan
+    -alamat perusahaan
+    -franco
+
+-pilih kurir, load cara pengiriman
+-pilih cara pengiriman, load harganya (buat bahan pertimbangan aja)
+
+-masukin datelinenya
+
+===========================================
