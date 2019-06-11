@@ -1,4 +1,4 @@
-<div class="panel-body col-lg-12">
+    <div class="panel-body col-lg-12">
     <div class="row row-lg">
         <div class="col-xl-12">
             <!-- Example Tabs Left -->
@@ -130,7 +130,8 @@
                                 </div>
                                 <div class = "form-group containerDp" style = "display:none"> <!-- Nominal DP -->
                                     <h5 style = "color:darkgrey; opacity:0.8">DP Amount</h5>
-                                    <input name = "jumlah[]" id = "jumlahDp" type ="text" class = "form-control">
+                                    <input name = "" id = "jumlahDp" type ="text" class = "form-control">
+                                    <input name = "jumlah[]" id = "jumlahDpClean" type ="text" class = "form-control">
                                 </div>
                                 <div class = "form-group containerSisa" style = "display:none"> <!-- textarea klo DP% -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Rest Percentage</h5>
@@ -138,7 +139,8 @@
                                 </div>
                                 <div class = "form-group containerSisa" style = "display:none"> <!-- Nominal DP -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Rest Amount</h5>
-                                    <input name = "jumlah[]" id = "jumlahSisa" type ="text" class = "form-control">
+                                    <input name = "" id = "jumlahSisa" type ="text" class = "form-control">
+                                    <input name = "jumlah[]" id = "jumlahSisaClean" type ="text" class = "form-control">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Mata Uang Pembayaran</h5>

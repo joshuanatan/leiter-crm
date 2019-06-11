@@ -140,5 +140,26 @@ class OD extends CI_Controller{
         $this->Mdod_core->insert($data);
         redirect("crm/od");
     }
+    public function getOdItemPayment(){
+        $where = array(
+            "id_od" => $this->input->post("id_od")
+        );
+        //echo $this->input->post("id_od");
+        $result = $this->Mdod_item->select($where);
+        $count = 0;
+        $data = array();
+        $total = 0;
+        foreach($result->result() as $a){
+            $amount = ($a->item_qty*get1Value("quotation_item","final_selling_price",array("id_quotation_item" => $a->id_quotation_item)))/get1Value("quotation_item","final_amount",array("id_quotation_item" => $a->id_quotation_item));
+            $total += $amount;
+            $data[$count] = array(
+                "nama_produk" => "Nama Barangnya",
+                "item_qty" => $a->item_qty,
+                "paymentAmount" => $amount,
+            );
+            $count++;
+        }
+        echo json_encode($data);
+    }
 }
 ?>

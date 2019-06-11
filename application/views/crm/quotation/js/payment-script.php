@@ -66,6 +66,8 @@ function paymentWithDP(){
                 $("#persenSisa").val(100-parseInt(persen)+"%"); /*persenSisa*/
                 $("#jumlahSisa").val(addCommas((100-parseInt(persen))/100*totalTagihan));
                 $("#jumlahDp").val(addCommas(parseInt(persen)/100*totalTagihan));
+                $("#jumlahSisaClean").val((100-parseInt(persen))/100*totalTagihan);
+                $("#jumlahDpClean").val(parseInt(persen)/100*totalTagihan);
             }
         });
 

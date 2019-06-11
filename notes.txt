@@ -40,3 +40,41 @@ yang harus di load dari detail oc
 -masukin datelinenya
 
 ===========================================
+invoice
+starter:
+-load semua oc
+
+process:
+-pilih oc -> ajax jumlah pembayaran
+-pilih pembayaran ke berapa (1 / 2) (dapet dari metode pembayaran => pake quotation & versi utk akses)
+
+field invoice :
+-id invoice
+-nominal
+-rate
+-mata uang
+-nama perusahaan
+-tanggal keluar 
+============= atau ==================
+abis insert oc, langsung masuk invoice
+abis masuk od, masuk invoice
+
+final logic buat invoice
+-pilih oc dulu
+-keluar sistem pembayarannya
+    -pilih sistem pembayaran
+    if(use_od == 0) ==> dp
+        keluarin aja persen dan nominalnya
+        generate invoice
+    else ==> pelunasan (semua pelunasan pasti pake OD, mau tipe berapapun kecuali yang langsung lunas di awal)
+        keluarin table (pake jquery)
+        load invoice yang ud pernah dikeluarin (buat refrensi aja)
+        fieldnya:
+            -nomor invoice
+            -nomor od
+            -nominal
+            -tanggal keluar
+        ada tombol buat nambah, modal
+            -pilih od
+            -keluar barang2 od beserta jumlahnya dalam table
+            -keluar biayanya (brg keluar/total * final price) editable

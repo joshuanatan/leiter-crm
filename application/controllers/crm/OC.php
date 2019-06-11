@@ -68,9 +68,9 @@ class OC extends CI_Controller{
     public function insertoc(){
         /*data OC*/
         $data = array(
-            "id_quotation" => $this->input->post("id_quotation"),
             "id_oc" => $this->input->post("id_oc"),
             "no_oc" => $this->input->post("no_oc"),
+            "id_quotation" => $this->input->post("id_quotation"),
             "versi_quotation" => $this->input->post("versi_quo"),
             "no_po_customer" => $this->input->post("no_po"),
             "id_user_add" => $this->session->id_user
@@ -115,6 +115,13 @@ class OC extends CI_Controller{
             "status_quo" => 3 /*yang udah create oc, ditandain*/
         );
         $this->Mdquotation->update($data,$where);
+
+        /*masukin ke invoice*/
+        $data = array(
+            "id_oc" => $this->input->post("id_oc"),
+            
+        ); 
+        $this->Mdmetode_pembayaran->update($data,$where);
         redirect("crm/oc");
     }   
     public function getOcDetail(){
