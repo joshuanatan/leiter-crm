@@ -15,6 +15,10 @@ Testing Plan
     -edit detail perusahaan
     -hapus
 3. UNIT OF MEASURE
+    -Lihat data uom
+    -tambah uom baru
+    -delete uom
+    -edit uom
 4. EXPANSES TYPE
 5. VENDOR/PRODUCT
 6. VENDOR/SHIPPING

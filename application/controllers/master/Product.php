@@ -23,7 +23,9 @@ class Product extends CI_Controller{
             "produk" => array(
                 "status_produk" => 0
             ),
-            "satuan" => array(),
+            "satuan" => array(
+                "status_satuan" => 0
+            ),
         );
         $result = array(
             "produk" => $this->Mdproduk->select($where["produk"]),
