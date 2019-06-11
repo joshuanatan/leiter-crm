@@ -59,10 +59,35 @@ class Customer extends CI_Controller{
                 "perusahaan.status_perusahaan" => 0
             )
         );
-        $data = array(
+        $result = array(
             "perusahaan" => $this->Mdperusahaan->select($where["perusahaan"])
         );
-        $this->load->view("master/Customer/category-body",$data);
+        $counter = 0;
+        foreach($result["perusahaan"]->result() as $a){
+            $data["perusahaan"][$counter] = array(
+                "id_perusahaan" => $a->id_perusahaan,
+                "nama_perusahaan" => $a->nama_perusahaan,
+                "jenis_perusahaan" => $a->jenis_perusahaan,
+                "alamat_perusahaan" => $a->alamat_perusahaan,
+                "notelp_perusahaan" => $a->notelp_perusahaan
+            );
+            $where["cp"] = array(
+                "id_perusahaan" => $a->id_perusahaan,
+                "status_cp" => 0
+            );
+            $result["cp"] = $this->Mdcontact_person->select($where["cp"]);
+            foreach($result["cp"]->result() as $b){
+                $data["cp"][$counter] = array(
+                    "nama_cp" => $b->nama_cp,
+                    "email_cp" => $b->email_cp,
+                    "nohp_cp" => $b->nohp_cp
+                );
+                break;
+            }
+            
+            $counter++;
+        }
+        $this->load->view("master/customer/category-body",$data);
         $this->load->view("master/content-close");
         /*--------------------------------------------------------*/
         $this->load->view("req/script");
@@ -105,29 +130,6 @@ class Customer extends CI_Controller{
         $this->load->view("master/master-close");
         $this->load->view("req/html-close");
     }
-    public function detail(){
-        $this->load->view("req/head");
-        $this->load->view("detail/css/detail-css");
-        $this->load->view("req/head-close");
-        $this->load->view("detail/detail-open");
-        $this->load->view("req/top-navbar");
-        $this->load->view("req/navbar");
-        /*--------------------------------------------------------*/
-        $this->load->view("detail/content-open");
-        $this->load->view("detail/customer/profile");
-        $this->load->view("detail/tab-open");
-        $this->load->view("detail/customer/tab-item");
-        $this->load->view("detail/customer/tab-content");
-        $this->load->view("detail/tab-close");
-        $this->load->view("detail/content-close");
-        /*--------------------------------------------------------*/
-        $this->load->view("req/script");
-        $this->load->view("detail/js/detail-js");
-        $this->load->view("detail/detail-close");
-        $this->load->view("req/html-close");
-    }
-    /*function*/
-    
     public function removecp($i,$page){
         $data = array(
             "status_cp" => 1,

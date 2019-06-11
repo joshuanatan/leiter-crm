@@ -5,7 +5,15 @@ Testing Plan
     -Tambah data produk (Done)
     -Edit data barang (Done)
     -Edit data barang tanpa foto baru (Done)
+    -hapus
 2. CUSTOMER
+    -Melihat data CUSTOMER
+    -Tambah data customer & cp
+    -lihat cp
+    -edit data CP 
+    -tambah cp baru
+    -edit detail perusahaan
+    -hapus
 3. UNIT OF MEASURE
 4. EXPANSES TYPE
 5. VENDOR/PRODUCT

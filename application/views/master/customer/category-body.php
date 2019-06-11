@@ -16,29 +16,33 @@
                 <th>Company Field</th>
                 <th>Company Address</th>
                 <th>Company Line</th>
+                <th>Main Contact Person</th>
+                <th>CP Email / Phone</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach($perusahaan->result() as $a){ ?> 
+            <?php for($a = 0; $a<count($perusahaan); $a++): ?> 
             <tr class="gradeA">
-                <td><?php echo $a->id_perusahaan;?></td>
-                <td><?php echo strtoupper($a->nama_perusahaan);?></td>
-                <td><?php echo $a->jenis_perusahaan;?></td>
-                <td><?php echo $a->alamat_perusahaan;?></td>
-                <td><?php echo $a->notelp_perusahaan;?></td>
+                <td><?php echo $perusahaan[$a]["id_perusahaan"];?></td>
+                <td><?php echo $perusahaan[$a]["nama_perusahaan"];?></td>
+                <td><?php echo $perusahaan[$a]["jenis_perusahaan"];?></td>
+                <td><?php echo $perusahaan[$a]["alamat_perusahaan"];?></td>
+                <td><?php echo $perusahaan[$a]["notelp_perusahaan"];?></td>
+                <td><?php echo $cp[$a]["nama_cp"];?></td>
+                <td><?php echo $cp[$a]["email_cp"]."<br/>".$cp[$a]["nohp_cp"];?></td>
                 <td class="actions">
                     
-                    <a href = "<?php echo base_url();?>master/customer/edit/<?php echo $a->id_perusahaan;?>" class="btn btn-outline btn-primary" ><i class="icon wb-edit"></i></a>
+                    <a href = "<?php echo base_url();?>master/customer/edit/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-outline btn-primary" ><i class="icon wb-edit"></i></a>
 
-                    <a href = "<?php echo base_url();?>master/customer/delete/<?php echo $a->id_perusahaan;?>" class="btn btn-outline btn-danger"
+                    <a href = "<?php echo base_url();?>master/customer/delete/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
                     
-                    <a href = "<?php echo base_url();?>master/customer/contact/<?php echo $a->id_perusahaan;?>" class="btn btn-outline btn-success"
+                    <a href = "<?php echo base_url();?>master/customer/contact/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-outline btn-success"
                     data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
                 </td>
             </tr>
-            <?php } ?>
+            <?php endfor; ?>
         </tbody>
     </table>
 </div>
@@ -112,7 +116,7 @@
                                         <div class="col-md-12 col-lg-12">
                                             <!-- Example With Help -->
                                             <h4 class="example-title"><?php echo $form_data["input".$a]["title"];?></h4>
-                                            <input type="<?php echo $form_data["input".$a]["type"];?>" name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" placeholder = "<?php echo $form_data["input".$a]["placeholder"];?>" required value = "<?php echo $form_data["input".$a]["value"];?>">
+                                            <input type="<?php echo $form_data["input".$a]["type"];?>" name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" placeholder = "<?php echo $form_data["input".$a]["placeholder"];?>" value = "<?php echo $form_data["input".$a]["value"];?>">
                                             <span class="text-help"><?php echo $form_data["input".$a]["help"];?></span>
                                         </div>
                                     </div>
@@ -123,7 +127,7 @@
                                         <div class="col-md-12 col-lg-12">
                                             <!-- Example With Help -->
                                             <h4 class="example-title"><?php echo $form_data["input".$a]["title"];?></h4>
-                                            <select name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" required >
+                                            <select name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" >
                                             <?php 
                                             foreach($form_data["input".$a]["options"]->result() as $option){ ?>
                                                 <option value = ""><?php echo $option->id_produk;?></option>
@@ -141,7 +145,7 @@
                                         <div class="col-md-12 col-lg-12">
                                             <!-- Example With Help -->
                                             <h4 class="example-title"><?php echo $form_data["input".$a]["title"];?></h4>
-                                            <textarea name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" required <?php if($form_data["input".$a]["rows"] != 0) echo "rows = ".$form_data["input".$a]["rows"];?> <?php if($form_data["input".$a]["cols"] != 0) echo "cols = ".$form_data["input".$a]["cols"];?> ><?php echo $form_data["input".$a]["value"];?></textarea>
+                                            <textarea name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" <?php if($form_data["input".$a]["rows"] != 0) echo "rows = ".$form_data["input".$a]["rows"];?> <?php if($form_data["input".$a]["cols"] != 0) echo "cols = ".$form_data["input".$a]["cols"];?> ><?php echo $form_data["input".$a]["value"];?></textarea>
                                             <span class="text-help"><?php echo $form_data["input".$a]["help"];?></span>
                                         </div>
                                     </div>
@@ -210,7 +214,7 @@
                                             <div class="col-md-12 col-lg-12">
                                                 <!-- Example With Help -->
                                                 <h4 class="example-title"><?php echo $form_data["input".$a]["title"];?></h4>
-                                                <input type="<?php echo $form_data["input".$a]["type"];?>" name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" placeholder = "<?php echo $form_data["input".$a]["placeholder"];?>" required value = "<?php echo $form_data["input".$a]["value"];?>">
+                                                <input type="<?php echo $form_data["input".$a]["type"];?>" name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" placeholder = "<?php echo $form_data["input".$a]["placeholder"];?>" value = "<?php echo $form_data["input".$a]["value"];?>">
                                                 <span class="text-help"><?php echo $form_data["input".$a]["help"];?></span>
                                             </div>
                                         </div>
@@ -221,7 +225,7 @@
                                             <div class="col-md-12 col-lg-12">
                                                 <!-- Example With Help -->
                                                 <h4 class="example-title"><?php echo $form_data["input".$a]["title"];?></h4>
-                                                <select name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" required >
+                                                <select name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" >
                                                 <?php 
                                                 for($c = 0 ; $c<count($form_data["input".$a]["options"]); $c++){ ?>
                                                     <option value = "<?php echo $form_data["input".$a]["options"][$c];?>"><?php echo $form_data["input".$a]["options"][$c];?></option>
@@ -239,7 +243,7 @@
                                             <div class="col-md-12 col-lg-12">
                                                 <!-- Example With Help -->
                                                 <h4 class="example-title"><?php echo $form_data["input".$a]["title"];?></h4>
-                                                <textarea name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" required <?php if($form_data["input".$a]["rows"] != 0) echo "rows = ".$form_data["input".$a]["rows"];?> <?php if($form_data["input".$a]["cols"] != 0) echo "cols = ".$form_data["input".$a]["cols"];?> ><?php echo $form_data["input".$a]["value"];?></textarea>
+                                                <textarea name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" <?php if($form_data["input".$a]["rows"] != 0) echo "rows = ".$form_data["input".$a]["rows"];?> <?php if($form_data["input".$a]["cols"] != 0) echo "cols = ".$form_data["input".$a]["cols"];?> ><?php echo $form_data["input".$a]["value"];?></textarea>
                                                 <span class="text-help"><?php echo $form_data["input".$a]["help"];?></span>
                                             </div>
                                         </div>
