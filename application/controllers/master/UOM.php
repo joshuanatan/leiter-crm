@@ -24,6 +24,9 @@ class UOM extends CI_Controller{
         );
         $result["uom"] = $this->Mdsatuan->select($where["uom"]);
         $counter = 0;
+        $data = array(
+            "uom" => array()
+        );
         foreach($result["uom"]->result() as $a){
             $data["uom"][$counter] = array(
                 "id_satuan" => $a->id_satuan,

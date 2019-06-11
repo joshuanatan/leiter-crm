@@ -20,6 +20,12 @@ Testing Plan
     -delete uom
     -edit uom
 4. EXPANSES TYPE
+    -lihat data expanses TYPE
+    -tambah type baru
+    -edit type yang sudah ada
+    -hapus type yang sudah ada
+
+kerjain di kampus sisa ini
 5. VENDOR/PRODUCT
 6. VENDOR/SHIPPING
 7. USER/EMPLOYEE

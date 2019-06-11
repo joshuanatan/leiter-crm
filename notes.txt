@@ -78,3 +78,7 @@ final logic buat invoice
             -pilih od
             -keluar barang2 od beserta jumlahnya dalam table
             -keluar biayanya (brg keluar/total * final price) editable
+
+===============================================
+untuk master data produk, tambahin foto, tentu jangan lupa kasih default value.
+check semua input2 untuk master data. semua di test
