@@ -1,0 +1,55 @@
+call report (itungnya berapa kali)
+visit report (itungnya berapa kali)
+(berapa banyak dalam minggu ini sales melakukan tugasnya)
+inquiry => konek ke price request
+introduction => kirim email berapa kali
+standar sales beda-beda (tolong diperhatikan)
+
+1 perusahaan banyak sales
+price request yang input sales lapangan => untuk track inquiry yang didapatkan
+---------------- end sales report UReq -----------------------------
+
+---------------- history -------------------
+-> pilih perusahaan, klik history
+-> keliatan /barang /invoice
+--------------------------------------------
+----------------- finance ------------------
+ini di invoice
+-> masukin invoice manual, nanti ada tanda selesai
+-> piutang dapet dari invoice
+-> margin calculation (harga jual ambil dr invoice ke customer, modalnya ambil value dari invoice dari vendor) semua di rupiahkan, kasih tau ratenya
+-> reimburse, upload gambar banyak
+-> untuk tax (ppn masukan dan keluaran. liat catetan dulu yang uang masuk uang keluar mana yang dipajakin). perbulan (bulan - 1). akan keluar invoice semua. kalau ga ada bumn, totalin semua x10%. kalau ada bumn di exclude (centang). faktur pajak masuknya setelah bayar. nanti pilih pajak masukan, masukin ppn dan pph dari harga pokok.
+----------------- end finance --------------
+pengeluaran ada 2 (cash dan bank)
+bank: (pake rate, pake mata uang)
+-masuk:
+*pembayaran customer
+*pengembalian
+*bunga bank
+*pinjaman (pengembalian)
+*komisi penjualan
+*biaya lain-lain
+
+-keluar:
+*reimburse (catet reimburse tiap orang)
+*biaya gaji
+*pembayaran (supplier, jasa)
+*cicilan
+*bpjs
+*pinjaman
+*pajak (pph 21, pph badan, pph 23, 4 ayat 2, ppndn)
+*pib (bea masuk, ppn, pph)
+*ngambil petty cash
+*pembelian
+*pengiriman kurir
+*tagihan
+*biaya lain-lain
+==========================================================
+sistem utama:
+->export word
+->export pdf
+->jalanain semua
+->tambahin pic di customer data table
+=>tambahin data untuk ngetrack (nyampe tanggal berapa)
+==========================================================0

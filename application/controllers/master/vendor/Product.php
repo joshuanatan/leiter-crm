@@ -90,7 +90,9 @@ class Product extends CI_Controller{
             "items" => array(
                 "perusahaan.id_perusahaan" => $i
             ),
-            "catalog" => array(),
+            "catalog" => array(
+                "status_produk_vendor" => 0
+            ),
             "satuan" => array(),
             "perusahaan" => array(
                 "perusahaan.id_perusahaan" => $i

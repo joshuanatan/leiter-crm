@@ -1,0 +1,14 @@
+Testing Plan
+==========================================
+1. PRODUK
+    -Melihat data produk (Done)
+    -Tambah data produk (Done)
+    -Edit data barang (Done)
+    -Edit data barang tanpa foto baru (Done)
+2. CUSTOMER
+3. UNIT OF MEASURE
+4. EXPANSES TYPE
+5. VENDOR/PRODUCT
+6. VENDOR/SHIPPING
+7. USER/EMPLOYEE
+8. USER/SALES

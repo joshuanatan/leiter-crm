@@ -14,18 +14,45 @@ class Product extends CI_Controller{
         $this->load->view("plugin/breadcrumb/breadcrumb-css");
         $this->load->view("plugin/modal/modal-css");
         $this->load->view("plugin/form/form-css");
+        $this->load->view("plugin/toastr/css");
         $this->load->view("req/head-close");
         $this->load->view("master/master-open");
         $this->load->view("req/top-navbar");
         $this->load->view("req/navbar");
         $where = array(
-            "produk" => array(),
+            "produk" => array(
+                "status_produk" => 0
+            ),
             "satuan" => array(),
         );
-        $data = array(
+        $result = array(
             "produk" => $this->Mdproduk->select($where["produk"]),
             "satuan" => $this->Mdsatuan->select($where["satuan"])
         );
+        $data = array(
+            "produk" => array(),
+            "satuan" => array()
+        );
+        $counter = 0 ;
+        foreach($result["produk"]->result() as $a){
+            $data["produk"][$counter] = array(
+                "id_produk" => $a->id_produk,
+                "bn_produk" => $a->bn_produk,
+                "nama_produk" => $a->nama_produk,
+                "satuan_produk" => $a->satuan_produk,
+                "deskripsi_produk" => $a->deskripsi_produk,
+                "gambar_produk" => $a->gambar_produk,
+            );
+            $counter++;
+        }
+        $counter = 0 ; 
+        foreach($result["satuan"]->result() as $a){
+            $data["satuan"][$counter] = array(
+                "id_satuan" => $a->id_satuan,
+                "nama_satuan" => $a->nama_satuan,
+            );
+            $counter++;
+        }
         $this->load->view("master/content-open");
         $this->load->view("master/product/category-header");
         $this->load->view("master/product/category-body",$data);
@@ -34,34 +61,102 @@ class Product extends CI_Controller{
         $this->load->view("req/script");
         $this->load->view("plugin/datatable/page-datatable-js");
         $this->load->view("plugin/form/form-js");
+        $this->load->view("plugin/toastr/js");
+        $this->load->view("master/product/js/form-script");
         $this->load->view("master/master-close");
         $this->load->view("req/html-close");
     }
     /*function*/
     public function insert(){
         $uom = "";
-        if($this->input->post("satuan_produk_add") != ""){
+        if($this->input->post("uom") == "0"){
             $data = array(
-                "nama_satuan" => $this->input->post("satuan_produk_add"),
+                "nama_satuan" => strtoupper($this->input->post("uom_baru")),
                 "id_user_add" => $this->session->id_user
             );
             $this->Mdsatuan->insert($data);
-            $uom = $this->input->post("satuan_produk_add");
+            $uom = $this->input->post("uom_baru");
         }
         else{
-            $uom = $this->input->post("satuan_produk");
+            $uom = $this->input->post("uom");
         }
-        $name = array(
-            "bn_produk","nama_produk","satuan_produk","deskripsi_produk"
+        $config['upload_path']          = './assets/system/produk/';
+        $config['allowed_types']        = 'gif|jpg|png';
+        $this->load->library('upload', $config);
+
+        if ( !$this->upload->do_upload('gambar_produk')){
+            $this->session->set_flashdata("imageerror" ,$this->upload->display_errors());
+        }
+        else{
+            $data = array('upload_data' => $this->upload->data());
+            $name = array(
+                "bn_produk","nama_produk","satuan_produk","deskripsi_produk","gambar_produk"
+            );
+            $data = array(
+                $name[0] => $this->input->post($name[0]),
+                $name[1] => $this->input->post($name[1]),
+                $name[2] => strtoupper($uom),
+                $name[3] => $this->input->post($name[3]),
+                $name[4] => $data["upload_data"]["file_name"],
+                "id_user_add" => $this->session->id_user
+            );
+            $this->Mdproduk->insert($data);
+        }
+        redirect("master/product");
+    }
+    public function delete($id_produk){
+        $where = array(
+            "id_produk" => $id_produk
         );
         $data = array(
-            $name[0] => $this->input->post($name[0]),
-            $name[1] => $this->input->post($name[1]),
-            $name[2] => $uom,
-            $name[3] => $this->input->post($name[3]),
-            "id_user_add" => $this->session->id_user
+            "status_produk" => 1
         );
-        $this->Mdproduk->insert($data);
+        $this->Mdproduk->update($data,$where);
+        redirect("master/product");
+    }
+    public function edit($id_produk){
+        $where = array(
+            "id_produk" => $id_produk
+        );
+        
+        if(isExistsInTable("satuan",array("nama_satuan" => $this->input->post("uom"))) == 1){ /*Ternyata gak ada*/
+            $data = array(
+                "nama_satuan" => strtoupper($this->input->post("uom")),
+                "id_user_add" => $this->session->id_user
+            );
+            $this->Mdsatuan->insert($data);
+        }
+        $config['upload_path']          = './assets/system/produk/';
+        $config['allowed_types']        = 'gif|jpg|png';
+        $this->load->library('upload', $config);
+        if ( !$this->upload->do_upload('gambar_produk')){
+            $name = array(
+                "bn_produk","nama_produk","satuan_produk","deskripsi_produk","gambar_produk"
+            );
+            $data = array(
+                $name[0] => $this->input->post($name[0]),
+                $name[1] => $this->input->post($name[1]),
+                $name[2] => $this->input->post("uom"),
+                $name[3] => $this->input->post($name[3]),
+                "id_user_add" => $this->session->id_user
+            );
+            $this->Mdproduk->update($data,$where);
+        }
+        else{
+            $data = array('upload_data' => $this->upload->data());
+            $name = array(
+                "bn_produk","nama_produk","satuan_produk","deskripsi_produk","gambar_produk"
+            );
+            $data = array(
+                $name[0] => $this->input->post($name[0]),
+                $name[1] => $this->input->post($name[1]),
+                $name[2] => $this->input->post("uom"),
+                $name[3] => $this->input->post($name[3]),
+                $name[4] => $data["upload_data"]["file_name"],
+                "id_user_add" => $this->session->id_user
+            );
+            $this->Mdproduk->update($data,$where);
+        }
         redirect("master/product");
     }
     /*ajax*/
