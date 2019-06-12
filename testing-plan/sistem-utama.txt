@@ -1,15 +1,34 @@
 Testing Plan
 =================================
--price request
+*price request
     -lihat price request
     -tambah price request
     -edit price request
--vendor's deal
-    -harga vendor
-        -harga shipper
-    -harga courier
--quotation
--order confirmation
--purchase order (leiter -> supplier)
--order delivery
--invoice
+    -hapus price request item
+    -proceed ke vendor price
+    -delete vendor price
+*vendor's deal
+    -lihat vendor price
+    -hapus vendors price
+    
+    *harga vendor
+        -load harga sesuai barang
+        -masukin data harga,rate,uom dll
+        -edit harga vendor uda bisa 
+
+        *harga shipper
+        -lihat shipping variable
+        -tambah shipping variable
+        -hapus shipping variable
+        -tambah variable di metode lain
+        
+    *harga courier
+    -bisa munculin harga courier per item
+    -bisa tambah harga per item per vendor per method
+
+*quotation
+*order confirmation
+*purchase order (leiter *> supplier)
+*order delivery
+*invoice
+

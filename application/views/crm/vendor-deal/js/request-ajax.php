@@ -33,7 +33,7 @@ function loadItemData(){
 function countKurs(a){
     var price = $("#biaya"+a).val();
     var kurs = $("#kurs"+a).val();
-    $("#total"+a).val(price*kurs);
+    $("#total"+a).val(addCommas(splitter(price,",")*splitter(kurs,",")));
 }
 </script>
 <script>
@@ -91,6 +91,10 @@ function loadShippingPrice(){
     var metode_pengiriman = $("#metodePengiriman").val();
     var id_request_item = $("#items").val();
     var purpose = $("#purpose").val();
+    console.log("1. "+id_perusahaan);
+    console.log("2. "+metode_pengiriman);
+    console.log("3. "+id_request_item);
+    console.log("4. "+purpose);
     $(document).ready(function(){
         $.ajax({
             url:"<?php echo base_url();?>crm/vendor/getShippingPrice",

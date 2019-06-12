@@ -8,7 +8,7 @@ var count = 1;
 var mata_uang = "";
 function addVariable(){
     $(document).ready(function(){
-        $("#shippingVariablePrice").append("<tr><td><input type = 'text' class = 'form-control' name = 'variable[]'></td><td><input type = 'text' class = 'form-control' id ='biaya"+count+"' name = 'biaya[]'></td><td><input type = 'text' class = 'form-control' id ='kurs"+count+"' name = 'kurs[]'></td><td><input onfocus = 'countKurs("+count+")' type = 'text' class = 'form-control' id = 'total"+count+"' name = 'total[]'></td><td><select class = 'form-control' id ='matauang"+count+"' name = 'mata_uang[]'></select></td><td><button class = 'btn btn-sm btn-primary btn-danger' onclick = 'deleteRow(this)'>REMOVE</button></td></tr>");
+        $("#shippingVariablePrice").append("<tr><td><input type = 'text' class = 'form-control' name = 'variable[]'></td><td><input type = 'text' class = 'form-control' id ='biaya"+count+"' oninput = commas('biaya"+count+"') name = 'biaya[]'></td><td><input oninput = commas('kurs"+count+"') type = 'text' class = 'form-control' id ='kurs"+count+"' name = 'kurs[]'></td><td><input onfocus = 'countKurs("+count+")' type = 'text' class = 'form-control' id = 'total"+count+"' name = 'total[]'></td><td><select class = 'form-control' id ='matauang"+count+"' name = 'mata_uang[]'></select></td><td><button class = 'btn btn-sm btn-primary btn-danger' onclick = 'deleteRow(this)'>REMOVE</button></td></tr>");
         
         $.ajax({
             url:"<?php echo base_url();?>crm/vendor/getcurrency",

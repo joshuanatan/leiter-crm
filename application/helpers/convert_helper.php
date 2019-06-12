@@ -30,4 +30,14 @@ if ( ! function_exists('convertResultToKeyValueArray')){
         }
     }   
 }
+if ( ! function_exists('splitterMoney')){
+    function splitterMoney($string,$separator){
+        $split = explode($separator,$string);
+        $result = "";
+        for($a = 0; $a<count($split); $a++){
+            $result .= $split{$a};
+        }
+        return $result;
+    }   
+}
 ?>

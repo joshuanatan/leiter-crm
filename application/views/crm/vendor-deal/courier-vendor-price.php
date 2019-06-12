@@ -6,9 +6,9 @@
                     <h4 class="example-title">PRICE REQUEST ITEM ID</h4>    
                     <select class = "form-control" id = "items" name = "items" onchange = "loadItemData()" data-plugin="select2">
                         <option selected disabled>Choose Item List</option>
-                        <?php foreach($requestitem->result() as $a){ ?> 
-                        <option value = "<?php echo $a->id_request_item;?>"><?php echo $a->nama_produk;?></option>
-                        <?php } ?>
+                        <?php for($a = 0 ; $a<count($requestitem); $a++): ?> 
+                        <option value = "<?php echo $requestitem[$a]["id_request_item"];?>"><?php echo $requestitem[$a]["nama_produk"];?></option>
+                        <?php endfor; ?>
                     </select>
                 </div>
                 <input type = "hidden" readonly class = "form-control" value = "CUSTOMER" name = "shipping_purpose" id = "purpose">
@@ -18,7 +18,7 @@
                 </div>
                 <div class="form-group">
                     <h4 class="example-title">Franco</h4>    
-                    <input type = "text" readonly class = "form-control" value = "<?php echo $a->franco;?>">
+                    <input type = "text" readonly class = "form-control" value = "<?php echo $franco;?>">
                 </div>
                 <div class="form-group">
                     <h4 class="example-title">Shipping Vendor</h4>    
@@ -58,8 +58,8 @@
                 </tbody>
                 <button style = "margin-bottom:20px" type = "button" class = "btn btn-sm col-lg-12 btn-primary btn-outline" onclick = "addVariable()">Add Shipping Variable</button>
             </table><br/>
-            <a href = "<?php echo base_url();?>crm/vendor" class = "btn btn-primary btn-outline">BACK</a>
-            <input type = "submit" class = "btn btn-primary btn-outline" type = "submit">
+            <button type = "submit" class = "col-lg-2 btn btn-primary btn-outline">SAVE</button>
+            <a href = "<?php echo base_url();?>crm/vendor" class = "col-lg-2 btn btn-primary btn-outline">BACK</a>
         </form>
     </div>
 </div>

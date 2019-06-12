@@ -16,10 +16,10 @@ class Vendor extends CI_Controller{
     /*default function*/
     private function req(){
         $this->load->view("req/head");
-        $this->load->view("crm/vendor-deal/css/datatable-css");
-        $this->load->view("crm/vendor-deal/css/breadcrumb-css");
-        $this->load->view("crm/vendor-deal/css/modal-css");
-        $this->load->view("crm/vendor-deal/css/form-css");
+        $this->load->view("plugin/datatable/datatable-css");
+        $this->load->view("plugin/breadcrumb/breadcrumb-css");
+        $this->load->view("plugin/modal/modal-css");
+        $this->load->view("plugin/form/form-css");
         $this->load->view("req/head-close");
         $this->load->view("crm/crm-open");
         $this->load->view("req/top-navbar");
@@ -27,9 +27,9 @@ class Vendor extends CI_Controller{
     }
     public function close(){
         $this->load->view("req/script");
-        $this->load->view("crm/vendor-deal/js/jqtabledit-js");
-        $this->load->view("crm/vendor-deal/js/page-datatable-js");
-        $this->load->view("crm/vendor-deal/js/form-js");
+        $this->load->view("plugin/jqtabledit/jqtabledit-js");
+        $this->load->view("plugin/datatable/page-datatable-js");
+        $this->load->view("plugin/form/form-js");
         $this->load->view("crm/vendor-deal/js/dynamic-form-js");
         $this->load->view("crm/crm-close");
         $this->load->view("req/html-close");
@@ -41,8 +41,21 @@ class Vendor extends CI_Controller{
                 "price_request.status_request" => 2
             )
         );
+        $result["request"] = $this->Mdprice_request->select($where["request"]);
+        $counter = 0;
+        $data["request"] = array();
+        $array["request"] = array();
+        foreach($result["request"]->result() as $a){
+            $array["request"][$counter] = array(
+                "id_request" => $a->id_request,
+                "nama_perusahaan" => get1Value("perusahaan","nama_perusahaan", array("id_perusahaan" => $a->id_perusahaan)),
+                "nama_cp" => get1Value("contact_person","nama_cp", array("id_cp" => $a->id_cp)),
+                "untuk_stock" => $a->untuk_stock,
+            );
+            $counter++;
+        }
         $data = array(
-            "request" => $this->Mdprice_request->select($where["request"])
+            "request" => $array["request"]
         );
         $this->req();
         $this->load->view("crm/content-open");
@@ -63,8 +76,19 @@ class Vendor extends CI_Controller{
             ),
             "matauang" => array()
         );
+        $result["request_item"] = $this->Mdprice_request_item->select($where["requestitem"]);
+        $array["request_item"] = array();
+        $counter = 0;
+        foreach($result["request_item"]->result() as $a){
+            $array["request_item"][$counter] = array(
+                "id_produk" => $a->id_produk,
+                "id_request_item" => $a->id_request_item,
+                "nama_produk" => get1Value("produk","nama_produk",array("id_produk" => $a->id_produk))
+            );
+            $counter++;
+        }
         $data = array(
-            "requestitem" => $this->Mdprice_request_item->select($where["requestitem"]),
+            "requestitem" => $array["request_item"],
             "vendoritem" => $this->Mdproduk_vendor->select($where["vendoritem"]),
             "mata_uang" => $this->Mdmata_uang->select($where["matauang"])
         );
@@ -82,22 +106,31 @@ class Vendor extends CI_Controller{
         $where = array(
             "requestitem" => array(
                 "price_request_item.id_request_item"=>$i,
-                "price_request_item.status_request_item" => 0
             ),
             "shipper" => array(
                 "perusahaan.peran_perusahaan" => "SHIPPING",
                 "perusahaan.status_perusahaan" => 0
             ),
-            "supplier" => array(
-                "perusahaan.id_perusahaan" => $id_perusahaan 
-            )
-            
         );
+        $result["requestitem"] = $this->Mdprice_request_item->select($where["requestitem"]);
+        $array["request_item"] = array();
+        foreach($result["requestitem"]->result() as $a){
+            $array["request_item"] = array(
+                "id_request_item" => $a->id_request_item,
+                "bn_produk" => get1Value("produk","bn_produk",array("id_produk" => $a->id_produk)),
+                "nama_produk" => get1Value("produk","nama_produk",array("id_produk" => $a->id_produk)),
+                "jumlah_produk" => getTotal("price_request_item","jumlah_produk",array("id_request" => $a->id_request, "id_produk" => $a->id_produk, "status_request_item" => 0)),
+                "satuan_produk" => get1Value("produk","satuan_produk",array("id_produk" => $a->id_produk)),
+                "nama_perusahaan" => get1Value("perusahaan","nama_perusahaan", array("id_perusahaan" => $id_perusahaan)),
+                "alamat_perusahaan" => get1Value("perusahaan","alamat_perusahaan", array("id_perusahaan" => $id_perusahaan)),
+            );
+        }
+
+
         $data = array(
             "requestitemid" => $i,
-            "requestitem" => $this->Mdprice_request_item->select($where["requestitem"]),
+            "requestitem" => $array["request_item"],
             "shipper" => $this->Mdperusahaan->select($where["shipper"]),
-            "supplier" => $this->Mdperusahaan->select($where["supplier"])
         );
         $this->req();
         $this->load->view("crm/content-open");
@@ -112,7 +145,7 @@ class Vendor extends CI_Controller{
         $where = array(
             "requestitem" => array(
                 "price_request_item.id_request"=>$i,
-                "price_request_item.status_request_item" => 0
+                "status_request_item" => 0
             ),
             "shipper" => array(
                 "perusahaan.peran_perusahaan" => "SHIPPING",
@@ -120,8 +153,19 @@ class Vendor extends CI_Controller{
             ),
             
         );
+        $result["requestitem"] = $this->Mdprice_request_item->select($where["requestitem"]);
+        $array["requestitem"] = array();
+        $counter = 0 ;
+        foreach($result["requestitem"]->result() as $a){
+            $array["requestitem"][$counter] = array(
+                "id_request_item" => $a->id_request_item,
+                "nama_produk" => get1Value("produk","nama_produk", array("id_produk" => $a->id_produk))
+            );
+            $counter++;
+        }
         $data = array(
-            "requestitem" => $this->Mdprice_request_item->select($where["requestitem"]),
+            "requestitem" => $array["requestitem"],
+            "franco" => get1Value("price_request","franco",array("id_request" => $i)),
             "shipper" => $this->Mdperusahaan->select($where["shipper"])
         );
         $this->req();
@@ -207,7 +251,7 @@ class Vendor extends CI_Controller{
                         $rate = $a->vendor_price_rate;
                     }
                     
-                    $html .= "<tr><input type ='hidden' value = '".$this->input->post("id_request_item")."' id = 'id_request_item".$counterId."'><input type ='hidden' value = '".$b->id_perusahaan."' id = 'idperusahaan".$counterId."'><td>".$a->nama_perusahaan."</td><td><select class = 'form-control' id = 'cp".$counterId."'>".$cp."</select></td><td>".$a->bn_produk_vendor."</td><td>".$a->nama_produk_vendor."</td><td><input type ='number' id = 'price".$counterId."' class = 'form-control' value = '".$harga."'></td><td><input type ='number' id = 'vendor_price_rate".$counterId."' class = 'form-control' value = '".$rate."'></td><td><input type ='number' id = 'satuan_harga_produk".$counterId."' class = 'form-control' value = '".$satuan."'></td><td><select class = 'form-control' id = 'matauang".$counterId."'>".$matauangfinal."</select></td><td><a href = '".base_url()."crm/vendor/suppliershipping/".$this->input->post("id_request_item")."/".$a->id_perusahaan."' class = 'btn btn-sm btn-outline btn-primary' >SHIPPING PRICE</a></td><td><button type = 'submit' class = 'btn btn-sm btn-primary btn-outline' onclick = 'submitData(".$counterId.")'>SAVE</button></td></tr>";
+                    $html .= "<tr><input type ='hidden' value = '".$this->input->post("id_request_item")."' id = 'id_request_item".$counterId."'><input type ='hidden' value = '".$b->id_perusahaan."' id = 'idperusahaan".$counterId."'><td>".$a->nama_perusahaan."</td><td><select class = 'form-control' id = 'cp".$counterId."'>".$cp."</select></td><td>".$a->bn_produk_vendor."</td><td>".$a->nama_produk_vendor."</td><td><input type ='text' id = 'price".$counterId."' class = 'form-control' oninput = 'commas(\"price".$counterId."\")' value = '".number_format($harga)."'></td><td><input type ='text' id = 'vendor_price_rate".$counterId."' class = 'form-control' oninput = 'commas(\"vendor_price_rate".$counterId."\")' value = '".number_format($rate)."'></td><td><input type ='text' id = 'satuan_harga_produk".$counterId."' class = 'form-control' value = '".$satuan."'></td><td><select class = 'form-control' id = 'matauang".$counterId."'>".$matauangfinal."</select></td><td><a href = '".base_url()."crm/vendor/suppliershipping/".$this->input->post("id_request_item")."/".$a->id_perusahaan."' class = 'btn btn-sm btn-outline btn-primary' >SHIPPING PRICE</a></td><td><button type = 'submit' class = 'btn btn-sm btn-primary btn-outline' onclick = 'submitData(".$counterId.")'>SAVE</button></td></tr>";
                 }
             }
             else{/*nah kalau misalnya udah ada di produk vendor dan belum masukin harga vendor */
@@ -222,7 +266,7 @@ class Vendor extends CI_Controller{
                    
                 }
                 $tracingError .= " Status:else ";
-                $html .= "<tr><input type ='hidden' value = '".$this->input->post("id_request_item")."' id = 'id_request_item".$counterId."'><input type ='hidden' value = '".$b->id_perusahaan."' id = 'idperusahaan".$counterId."'><td>".$b->nama_perusahaan."</td><td><select class = 'form-control' id = 'cp".$counterId."'>".$cp."</select></td><td>".$b->bn_produk_vendor."</td><td>".$b->nama_produk_vendor."</td><td><input type ='number' id = 'price".$counterId."' class = 'form-control' value = '0'></td><td><input type ='number' id = 'vendor_price_rate".$counterId."' class = 'form-control' value = '0'></td><td><input type ='number' id = 'satuan_harga_produk".$counterId."' class = 'form-control' value = '0'></td>><td><select class = 'form-control' id = 'matauang".$counterId."'>".$matauangfinal."</select></td><td><a href = '".base_url()."crm/vendor/suppliershipping/".$this->input->post("id_request_item")."/".$b->id_perusahaan."' class = 'btn btn-sm btn-outline btn-primary' >SHIPPING PRICE</a></td><td><button type = 'submit' class = 'btn btn-sm btn-primary btn-outline' onclick = 'submitData(".$counterId.")'>SAVE</button></td></tr>";
+                $html .= "<tr><input type ='hidden' value = '".$this->input->post("id_request_item")."' id = 'id_request_item".$counterId."'><input type ='hidden' value = '".$b->id_perusahaan."' id = 'idperusahaan".$counterId."'><td>".$b->nama_perusahaan."</td><td><select class = 'form-control' id = 'cp".$counterId."'>".$cp."</select></td><td>".$b->bn_produk_vendor."</td><td>".$b->nama_produk_vendor."</td><td><input type ='text' oninput = 'commas(\"price".$counterId."\")' id = 'price".$counterId."' class = 'form-control' value = '0'></td><td><input type ='text' oninput = 'commas(\"vendor_price_rate".$counterId."\")' id = 'vendor_price_rate".$counterId."' class = 'form-control' value = '0'></td><td><input type ='text' id = 'satuan_harga_produk".$counterId."' class = 'form-control' value = '0'></td>><td><select class = 'form-control' id = 'matauang".$counterId."'>".$matauangfinal."</select></td><td><a href = '".base_url()."crm/vendor/suppliershipping/".$this->input->post("id_request_item")."/".$b->id_perusahaan."' class = 'btn btn-sm btn-outline btn-primary' >SHIPPING PRICE</a></td><td><button type = 'submit' class = 'btn btn-sm btn-primary btn-outline' onclick = 'submitData(".$counterId.")'>SAVE</button></td></tr>";
             }
             $counterId++;
             //echo $tracingError;
@@ -240,9 +284,9 @@ class Vendor extends CI_Controller{
             "id_request_item" =>$this->input->post("id_request_item"),
             "id_perusahaan" =>$this->input->post("id_perusahaan"),
             "id_cp" => $this->input->post("idcp"),
-            "harga_produk" => $this->input->post("price"),
+            "harga_produk" => splitterMoney($this->input->post("price"),","),
             "satuan_harga_produk" => $this->input->post("uom"),
-            "vendor_price_rate" => $this->input->post("rate"),  
+            "vendor_price_rate" => splitterMoney($this->input->post("rate"),","),  
             "mata_uang" => $this->input->post("mata_uang"),  
             "id_user_add" => $this->session->id_user
         );
@@ -285,7 +329,7 @@ class Vendor extends CI_Controller{
         $result = $this->Mdvariable_shipping_price->select($where);
         $html = "";
         foreach($result->result() as $a){
-            $html .= "<tr><td>".$a->nama_variable."</td><td>".$a->biaya_variable."</td><td>".$a->kurs_variable."</td><td>".$a->biaya_variable*$a->kurs_variable."</td><td>".$a->mata_uang."</td><td><a href = '".base_url()."crm/vendor/removevariable/".$a->id_variable_shipping."' class = 'btn btn-sm btn-primary btn-outline'>REMOVE</a></td></tr>";
+            $html .= "<tr><td>".$a->nama_variable."</td><td>".number_format($a->biaya_variable)."</td><td>".number_format($a->kurs_variable)."</td><td>".number_format($a->biaya_variable*$a->kurs_variable)."</td><td>".$a->mata_uang."</td><td><a href = '".base_url()."crm/vendor/removevariable/".$a->id_variable_shipping."' class = 'btn btn-sm btn-primary btn-outline'>REMOVE</a></td></tr>";
         }
         echo json_encode($html);
     }
@@ -300,7 +344,7 @@ class Vendor extends CI_Controller{
         $result = $this->Mdvariable_courier_price->select($where);
         $html = "";
         foreach($result->result() as $a){
-            $html .= "<tr><td>".$a->nama_variable."</td><td>".$a->biaya_variable."</td><td>".$a->kurs_variable."</td><td>".$a->biaya_variable*$a->kurs_variable."</td><td>".$a->mata_uang."</td><td><a href = '".base_url()."crm/vendor/removecouriervariable/".$a->id_variable_courier."' class = 'btn btn-sm btn-primary btn-outline'>REMOVE</a></td></tr>";
+            $html .= "<tr><td>".$a->nama_variable."</td><td>".number_format($a->biaya_variable)."</td><td>".number_format($a->kurs_variable)."</td><td>".number_format($a->biaya_variable*$a->kurs_variable)."</td><td>".$a->mata_uang."</td><td><a href = '".base_url()."crm/vendor/removecouriervariable/".$a->id_variable_courier."' class = 'btn btn-sm btn-primary btn-outline'>REMOVE</a></td></tr>";
         }
         echo json_encode($html);
     }
@@ -310,7 +354,7 @@ class Vendor extends CI_Controller{
         );
         $result = $this->Mdprice_request_item->select($where);
         foreach($result->result() as $a){
-            echo json_encode($a->jumlah_produk." ".$a->satuan_produk);
+            echo json_encode(getTotal("price_request_item","jumlah_produk",array("id_request" => $a->id_request,"id_produk" => $a->id_produk))." ".get1Value("produk","satuan_produk",array("id_produk" => $a->id_produk)));
         }
     }
     public function getVendors(){
@@ -518,12 +562,12 @@ class Vendor extends CI_Controller{
         echo "countnya = ".$count;
         $count = 0;
         foreach($biayae as $a){
-            $cost[$count] = $a;
+            $cost[$count] = splitterMoney($a,",");
             $count++;
         }
         $count = 0;
         foreach($kurse as $a){
-            $rate[$count] = $a;
+            $rate[$count] = splitterMoney($a,",");
             $count++;
         }
         $count = 0;
@@ -536,7 +580,7 @@ class Vendor extends CI_Controller{
             $data = array(
                 "id_perusahaan" => $this->input->post("id_perusahaan"),
                 "shipping_purpose" => $this->input->post("shipping_purpose"),
-                "id_supplier" => $this->input->post("id_supplier"),
+                "id_supplier" => $this->session->id_supplier,
                 "id_cp" => $this->input->post("id_cp"),
                 "metode_pengiriman" => $this->input->post("metode_pengiriman"),
                 "nama_variable" => $nama[$a],
@@ -591,8 +635,8 @@ class Vendor extends CI_Controller{
                 "id_cp" => $this->input->post("id_cp"),
                 "metode_pengiriman" => $this->input->post("metode_pengiriman"),
                 "nama_variable" => $nama[$a],
-                "biaya_variable" => $cost[$a],
-                "kurs_variable" => $rate[$a],
+                "biaya_variable" => splitterMoney($cost[$a],","),
+                "kurs_variable" => splitterMoney($rate[$a],","),
                 "mata_uang" => $mata_uang[$a],
                 "id_request_item" => $this->input->post("items"),
                 "id_user_add" => $this->session->id_user

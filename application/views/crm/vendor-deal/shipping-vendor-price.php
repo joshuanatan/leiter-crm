@@ -4,31 +4,27 @@
          
         <input type = "hidden" readonly class = "form-control" value = "SUPPLIER" id = "purpose" name = "shipping_purpose">
             <div class = "col-lg-12" style = "margin-left:0px; padding-left:0px">
-            <?php foreach($requestitem->result() as $a){ ?>
                 <div class="form-group">
                     <h4 class="example-title">PRICE REQUEST ITEM ID</h4>    
-                    <input name = "items" type="text" class="form-control" id="items" placeholder="placeholder" readonly value = "<?php echo $a->id_request_item;?>">
+                    <input name = "items" type="text" class="form-control" id="items" placeholder="placeholder" readonly value = "<?php echo $requestitem["id_request_item"];?>">
                 </div>
                 <div class="form-group">
                     <h4 class="example-title">ITEM NAME</h4>
-                    <input type="text" class="form-control" id="inputPlaceholder" placeholder="placeholder" readonly value = "<?php echo ucwords($a->nama_produk);?>">
+                    <input type="text" class="form-control" id="inputPlaceholder" placeholder="placeholder" readonly value = "<?php echo ucwords($requestitem["nama_produk"]);?>">
                 </div>
                 <div class="form-group">
                     <h4 class="example-title">ITEM DIMENSION</h4>
-                    <input type="text" class="form-control" id="inputPlaceholder" placeholder="placeholder" readonly value = "<?php echo ucwords($a->jumlah_produk)." ".$a->satuan_produk;?>">
+                    <input type="text" class="form-control" id="inputPlaceholder" placeholder="placeholder" readonly value = "<?php echo ucwords($requestitem["jumlah_produk"])." ".$requestitem["satuan_produk"];?>">
                 </div>
-            <?php } ?>
-            <?php foreach($supplier->result() as $a){ ?> 
                 <div class="form-group">
                     <h4 class="example-title">SUPPLIER NAME</h4>
-                    <input type="text" class="form-control" id="inputPlaceholder" placeholder="placeholder" readonly value = "<?php echo ucwords($a->nama_perusahaan);?>">
-                    <input type="hidden" name = "id_supplier" value = "<?php echo $a->id_perusahaan;?>">
+                    <input type="text" class="form-control" id="inputPlaceholder" placeholder="placeholder" readonly value = "<?php echo ucwords($requestitem["nama_perusahaan"]);?>">
+                    <input type="hidden" name = "id_supplier" value = "<?php echo $requestitem["nama_perusahaan"];?>">
                 </div>
                 <div class="form-group">
                     <h4 class="example-title">SUPPLIER ADDRESS</h4>
-                    <textarea class="form-control" id="inputPlaceholder" placeholder="placeholder" rows=5 readonly><?php echo ucwords($a->alamat_perusahaan);?></textarea>
+                    <textarea class="form-control" id="inputPlaceholder" placeholder="placeholder" rows=5 readonly><?php echo ucwords($requestitem["alamat_perusahaan"]);?></textarea>
                 </div>
-            <?php } ?>
                 <div class="form-group">
                     <h4 class="example-title">SHIPPER NAME</h4>
                     <select class = "form-control" id = "shipper" name = "id_perusahaan" onchange = "loadShippingMethod()" data-plugin="select2">

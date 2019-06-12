@@ -3,9 +3,9 @@
         <div class = "col-lg-6" style = "margin-left:0px; padding-left:0px">
             <select class = "form-control col-lg-6" id = "items" onchange = "loadVendorPrice()" data-plugin="select2">
                 <option selected disabled>Choose Item List</option>
-                <?php foreach($requestitem->result() as $a){ ?> 
-                <option value = "<?php echo $a->id_request_item;?>"><?php echo $a->nama_produk;?></option>
-                <?php } ?>
+                <?php for($a = 0 ; $a<count($requestitem); $a++): ?> 
+                <option value = "<?php echo $requestitem[$a]["id_request_item"];?>"><?php echo $requestitem[$a]["nama_produk"];?></option>
+                <?php endfor; ?>
             </select>
         </div>
     </div>
