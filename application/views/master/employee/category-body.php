@@ -19,9 +19,10 @@ foreach($privilege->result() as $a){
         <thead>
             <tr>
                 <th>ID User</th>
-                <th>Employee Name</th>
-                <th>Employee Email</th>
-                <th>Employee Phone</th>
+                <th>User Name</th>
+                <th>User Email</th>
+                <th>User Phone</th>
+                <th>User Type</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -32,6 +33,7 @@ foreach($privilege->result() as $a){
                 <td><?php echo $a->nama_user;?></td>
                 <td><?php echo $a->email_user?></td>
                 <td><?php echo $a->nohp_user;?></td>
+                <td><?php echo $a->jenis_user;?></td>
                 <td class="actions">
                     
                     <button type="button" data-target = "#DetailUser<?php echo $a->id_user;?>" data-toggle="modal" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" data-content="Detail Profile" data-trigger="hover" data-toggle="popover" aria-hidden="true"></i></button>
@@ -109,6 +111,16 @@ foreach($privilege->result() as $a){
                                         <?php
                                         }
                                         ?>
+                                        <div class = "form-group">
+                                            <div class = "col-md-12 col-lg-12">
+                                                <h5 class ="example-title">User Type</h5>
+                                                <select class = "form-control" name = "jenis_user">
+                                                    <option value = "USER">USER</option>
+                                                    <option value = "SALES" <?php if($a->jenis_user == "SALES") echo "selected";?>>SALES</option>
+                                                    <option value = "LABOR" <?php if($a->jenis_user == "LABOR") echo "selected";?>>LABOR</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class = "form-group">
                                             <div class = "col-md-12 col-lg-12">
                                                 <button type = "submit" class = "btn btn-primary btn-outline col-lg-2 col-md-12">SUBMIT</button>
@@ -200,7 +212,7 @@ foreach($privilege->result() as $a){
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="exampleModalTabs">Employee Data</h4>
+                <h4 class="modal-title" id="exampleModalTabs">User Data</h4>
             </div>
 
             <ul class="nav nav-tabs nav-tabs-line" role="tablist">
@@ -263,7 +275,18 @@ foreach($privilege->result() as $a){
                             <?php
                             }
                             ?>
-                            
+                            <div class = "form-group">
+                                <div class="col-md-12 col-lg-12">
+                                    <!-- Example With Help -->
+                                    <h4 class="example-title">User Type</h4>
+                                    <select class = "form-control" name = "jenis_user">
+                                        <option value = "USER">USER</option>
+                                        <option value = "SALES">SALES</option>
+                                        <option value = "LABOR">LABOR</option>
+                                    </select>
+                                    <span class="text-help">User Type</span>
+                                </div>
+                            </div>
                         </div>
                         <div class="tab-pane" id="privilage" role="tabpanel">
                             <?php

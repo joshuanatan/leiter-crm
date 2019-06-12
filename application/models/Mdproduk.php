@@ -14,8 +14,8 @@ class Mdproduk extends CI_Model{
         $this->db->delete("produk",$where);
     }
     public function produk_vendor($where){
-        $this->db->join("produk_vendor","produk_vendor.id_produk = produk.id_produk","left outer");
-        $this->db->group_by("produk.id_produk");
+        /*cari semua item yang belum di assign ke vendor tersebut*/
+        $this->db->where("produk.id_produk not in (select id_produk from produk_vendor where id_perusahaan = ".$this->session->id_supplier.")");
         return $this->db->get_where("produk",$where);
     }
 }

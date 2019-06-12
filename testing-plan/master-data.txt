@@ -27,6 +27,30 @@ Testing Plan
 
 kerjain di kampus sisa ini
 5. VENDOR/PRODUCT
+    -lihat data vendor product
+    -tambah vendor product 
+    -edit detail vendor 
+    -lihat cp
+    -tambah cp
+    -edit cp
+    -delete cp
+    -hapus vendor
+    -tambah produk vendor
+    -edit produk vendor
+    -delete produk vendor
 6. VENDOR/SHIPPING
+    -lihat data vendor shipping 
+    -tambahin vendor shipping
+    -lihat cp
+    -tambah cp
+    -edit cp
+    -edit vendor shipping
+    -hapus cp
+    -hapus vendor shipping
 7. USER/EMPLOYEE
+    -lihat data employee 
+    -insert data 
+    -edit data
+    -delete data
 8. USER/SALES
+    -

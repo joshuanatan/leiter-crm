@@ -106,13 +106,15 @@ class Employee extends CI_Controller{
             "nama_user",
             "email_user",
             "nohp_user",
-            "password"
+            "password",
+            "jenis_user"
         );
         $data = array(
             $name[0] => $this->input->post($name[0]),
             $name[1] => $this->input->post($name[1]),
             $name[2] => $this->input->post($name[2]),
             $name[3] => md5($this->input->post($name[3])),
+            $name[4] => $this->input->post($name[4]),
             "id_user_add" => $this->session->id_user
         );
         $insertID = $this->Mduser->insert($data); /*last user id*/
@@ -149,6 +151,7 @@ class Employee extends CI_Controller{
             "nama_user",
             "email_user",
             "nohp_user",
+            "jenis_user"
         );
         $where = array(
             "user.id_user" => $this->input->post("id_user")
@@ -157,6 +160,7 @@ class Employee extends CI_Controller{
             $name[0] => $this->input->post($name[0]),
             $name[1] => $this->input->post($name[1]),
             $name[2] => $this->input->post($name[2]),
+            $name[3] => $this->input->post($name[3]),
             "id_user_edit" => $this->session->id_user
         );
         $this->Mduser->update($data,$where);

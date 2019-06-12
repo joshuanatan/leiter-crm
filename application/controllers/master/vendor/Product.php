@@ -91,16 +91,19 @@ class Product extends CI_Controller{
                 "perusahaan.id_perusahaan" => $i
             ),
             "catalog" => array(
-                "status_produk_vendor" => 0
+                //"status_produk_vendor" => 0
+                "status_produk" => 0
             ),
-            "satuan" => array(),
+            "satuan" => array(
+                "status_satuan" => 0
+            ),
             "perusahaan" => array(
                 "perusahaan.id_perusahaan" => $i
             )
         );
         $data = array(
             "product" => $this->Mdproduk_vendor->select($where["items"]), /*catalog vendor*/
-            "catalog" => $this->Mdproduk->select($where["catalog"]), /*buat di form input, catalog vendor tersebut = barang apa */
+            "catalog" => $this->Mdproduk->produk_vendor($where["catalog"]), /*buat di form input, catalog vendor tersebut = barang apa */
             "satuan" => $this->Mdsatuan->select($where["satuan"]), /*satuan dari vendor produk */
             "perusahaan" => $this->Mdperusahaan->select($where["perusahaan"]), /*detail perusahaan, diload di category-header*/
             "id_perusahaan" => $i
@@ -181,11 +184,11 @@ class Product extends CI_Controller{
         /*end insert data, dapet last_id*/
         if($this->input->post("satuan_produk_new_vendor") != ""){
             $data = array(
-                "nama_satuan" => $this->input->post("satuan_produk_new_vendor"),
+                "nama_satuan" => strtoupper($this->input->post("satuan_produk_new_vendor")),
                 "id_user_add" => $this->session->id_user
             );
             $this->Mdsatuan->insert($data);
-            $uom = $this->input->post("satuan_produk_new_vendor");
+            $uom = strtoupper($this->input->post("satuan_produk_new_vendor"));
         }
         else{
             $uom = $this->input->post("satuan_produk_vendor");
@@ -303,6 +306,37 @@ class Product extends CI_Controller{
         );
         $this->Mdcontact_person->insert($data);
         redirect("master/vendor/product/contact/".$this->input->post($nameCp[5]));
+    }
+    public function updateitem($id_produk_vendor){
+        $where = array(
+            "id_produk_vendor" => $id_produk_vendor
+        );
+        $uom = "";
+        /*end insert data, dapet last_id*/
+        if($this->input->post("satuan_produk_new_vendor") != ""){
+            $data = array(
+                "nama_satuan" => strtoupper($this->input->post("satuan_produk_new_vendor")),
+                "id_user_add" => $this->session->id_user
+            );
+            $this->Mdsatuan->insert($data);
+            $uom = strtoupper($this->input->post("satuan_produk_new_vendor"));
+        }
+        else{
+            $uom = $this->input->post("satuan_produk_vendor");
+        }
+        $name = array(
+            "bn_produk_vendor","nama_produk_vendor","satuan_produk_vendor","deskripsi_produk_vendor"
+        );
+        $data = array(
+            $name[0] => $this->input->post($name[0]),
+            $name[1] => $this->input->post($name[1]),
+            $name[2] => $uom,
+            $name[3] => $this->input->post($name[3]),
+            
+            "id_user_add" => $this->session->id_user
+        );
+        $this->Mdproduk_vendor->update($data,$where);
+        redirect("master/vendor/product/items/".$this->input->post("id_perusahaan"));
     }
 }
 ?>

@@ -21,7 +21,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach($product->result() as $a){ ?> 
+            <?php foreach($product->result() as $a): ?> 
             <tr class="gradeA">
                 <td><?php echo $a->id_produk_vendor;?></td>
                 <td><?php echo $a->bn_produk_vendor;?></td>
@@ -31,12 +31,85 @@
                 <td><?php echo $a->satuan_produk_vendor;?></td>
                 <td class="actions">
                     
-                    <a href = "#" class="btn btn-outline btn-primary"><i class="icon wb-edit" aria-hidden="true"></i></a >
-                    <a href = "<?php echo base_url();?>master/vendor/product/deleteitem/<?php echo $a->id_produk_vendor;?>" class="btn btn-outline btn-danger" data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
+                    <button type = "button" data-target="#editItem<?php echo $a->id_produk_vendor;?>" data-toggle="modal" class="btn btn-outline btn-primary"><i class="icon wb-edit" aria-hidden="true"></i></button>
+
+                    <div class="modal fade" id="editItem<?php echo $a->id_produk_vendor;?>" aria-hidden="true" aria-labelledby="DaftarUser" role="dialog" tabindex="-1">
+                        <div class="modal-dialog modal-simple">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                    <h4 class="modal-title" id="exampleModalTabs">Product Vendor Data</h4>
+                                </div>
+
+                                <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+                                    <li class="nav-item" role="presentation"><a style = "text-style:none" class="nav-link active" data-toggle="tab" href="#primaryData" aria-controls="primaryData" role="tab">LEITER Product Data</a></li>
+                                    <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#supplier" aria-controls="supplier" role="tab">Supplier Product Data</a></li>
+                                </ul>
+                                <form action = "<?php echo base_url();?>master/vendor/product/updateitem/<?php echo $a->id_produk_vendor;?>" method = "post">    
+                                    <div class="modal-body">
+                                        <div class="tab-content">
+                                            <div class="tab-pane active" id="primaryData" role="tabpanel">
+                                                <div class="form-group">
+                                                    <h4 class="example-title">Product B/N</h4>    
+                                                    <input name = "bn_produk" type="text" class="form-control" readonly value = "<?php echo $a->bn_produk_vendor;?>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <h4 class="example-title">Product Name</h4>    
+                                                    <input type="text" class="form-control" name = "nama_produk" value = "<?php echo $a->nama_produk;?>" readonly placeholder="" >
+                                                </div>
+                                                <div class="form-group">
+                                                    <h4 class="example-title">Product UOM</h4>    <input class = "form-control" type = "text" value = "<?php echo $a->satuan_produk;?>" readonly>
+                                                </div>
+                                                <div class="form-group">
+                                                    <h4 class="example-title">Product Description</h4>    
+                                                    <textarea class="form-control" id="deskripsi_produk" name = "deskripsi_produk" placeholder="" readonly ><?php echo $a->deskripsi_produk;?></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="supplier" role="tabpanel">
+                                                <input type = "hidden" name = "id_perusahaan" value = "<?php echo $id_perusahaan;?>">
+                                                <div class="form-group">
+                                                    <h4 class="example-title">Product B/N</h4>    
+                                                    <input type="text" value = "<?php echo $a->bn_produk_vendor;?>" class="form-control" name = "bn_produk_vendor" id="bn_produk_vendor" placeholder="" >
+                                                </div>
+                                                <div class="form-group">
+                                                    <h4 class="example-title">Product Name</h4>    
+                                                    <input type="text" value = "<?php echo $a->nama_produk_vendor;?>" class="form-control" name = "nama_produk_vendor" id="nama_produk_vendor" placeholder="" >
+                                                </div>
+                                                <div class="form-group">
+                                                    <h4 class="example-title">Product UOM</h4>    
+                                                    <select class = "form-control" name = "satuan_produk_vendor" id = "satuan_produk_vendor">
+                                                    <?php foreach($satuan->result() as $b){ ?>
+                                                        <option <?php if($a->satuan_produk_vendor == $b->nama_satuan) echo "selected";?> value = "<?php echo $b->nama_satuan;?>"><?php echo strtoupper($b->nama_satuan);?></option>
+                                                    <?php } ?>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <h4 class="example-title">New Product UOM</h4>    
+                                                    <input type="text" class="form-control" name = "satuan_produk_new_vendor" id="satuan_produk_new_vendor" placeholder="" >
+                                                </div>
+                                                <div class="form-group">
+                                                    <h4 class="example-title">Product Description</h4>    
+                                                    <textarea class="form-control" id="deskripsi_produk_vendor" name = "deskripsi_produk_vendor" placeholder="" ><?php echo $a->deskripsi_produk_vendor;?></textarea>
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <input type = "submit" class = "btn btn-primary btn-outline">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     
+                    <a href = "<?php echo base_url();?>master/vendor/product/deleteitem/<?php echo $a->id_produk_vendor;?>" class="btn btn-outline btn-danger" data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
                 </td>
             </tr>
-            <?php } ?>
+            <?php endforeach; ?>
         </tbody>
     </table>
     <a href = "<?php echo base_url();?>master/vendor/product" class = "btn btn-outline btn-primary">BACK</a>
