@@ -1,0 +1,15 @@
+Testing Plan
+=================================
+-price request
+    -lihat price request
+    -tambah price request
+    -edit price request
+-vendor's deal
+    -harga vendor
+        -harga shipper
+    -harga courier
+-quotation
+-order confirmation
+-purchase order (leiter -> supplier)
+-order delivery
+-invoice

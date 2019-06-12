@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-            <button data-target="#TambahRequest" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button">
+            <button data-target = "#TambahRequest" data-toggle = "modal" class="btn btn-outline btn-primary">
                 <i class="icon wb-plus" aria-hidden="true"></i> Add Price Request
             </button>
             </div>
@@ -20,24 +20,24 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach($request->result() as $a){ ?> 
+            <?php for($a = 0; $a<count($request); $a++): ?> 
             <tr class="gradeA">
-                <td>REQ-<?php echo sprintf("%05d",$a->id_request) ?></td>
-                <td><?php echo $a->nama_perusahaan ?></td>
-                <td><?php echo ucwords($a->nama_cp) ?></td>
-                <td><?php echo ucwords($a->franco) ?></td>
-                <td><?php echo $a->a." Items";?></td>
+                <td>REQ-<?php echo sprintf("%05d",$request[$a]["id_request"]) ?></td>
+                <td><?php echo $request[$a]["nama_perusahaan"]?></td>
+                <td><?php echo ucwords($request[$a]["nama_cp"]) ?></td>
+                <td><?php echo ucwords($request[$a]["franco"]) ?></td>
+                <td><?php echo $request[$a]["quantity"]." Items";?></td>
                 <td class="actions">
                     
-                    <a href = "<?php echo base_url();?>crm/request/items/<?php echo $a->id_request;?>" class="btn btn-outline btn-primary"><i class="icon wb-edit" aria-hidden="true"></i></a>
-                    <a href = "<?php echo base_url();?>crm/request/remove/<?php echo $a->id_request;?>" class="btn btn-outline btn-danger"
+                    <a href = "<?php echo base_url();?>crm/request/items/<?php echo $request[$a]["id_request"];?>" class="btn btn-outline btn-primary"><i class="icon wb-edit" aria-hidden="true"></i></a>
+                    <a href = "<?php echo base_url();?>crm/request/remove/<?php echo $request[$a]["id_request"];?>" class="btn btn-outline btn-danger"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
-                    <a href = "<?php echo base_url();?>crm/request/submit/<?php echo $a->id_request;?>" class="btn btn-outline btn-success"
+                    <a href = "<?php echo base_url();?>crm/request/submit/<?php echo $request[$a]["id_request"];?>" class="btn btn-outline btn-success"
                     data-toggle="tooltip"><i class="icon wb-check" aria-hidden="true"></i></a>
                     
                 </td>
             </tr>
-            <?php } ?>
+            <?php endfor; ?>
         </tbody>
     </table>
 </div>
@@ -87,7 +87,7 @@
                         </div>
                     </div>
                     <div class="col-xl-12 form-group">
-                        <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
+                        <table class="table table-bordered table-hover table-striped w-full" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>Item</th>

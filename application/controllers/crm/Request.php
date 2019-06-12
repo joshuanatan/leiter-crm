@@ -10,10 +10,10 @@ class Request extends CI_Controller{
     }
     private function req(){
         $this->load->view("req/head");
-        $this->load->view("crm/request/css/datatable-css");
-        $this->load->view("crm/request/css/breadcrumb-css");
-        $this->load->view("crm/request/css/modal-css");
-        $this->load->view("crm/request/css/form-css");
+        $this->load->view("plugin/datatable/datatable-css");
+        $this->load->view("plugin/breadcrumb/breadcrumb-css");
+        $this->load->view("plugin/modal/modal-css");
+        $this->load->view("plugin/form/form-css");
         $this->load->view("req/head-close");
         $this->load->view("crm/crm-open");
         $this->load->view("req/top-navbar");
@@ -31,56 +31,42 @@ class Request extends CI_Controller{
             ),
             "price_request" => array(
                 "price_request.status_request" => 0,
-                "price_request_item.status_request_item" => 0
             ),
         );
+        $result["request"] = $this->Mdprice_request->select($where["price_request"]);
+        $counter = 0;
+        $array["request"] = array();
+        foreach($result["request"]->result() as $a){
+            $array["request"][$counter] = array(
+                "id_request" => $a->id_request,
+                "tgl_dateline_request" => $a->tgl_dateline_request,
+                "nama_perusahaan" => get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $a->id_perusahaan)),
+                "nama_cp" => get1Value("contact_person","nama_cp",array("id_cp" => $a->id_cp)),
+                "franco" => $a->franco,
+                "quantity" => getAmount("price_request_item","id_produk",array("id_request" => $a->id_request,"status_request_item" => 0))
+            );
+            $counter++;
+        }
         $data = array(
             "request_id" => $this->Mdprice_request->maxId(),
             "customer" => $this->Mdperusahaan->select($where["customer"]),
             "produk" => $this->Mdproduk->select($where["produk"]),
-            "request" => $this->Mdprice_request->select($where["price_request"])
+            "request" => $array["request"]
         );
         $this->load->view("crm/content-open");
         $this->load->view("crm/request/category-header");
         $this->load->view("crm/request/category-body",$data);
-        $this->load->view("crm/content-close");$this->load->view("req/script");
-        $this->load->view("crm/request/js/jqtabledit-js");
-        $this->load->view("crm/request/js/page-datatable-js");
-        $this->load->view("crm/request/js/form-js");
+        $this->load->view("crm/content-close");
+        $this->close();
         $this->load->view("crm/request/js/dynamic-form-js",$data);
-        $this->load->view("crm/request/js/request-ajax");
-        $this->load->view("crm/crm-close");
-        $this->load->view("req/html-close");
     }
     public function close(){
         $this->load->view("req/script");
-        $this->load->view("crm/request/js/jqtabledit-js");
-        $this->load->view("crm/request/js/page-datatable-js");
-        $this->load->view("crm/request/js/form-js");
-        $this->load->view("crm/request/js/dynamic-form-js");
+        $this->load->view("plugin/datatable/page-datatable-js");
+        $this->load->view("plugin/form/form-js");
+        $this->load->view("plugin/tabs/tabs-js");
         $this->load->view("crm/request/js/request-ajax");
         $this->load->view("crm/crm-close");
-        $this->load->view("req/html-close");
-    }
-    public function detail(){
-        $this->load->view("req/head");
-        $this->load->view("detail/css/detail-css");
-        $this->load->view("req/head-close");
-        $this->load->view("detail/detail-open");
-        $this->load->view("req/top-navbar");
-        $this->load->view("req/navbar");
-        /*--------------------------------------------------------*/
-        $this->load->view("detail/content-open");
-        $this->load->view("detail/request/profile");
-        $this->load->view("detail/tab-open");
-        $this->load->view("detail/request/tab-item");
-        $this->load->view("detail/request/tab-content");
-        $this->load->view("detail/tab-close");
-        $this->load->view("detail/content-close");
-        /*--------------------------------------------------------*/
-        $this->load->view("req/script");
-        $this->load->view("detail/js/detail-js");
-        $this->load->view("detail/detail-close");
         $this->load->view("req/html-close");
     }
     public function insertitems($result){
@@ -113,17 +99,19 @@ class Request extends CI_Controller{
     public function insert(){
         $name = array("id_request","tgl_dateline_request","id_perusahaan","id_cp","id_user_add","franco");
         $stock = 1;
-        foreach($this->input->post("requeststock") as $a){
-            $stock = 0;
-            $data = array(
-                $name[0] => $this->input->post($name[0]),
-                $name[1] => $this->input->post($name[1]),
-                $name[2] => 0,
-                $name[3] => 0,
-                $name[4] => $this->session->id_user,
-                $name[5] => $this->input->post($name[5]),
-                "untuk_stock" => 0
-            );
+        if($this->input->post("requeststock") != ""){
+            foreach($this->input->post("requeststock") as $a){
+                $stock = 0;
+                $data = array(
+                    $name[0] => $this->input->post($name[0]),
+                    $name[1] => $this->input->post($name[1]),
+                    $name[2] => 0,
+                    $name[3] => 0,
+                    $name[4] => $this->session->id_user,
+                    $name[5] => $this->input->post($name[5]),
+                    "untuk_stock" => 0
+                );
+            }
         }
         if($stock == 1){
             $data = array(
@@ -167,11 +155,11 @@ class Request extends CI_Controller{
     public function items($i){
         $this->session->id_detail = $i;
         $where = array(
-            "produkrequest" => array(
+            "produk_request" => array(
                 "price_request_item.id_request" => $i,
                 "status_request_item" => 0
             ),
-            "priceRequest" => array(
+            "price_request" => array(
                 "price_request.id_request" => $i
             ),
             "produk" => array(
@@ -181,18 +169,40 @@ class Request extends CI_Controller{
                 "peran_perusahaan" => "CUSTOMER",
                 "status_perusahaan" => 0,
             ),
-            "contactPerson" => array(
-                "id_request" => $i
-            )
         );
+        $result["product_request"] = $this->Mdprice_request_item->select($where["produk_request"]);
+        $result["price_request"] = $this->Mdprice_request->select($where["price_request"]);
+
+        $counter = 0 ;
+        foreach($result["product_request"]->result() as $a){
+            $array["produk_request"][$counter] = array(
+                "id_request_item" => $a->id_request_item,
+                "bn_produk" => get1Value("produk","bn_produk",array("id_produk" => $a->id_produk)),
+                "nama_produk" => get1Value("produk","nama_produk",array("id_produk" => $a->id_produk)),
+                "quantity" => getTotal("price_request_item","jumlah_produk",array("id_produk" => $a->id_produk,"id_request" => $a->id_request)), /*hitung semua barang yang sejenis dan satu id request*/
+                "satuan" => get1Value("produk","satuan_produk", array("id_produk" => $a->id_produk))
+            );
+            $counter++;
+        }
+        foreach($result["price_request"]->result() as $a){
+            $array["price_request"] = array(
+                "id_request" => $a->id_request,
+                "dateline_request" => $a->tgl_dateline_request,
+                "franco"=> $a->franco,
+                "nama_perusahaan" => get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $a->id_perusahaan)),
+                "id_perusahaan" => $a->id_perusahaan,
+                "nama_cp" => get1Value("contact_person","nama_cp", array("id_cp" => $a->id_cp)),
+                "list_cp" => $this->Mdcontact_person->select(array("id_perusahaan" => $a->id_perusahaan)),
+                "id_cp" => $a->id_cp
+            );
+        }
         $data = array(
             "request_id" => $this->Mdprice_request->maxId(),
-            "produkrequest" => $this->Mdprice_request_item->select($where["produkrequest"]),
-            "request" => $this->Mdprice_request->select($where["priceRequest"]),
+            "produkrequest" => $array["produk_request"],
+            "request" => $array["price_request"],
             "id_request" => $i,
             "produk" => $this->Mdproduk->select($where["produk"]),
             "customer" => $this->Mdperusahaan->select($where["customer"]),
-            "contactPerson" => $this->Mdcontact_person->selectRequestCp($where["contactPerson"])
         );
 
         $this->req();
@@ -201,13 +211,8 @@ class Request extends CI_Controller{
         $this->load->view("crm/request/detail-request",$data);
         $this->load->view("crm/content-close");
         $this->load->view("req/script");
-        $this->load->view("crm/request/js/jqtabledit-js");
-        $this->load->view("crm/request/js/page-datatable-js");
-        $this->load->view("crm/request/js/form-js");
+        $this->close();
         $this->load->view("crm/request/js/dynamic-form-js",$data);
-        $this->load->view("crm/request/js/request-ajax");
-        $this->load->view("crm/crm-close");
-        $this->load->view("req/html-close");
     }
     public function delete($i){
         $where = array(

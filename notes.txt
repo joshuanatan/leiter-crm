@@ -82,3 +82,5 @@ final logic buat invoice
 ===============================================
 untuk master data produk, tambahin foto, tentu jangan lupa kasih default value.
 check semua input2 untuk master data. semua di test
+=========================
+terakhir lagi kerjain edit price request, mau restart dulu

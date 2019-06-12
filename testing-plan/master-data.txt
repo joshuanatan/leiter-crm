@@ -1,4 +1,4 @@
-Testing Plan
+Testing Plan [DONE] sudah di push ke git 3809f89..e845759
 ==========================================
 1. PRODUK
     -Melihat data produk (Done)
@@ -52,5 +52,4 @@ kerjain di kampus sisa ini
     -insert data 
     -edit data
     -delete data
-8. USER/SALES
-    -
+

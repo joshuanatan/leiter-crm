@@ -229,7 +229,7 @@ class Customer extends CI_Controller{
         $result = $this->Mdcontact_person->select($where);
         $html = "";
         foreach($result->result() as $a){
-            $html .= "<option value = ".$a->id_cp.">".ucwords($a->nama_cp)."</option>";
+            $html .= "<option value = ".$a->id_cp.">".ucwords($a->jk_cp)." ".ucwords($a->nama_cp)."</option>";
         }
         echo json_encode($html);
     }

@@ -37,11 +37,9 @@ if ( ! function_exists('getAmount')){
     function getAmount($table,$coloumn,$where){
         $CI =& get_instance();
         $CI->db->select("count(".$coloumn.") as 'amount'");
+        $CI->db->group_by($coloumn);
         $result = $CI->db->get_where($table,$where);
-        foreach($result->result() as $a){
-            return $a->amount;
-            break;
-        }
+        return $result->num_rows(); /*karena yang penting bukan di count dari sqlnya melainkan jumlah row yang didapat dari query ini*/
     }
 }
 if ( ! function_exists('getTotal')){
