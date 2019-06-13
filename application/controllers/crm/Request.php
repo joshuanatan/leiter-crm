@@ -242,35 +242,39 @@ class Request extends CI_Controller{
         $value = array();
         foreach($result->result() as $a){
             $value = array(
-                strtoupper($a->nama_perusahaan),
-                ucwords($a->nama_cp),
-                $a->id_cp,
-                $a->alamat_perusahaan,
-                $a->franco
+                "nama_perusahaan" =>  strtoupper(get1Value("perusahaan","nama_perusahaan", array("id_perusahaan" => $a->id_perusahaan))),
+                "nama_cp" => ucwords(get1Value("contact_person","nama_cp", array("id_perusahaan" => $a->id_perusahaan))),
+                "id_cp" => $a->id_cp,
+                "id_perusahaan" => $a->id_perusahaan,
+                "alamat_perusahaan" => get1Value("perusahaan","alamat_perusahaan", array("id_perusahaan" => $a->id_perusahaan)),
+                "franco" => $a->franco
             );
         }
-        $length = count($value);
+        /* -------------------------------------------------------------------------------- */
         $where = array(
-            "price_request.id_request" => $this->input->post("id_request"),
+            "price_request_item.id_request" => $this->input->post("id_request"),
             "price_request_item.status_request_item" => 0
         );
-        $result = $this->Mdprice_request_item->selectFullPrice($where);
-        $count = 0;
+        $result = $this->Mdprice_request_item->select($where); /*ambil semua data price request item*/
+        $counter = 0;
         foreach($result->result() as $a){
-            $value[$length][$count] = $a->id_request_item;
-            $value[$length+1][$count] = ucwords($a->nama_produk);
-            $count++;
+            $value["items"][$counter] = array(
+                "id_request_item" => $a->id_request_item,
+                "nama_produk" => get1Value("produk","nama_produk", array("id_produk" => $a->id_produk))
+            );
+            $counter++;
         }
+        /* -------------------------------------------------------------------------------- */
         echo json_encode($value);
     }
     public function getAmountOrders(){
         $where = array(
             "id_request_item" => $this->input->post("id_request_item")
         );
-        $result = $this->Mdprice_request_item->select($where);
-        foreach($result->result() as $a){
-            echo json_encode($a->jumlah_produk);
-        }
+        $id_produk = get1Value("price_request_item","id_produk", $where);
+        $total = getTotal("price_request_item","jumlah_produk",array("id_produk" => $id_produk));
+        $satuan_produk = get1Value("produk","satuan_produk",array("id_produk" => $id_produk));
+        echo json_encode($total." ".$satuan_produk);
     }
     public function submitedit(){
         $name = array(

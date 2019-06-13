@@ -50,7 +50,7 @@
                             <div class="tab-pane" id="items" role="tabpanel">
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Items</h5>
-                                    <select class = "form-control" id = "itemsOrdered" onchange = "loadVendors()">
+                                    <select class = "form-control" id = "itemsOrdered" data-plugin = "select2" onchange = "loadVendors()">
                                         <option selected disabled>Choose Item</option>
                                     </select>
                                 </div>
@@ -85,6 +85,11 @@
                                 <div class = "form-group">
                                     <input name = "Abc" type ="text" id = "hargaCourier" class = "form-control" disabled placeholder = "Product Price">
                                 </div>
+                                
+                                <div class = "form-group" onclick = "getTotal()">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Total Price</h5>
+                                    <input name = "Abc"  type ="text" class = "form-control" id = "totalPrice" disabled placeholder = "Click to get Total Price">
+                                </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Selling Price</h5>
                                     <input name = "Abc" type ="text" class = "form-control" id = "inputNominal" oninput ="decimal()" placeholder = "Selling Price">
@@ -118,8 +123,8 @@
                                     <h5 style = "color:darkgrey; opacity:0.8">Payment Method</h5>
                                     <select class = "form-control" id = "paymentMethod" name = "paymentMethod" onchange = "paymentMethodForm()">
                                         <option value = "0" selected disabled>Choose Payment Method</option>
-                                        <option value = "1">Full Before Delivery</option>
-                                        <option value = "2">Full After Delivery</option>
+                                        <option value = "01">Full Before Delivery</option>
+                                        <option value = "02">Full After Delivery</option>
                                         <option value = "11">DP & Rest Before Delivery</option><!--cuman bagi 2 pembayaran -->
                                         <option value = "12">DP & Rest After Delivery</option>
                                     </select>
@@ -131,7 +136,7 @@
                                 <div class = "form-group containerDp" style = "display:none"> <!-- Nominal DP -->
                                     <h5 style = "color:darkgrey; opacity:0.8">DP Amount</h5>
                                     <input name = "" id = "jumlahDp" type ="text" class = "form-control">
-                                    <input name = "jumlah[]" id = "jumlahDpClean" type ="text" class = "form-control">
+                                    <input name = "jumlah[]" id = "jumlahDpClean" type ="hidden" class = "form-control">
                                 </div>
                                 <div class = "form-group containerSisa" style = "display:none"> <!-- textarea klo DP% -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Rest Percentage</h5>
@@ -139,12 +144,12 @@
                                 </div>
                                 <div class = "form-group containerSisa" style = "display:none"> <!-- Nominal DP -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Rest Amount</h5>
-                                    <input name = "" id = "jumlahSisa" type ="text" class = "form-control">
-                                    <input name = "jumlah[]" id = "jumlahSisaClean" type ="text" class = "form-control">
+                                    <input name = "jumlah[]" id = "jumlahSisa" type ="text" class = "form-control">
+                                    <input name = "" id = "jumlahSisaClean" type ="hidden" class = "form-control">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Mata Uang Pembayaran</h5>
-                                    <input name = "mata_uang_pembayaran" type ="text" class = "form-control">
+                                    <input name = "mata_uang_pembayaran" type ="text" value ="IDR" class = "form-control">
                                 </div>
                                 <!-- (1) invoice keluar triggernya abis keluarin OC -->
                                 <!-- (2) invoice keluar triggernya abis keluarin OD -->
@@ -170,6 +175,7 @@
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
                                     <input type ="text" class = "form-control perusahaanCust" readonly>
+                                    <input name = "id_perusahaan" type ="hidden" class = "form-control" id ="idPerusahaan" readonly>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Nama Customer</h5>
@@ -178,7 +184,7 @@
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Alamat Customer</h5>
-                                    <textarea class = "form-control" id ="alamatCust"></textarea>
+                                    <textarea name = "alamat_perusahaan" class = "form-control" id ="alamatCust"></textarea>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Up Nama Customer</h5>

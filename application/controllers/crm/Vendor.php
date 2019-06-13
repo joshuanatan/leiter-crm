@@ -361,13 +361,16 @@ class Vendor extends CI_Controller{
         $where = array(
             "harga_vendor.id_request_item" => $this->input->post("id_request_item"),
         );
-        $result = $this->Mdharga_vendor->selectVendorItem($where);
-        $html = "<option selected disabled>Choose Vendor</option>";
+        $result = $this->Mdharga_vendor->select($where);
+        $data = array();
+        $counter = 0;
         foreach($result->result() as $a){
-            //echo $this->input->post("id_request_item");
-            $html .= "<option value = '".$a->id_perusahaan."'>".$a->nama_perusahaan."</option>";
+            $data[$counter] = array(
+                "id_perusahaan" => $a->id_perusahaan,
+                "nama_perusahaan" => get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $a->id_perusahaan))
+            );
         }
-        echo json_encode($html);
+        echo json_encode($data);
     }
     public function getVendorPrices(){
         $where = array(
@@ -398,17 +401,23 @@ class Vendor extends CI_Controller{
             "variable_shipping_price.id_request_item" => $this->input->post("id_request_item")
         );
         $result = $this->Mdvariable_shipping_price->selectVendorShipping($where);
-        $html = "<option selected disabled>Choose Shippers</option>";
+        $data = array();
+        $counter = 0 ;
         foreach($result->result() as $a){
-            $html .= "<option value = '".$a->id_perusahaan."-".$a->metode_pengiriman."'>".$a->nama_perusahaan." - ".$a->metode_pengiriman."</option>";
+            $data[$counter] = array(
+                "id_perusahaan" => $a->id_perusahaan,
+                "nama_perusahaan" => get1Value("perusahaan","nama_perusahaan", array("id_perusahaan" => $a->id_perusahaan)),
+                "metode_pengiriman" => $a->metode_pengiriman,
+            );
+            $counter++;
         }
-        echo json_encode($html);
+        echo json_encode($data);
     }
     public function getShipperPrice(){ /*ini yang ajax di quotation*/
         $where = array(
             "variable_shipping_price.id_request_item" => $this->session->id_request_item,
             "variable_shipping_price.id_supplier" => $this->input->post("id_supplier"),
-            "variable_shipping_price.id_perusahaan" => $this->input->post("id_cp"),//harusnya id perusahaan si shippernya
+            "variable_shipping_price.id_perusahaan" => $this->input->post("id_perusahaan"),//harusnya id perusahaan si shippernya
             "variable_shipping_price.metode_pengiriman" => $this->input->post("metode_pengiriman"),
             "status_variable" => 0
         );

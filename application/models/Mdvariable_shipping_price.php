@@ -14,7 +14,6 @@ class Mdvariable_shipping_price extends CI_Model{
         $this->db->delete("variable_shipping_price",$where);
     }
     public function selectVendorShipping($where){
-        $this->db->join("perusahaan","perusahaan.id_perusahaan = variable_shipping_price.id_perusahaan","inner");
         $this->db->group_by(array("variable_shipping_price.id_perusahaan","metode_pengiriman"));
         return $this->db->get_where("variable_shipping_price",$where);
     }

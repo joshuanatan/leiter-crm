@@ -9,13 +9,14 @@ function detailPriceRequest(){
             type: "POST",
             dataType: "JSON",
             success:function(respond){
-                $(".perusahaanCust").val(respond[0]);
-                $(".namaCust").val(respond[1]);
-                $("#idCust").val(respond[2]);
-                $("#alamatCust").val(respond[3]);
-                $("#franco").val(respond[4]);
-                for(var a = 0; a<respond[respond.length-1].length; a++){
-                    $("#itemsOrdered").append("<option value = '"+respond[respond.length-2][a]+"'>"+respond[respond.length-1][a]+"</option>");
+                $(".perusahaanCust").val(respond["nama_perusahaan"]);
+                $(".namaCust").val(respond["nama_cp"]);
+                $("#idCust").val(respond["id_cp"]);
+                $("#idPerusahaan").val(respond["id_perusahaan"]);
+                $("#alamatCust").val(respond["alamat_perusahaan"]);
+                $("#franco").val(respond["franco"]);
+                for(var a = 0; a<respond["items"].length; a++){
+                    $("#itemsOrdered").append("<option value = '"+respond["items"][a]["id_request_item"]+"'>"+respond["items"][a]["nama_produk"]+"</option>");
                 }
             }
 
@@ -66,15 +67,13 @@ function loadVendors(){
         $("#inputNominal").val("");
         $("#primaryData").attr("disabled","true");
         var id_request_item = $("#itemsOrdered").val();
-        //alert(id_request_item);
-        //alert(id_request_item);
         $.ajax({
-            url:"<?php echo base_url();?>crm/vendor/getShippers",
+            url:"<?php echo base_url();?>crm/request/getAmountOrders",
             data: {id_request_item:id_request_item},
             dataType: "JSON",
             type: "POST",
             success:function(respond){
-                //$("#shippers").html(respond);
+                $("#itemamount").val(respond);
             }
         });
         $.ajax({
@@ -83,7 +82,11 @@ function loadVendors(){
             dataType: "JSON",
             type: "POST",
             success:function(respond){
-                $("#products").html(respond);
+                var html = "<option>Choose Supplier</option>";
+                for(var a = 0 ; a<respond.length; a++){
+                    html += "<option value = '"+respond[a]["id_perusahaan"]+"'>"+respond[a]["nama_perusahaan"]+"</option>"
+                }
+                $("#products").html(html);
             }
         });
         $.ajax({
@@ -95,15 +98,7 @@ function loadVendors(){
                 $("#courier").html(respond);
             }
         });
-        $.ajax({
-            url:"<?php echo base_url();?>crm/request/getAmountOrders",
-            data: {id_request_item:id_request_item},
-            dataType: "JSON",
-            type: "POST",
-            success:function(respond){
-                $("#itemamount").val(respond);
-            }
-        });
+        
     });
 }
 </script>
@@ -116,7 +111,7 @@ function getShippingPrice(){
         //alert(id_perusahaan);
         var comp = id_perusahaan.split("-");
         $.ajax({
-            data:{id_cp:comp[0],metode_pengiriman:comp[1],id_supplier:id_supplier},
+            data:{id_perusahaan:comp[0],metode_pengiriman:comp[1],id_supplier:id_supplier},
             url: "<?php echo base_url();?>crm/vendor/getShipperPrice",
             dataType: "JSON",
             type: "POST",
@@ -134,9 +129,6 @@ function getVendorPrice(){
         $("#hargashipping").val("");
         var id_perusahaan = $("#products").val();
         var id_request_item = $("#itemsOrdered").val();
-        //alert(id_perusahaan);
-        //alert(id_request_item);
-        //alert(id_perusahaan);
         $.ajax({
             data:{id_perusahaan:id_perusahaan},
             url: "<?php echo base_url();?>crm/vendor/getVendorPrices",
@@ -150,10 +142,14 @@ function getVendorPrice(){
                     url: "<?php echo base_url();?>crm/vendor/getShipper",
                     dataType: "JSON",
                     type: "POST",
-                    success:function(respond){
-                        $("#shippers").html(respond);
+                    success:function(responde){
+                        var html = "<option>Choose Shipper</option>";
+                        for(var a = 0; a<responde.length; a++){
+                            html += "<option value = '"+responde[a]["id_perusahaan"]+"-"+responde[a]["metode_pengiriman"]+"'>"+responde[a]["nama_perusahaan"]+" - "+responde[a]["metode_pengiriman"]+"</option>";
+                        }
+                        $("#shippers").html(html);
                     }
-                })
+                });
             }
         }); 
     }); 
@@ -179,6 +175,19 @@ function getCourierPrice(){
 </script>
 <script>
 function getMargin(){
+    var total = $("#totalPrice").val();
+    var input = $("#inputNominal").val();
+    var totalfinal = splitter(total,",");
+    var inputfinal = splitter(input,",");
+    //alert(input);
+    //alert(parseInt(shipperfinal)+(parseInt(produkfinal)*parseInt(total))+parseInt(courierfinal));
+    var margin = (parseInt(inputfinal) - parseInt(totalfinal))/parseInt(inputfinal)*100;
+
+    $("#totalMargin").val(margin+"%");
+}
+</script>
+<script>
+function getTotal(){
     var shipper = $("#hargashipping").val();
     var produk = $("#hargaProduk").val();
     var courier = $("#hargaCourier").val();
@@ -188,11 +197,7 @@ function getMargin(){
     var produkfinal = splitter(produk,",");
     var courierfinal = splitter(courier,",");
     var inputfinal = splitter(input,",");
-    //alert(input);
-    //alert(parseInt(shipperfinal)+(parseInt(produkfinal)*parseInt(total))+parseInt(courierfinal));
-    var margin = (parseInt(inputfinal)-parseInt(shipperfinal)-(parseInt(produkfinal)*parseInt(total))-parseInt(courierfinal))/parseInt(inputfinal)*100;
-
-    $("#totalMargin").val(margin+"%");
+    $("#totalPrice").val(addCommas(parseInt(shipperfinal)+parseInt(produkfinal)+parseInt(courierfinal)));
 }
 </script>
 <script>
@@ -269,7 +274,7 @@ function removeQuotationItem(i){
 function showItem(){
     var id_quotation = $("#id_quo").val();
     var versi_quo = $("#versi_quo").val();
-    alert(id_quotation); alert(versi_quo);
+    //alert(id_quotation); alert(versi_quo);
     $.ajax({
         data:{id_quotation:id_quotation,quo_version:versi_quo},
         url:"<?php echo base_url();?>crm/quotation/getQuotationItem",

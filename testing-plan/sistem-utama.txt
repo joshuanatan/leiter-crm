@@ -32,3 +32,25 @@ Testing Plan
 *order delivery
 *invoice
 
+===================
+uom dalam supplier price itu hilangin, gantinya itu amount aja, jumlah pesanan
+-yang penting adalah harga untuk x jumlah yang dipesan oleh customer karena itu yang akan jadi marginnya. wether nanti akan di pesan lebih itu ga perngaruh yang penting yang akan di kenakan kepada custome berapa. nanti pas melakuakn PO baru ditentukan mau pesan berapa.
+====================
+edit quotation
+-nanti no quotation nya pake hidden ke update
+-nanti no versinya pake hidden ke update
+keduanya yang muncul ini data yang lama biar gak loss
+
+-dropdown quotation item itu nanti langsung muncul sesuai id requestnya.
+-table quotation item juga langsung muncul
+
+payment tetap terbuka, dropdownnya sesuai dengan yang dipilih kemarin
+liat dia milih nomor berapa, lalu load sesuai yang dibutuhakn pake switch case atau if else
+
+ini no quotation update ke yang baru yang ada ver nya
+quotation perihal terbuka
+up nama customer terbuka
+s&k juga terbuka semua
+
+
+error karena metode pembayarannya ga ada 

@@ -17,31 +17,36 @@
 
                         
                     </ul>
-                    <form action = "<?php echo base_url();?>crm/quotation/editquotation" method = "post">    
+                    <form action = "<?php echo base_url();?>crm/quotation/insertrevision" method = "post">    
                         <div class="tab-content">
                             <div class="tab-pane active" id="primaryData" role="tabpanel">
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Price Request</h5>
-                                    <input name = "no_quo" type ="text" class = "form-control" readonly value = "REQ-<?php echo sprintf("%05d",$quotation["id_request"]);?>">
+                                    <input name = "" type ="text" class = "form-control" readonly value = "REQ-<?php echo sprintf("%05d",$quotation["id_request"]);?>">
+                                    <input name = "id_request" type ="hidden" class = "form-control" readonly value = "<?php echo $quotation["id_request"];?>">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Quotation No</h5> <!-- nanti ganti jadi select -->
                                     <input name = "no_quo" type ="text" class = "form-control" readonly value = "<?php echo $quotation["no_quo"];?>">
                                     <input name = "id_quo" id = "id_quo" type ="hidden" class = "form-control" readonly value = "<?php echo $quotation["id_quo"];?>"> <!-- quotation yang baru -->
-                                    <input name = "id_quotation" id = "id_quotation" type ="hidden" class = "form-control" readonly value = "<?php echo $quotation["id_quo"];?>"> <!-- quotation yang baru -->
                                 </div>
                                 <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Quotation Versi</h5>
-                                    <input name = "versi_quo" id= "versi_quo" value = "<?php echo $quotation["quo_versi"]?>" type ="text" class = "form-control" readonly> <!-- pertama yang dibuka dulu, pas insert baru masuk yang baru -->
-                                    <input name = "quo_version" id= "quo_version" value = "<?php echo $quotation["quo_versi"]?>" type ="hidden" class = "form-control" readonly> <!-- pertama yang dibuka dulu, pas insert baru masuk yang baru -->
+                                    <h5 style = "color:darkgrey; opacity:0.8">Quotation Version</h5>
+                                    <input value = "<?php echo $quotation["quo_versi"]?>" type ="text" class = "form-control" readonly> <!-- pertama yang dibuka dulu, pas insert baru masuk yang baru -->
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Quotation New Version</h5>
+                                    <input id= "versi_quo" name = "versi_quo" value = "<?php echo $last_version;?>" type ="text" class = "form-control" readonly> <!-- pertama yang dibuka dulu, pas insert baru masuk yang baru -->
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
                                     <input type ="text" class = "form-control" value = "<?php echo $quotation["nama_perusahaan"];?>" id ="perusahaanCust" readonly>
+                                    <input type ="hidden" name = "id_perusahaan" class = "form-control" value = "<?php echo $quotation["id_perusahaan"];?>" id ="perusahaanCust" readonly>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Nama Customer</h5>
-                                    <input name = "" type ="text" class = "form-control" value = "<?php echo $quotation["nama_cp"];?>" id ="namaCust" readonly>
+                                    <input type ="text" class = "form-control" value = "<?php echo $quotation["nama_cp"];?>" id ="namaCust" readonly>
+                                    <input name = "id_cp" type ="hidden" class = "form-control" value = "<?php echo $quotation["id_cp"];?>" id ="namaCust" readonly>
                                 </div>
                             </div>
                             <!-- fungsi -->
@@ -198,7 +203,7 @@
                             <div class="tab-pane" id="detail" role="tabpanel">
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">No Quotation</h5>
-                                    <input name = "no_quo" value = "<?php echo $quotation["no_quo"];?>" type ="text" class = "form-control" readonly>
+                                    <input name = "no_quo" value = "<?php echo $quotation["no_quo"];?> Rev <?php echo $id_revision;?>" type ="text" class = "form-control" readonly>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Quotation Perihal</h5>
@@ -211,7 +216,7 @@
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Nama Customer</h5>
                                     <input name = "" type ="text" class = "form-control" value = "<?php echo $quotation["nama_cp"];?>"  id ="namaCust" readonly>
-                                    <input name = "id_cp" type ="hidden" class = "form-control" id ="idCust" readonly>
+                                    <input type ="hidden" class = "form-control" id ="idCust" readonly>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Alamat Customer</h5>
