@@ -15,6 +15,7 @@
                 <th>Supplier Firm</th>
                 <th>Shipper Firm</th>
                 <th>Items Amount</th>
+                <th>Order Confirmation</th>
                 <th>Issued Date</th>
                 <th>Actions</th>
             </tr>
@@ -26,6 +27,7 @@
                 <td><?php echo $purchase_order[$a]["supplier"];?></td>
                 <td><?php echo $purchase_order[$a]["shipper"];?></td>
                 <td><?php echo $purchase_order[$a]["items_amount"];?></td>
+                <td>OC-<?php echo sprintf("%05d",$purchase_order[$a]["id_oc"]);?></td>
                 <td><?php echo $purchase_order[$a]["issued_date"];?></td>
                 <td class="actions">
                     <button class = "btn btn-outline btn-success" data-content="View PO Details" data-trigger="hover" data-toggle="popover"><i class = "icon wb-menu" data-toggle="modal" data-target="#DetailPO" aria-hidden="true"></i></button>

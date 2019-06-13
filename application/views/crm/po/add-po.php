@@ -12,8 +12,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="gradeA">
                 <?php for($a = 0; $a<count($order_confirmation); $a++): ?>
+            <tr class="gradeA">
                 <td><?php echo $order_confirmation[$a]["no_oc"];?></td>
                 <td><?php echo $order_confirmation[$a]["customer_po"];?></td>
                 <td><?php echo $order_confirmation[$a]["customer_firm"];?></td>
@@ -24,8 +24,8 @@
                     <a href = "<?php echo base_url();?>crm/po/finalPo/<?php echo $order_confirmation[$a]["id_oc"];?>"class = "btn btn-outline btn-success" data-content="Finalize PO" data-trigger="hover" data-toggle="popover"><i class = "icon fa fa-briefcase" aria-hidden="true"></i></a>
                     <?php endif;?>
                 </td>
-                <?php endfor;?>
             </tr>
+                <?php endfor;?>
         </tbody>
     </table>
 </div>

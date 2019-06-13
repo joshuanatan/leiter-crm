@@ -165,6 +165,16 @@ class OC extends CI_Controller{
         }
         echo json_encode($data);
     }
+    public function accepted($id_oc){
+        $where = array(
+            "id_oc" => $id_oc
+        );
+        $data = array(
+            "status_oc" => 2
+        );
+        $this->Mdorder_confirmation->update($data,$where);
+        redirect("crm/oc");
+    }
     public function getOcItem(){
         $where = array(
             "item_oc" => array(

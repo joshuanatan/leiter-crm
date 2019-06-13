@@ -46,6 +46,7 @@ class PO extends CI_Controller{
         foreach($result["purchase_order"]->result() as $a){
             $array["purchase_order"][$counter] = array(
                 "no_po" => $a->no_po,
+                "id_oc" => get1Value("po_setting","id_oc", array("id_po_setting" => $a->id_po_setting)),
                 "supplier" => get1value("perusahaan","nama_perusahaan", array("id_perusahaan" => $a->id_supplier)),
                 "shipper" => get1value("perusahaan","nama_perusahaan", array("id_perusahaan" => $a->id_shipper)),
                 "items_amount" => $this->MdPo_item->getItemTypeAmount(array("id_po" => $a->id_po)),
@@ -125,15 +126,12 @@ class PO extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
-    public function finalPo(){
+    public function finalPo($id_oc){
         $where = array(
-
+            "id_oc" => $id_oc
         );
-        $data = array(
-            "status_oc" => 2
-        );
-        $this->Mdorder_confirmation->update($data,$where);
-        redirect("crm/po/create");
+        $id_po_setting = get1Value("po_setting","id_po_setting",$where);
+        $this->generate($id_po_setting);
     }
     public function setting($id_oc){ 
         /*load primary data*/
@@ -405,6 +403,7 @@ class PO extends CI_Controller{
             $maxId = findMaxId("po_core","id_po",$where["max_id"]);
             $data_po = array(
                 "id_po" => $maxId,
+                "id_po_setting" => $id_po_setting,
                 "no_po" => "PO-".sprintf("%05d",$maxId),
                 "id_supplier" => $array["supplier_vendor"][$a]["id_supplier"],
                 "id_shipper" => $array["supplier_vendor"][$a]["id_shipper"],
@@ -412,7 +411,7 @@ class PO extends CI_Controller{
                 "total_supplier_payment" => $this->MdPo_item->sumSupplier($where["po_detail"]), /*hasil sum dari semua hasil*/
                 "total_shipper_payment" => $this->MdPo_item->sumShipper($where["po_detail"]), /*hasil sum dari semua hasil*/
                 "kurs_supplier" => $this->MdPo_item->get1Value("mata_uang",$where["po_detail"]), /*hasil dari select*/
-                "kurs_shipping" => $this->MdPo_item->get1Value("mata_uang_shipping",$where["po_detail"]), /*hasil dari select*/
+                "kurs_shipping" => "-", /*hasil dari select*/
                 "id_user_add" => $this->session->id_user,
             );
             $this->MdPo_core->insert($data_po);
