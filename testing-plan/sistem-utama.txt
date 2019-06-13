@@ -27,6 +27,7 @@ Testing Plan
     -bisa tambah harga per item per vendor per method
 
 *quotation
+    
 *order confirmation
 *purchase order (leiter *> supplier)
 *order delivery

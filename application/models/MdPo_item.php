@@ -6,8 +6,8 @@ class MdPo_item extends CI_Model{
     public function update($data,$where){
         $this->db->update("po_item",$data,$where);
     }
-    public function delete(){
-        
+    public function delete($where){
+        $this->db->delete("po_item",$where);
     }
     public function insert($data){
         $this->db->insert("po_item",$data);

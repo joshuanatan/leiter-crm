@@ -6,6 +6,9 @@ class Mdod_item extends CI_Model{
     public function insert($data){
         $this->db->insert("od_item",$data);
     }
+    public function delete($where){
+        $this->db->delete("od_item",$where);
+    }
 }
 
 ?>

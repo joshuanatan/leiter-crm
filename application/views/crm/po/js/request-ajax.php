@@ -86,3 +86,170 @@ function saveItemPO(counter){
     });
 }
 </script>
+<script>
+function loadVendors(){
+    $(document).ready(function(){
+        $("#itemamount").val("");
+        $("#hargaProduk").val("");
+        $("#hargashipping").val("");
+        $("#hargaCourier").val("");
+        $("#totalMargin").val("");
+        $("#inputNominal").val("");
+        $("#primaryData").attr("disabled","true");
+        var id_request_item = $("#itemsOrdered").val();
+        $.ajax({
+            url:"<?php echo base_url();?>crm/request/getAmountOrders",
+            data: {id_request_item:id_request_item},
+            dataType: "JSON",
+            type: "POST",
+            success:function(respond){
+                $("#itemamount").val(respond);
+            }
+        });
+        $.ajax({
+            url:"<?php echo base_url();?>crm/vendor/getVendors",
+            data: {id_request_item:id_request_item},
+            dataType: "JSON",
+            type: "POST",
+            success:function(respond){
+                var html = "<option>Choose Supplier</option>";
+                for(var a = 0 ; a<respond.length; a++){
+                    html += "<option value = '"+respond[a]["id_perusahaan"]+"'>"+respond[a]["nama_perusahaan"]+"</option>"
+                }
+                $("#products").html(html);
+            }
+        });
+        $.ajax({
+            url:"<?php echo base_url();?>crm/vendor/getCouriers",
+            data: {id_request_item:id_request_item},
+            dataType: "JSON",
+            type: "POST",
+            success:function(respond){
+                $("#courier").html(respond);
+            }
+        });
+        
+    });
+}
+</script>
+<script>
+function getShippingPrice(){
+    $("#hargashipping").val("");
+    $(document).ready(function(){
+        var id_perusahaan = $("#shippers").val();
+        var id_supplier = $("#products").val();
+        //alert(id_perusahaan);
+        var comp = id_perusahaan.split("-");
+        $.ajax({
+            data:{id_perusahaan:comp[0],metode_pengiriman:comp[1],id_supplier:id_supplier},
+            url: "<?php echo base_url();?>crm/vendor/getShipperPrice",
+            dataType: "JSON",
+            type: "POST",
+            success:function(respond){
+                $("#hargashipping").val(respond);
+            }
+        }); 
+    }); 
+}
+</script>
+<script>
+function getVendorPrice(){
+    $(document).ready(function(){
+        $("#hargaProduk").val("");
+        $("#hargashipping").val("");
+        var id_perusahaan = $("#products").val();
+        var id_request_item = $("#itemsOrdered").val();
+        $.ajax({
+            data:{id_perusahaan:id_perusahaan},
+            url: "<?php echo base_url();?>crm/vendor/getVendorPrices",
+            dataType: "JSON",
+            type: "POST",
+            success:function(respond){
+                $("#hargaProduk").val([respond["items"]["harga_produk"]]);
+                $("#rateHarga").val([respond["items"]["rate"]]);
+                $("#matauang").val([respond["items"]["mata_uang"]]);
+                /*harus ngisi shipper*/
+                $.ajax({
+                    data:{id_perusahaan:id_perusahaan,id_request_item:id_request_item},
+                    url: "<?php echo base_url();?>crm/vendor/getShipper",
+                    dataType: "JSON",
+                    type: "POST",
+                    success:function(responde){
+                        var html = "<option>Choose Shipper</option>";
+                        for(var a = 0; a<responde.length; a++){
+                            html += "<option value = '"+responde[a]["id_perusahaan"]+"-"+responde[a]["metode_pengiriman"]+"'>"+responde[a]["nama_perusahaan"]+" - "+responde[a]["metode_pengiriman"]+"</option>";
+                        }
+                        $("#shippers").html(html);
+                    }
+                });
+            }
+        }); 
+    }); 
+}
+</script>
+<script>
+function decimal(){
+    var number = splitter($("#inputNominal").val(),",");
+    $("#inputNominal").val(addCommas(parseInt(number)));
+}
+</script>
+<script>
+function poitem(){
+    $(document).ready(function(){
+        var shipper = $("#shippers").val();
+        var split = shipper.split("-");
+        var id_po_setting = $("#id_po_setting").val();
+        var id_request_item = $("#itemsOrdered").val();
+        var harga_item = $("#inputNominal").val();
+        var kurs = $("#rateHarga").val();
+        var mata_uang = $("#matauang").val();
+        var id_supplier = $("#products").val();
+        var id_shipper = split[0];
+        var shipping_method = split[1];
+        var harga_shipping = $("#hargashipping").val();
+        var jumlah_item = $("#itemamount").val();
+        $.ajax({
+            data:{
+                id_po_setting:id_po_setting,id_request_item:id_request_item,harga_item:harga_item,kurs:kurs,mata_uang:mata_uang,id_supplier:id_supplier, id_shipper:id_shipper, shipping_method:shipping_method,harga_shipping:harga_shipping,jumlah_item:jumlah_item
+            },
+            url:"<?php echo base_url();?>crm/po/addItemToPoItem",
+            type:"POST",
+            success:function(respond){
+                showItem();
+            }
+        });
+    });
+}
+</script>
+<script>
+function showItem(){
+    var id_po_setting = $("#id_po_setting").val();
+    $.ajax({
+        data:{id_po_setting:id_po_setting},
+        url:"<?php echo base_url();?>crm/po/getpoItem",
+        dataType:"JSON",
+        type:"POST",
+        success:function(respond){
+            var html = "";
+            for(var a = 0; a<respond.length; a++){
+                html += "<tr><td>"+respond[a]["id_request_iten"]+"</td><td>"+respond[a]["nama_produk"]+"</td><td>"+respond[a]["jumlah"]+"</td><td>"+respond[a]["harga_beli"]+"</td><td>"+respond[a]["mata_uang"]+"</td><td>"+respond[a]["shipper"]+"</td><td><button type = 'button' onclick = 'removePOItem("+respond[a]["id_po_item"]+")' class ='btn btn-outline btn-sm btn-danger'>REMOVE</button></td></tr>"
+            }
+            $("#t1").html(html);
+        }
+    });
+}
+</script>
+<script>
+function removePOItem(id_po_item){
+    $.ajax({
+        data:{id_po_item:id_po_item},
+        url:"<?php echo base_url();?>crm/po/removeitem",
+        type:"POST",
+        dataType:"JSON",
+        success:function(respond){
+        }
+    });
+    
+    showItem(); 
+}
+</script>

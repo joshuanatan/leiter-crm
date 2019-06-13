@@ -3,7 +3,7 @@ function quotationDetail(){
     $(document).ready(function(){
         var id_quotation = $("#id_quotation").val();
         var split = id_quotation.split("-");
-        //alert(id_quotation);alert(split[0]);alert(split[1]);
+        alert(id_quotation);alert(split[0]);alert(split[1]);
         $.ajax({
             url:"<?php echo base_url();?>crm/quotation/getQuotationDetail",
             data:{id_quo:split[0],versi_quo:split[1]},

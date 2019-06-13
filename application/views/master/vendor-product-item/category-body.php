@@ -44,13 +44,13 @@
                                 </div>
 
                                 <ul class="nav nav-tabs nav-tabs-line" role="tablist">
-                                    <li class="nav-item" role="presentation"><a style = "text-style:none" class="nav-link active" data-toggle="tab" href="#primaryData" aria-controls="primaryData" role="tab">LEITER Product Data</a></li>
-                                    <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#supplier" aria-controls="supplier" role="tab">Supplier Product Data</a></li>
+                                    <li class="nav-item" role="presentation"><a style = "text-style:none" class="nav-link active" data-toggle="tab" href="#primaryData<?php echo $a->id_produk_vendor;?>" aria-controls="primaryData" role="tab">LEITER Product Data</a></li>
+                                    <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#supplier<?php echo $a->id_produk_vendor;?>" aria-controls="supplier" role="tab">Supplier Product Data</a></li>
                                 </ul>
                                 <form action = "<?php echo base_url();?>master/vendor/product/updateitem/<?php echo $a->id_produk_vendor;?>" method = "post">    
                                     <div class="modal-body">
                                         <div class="tab-content">
-                                            <div class="tab-pane active" id="primaryData" role="tabpanel">
+                                            <div class="tab-pane active" id="primaryData<?php echo $a->id_produk_vendor;?>" role="tabpanel">
                                                 <div class="form-group">
                                                     <h4 class="example-title">Product B/N</h4>    
                                                     <input name = "bn_produk" type="text" class="form-control" readonly value = "<?php echo $a->bn_produk_vendor;?>">
@@ -64,22 +64,22 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <h4 class="example-title">Product Description</h4>    
-                                                    <textarea class="form-control" id="deskripsi_produk" name = "deskripsi_produk" placeholder="" readonly ><?php echo $a->deskripsi_produk;?></textarea>
+                                                    <textarea class="form-control" id="adeskripsi_produk" name = "deskripsi_produk" placeholder="" readonly ><?php echo $a->deskripsi_produk;?></textarea>
                                                 </div>
                                             </div>
-                                            <div class="tab-pane" id="supplier" role="tabpanel">
+                                            <div class="tab-pane" id="supplier<?php echo $a->id_produk_vendor;?>" role="tabpanel">
                                                 <input type = "hidden" name = "id_perusahaan" value = "<?php echo $id_perusahaan;?>">
                                                 <div class="form-group">
                                                     <h4 class="example-title">Product B/N</h4>    
-                                                    <input type="text" value = "<?php echo $a->bn_produk_vendor;?>" class="form-control" name = "bn_produk_vendor" id="bn_produk_vendor" placeholder="" >
+                                                    <input type="text" value = "<?php echo $a->bn_produk_vendor;?>" class="form-control" name = "bn_produk_vendor" id="abn_produk_vendor" placeholder="" >
                                                 </div>
                                                 <div class="form-group">
                                                     <h4 class="example-title">Product Name</h4>    
-                                                    <input type="text" value = "<?php echo $a->nama_produk_vendor;?>" class="form-control" name = "nama_produk_vendor" id="nama_produk_vendor" placeholder="" >
+                                                    <input type="text" value = "<?php echo $a->nama_produk_vendor;?>" class="form-control" name = "nama_produk_vendor" id="anama_produk_vendor" placeholder="" >
                                                 </div>
                                                 <div class="form-group">
                                                     <h4 class="example-title">Product UOM</h4>    
-                                                    <select class = "form-control" name = "satuan_produk_vendor" id = "satuan_produk_vendor">
+                                                    <select class = "form-control" name = "satuan_produk_vendor" id = "asatuan_produk_vendor">
                                                     <?php foreach($satuan->result() as $b){ ?>
                                                         <option <?php if($a->satuan_produk_vendor == $b->nama_satuan) echo "selected";?> value = "<?php echo $b->nama_satuan;?>"><?php echo strtoupper($b->nama_satuan);?></option>
                                                     <?php } ?>
@@ -87,11 +87,11 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <h4 class="example-title">New Product UOM</h4>    
-                                                    <input type="text" class="form-control" name = "satuan_produk_new_vendor" id="satuan_produk_new_vendor" placeholder="" >
+                                                    <input type="text" class="form-control" name = "satuan_produk_new_vendor" id="asatuan_produk_new_vendor" placeholder="" >
                                                 </div>
                                                 <div class="form-group">
                                                     <h4 class="example-title">Product Description</h4>    
-                                                    <textarea class="form-control" id="deskripsi_produk_vendor" name = "deskripsi_produk_vendor" placeholder="" ><?php echo $a->deskripsi_produk_vendor;?></textarea>
+                                                    <textarea class="form-control" id="adeskripsi_produk_vendor" name = "deskripsi_produk_vendor" placeholder="" ><?php echo $a->deskripsi_produk_vendor;?></textarea>
                                                 </div>
                                                 
                                                 <div class="form-group">
@@ -126,13 +126,13 @@
             </div>
 
             <ul class="nav nav-tabs nav-tabs-line" role="tablist">
-                <li class="nav-item" role="presentation"><a class="nav-link active" data-toggle="tab" href="#primaryData" aria-controls="primaryData" role="tab">LEITER Product Data</a></li>
-                <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#supplier" aria-controls="supplier" role="tab">Supplier Product Data</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link active" data-toggle="tab" href="#primaryDataadd" aria-controls="primaryDataadd" role="tab">LEITER Product Data</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#supplieradd" aria-controls="supplier" role="tab">Supplier Product Data</a></li>
             </ul>
             <form action = "<?php echo base_url();?>master/vendor/product/registeritem" method = "post">    
                 <div class="modal-body">
                     <div class="tab-content">
-                        <div class="tab-pane active" id="primaryData" role="tabpanel">
+                        <div class="tab-pane active" id="primaryDataadd" role="tabpanel">
                             <div class="form-group">
                                 <h4 class="example-title">Product ID</h4>   
                                 <select class = "form-control" name = "id_produk" id = "id_produk" onchange = "getProductData()">
@@ -170,7 +170,7 @@
                                 <textarea oninput="updateSupplierForm('deskripsi_produk')" class="form-control" id="deskripsi_produk" name = "deskripsi_produk" placeholder="" ></textarea>
                             </div>
                         </div>
-                        <div class="tab-pane" id="supplier" role="tabpanel">
+                        <div class="tab-pane" id="supplieradd" role="tabpanel">
                             <input type = "hidden" name = "id_perusahaan" value = "<?php echo $id_perusahaan;?>">
                             <div class="form-group">
                                 <h4 class="example-title">Product B/N</h4>    

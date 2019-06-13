@@ -23,6 +23,13 @@ class PO extends CI_Controller{
         $this->load->view("req/top-navbar");
         $this->load->view("req/navbar");
     }
+    public function print(){
+        header("Content-type:application/vnd.ms-word");
+        header("Content-Disposition:attachment;Filename=asdf.doc");
+        header("Pragma: no-cache");
+        header("Expires:0");
+        $this->load->view("crm/print/po");
+    }
     public function index(){
         $where = array(
             "purchase_order"=>array(
@@ -101,8 +108,11 @@ class PO extends CI_Controller{
                 "customer_po" => $a->no_po_customer ,
                 "customer_firm" => get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $a->id_perusahaan)),
                 "items_amount" => getAmount("quotation_item","id_quotation_item",array("id_oc" => $a->id_oc)),
-                
+                "alreadySet" => isExistsInTable("po_setting",array("id_oc" => $a->id_oc))
             );
+            if(isExistsInTable("po_setting",array("id_oc" => $a->id_oc)) == 0){
+                $array["oc"][$counter]["id_po_setting"] = get1Value("po_setting","id_po_setting",array("id_oc" => $a->id_oc));
+            }
             $counter++;
         }
         $data = array(
@@ -114,6 +124,16 @@ class PO extends CI_Controller{
         $this->load->view("crm/po/add-po",$data);
         $this->load->view("crm/content-close");
         $this->close();
+    }
+    public function finalPo(){
+        $where = array(
+
+        );
+        $data = array(
+            "status_oc" => 2
+        );
+        $this->Mdorder_confirmation->update($data,$where);
+        redirect("crm/po/create");
     }
     public function setting($id_oc){ 
         /*load primary data*/
@@ -140,32 +160,16 @@ class PO extends CI_Controller{
     /*end primary data*/
 
         $result["items"] = $this->Mdquotation_item->select($where["items"]);
+        $data["items"] = array();
         $counter = 0;
         foreach($result["items"]->result() as $a){
-            $where["supplier_product"] = array(
-                "harga_vendor.id_request_item" => $a->id_request_item
-            );
-            $id_supplier = get1value("contact_person","id_perusahaan", array("id_cp" => $a->id_cp_vendor));
-            echo $a->id_request_item;
             $data["items"][$counter] = array(
-                "nama_produk" => $a->nama_produk,
-                "supplier_oc" => array( /*rekomendasi dari quotation*/
-                    "nama_perusahaan" => get1Value("perusahaan","nama_perusahaan", array("id_perusahaan" => $id_supplier)),
-                    "harga_jual" => number_format($a->final_selling_price), /*untuk ngasih tau, kita jual berapa ke customer. Gunanya supaya ga merugi*/
-                    "harga_supplier" => number_format(get1Value("harga_vendor","harga_produk",array("id_perusahaan" => $id_supplier, "id_request_item" => $a->id_request_item))), /*ini yang ngambil ke price request*/
-                    "rate_harga" => number_format(get1Value("harga_vendor","vendor_price_rate",array("id_perusahaan" => $id_supplier, "id_request_item" => $a->id_request_item))), /* ini harusnya harga vendor bukan harga quotation*/
-                    "currency" => get1Value("harga_vendor","mata_uang",array("id_perusahaan" => $id_supplier, "id_request_item" => $a->id_request_item)) /* ini harusnya harga vendor bukan harga quotation*/
-                ),
-                "shipping_oc" => array( /*rekomendasi dari quotation*/
-                    "nama_perusahaan" => "",
-                    "harga_shipper" => "",
-                    "currency" => "iDR"
-                ),
-                "supplier" => $this->Mdharga_vendor->selectVendorItem($where["supplier_product"])
-            );  
+                "id_request_item" => $a->id_request_item,
+                "nama_produk" => $a->nama_produk
+            );
             $counter++;
         }
-        $data["max_id"] = $this->MdPo_setting->maxId();
+        $data["id_po_setting"] = findMaxId("po_setting","id_po_setting",array());
         $where["mata_uang"] = array();
         $data["mata_uang"] = $this->Mdmata_uang->select($where["mata_uang"]);
 
@@ -175,6 +179,49 @@ class PO extends CI_Controller{
         $this->load->view("crm/po/setting-po",$data);
         $this->load->view("crm/content-close");
         $this->close();
+    }
+    public function addItemToPoItem(){
+        $data = array(
+            "id_po_setting" => $this->input->post("id_po_setting"),
+            "id_request_item" => $this->input->post("id_request_item"),
+            "jumlah_item" => $this->input->post("jumlah_item"),
+            "harga_item" => splitterMoney($this->input->post("harga_item"),","),
+            "kurs" => splitterMoney($this->input->post("kurs"),","),
+            "mata_uang" => $this->input->post("mata_uang"),
+            "id_supplier" => $this->input->post("id_supplier"),
+            "id_shipper" => $this->input->post("id_shipper"),
+            "shipping_method" => $this->input->post("shipping_method"),
+            "harga_shipping" => splitterMoney($this->input->post("harga_shipping"),",")
+        );
+        $this->MdPo_item->insert($data);
+    }
+    public function removeitem(){
+        $where = array(
+            "id_po_item" => $this->input->post("id_po_item")
+        );
+        $this->MdPo_item->delete($where);
+
+    }
+    public function getpoItem(){
+        $where = array(
+            "id_po_setting" => $this->input->post("id_po_setting")
+        );
+        $result = $this->MdPo_item->select($where);
+        $data = array();
+        $counter = 0;
+        foreach($result->result() as $a){
+            $data[$counter] = array(
+                "id_po_item" => $a->id_po_item,
+                "id_request_iten" => $a->id_request_item,
+                "nama_produk" => get1Value("produk","nama_produk", array("id_produk" => get1Value("price_request_item","id_produk", array("id_request_item" => $a->id_request_item)))),
+                "jumlah" => $a->jumlah_item,
+                "harga_beli" => $a->harga_item,
+                "mata_uang" => $a->mata_uang,
+                "shipper" => get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $a->id_shipper))
+            );
+            $counter++;
+        }
+        echo json_encode($data);
     }
     public function settingstock($id_request){
         $where = array(
@@ -300,6 +347,15 @@ class PO extends CI_Controller{
         );
         $this->MdPo_setting->insert($data);
         redirect("crm/po/stock");
+    }
+    public function submitSettingStock(){
+        $data=  array(
+            "id_po_setting" => $this->input->post("id_po_setting"),
+            "id_oc" => $this->input->post("id_oc"),
+            "id_user_add" => $this->session->id_user,
+        );
+        $this->MdPo_setting->insert($data);
+        redirect("crm/po/create");
     }
     public function insertItemPO(){
         $data = array(

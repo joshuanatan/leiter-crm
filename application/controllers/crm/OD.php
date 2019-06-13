@@ -26,19 +26,32 @@ class OD extends CI_Controller{
             )
         );
         $result = array(
-            "od" => $this->Mdod_core->select($where["od"])
+            "od" => $this->Mdod_core->select($where["od"]),
         );
         $counter = 0;
+        $data["od"] = array();
         foreach($result["od"]->result() as $a){
             $data["od"][$counter] = array(
+                "id_od" => $a->id_od,
                 "no_od" => $a->no_od,
                 "no_oc" => get1value("order_confirmation","no_oc", array("id_oc" => $a->id_oc)),
-                "no_po_cusomter" => $a->no_po_customer,
+                "no_po_cusomter" => get1Value("order_confirmation","no_po_customer",array("id_oc" => $a->id_oc)),
                 "nama_courier" => get1value("perusahaan","nama_perusahaan", array("id_perusahaan" => $a->id_courier)),
-                "nama_perusahaan" =>  $a->nama_perusahaan,
-                "franco" => get1value("price_request","franco",array("id_request" => $a->id_request)),
-                "date_issued" => $a->date_od_add
+                "nama_perusahaan" =>  get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => get1Value("quotation","id_perusahaan",array("id_quo" => get1Value("order_confirmation","id_quotation",array("id_oc" => $a->id_oc)))))),
+                "franco" => get1value("quotation","franco",array("id_quo" => get1Value("order_confirmation","id_quotation",array("id_oc" => $a->id_oc)))),
+                "date_issued" => $a->date_od_add,
+                
             );
+            $data["od"][$counter]["items"] = array();
+            $result["od_item"] = $this->Mdod_item->select(array("id_od" => $a->id_od));
+            $counter2 = 0;
+            foreach($result["od_item"]->result() as $items){
+                $data["od"][$counter]["items"][$counter2] = array(
+                    "nama_produk" => get1Value("produk","nama_produk", array("id_produk" => get1Value("price_request_item","id_produk",array("id_request_item" => get1Value("quotation_item","id_request_item",array("id_quotation_item" => $items->id_quotation_item)))))),
+                    "jumlah" => $items->item_qty
+                );
+                $counter2++;
+            }
             $counter++;
         }
         $this->req();
@@ -79,26 +92,13 @@ class OD extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
-    public function detail(){
-        $this->load->view("req/head");
-        $this->load->view("detail/css/detail-css");
-        $this->load->view("req/head-close");
-        $this->load->view("detail/detail-open");
-        $this->load->view("req/top-navbar");
-        $this->load->view("req/navbar");
-        /*--------------------------------------------------------*/
-        $this->load->view("detail/content-open");
-        $this->load->view("detail/od/profile");
-        $this->load->view("detail/tab-open");
-        $this->load->view("detail/od/tab-item");
-        $this->load->view("detail/od/tab-content");
-        $this->load->view("detail/tab-close");
-        $this->load->view("detail/content-close");
-        /*--------------------------------------------------------*/
-        $this->load->view("req/script");
-        $this->load->view("detail/js/detail-js");
-        $this->load->view("detail/detail-close");
-        $this->load->view("req/html-close");
+    public function remove($id_od){
+        $where = array(
+            "id_od" => $id_od
+        );
+        $this->Mdod_core->delete($where);
+        $this->Mdod_item->delete($where);
+        redirect("crm/od");
     }
     public function createod(){
         $input = array(

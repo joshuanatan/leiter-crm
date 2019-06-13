@@ -529,14 +529,14 @@ class Quotation extends CI_Controller{
                 "no_quo" => strtoupper($a->no_quo),
                 "id_quo" => $a->id_quo,
                 "versi_quo" => $a->versi_quo,
-                "nama_perusahaan" => strtoupper($a->nama_perusahaan),
-                "nama_cp" => ucwords($a->nama_cp),
+                "nama_perusahaan" => strtoupper(get1Value("perusahaan","nama_perusahaan",array("id_perusahaan"=>$a->id_perusahaan))),
+                "nama_cp" => ucwords(get1Value("contact_person","nama_cp",array("id_cp"=>$a->id_cp))),
                 "id_cp" => $a->id_cp,
-                "alamat_perusahaan" => $a->alamat_perusahaan,
+                "id_perusahaan" => $a->id_perusahaan,
+                "alamat_perusahaan" => get1Value("perusahaan","alamat_perusahaan", array("id_perusahaan"=>$a->id_perusahaan)),
                 "up_cp" => $a->up_cp,
                 "durasi_pengiriman" => $a->durasi_pengiriman,
                 "durasi_pembayaran" => $a->durasi_pembayaran,
-                "metode_courier" => $a->metode_courier,
                 "franco" => $a->franco,
             );
         }

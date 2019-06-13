@@ -7,6 +7,7 @@ class OC extends CI_Controller{
         $this->load->model("Mdquotation_item");
         $this->load->model("Mdod_item");
         $this->load->model("Mdod_core");
+        $this->load->model("Mdmetode_pembayaran");
     }
     /*defaul function*/
     private function req(){
@@ -35,12 +36,25 @@ class OC extends CI_Controller{
         $this->req();
         $where = array(
             "oc" => array(
-                ""
+                "status_oc" => 0
             )
         );
-        $data = array(
-            "oc" => $this->Mdorder_confirmation->select($where["oc"])
-        );
+        $result["oc"] = $this->Mdorder_confirmation->select($where["oc"]);
+        $data["oc"] = array();
+        $counter = 0;
+        foreach($result["oc"]->result() as $a){
+            $data["oc"][$counter] = array(
+                "id_oc" => $a->id_oc,
+                "no_oc" => $a->no_oc,
+                "no_quotation" => get1Value("quotation","no_quo", array("id_quo" => $a->id_quotation)),
+                "versi_quotation" => $a->versi_quotation,
+                "nama_perusahaan" => get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => get1Value("quotation","id_perusahaan",array("id_quo" => $a->id_quotation, "versi_quo" => $a->versi_quotation)))),
+                "nama_cp" => get1Value("contact_person","nama_cp",array("id_cp" => get1Value("quotation","id_cp",array("id_quo" => $a->id_quotation, "versi_quo" => $a->versi_quotation)))),
+                "no_po" => $a->no_po_customer,
+                "jumlah_item"=> getAmount("quotation_item","id_request_item",array("id_quotation" => $a->id_quotation,"quo_version" => $a->versi_quotation,"status_oc_item" => 0))
+            );
+            $counter++;
+        }
         $this->load->view("crm/content-open");
         $this->load->view("crm/oc/category-header");
         $this->load->view("crm/oc/category-body",$data);
@@ -107,9 +121,11 @@ class OC extends CI_Controller{
             );
             $this->Mdquotation_item->update($data,$where);
         }
+        $id_quotation_versi = $this->input->post("id_quotation");
+        $split = explode("-",$id_quotation_versi);
         $where = array(
-            "id_quotation" => $this->input->post("id_quotation"),
-            "versi_quotation" => $this->input->post("versi_quo"),
+            "id_quo" => $split[0],
+            "versi_quo" => $split[1]
         );
         $data = array(
             "status_quo" => 3 /*yang udah create oc, ditandain*/
@@ -117,6 +133,10 @@ class OC extends CI_Controller{
         $this->Mdquotation->update($data,$where);
 
         /*masukin ke invoice*/
+        $where = array(
+            "id_quotation" => $split[0],
+            "id_versi" => $split[1]
+        );
         $data = array(
             "id_oc" => $this->input->post("id_oc"),
             
@@ -124,6 +144,12 @@ class OC extends CI_Controller{
         $this->Mdmetode_pembayaran->update($data,$where);
         redirect("crm/oc");
     }   
+    public function delete($id_oc){
+        $where = array("id_oc" => $id_oc);
+        $data = array("status_oc" => 1);
+        $this->Mdorder_confirmation->update($data,$where);
+        redirect("crm/oc");
+    }
     public function getOcDetail(){
         $where = array(
             "id_oc" => $this->input->post("id_oc")

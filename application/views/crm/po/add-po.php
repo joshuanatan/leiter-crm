@@ -19,7 +19,10 @@
                 <td><?php echo $order_confirmation[$a]["customer_firm"];?></td>
                 <td><?php echo $order_confirmation[$a]["items_amount"];?></td>
                 <td class="actions">
-                    <a href = "<?php echo base_url();?>crm/po/setting/<?php echo $order_confirmation[$a]["id_oc"];?>"class = "btn btn-outline btn-success" data-content="Setting PO" data-trigger="hover" data-toggle="popover"><i class = "icon wb-menu" data-toggle="modal" data-target="#DetailPO" aria-hidden="true"></i></a>
+                    <a href = "<?php echo base_url();?>crm/po/setting/<?php echo $order_confirmation[$a]["id_oc"];?>"class = "btn btn-outline btn-primary" data-content="Setting PO" data-trigger="hover" data-toggle="popover"><i class = "icon wb-menu" data-toggle="modal" data-target="#DetailPO" aria-hidden="true"></i></a>
+                    <?php if($order_confirmation[$a]["alreadySet"] == 0): ?>
+                    <a href = "<?php echo base_url();?>crm/po/finalPo/<?php echo $order_confirmation[$a]["id_oc"];?>"class = "btn btn-outline btn-success" data-content="Finalize PO" data-trigger="hover" data-toggle="popover"><i class = "icon fa fa-briefcase" aria-hidden="true"></i></a>
+                    <?php endif;?>
                 </td>
                 <?php endfor;?>
             </tr>

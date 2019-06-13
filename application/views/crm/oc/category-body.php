@@ -11,21 +11,32 @@
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
-                <th>Order Confirmation ID</th>
-                <th>Quotation ID</th> <!-- nanti ini keisi waktu nambahin OC-->
+                <th>Order Confirmation No</th>
+                <th>Quotation No</th> <!-- nanti ini keisi waktu nambahin OC-->
                 <th>Quotation Version</th> <!-- nanti ini keisi waktu nambahin OC-->
+                <th>Customer Firm</th>
+                <th>Customer Contact Person</th>
                 <th>Customer PO Number</th>
-                <th>Customer Name</th>
+                <th>Items Confirmed</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach($oc->result() as $a){ ?>
+            <?php for($a = 0 ; $a<count($oc); $a++){ ?>
             <tr>
-                <td><?php echo $a->id_oc;?></td>
-                <td><?php echo $a->id_quo;?></td>
-                <td><?php echo $a->versi_quotation;?></td>
-                <td><?php echo $a->no_po_customer;?></td>
-                <td><?php echo $a->id_oc;?></td>
+                <td><?php echo $oc[$a]["no_oc"];?></td>
+                <td><?php echo $oc[$a]["no_quotation"];?></td>
+                <td><?php echo $oc[$a]["versi_quotation"];?></td>
+                <td><?php echo $oc[$a]["nama_perusahaan"];?></td>
+                <td><?php echo $oc[$a]["nama_cp"];?></td>
+                <td><?php echo $oc[$a]["no_po"];?></td>
+                <td><?php echo $oc[$a]["jumlah_item"];?></td>
+                <td class="actions">
+                    
+                    <a href = "<?php echo base_url();?>crm/oc/delete/<?php echo $oc[$a]["id_oc"];?>" class="btn btn-outline btn-danger" data-content="Delete OC" data-trigger="hover" data-toggle="popover"><i class="icon wb-trash" aria-hidden="true"></i></a> 
+                    
+                    <a href = "<?php echo base_url();?>crm/oc/accepted/<?php echo $oc[$a]["id_oc"];?>" class="btn btn-outline btn-primary" data-content="Proceed to PO Vendor" data-trigger="hover" data-toggle="popover"><i class="icon wb-briefcase" aria-hidden="true"></i></a>
+                </td>
             </tr>     
             <?php
             }

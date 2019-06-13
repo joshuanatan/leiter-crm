@@ -111,7 +111,7 @@
                                         <thead>
                                             <th>Item Request ID</th>
                                             <th>Product Name</th>
-                                            <th>Amount</th>
+                                            <th>Supplier</th>
                                             <th>Selling Price</th>
                                             <th>Margin</th>
                                             <th>Action</th>

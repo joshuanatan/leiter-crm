@@ -293,7 +293,7 @@ class Vendor extends CI_Controller{
         
         $this->Mdharga_vendor->insert($data);
     }
-    public function getshippingmethod(){
+    public function Venshippingmethod(){
         $where = array(
             "id_perusahaan" => $this->input->post("id_perusahaan"),
             "status_metode_pengiriman" => 0
@@ -378,10 +378,16 @@ class Vendor extends CI_Controller{
             "status_harga_vendor" => 0,
             "id_request_item" => $this->session->id_request_item,
         );
-        $result = $this->Mdharga_vendor->countPrice($where);
+        $result = $this->Mdharga_vendor->select($where);
+
         foreach($result->result() as $a){
-            echo json_encode(number_format($a->total),2);
+            $data["items"] = array(
+                "harga_produk" => $a->harga_produk,
+                "rate" => $a->vendor_price_rate,
+                "mata_uang" => $a->mata_uang
+            );
         }
+        echo json_encode($data);
     }
     public function getShippers(){
         $this->session->id_request_item = $this->input->post("id_request_item");
