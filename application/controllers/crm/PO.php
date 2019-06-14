@@ -24,10 +24,10 @@ class PO extends CI_Controller{
         $this->load->view("req/navbar");
     }
     public function print(){
-        header("Content-type:application/vnd.ms-word");
+        /*header("Content-type:application/vnd.ms-word");
         header("Content-Disposition:attachment;Filename=asdf.doc");
         header("Pragma: no-cache");
-        header("Expires:0");
+        header("Expires:0");*/
         $this->load->view("crm/print/po");
     }
     public function index(){

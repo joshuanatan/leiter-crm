@@ -21,6 +21,12 @@ class OC extends CI_Controller{
         $this->load->view("req/top-navbar");
         $this->load->view("req/navbar");
     }
+    public function print(){
+        $this->load->view("crm/print/oc");
+    }
+    public function pdf(){
+        $this->load->view("crm/pdf/oc");
+    }
     public function close(){
         $this->load->view("req/script");
         $this->load->view("plugin/datatable/page-datatable-js");
@@ -160,7 +166,8 @@ class OC extends CI_Controller{
                 "no_po" => $a->no_po_customer,
                 "nama_perusahaan" => strtoupper($a->nama_perusahaan),
                 "nama_customer" => ucwords($a->nama_cp),
-                "franco" => $a->franco
+                "franco" => $a->franco,
+                "up_cp" => $a->up_cp
             );    
         }
         echo json_encode($data);

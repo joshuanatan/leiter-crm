@@ -10,8 +10,11 @@ function oc_detail(){
             $("#nopo").val(respond["no_po"]);
             $("#namaperusahaan").val(respond["nama_perusahaan"]);
             $("#namaCust").val(respond["nama_customer"]);
+            $("#franco").val(respond["franco"]);
+            $("#up").val(respond["up_cp"]);
         }
     });
+    /*
     $.ajax({
         url:"<?php echo base_url();?>crm/invoice/getMetodePembayaran",
         data:{id_oc:id_oc, result:"array"},
@@ -25,6 +28,51 @@ function oc_detail(){
             $("#metodepembayaran").html(html);
         } 
     });
+    */
+}
+</script>
+<script>
+function changePayment(){
+    
+    var paymentType = $("#paymentType").val();
+    console.log(paymentType);
+    switch(parseInt(paymentType)){
+        case 0: $("#od").html("");
+        break;
+        case 1: 
+            var oc = $("#idoc").val();
+            $("#od").html("");
+            $("#paymentWithOdT1").html();
+            $.ajax({
+                url:"<?php echo base_url();?>crm/invoice/getDp",
+                data:{id_oc:oc},
+                type:"POST",
+                dataType:"JSON",
+                success:function(respond){
+                    var html = "<tr><td>1</td><td>Down Payment "+respond["persentase"]+"%<input type = 'hidden' name = 'persentase_pembayaran' value = '"+respond["persentase"]+"'></td><td>-</td><td>"+respond["total"]+"</td><td>"+respond["nominal"]+"<input type = 'hidden' name = 'nominal_pembayaran' value = '"+respond["clean_nominal"]+"'></td></tr>";
+                    
+                    $("#paymentWithOdT1").html(html); 
+                }
+            });
+        break;
+        case 2:
+            var oc = $("#idoc").val();
+            console.log(oc);
+            $.ajax({
+                data:{id_oc:oc},
+                url: "<?php echo base_url();?>crm/od/getOD",
+                type:"POST",
+                dataType:"JSON",
+                success:function(respond){
+                    var html = "<option>Choose Order Delivery no</option>"
+                    for( var a = 0 ; a<respond.length; a++){
+                        html += "<option value = '"+respond[a]["id_od"]+"'>"+respond[a]["no_od"]+"</option>";
+                    }
+                    $("#od").html(html);
+                }
+            });
+        break;
+    }
 }
 </script>
 <script>
@@ -101,5 +149,23 @@ function detailOd(){
             $("#paymentWithOdBawah").html(html);
         }
     }); 
+}
+</script>
+<script>
+function loadOdItem(){
+    var id_od = $("#od").val();
+    $.ajax({
+        data:{id_od:id_od},
+        type:"POST",
+        dataType:"JSON",
+        url:"<?php echo base_url();?>crm/od/getOdItemPayment",
+        success:function(respond){
+            var html = "";
+            for(var a = 0; a<respond.length; a++){
+                html += "<tr><td>"+(a+1)+"</td><td>"+respond[a]["nama_produk"]+"</td><td>"+respond[a]["item_qty"]+"</td><td>"+respond[a]["selling_price"]+"</td><td>"+respond[a]["paymentAmount"]+"<input type = 'hidden' name = 'persentase_pembayaran' value = '-'><input type = 'hidden' name = 'nominal_pembayaran' value = '"+respond[a]["clean_nominal"]+"'></td></tr>";
+            }
+            $("#paymentWithOdT1").html(html); 
+        }
+    })
 }
 </script>

@@ -12,6 +12,7 @@
         <thead>
             <tr>
                 <th>No Invoice</th>
+                <th>Invoice Percentage</th>
                 <th>Invoice Amount</th>
                 <th>Purpose</th>
                 <th>No Order Confirmation</th>
@@ -19,21 +20,27 @@
             </tr>
         </thead>
         <tbody>
+            <?php for($a = 0 ; $a<count($invoice); $a++): ?>
             <tr class="gradeA">
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                
+                <td><?php echo $invoice[$a]["no_invoice"];?></td>
+                <td><?php echo $invoice[$a]["persen_pembayaran"];?>%</td>
+                <td><?php echo number_format($invoice[$a]["nominal_pembayaran"]);?></td>
+                <td><?php echo $invoice[$a]["purpose"];?></td>
+                <td><?php echo $invoice[$a]["no_oc"];?></td>
                 <td class="actions">
                     
-                    <button data-target="#editModal" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
-                    <button class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></button>
+                    <a href = "<?php echo base_url();?>crm/invoice/delete/<?php echo $invoice[$a]["id_invoice"];?>" class="btn btn-outline btn-danger"
+                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
                     
-                    <button class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></button>
+                    <a href = "<?php echo base_url();?>crm/invoice/word" class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
+
+                    <a href = "<?php echo base_url();?>crm/invoice/pdf" class="btn btn-outline btn-success"
+                    data-toggle="tooltip"><i class="icon fa fa-briefcase" aria-hidden="true"></i></a>
                 </td>
             </tr>
+            <?php endfor;?>
         </tbody>
     </table>
 </div>

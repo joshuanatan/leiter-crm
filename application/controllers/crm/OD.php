@@ -140,6 +140,25 @@ class OD extends CI_Controller{
         $this->Mdod_core->insert($data);
         redirect("crm/od");
     }
+    public function print(){
+        $this->load->view("crm/print/od");
+    }
+    public function getOD(){
+        $where = array(
+            "id_oc" => $this->input->post("id_oc")
+        );
+        $result = $this->Mdod_core->select($where);
+        $data = array();
+        $counter = 0 ;
+        foreach($result->result() as $a){
+            $data[$counter] = array(
+                "id_od" => $a->id_od,
+                "no_od" => $a->no_od
+            );
+            $counter++;
+        }
+        echo json_encode($data);
+    }
     public function getOdItemPayment(){
         $where = array(
             "id_od" => $this->input->post("id_od")
@@ -150,12 +169,19 @@ class OD extends CI_Controller{
         $data = array();
         $total = 0;
         foreach($result->result() as $a){
-            $amount = ($a->item_qty*get1Value("quotation_item","final_selling_price",array("id_quotation_item" => $a->id_quotation_item)))/get1Value("quotation_item","final_amount",array("id_quotation_item" => $a->id_quotation_item));
+            $sellingPrice = get1Value("quotation_item","final_selling_price",array("id_quotation_item" => $a->id_quotation_item));
+            $finalAmount = get1Value("quotation_item","final_amount",array("id_quotation_item" => $a->id_quotation_item));
+            $id_produk = get1Value("price_request_item","id_produk",array("id_request_item" => get1Value("quotation_item","id_request_item",array("id_quotation_item" => $a->id_quotation_item))));
+            
+            $dp = get1Value("metode_pembayaran","nominal_pembayaran", array("id_oc" => get1Value("od_core","id_oc",array("id_od" => $this->input->post("id_od"))),"urutan_pembayaran" => 1));
+            $amount = ($a->item_qty*($sellingPrice-$dp))/$finalAmount;
             $total += $amount;
             $data[$count] = array(
-                "nama_produk" => "Nama Barangnya",
-                "item_qty" => $a->item_qty,
-                "paymentAmount" => $amount,
+                "nama_produk" => get1Value("produk","nama_produk",array("id_produk" => $id_produk)),
+                "item_qty" => $a->item_qty."/".$finalAmount." ITEMS SENT",
+                "selling_price" => number_format($sellingPrice-$dp),
+                "paymentAmount" => number_format($amount),
+                "clean_nominal" => $total
             );
             $count++;
         }

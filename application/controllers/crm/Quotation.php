@@ -542,6 +542,13 @@ class Quotation extends CI_Controller{
         }
         echo json_encode($data);
     }
+    public function print(){
+        /*header("Content-type:application/vnd.ms-word");
+        header("Content-Disposition:attachment;Filename=asdf.doc");
+        header("Pragma: no-cache");
+        header("Expires:0");*/
+        $this->load->view("crm/print/quotation");
+    }
     public function getOrderedItem(){
         $where = array(
             "id_quotation" => $this->input->post("id_quo"),

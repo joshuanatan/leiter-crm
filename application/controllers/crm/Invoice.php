@@ -29,10 +29,33 @@ class Invoice extends CI_Controller{
         $this->load->view("req/html-close");
     }
     public function index(){
+        $where = array(
+            "invoice" => array()
+        );
+        $result["invoice"] = $this->Mdinvoice_core->select($where["invoice"]);
+        $data["invoice"] = array();
+        
+        $counter = 0 ;
+        foreach($result["invoice"]->result() as $a){
+            if($a->id_od == ""){ $od = "-"; $status = "DOWN PAYMENT";} else{ $od = "OD-".sprintf("%05d",$a->id_od);$status = "REST PAYMENT";}
+            if($a->persen_pembayaran == "") $persen = "-"; else $persen = $a->persen_pembayaran;
+
+            $data["invoice"][$counter] = array(
+                "id_invoice" =>$a->id_invoice,
+                "no_invoice" =>$a->no_invoice,
+                "no_oc" =>get1Value("order_confirmation","no_oc", array("id_oc" => $a->id_oc)),
+                "id_od" =>$od,
+                "persen_pembayaran" =>$persen,
+                "nominal_pembayaran" =>$a->nominal_pembayaran,
+                "purpose" => $status,
+                "mata_uang" =>$a->mata_uang
+            );
+            $counter++;
+        }
         $this->req();
         $this->load->view("crm/content-open");
         $this->load->view("crm/invoice/category-header");
-        $this->load->view("crm/invoice/category-body");
+        $this->load->view("crm/invoice/category-body",$data);
         $this->load->view("crm/content-close");
         $this->close();
     }
@@ -66,6 +89,16 @@ class Invoice extends CI_Controller{
         $this->load->view("crm/invoice/add-invoice",$data);
         $this->load->view("crm/content-close");
         $this->close();
+    }
+    public function word(){
+        header("Content-type:application/vnd.ms-word");
+        header("Content-Disposition:attachment;Filename=invoice.doc");
+        header("Pragma: no-cache");
+        header("Expires:0");
+        $this->load->view("crm/print/invoice");
+    }
+    public function pdf(){
+        $this->load->view("crm/pdf/invoice");
     }
     public function getMetodePembayaran(){
         $where = array(
@@ -124,6 +157,46 @@ class Invoice extends CI_Controller{
         }
         
         echo json_encode($data);
+    }
+    public function createinvoice(){
+        $data = array(
+            "id_invoice" =>$this->input->post("id_invoice"),
+            "no_invoice" => $this->input->post("no_invoice"),
+            "id_oc" =>$this->input->post("id_oc"),
+            "id_od" => $this->input->post("id_od"),
+            "persen_pembayaran" => $this->input->post("persentase_pembayaran"),
+            "nominal_pembayaran" => $this->input->post("nominal_pembayaran"),
+            "kurs_pembayaran" => 1,
+            "mata_uang" => "IDR",
+            "id_user_add" => $this->session->id_user
+        );
+        $this->Mdinvoice_core->insert($data);
+        $data = array(
+            "id_invoice" =>$this->input->post("id_invoice"),
+            "status_invoice" => 0
+        );
+        $where =array(
+            "id_oc" => $this->input->post("id_oc"), /*yang penting uda tau uda DP*/
+        );
+        redirect("crm/invoice");
+
+    }
+    public function getDp(){
+        $where = array(
+            "id_oc" => $this->input->post("id_oc"),
+            "status_invoice" => 1,
+            "trigger_pembayaran" => 1
+        );
+        $result = $this->Mdmetode_pembayaran->select($where);
+        $data = array();
+        foreach($result->result() as $a){
+            $data["persentase"] = $a->persentase_pembayaran;
+            $data["nominal"] = number_format($a->nominal_pembayaran);
+            $data["total"] = number_format(100*splitterMoney($data["nominal"],",")/$data["persentase"]);
+            $data["clean_nominal"] = splitterMoney($data["nominal"],",");
+        }
+        echo json_encode($data);
+
     }
     public function getOD(){
         $data = array(
