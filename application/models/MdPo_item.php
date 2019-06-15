@@ -44,7 +44,7 @@ class MdPo_item extends CI_Model{
     }
     public function get1Value($coloumn,$where){
         $this->db->select($coloumn);
-        $result = $this->db->get_where("Po_item",$where);
+        $result = $this->db->get_where("po_item",$where);
         foreach($result->result() as $a){
             return $a->$coloumn;
             break;

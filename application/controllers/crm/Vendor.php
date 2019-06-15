@@ -574,7 +574,7 @@ class Vendor extends CI_Controller{
             $nama[$count] = $a;
             $count++;
         }
-        echo "countnya = ".$count;
+        //echo "countnya = ".$count;
         $count = 0;
         foreach($biayae as $a){
             $cost[$count] = splitterMoney($a,",");
@@ -626,7 +626,7 @@ class Vendor extends CI_Controller{
             $nama[$count] = $a;
             $count++;
         }
-        echo "countnya = ".$count;
+        //echo "countnya = ".$count;
         $count = 0;
         foreach($biayae as $a){
             $cost[$count] = $a;
@@ -690,6 +690,18 @@ class Vendor extends CI_Controller{
         );
         $this->Mdprice_request->update($data,$where);
         redirect("crm/vendor");
+    }
+    public function getShippingMethod(){
+        $where = array(
+            "id_perusahaan" => $this->input->post("id_perusahaan"),
+            "Status_metode_pengiriman" => 0
+        );
+        $result = $this->Mdmetode_pengiriman_shipping->select($where);
+        $html = "<option>Select Shipping Method</option>";
+        foreach($result->result() as $a){
+            $html .= "<option value = '".$a->metode_pengiriman."'>".$a->metode_pengiriman."</option>";
+        }
+        echo json_encode($html);
     }
 }
 ?>

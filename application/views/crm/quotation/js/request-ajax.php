@@ -135,7 +135,7 @@ function getVendorPrice(){
             dataType: "JSON",
             type: "POST",
             success:function(respond){
-                $("#hargaProduk").val(respond);
+                $("#hargaProduk").val(respond["items"]["harga_produk"]*respond["items"]["rate"]);
                 /*harus ngisi shipper*/
                 $.ajax({
                     data:{id_perusahaan:id_perusahaan,id_request_item:id_request_item},

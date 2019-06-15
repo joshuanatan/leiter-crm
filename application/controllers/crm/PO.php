@@ -1,5 +1,5 @@
 <?php
-class PO extends CI_Controller{
+class Po extends CI_Controller{
     public function __construct(){
         parent::__construct();
         $this->load->model("Mdprice_request");

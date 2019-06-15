@@ -1,0 +1,47 @@
+welcome pagenya coba di cek confignya
+product name hilangkan
+uom yang dropdown dihilangkan 
+fixkan panjang quotation
+WAJIB gambar dibawah tulisan di quotation
+kolom company field diganti segment
+id customer pake format xxx (012) 3 digit
+Company Line ganti phone number
+tambahin tempat fax (fax number) (di customer)
+supplier tidak pakai company field
+tambahin tempat fax (fax number) (di supplier)
+company field di shipper data dihilangkan
+tambahin tempat fax di shipper
+waktu order processing kasih akses untuk tambahin produk vendor
+nama shipping vendor diganti shipping
+nama product vendor diganti supplier
+ganti password staff dari admin
+Price request -> Request for Quotation (RFQ)
+kasih tempat untuk tambah customer manual (background: kalau ada customer sementara yang bisa jadi ga jadi customer. Field: nama perusahaan, nama PIC, nohp, email)
+add item pakenya text karena beda2 pake textarea (mau enter2)
+tambahin semacam notes untuk price request (backgroudnya: sebagai bahan pertimbangan aja, ngeliat harga-harga / potensi saingan).
+masukin attachment juga dalam penambahan price request (tidak wajib)(khusus barang baru)
+contact person shipper yang paling atas aja
+bisa upload attachment di vendor price request
+margin yang di quotation jangan ancur, 2 angka blkg koma aja
+Durasi pembayaran pindahin ke bagian pembayaran.
+detail quotation yang bagian s&k dibuka saja 1 kalimat penuh.
+detail quotation ditaro di depan pake popup gitu (nama barang, qty, harga jual, margin).
+accepted ganti win !!!
+Loss masukin komen.
+ganti icon loss.
+tambahin fungsi hilang
+metode pengiriman ngerefrence dari quotation (auto keisi)
+tambahin tanggal PO customer
+jangan nomor OC tapi nomor PO Customer & nama perusahaan
+OC ganti jadi PO di invoice
+di invoice tambahin buat packaging sama pilih yang tanda tangan 
+Robert Cau, Teguh Budiaryanto, Lenny Suryani Pratikno, semua yang dapet privilage ke finance.
+alamat pengiriman dan alamat invoice tambahin di master
+untuk quotation dkk, bkin dropdown alamat
+setelah OC bisa langsung OD, PO hanya optional
+kalau emang ga ada harganya bisa langusng di masukin (tolong di cek requirednya)
+waktu di bkin PO, harusnya quantity yang di load itu yang dari oc bukan yang awal
+
+lalu sent quantity ini ada yang salah di OD
+
+lalu di invoice juga ada yang salah perihal hitungannya dan tampilin data amountnya.

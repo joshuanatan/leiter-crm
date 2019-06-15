@@ -272,7 +272,8 @@ class Request extends CI_Controller{
             "id_request_item" => $this->input->post("id_request_item")
         );
         $id_produk = get1Value("price_request_item","id_produk", $where);
-        $total = getTotal("price_request_item","jumlah_produk",array("id_produk" => $id_produk));
+        $id_request =  get1Value("price_request_item","id_request",array("id_request_item"=>$this->input->post("id_request_item")));
+        $total = getTotal("price_request_item","jumlah_produk",array("id_produk" => $id_produk,"id_request" => $id_request)); //harusnya yang 1 id _request
         $satuan_produk = get1Value("produk","satuan_produk",array("id_produk" => $id_produk));
         echo json_encode($total." ".$satuan_produk);
     }

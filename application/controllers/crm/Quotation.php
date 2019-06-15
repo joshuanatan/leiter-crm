@@ -322,8 +322,8 @@ class Quotation extends CI_Controller{
             $jumlahDetail[$b] = $a;
             $b++;
         }
-        echo count($jumlahDetail);
-        print_r($jumlahDetail);
+        //echo count($jumlahDetail);
+        //print_r($jumlahDetail);
         $kurs = $this->input->post("mata_uang_pembayaran");
 
         for($a = 0; $a<count($jumlahDetail);$a++){
@@ -377,8 +377,8 @@ class Quotation extends CI_Controller{
             $jumlahDetail[$b] = $a;
             $b++;
         }
-        echo count($jumlahDetail);
-        print_r($jumlahDetail);
+        //echo count($jumlahDetail);
+        //print_r($jumlahDetail);
         $kurs = $this->input->post("mata_uang_pembayaran");
 
         for($a = 0; $a<count($jumlahDetail);$a++){
@@ -486,7 +486,7 @@ class Quotation extends CI_Controller{
             $name[9] => $this->input->post($name[9]),
             $name[10] => $this->input->post($name[10]),
         );
-        echo $this->input->post($name[5]);
+        //echo $this->input->post($name[5]);
         $this->Mdquotation_item->insert($data);
     }
     public function getQuotationItem(){
