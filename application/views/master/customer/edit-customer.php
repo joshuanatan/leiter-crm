@@ -27,7 +27,7 @@
                                     "input" => "input",
                                     "type" => "text",
                                     "name" => "jenis_perusahaan",
-                                    "title" => "Company Field",
+                                    "title" => "Segment",
                                     "placeholder" => "",
                                     "value" => $a->jenis_perusahaan,
                                     "help" => "before: ". $a->jenis_perusahaan

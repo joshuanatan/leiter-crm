@@ -3,7 +3,7 @@
         <div class="col-md-6">
             <div class="mb-15">
             <button data-target = "#TambahRequest" data-toggle = "modal" class="btn btn-outline btn-primary">
-                <i class="icon wb-plus" aria-hidden="true"></i> Add Price Request
+                <i class="icon wb-plus" aria-hidden="true"></i> Add RFQ
             </button>
             </div>
         </div>
@@ -11,7 +11,7 @@
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
-                <th>Request ID</th>
+                <th>RFQ ID</th>
                 <th>Company Name</th>
                 <th>Contact Person</th>
                 <th>Franco</th>

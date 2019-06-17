@@ -15,7 +15,7 @@
                 <th>B/N Product</th>
                 <th>Vendor Product Name</th>
                 <th>B/N PT LEITER INDONESIA</th>
-                <th>LEITER Product Name</th>
+                <th>Leiter Product Description</th>
                 <th>Product UOM</th>
                 <th>Actions</th>
             </tr>
@@ -25,9 +25,9 @@
             <tr class="gradeA">
                 <td><?php echo $a->id_produk_vendor;?></td>
                 <td><?php echo $a->bn_produk_vendor;?></td>
-                <td><?php echo $a->nama_produk_vendor;?></td>
+                <td><?php echo $a->deskripsi_produk_vendor;?></td>
                 <td><?php echo $a->bn_produk;?></td>
-                <td><?php echo $a->nama_produk;?></td>
+                <td><?php echo $a->deskripsi_produk;?></td>
                 <td><?php echo $a->satuan_produk_vendor;?></td>
                 <td class="actions">
                     
@@ -56,15 +56,11 @@
                                                     <input name = "bn_produk" type="text" class="form-control" readonly value = "<?php echo $a->bn_produk_vendor;?>">
                                                 </div>
                                                 <div class="form-group">
-                                                    <h4 class="example-title">Product Name</h4>    
-                                                    <input type="text" class="form-control" name = "nama_produk" value = "<?php echo $a->nama_produk;?>" readonly placeholder="" >
+                                                    <h4 class="example-title">Product Description</h4>    
+                                                    <textarea class="form-control" id="adeskripsi_produk" name = "deskripsi_produk" placeholder="" readonly ><?php echo $a->deskripsi_produk;?></textarea>
                                                 </div>
                                                 <div class="form-group">
                                                     <h4 class="example-title">Product UOM</h4>    <input class = "form-control" type = "text" value = "<?php echo $a->satuan_produk;?>" readonly>
-                                                </div>
-                                                <div class="form-group">
-                                                    <h4 class="example-title">Product Description</h4>    
-                                                    <textarea class="form-control" id="adeskripsi_produk" name = "deskripsi_produk" placeholder="" readonly ><?php echo $a->deskripsi_produk;?></textarea>
                                                 </div>
                                             </div>
                                             <div class="tab-pane" id="supplier<?php echo $a->id_produk_vendor;?>" role="tabpanel">
@@ -74,8 +70,8 @@
                                                     <input type="text" value = "<?php echo $a->bn_produk_vendor;?>" class="form-control" name = "bn_produk_vendor" id="abn_produk_vendor" placeholder="" >
                                                 </div>
                                                 <div class="form-group">
-                                                    <h4 class="example-title">Product Name</h4>    
-                                                    <input type="text" value = "<?php echo $a->nama_produk_vendor;?>" class="form-control" name = "nama_produk_vendor" id="anama_produk_vendor" placeholder="" >
+                                                    <h4 class="example-title">Product Description</h4>    
+                                                    <textarea class="form-control" id="adeskripsi_produk_vendor" name = "deskripsi_produk_vendor" placeholder="" ><?php echo $a->deskripsi_produk_vendor;?></textarea>
                                                 </div>
                                                 <div class="form-group">
                                                     <h4 class="example-title">Product UOM</h4>    
@@ -88,10 +84,6 @@
                                                 <div class="form-group">
                                                     <h4 class="example-title">New Product UOM</h4>    
                                                     <input type="text" class="form-control" name = "satuan_produk_new_vendor" id="asatuan_produk_new_vendor" placeholder="" >
-                                                </div>
-                                                <div class="form-group">
-                                                    <h4 class="example-title">Product Description</h4>    
-                                                    <textarea class="form-control" id="adeskripsi_produk_vendor" name = "deskripsi_produk_vendor" placeholder="" ><?php echo $a->deskripsi_produk_vendor;?></textarea>
                                                 </div>
                                                 
                                                 <div class="form-group">
@@ -148,10 +140,11 @@
                                 <h4 class="example-title">Product B/N</h4>    
                                 <input oninput="updateSupplierForm('bn_produk')" name = "bn_produk" type="text" class="form-control" id="bn_produk" placeholder="" >
                             </div>
+                            
                             <div class="form-group">
-                                <h4 class="example-title">Product Name</h4>    
-                                <input oninput="updateSupplierForm('nama_produk')" type="text" class="form-control" name = "nama_produk" id="nama_produk" placeholder="" >
-                            </div>
+                                <h4 class="example-title">Product Description</h4>    
+                                <textarea oninput="updateSupplierForm('deskripsi_produk')" class="form-control" id="deskripsi_produk" name = "deskripsi_produk" placeholder="" ></textarea>
+                            </div>    
                             <div class="form-group">
                                 <h4 class="example-title">Product UOM</h4>    
                                 <select  name = "satuan_produk" onchange="updateSupplierForm('satuan_produk')" class = "form-control" id = "satuan_produk">
@@ -165,10 +158,6 @@
                                 <h4 class="example-title">New Product UOM</h4>    
                                 <input oninput="updateSupplierForm('satuan_produk_new')" type="text" class="form-control" name = "satuan_produk_new" id="satuan_produk_new" placeholder="" >
                             </div>
-                            <div class="form-group">
-                                <h4 class="example-title">Product Description</h4>    
-                                <textarea oninput="updateSupplierForm('deskripsi_produk')" class="form-control" id="deskripsi_produk" name = "deskripsi_produk" placeholder="" ></textarea>
-                            </div>
                         </div>
                         <div class="tab-pane" id="supplieradd" role="tabpanel">
                             <input type = "hidden" name = "id_perusahaan" value = "<?php echo $id_perusahaan;?>">
@@ -176,10 +165,11 @@
                                 <h4 class="example-title">Product B/N</h4>    
                                 <input type="text" class="form-control" name = "bn_produk_vendor" id="bn_produk_vendor" placeholder="" >
                             </div>
+                             
                             <div class="form-group">
-                                <h4 class="example-title">Product Name</h4>    
-                                <input type="text" class="form-control" name = "nama_produk_vendor" id="nama_produk_vendor" placeholder="" >
-                            </div>
+                                <h4 class="example-title">Product Description</h4>    
+                                <textarea class="form-control" id="deskripsi_produk_vendor" name = "deskripsi_produk_vendor" placeholder="" ></textarea>
+                            </div>       
                             <div class="form-group">
                                 <h4 class="example-title">Product UOM</h4>    
                                 <select class = "form-control" name = "satuan_produk_vendor" id = "satuan_produk_vendor">
@@ -191,10 +181,6 @@
                             <div class="form-group">
                                 <h4 class="example-title">New Product UOM</h4>    
                                 <input type="text" class="form-control" name = "satuan_produk_new_vendor" id="satuan_produk_new_vendor" placeholder="" >
-                            </div>
-                            <div class="form-group">
-                                <h4 class="example-title">Product Description</h4>    
-                                <textarea class="form-control" id="deskripsi_produk_vendor" name = "deskripsi_produk_vendor" placeholder="" ></textarea>
                             </div>
                             
                             <div class="form-group">

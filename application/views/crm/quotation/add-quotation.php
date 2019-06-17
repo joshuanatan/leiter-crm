@@ -119,33 +119,37 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="payment" role="tabpanel">
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Payment Method</h5>
-                                    <select class = "form-control" id = "paymentMethod" name = "paymentMethod" onchange = "paymentMethodForm()">
-                                        <option value = "0" selected disabled>Choose Payment Method</option>
-                                        <option value = "01">Full Before Delivery</option>
-                                        <option value = "02">Full After Delivery</option>
-                                        <option value = "11">DP & Rest Before Delivery</option><!--cuman bagi 2 pembayaran -->
-                                        <option value = "12">DP & Rest After Delivery</option>
-                                    </select>
-                                </div>
-                                <div class = "form-group containerDp" style = "display:none"> <!-- textarea klo DP % -->
+                                <div class = "form-group containerDp" style = ""> <!-- textarea klo DP % -->
                                     <h5 style = "color:darkgrey; opacity:0.8">DP Percentage</h5>
                                     <input name = "persen[]" id = "persenDp" value = "%" oninput = "paymentWithDP()" type ="text" class = "form-control">
                                 </div>
-                                <div class = "form-group containerDp" style = "display:none"> <!-- Nominal DP -->
+                                <div class = "form-group containerDp" style = ""> <!-- Nominal DP -->
                                     <h5 style = "color:darkgrey; opacity:0.8">DP Amount</h5>
                                     <input name = "" id = "jumlahDp" type ="text" class = "form-control">
                                     <input name = "jumlah[]" id = "jumlahDpClean" type ="hidden" class = "form-control">
                                 </div>
-                                <div class = "form-group containerSisa" style = "display:none"> <!-- textarea klo DP% -->
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Payment Method</h5>
+                                    <select class = "form-control" id = "paymentMethod" name = "paymentMethod">
+                                        <option value = "before">BEFORE DELIVERY</option>
+                                        <option value = "before">AFTER DELIVERY</option>
+                                    </select>
+                                </div>
+                                <div class = "form-group containerSisa" style = ""> <!-- textarea klo DP% -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Rest Percentage</h5>
                                     <input name = "persen[]" id = "persenSisa" value = "%" type ="text" class = "form-control">
                                 </div>
-                                <div class = "form-group containerSisa" style = "display:none"> <!-- Nominal DP -->
+                                <div class = "form-group containerSisa" style = ""> <!-- Nominal DP -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Rest Amount</h5>
                                     <input name = "jumlah[]" id = "jumlahSisa" type ="text" class = "form-control">
                                     <input name = "" id = "jumlahSisaClean" type ="hidden" class = "form-control">
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Payment Method</h5>
+                                    <select class = "form-control" id = "paymentMethod" name = "paymentMethod">
+                                        <option value = "before">BEFORE DELIVERY</option>
+                                        <option value = "before">AFTER DELIVERY</option>
+                                    </select>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Mata Uang Pembayaran</h5>

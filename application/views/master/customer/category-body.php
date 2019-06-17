@@ -13,7 +13,7 @@
             <tr>
                 <th>Company ID</th>
                 <th>Company Name</th>
-                <th>Company Field</th>
+                <th>Segment</th>
                 <th>Company Address</th>
                 <th>Company Line</th>
                 <th>Main Contact Person</th>
@@ -81,7 +81,7 @@
                                     "input" => "input",
                                     "type" => "text",
                                     "name" => "jenis_perusahaan",
-                                    "title" => "Company Field",
+                                    "title" => "Segment",
                                     "placeholder" => "",
                                     "value" => "",
                                     "help" => "Customer's main product/services"

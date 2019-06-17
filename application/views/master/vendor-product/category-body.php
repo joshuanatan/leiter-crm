@@ -13,7 +13,6 @@
             <tr>
                 <th>Company ID</th>
                 <th>Company Name</th>
-                <th>Company Field</th>
                 <th>Company Address</th>
                 <th>Company Line</th>
                 <th>Actions</th>
@@ -27,7 +26,6 @@
             <tr class="gradeA">
                 <td><?php echo $a->id_perusahaan;?></td>
                 <td><?php echo strtoupper($a->nama_perusahaan);?></td>
-                <td><?php echo strtoupper($a->jenis_perusahaan);?></td>
                 <td><?php echo ucwords($a->alamat_perusahaan);?></td>
                 <td><?php echo $a->notelp_perusahaan;?></td>
                 <td class="actions">
@@ -78,12 +76,12 @@
                                 ),
                                 "input1" => array(
                                     "input" => "input",
-                                    "type" => "text",
+                                    "type" => "hidden",
                                     "name" => "jenis_perusahaan",
-                                    "title" => "Company Field",
+                                    "title" => "",
                                     "placeholder" => "",
-                                    "value" => "",
-                                    "help" => "Vendor's main product/services"
+                                    "value" => "-",
+                                    "help" => ""
                                 ),
                                 "input2" => array(
                                     "input" => "textarea",

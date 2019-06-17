@@ -25,7 +25,7 @@
             <tr>
                 <th style = "width:5%">Product ID</th>
                 <th style = "width:15%">B/N Product</th>
-                <th style = "width:25%">Product Name</th>
+                <th style = "width:25%">Product Description</th>
                 <th style = "width:10%">Product UOM</th>
                 <th style = "width:30%">Product Image</th>
                 <th style = "width:15%">Actions</th>
@@ -36,7 +36,7 @@
             <tr>
                 <td><?php echo $produk[$a]["id_produk"];?></td>
                 <td><?php echo $produk[$a]["bn_produk"];?></td>
-                <td><?php echo $produk[$a]["nama_produk"];?></td>
+                <td><?php echo $produk[$a]["deskripsi_produk"];?></td>
                 <td><?php echo $produk[$a]["satuan_produk"];?></td>
                 <td><img style = "width:100%" src = "<?php echo base_url();?>assets/system/produk/<?php echo $produk[$a]["gambar_produk"];?>"></td>
                 <td class="actions">
@@ -58,8 +58,8 @@
                                             <input type = "text" class = "form-control" value = "<?php echo $produk[$a]["bn_produk"];?>" name = "bn_produk">
                                         </div>
                                         <div class = "form-group">
-                                            <h5>Product Name</h5>
-                                            <input type = "text" class = "form-control" value = "<?php echo $produk[$a]["nama_produk"];?>" name = "nama_produk">
+                                            <h5>Product Description</h5>
+                                            <textarea class = "form-control" name = "deskripsi_produk"><?php echo $produk[$a]["deskripsi_produk"];?></textarea>
                                         </div>
                                         <div class = "form-group">
                                             <h5>Unit of Measure</h5>
@@ -68,10 +68,6 @@
                                         <div class = "form-group" id = "newUom" style = "display:none">
                                             <h5>New UOM</h5>
                                             <input type = "text" class = "form-control" name = "uom_baru">
-                                        </div>
-                                        <div class = "form-group">
-                                            <h5>Product Description</h5>
-                                            <textarea class = "form-control" name = "deskripsi_produk"><?php echo $produk[$a]["deskripsi_produk"];?></textarea>
                                         </div>
                                         <div class = "form-group">
                                             <h5>Product Image <a href = "<?php echo base_url();?>assets/system/produk/<?php echo $produk[$a]["gambar_produk"];?>" target="_blank">Open Image</a></h5>
@@ -113,8 +109,8 @@
                         <input type = "text" class = "form-control" name = "bn_produk">
                     </div>
                     <div class = "form-group">
-                        <h5>Product Name</h5>
-                        <input type = "text" class = "form-control" name = "nama_produk">
+                        <h5>Product Description</h5>
+                        <textarea class = "form-control" name = "deskripsi_produk"></textarea>
                     </div>
                     <div class = "form-group">
                         <h5>Unit of Measure</h5>
@@ -128,10 +124,6 @@
                     <div class = "form-group" id = "newUom">
                         <h5>New UOM</h5>
                         <input type = "text" class = "form-control" name = "uom_baru">
-                    </div>
-                    <div class = "form-group">
-                        <h5>Product Description</h5>
-                        <textarea class = "form-control" name = "deskripsi_produk"></textarea>
                     </div>
                     <div class = "form-group">
                         <h5>Product Image</h5>

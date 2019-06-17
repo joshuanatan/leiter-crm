@@ -114,11 +114,6 @@
                                 </a>
                             </li>
                             <li class="site-menu-item">
-                                <a class="animsition-link" href="<?php echo base_url();?>crm/goods">
-                                <span class="site-menu-title">Goods In</span>
-                                </a>
-                            </li>
-                            <li class="site-menu-item">
                                 <a class="animsition-link" href="<?php echo base_url();?>crm/od">
                                 <span class="site-menu-title">Order Delivery</span>
                                 </a>
@@ -138,41 +133,49 @@
                         </a>
                         <ul class="site-menu-sub">
                             <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/statistics.html">
+                                <a class="animsition-link" href="<?php echo base_url();?>finance/receivable">
                                 <span class="site-menu-title">Receivable</span>
                                 </a>
                             </li><li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/statistics.html">
+                                <a class="animsition-link" href="<?php echo base_url();?>finance/payable">
                                 <span class="site-menu-title">Payable</span>
                                 </a>
                             </li>
                             <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/statistics.html">
+                                <a class="animsition-link" href="<?php echo base_url();?>finance/reimburse">
                                 <span class="site-menu-title">Reimburse</span>
                                 </a>
                             </li>
                             <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/data.html">
+                                <a class="animsition-link" href="<?php echo base_url();?>finance/margin">
                                 <span class="site-menu-title">Margin Calculation</span>
                                 </a>
                             </li>
-                            <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/blog.html">
-                                <span class="site-menu-title">Tax</span>
+                            <li class="site-menu-item has-sub">
+                                <a href="javascript:void(0)">
+                                    <span class="site-menu-title">Tax</span>
+                                    <span class="site-menu-arrow"></span>
                                 </a>
+                                <ul class="site-menu-sub">
+                                    <li class="site-menu-item">
+                                        <a class="animsition-link" href="<?php echo base_url();?>finance/tax/ppn">
+                                            <span class="site-menu-title">PPN</span>
+                                        </a>
+                                    </li>
+                                    <li class="site-menu-item">
+                                        <a class="animsition-link" href="<?php echo base_url();?>finance/tax/pph23">
+                                            <span class="site-menu-title">PPH 23</span>
+                                        </a>
+                                    </li>
+                                    <li class="site-menu-item">
+                                        <a class="animsition-link" href="<?php echo base_url();?>finance/tax/pib">
+                                            <span class="site-menu-title">PIB</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                             <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/chart.html">
-                                <span class="site-menu-title">Bank Transaction</span>
-                                </a>
-                            </li>
-                            <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/social.html">
-                                <span class="site-menu-title">Invoice</span>
-                                </a>
-                            </li>
-                            <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/weather.html">
+                                <a class="animsition-link" href="<?php echo base_url();?>finance/petty">
                                 <span class="site-menu-title">Petty Cash</span>
                                 </a>
                             </li>
@@ -198,87 +201,6 @@
                             <li class="site-menu-item">
                                 <a class="animsition-link" href="widgets/blog.html">
                                 <span class="site-menu-title">Next Plan</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="site-menu-item has-sub">
-                        <a href="javascript:void(0)">
-                            <i class="site-menu-icon wb-signal" aria-hidden="true"></i>
-                            <span class="site-menu-title">Maintenance</span>
-                            <span class="site-menu-arrow"></span>
-                        </a>
-                        <ul class="site-menu-sub">
-                            <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/statistics.html">
-                                <span class="site-menu-title">Complaint</span>
-                                </a>
-                            </li>
-                            <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/data.html">
-                                <span class="site-menu-title">Travel Itinerary</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="site-menu-item has-sub">
-                        <a href="javascript:void(0)">
-                            <i class="site-menu-icon wb-share" aria-hidden="true"></i>
-                            <span class="site-menu-title">Fabrication</span>
-                            <span class="site-menu-arrow"></span>
-                        </a>
-                        <ul class="site-menu-sub">
-                            <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/statistics.html">
-                                <span class="site-menu-title">Formula</span>
-                                </a>
-                            </li>
-                            <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/data.html">
-                                <span class="site-menu-title">Orders</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="site-menu-item has-sub">
-                        <a href="javascript:void(0)">
-                            <i class="site-menu-icon wb-grid-9" aria-hidden="true"></i>
-                            <span class="site-menu-title">Warehouse</span>
-                            <span class="site-menu-arrow"></span>
-                        </a>
-                        <ul class="site-menu-sub">
-                            <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/statistics.html">
-                                <span class="site-menu-title">Stock Opname</span>
-                                </a>
-                            </li>
-                            <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/data.html">
-                                <span class="site-menu-title">Good's In</span>
-                                </a>
-                            </li>
-                            <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/data.html">
-                                <span class="site-menu-title">Good's Out</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="site-menu-item has-sub">
-                        <a href="javascript:void(0)">
-                            <i class="site-menu-icon wb-inbox" aria-hidden="true"></i>
-                            <span class="site-menu-title">Administrator</span>
-                            <span class="site-menu-arrow"></span>
-                        </a>
-                        <ul class="site-menu-sub">
-                            <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/statistics.html">
-                                <span class="site-menu-title">Privilage</span>
-                                </a>
-                            </li>
-                            <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/data.html">
-                                <span class="site-menu-title">Meeting</span>
                                 </a>
                             </li>
                         </ul>

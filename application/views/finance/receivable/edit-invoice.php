@@ -10,7 +10,7 @@
                         <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#items" aria-controls="pengiriman" role="tab">Items</a></li>
 
                     </ul>
-                    <form action = "<?php echo base_url();?>crm/invoice/createinvoice" method = "post">    
+                    <form action = "<?php echo base_url();?>finance/receivable/editinvoice" method = "post">    
                         <div class="tab-content">
                             <div class="tab-pane active" id="primaryData" role="tabpanel">
                                 <!--<div class = "form-group">
@@ -90,7 +90,14 @@
                                     </table>
                                 </div>
                                 <div class = "form-group">
-                                    <button type = "submit" class = "btn btn-primary btn-outline">CREATE INVOICE</button>
+                                    <div class="checkbox-custom checkbox-primary">
+                                        <input type="checkbox" id="inputUnchecked">
+                                        <label for="inputUnchecked">PPN</label>
+                                    </div>
+                                </div>
+                                <div class = "form-group">
+                                    <button type = "submit" class = "btn btn-primary btn-outline col-lg-2">CREATE INVOICE</button>
+                                    <a href = "<?php echo base_url();?>finance/receivable" class = "btn btn-primary btn-outline col-lg-2">BACK</a>
                                 </div>
                             </div>
                         </div>

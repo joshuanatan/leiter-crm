@@ -25,12 +25,12 @@
                                 ),
                                 "input1" => array(
                                     "input" => "input",
-                                    "type" => "text",
+                                    "type" => "hidden",
                                     "name" => "jenis_perusahaan",
-                                    "title" => "Company Field",
+                                    "title" => "",
                                     "placeholder" => "",
-                                    "value" => $a->jenis_perusahaan,
-                                    "help" => "before: ". $a->jenis_perusahaan
+                                    "value" => "-",
+                                    "help" => ""
                                 ),
                                 "input2" => array(
                                     "input" => "textarea",
