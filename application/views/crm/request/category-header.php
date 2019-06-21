@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h1 class="page-title">CRM - REQUEST FOR QUOTATION (RFQ)</h1>
+    <h1 class="page-title">REQUEST FOR QUOTATION (RFQ)</h1>
     <br/>
     <ol class="breadcrumb breadcrumb-arrow">
         <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
