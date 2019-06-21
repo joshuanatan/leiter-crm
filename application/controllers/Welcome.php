@@ -6,6 +6,7 @@ class Welcome extends CI_Controller{
         $this->load->model("Mdmenu");
     }
     public function index(){
+        if($this->session->id_user == "") redirect("login/welcome");
         $this->load->view("req/head");
         $this->load->view("req/head-close");
         $this->load->view("req/top-navbar");

@@ -40,7 +40,7 @@ class Product extends CI_Controller{
             $data["produk"][$counter] = array(
                 "id_produk" => $a->id_produk,
                 "bn_produk" => $a->bn_produk,
-                "nama_produk" => $a->nama_produk,
+                "nama_produk" => "-",
                 "satuan_produk" => $a->satuan_produk,
                 "deskripsi_produk" => $a->deskripsi_produk,
                 "gambar_produk" => $a->gambar_produk,
@@ -74,7 +74,7 @@ class Product extends CI_Controller{
         if($this->input->post("uom") == "0"){
             $data = array(
                 "nama_satuan" => strtoupper($this->input->post("uom_baru")),
-                "id_user_add" => $this->session->id_user
+                "id_user_add" => $this->session->id_user    
             );
             $this->Mdsatuan->insert($data);
             $uom = $this->input->post("uom_baru");
@@ -91,15 +91,12 @@ class Product extends CI_Controller{
         }
         else{
             $data = array('upload_data' => $this->upload->data());
-            $name = array(
-                "bn_produk","nama_produk","satuan_produk","deskripsi_produk","gambar_produk"
-            );
             $data = array(
-                $name[0] => $this->input->post($name[0]),
-                $name[1] => $this->input->post($name[1]),
-                $name[2] => strtoupper($uom),
-                $name[3] => $this->input->post($name[3]),
-                $name[4] => $data["upload_data"]["file_name"],
+                "bn_produk" => $this->input->post("bn_produk"),
+                "nama_produk" => "-",
+                "satuan_produk" => strtoupper($uom),
+                "deskripsi_produk" => $this->input->post("deskripsi_produk"),
+                "gambar_produk" => $data["upload_data"]["file_name"],
                 "id_user_add" => $this->session->id_user
             );
             $this->Mdproduk->insert($data);
@@ -132,29 +129,23 @@ class Product extends CI_Controller{
         $config['allowed_types']        = 'gif|jpg|png';
         $this->load->library('upload', $config);
         if ( !$this->upload->do_upload('gambar_produk')){
-            $name = array(
-                "bn_produk","nama_produk","satuan_produk","deskripsi_produk","gambar_produk"
-            );
             $data = array(
-                $name[0] => $this->input->post($name[0]),
-                $name[1] => $this->input->post($name[1]),
-                $name[2] => $this->input->post("uom"),
-                $name[3] => $this->input->post($name[3]),
+                "bn_produk" => $this->input->post("bn_produk"),
+                "nama_produk" => $this->input->post("nama_produk"),
+                "satuan_produk" => $this->input->post("uom"),
+                "deskripsi_produk" => $this->input->post("deskripsi_produk"),
                 "id_user_add" => $this->session->id_user
             );
             $this->Mdproduk->update($data,$where);
         }
         else{
             $data = array('upload_data' => $this->upload->data());
-            $name = array(
-                "bn_produk","nama_produk","satuan_produk","deskripsi_produk","gambar_produk"
-            );
             $data = array(
-                $name[0] => $this->input->post($name[0]),
-                $name[1] => $this->input->post($name[1]),
-                $name[2] => $this->input->post("uom"),
-                $name[3] => $this->input->post($name[3]),
-                $name[4] => $data["upload_data"]["file_name"],
+                "bn_produk" => $this->input->post("bn_produk"),
+                "nama_produk" => $this->input->post("nama_produk"),
+                "satuan_produk" => $this->input->post("uom"),
+                "deskripsi_produk" => $this->input->post("deskripsi_produk"),
+                "gambar_produk" => $data["upload_data"]["file_name"],
                 "id_user_add" => $this->session->id_user
             );
             $this->Mdproduk->update($data,$where);

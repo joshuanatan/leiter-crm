@@ -184,23 +184,13 @@
                     <li class="site-menu-item has-sub">
                         <a href="javascript:void(0)">
                             <i class="site-menu-icon wb-briefcase" aria-hidden="true"></i>
-                            <span class="site-menu-title">Sales</span>
+                            <span class="site-menu-title">Report</span>
                             <span class="site-menu-arrow"></span>
                         </a>
                         <ul class="site-menu-sub">
                             <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/statistics.html">
-                                <span class="site-menu-title">Meeting Report</span>
-                                </a>
-                            </li>
-                            <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/data.html">
-                                <span class="site-menu-title">Calling Report</span>
-                                </a>
-                            </li>
-                            <li class="site-menu-item">
-                                <a class="animsition-link" href="widgets/blog.html">
-                                <span class="site-menu-title">Next Plan</span>
+                                <a class="animsition-link" href="<?php echo base_url();?>report/kpi">
+                                <span class="site-menu-title">KPI</span>
                                 </a>
                             </li>
                         </ul>

@@ -1,5 +1,5 @@
 <?php
-class Invoice extends CI_Controller{
+class Receivable extends CI_Controller{
     public function __construct(){
         parent::__construct();
         $this->load->model("Mdinvoice_core");
@@ -15,7 +15,7 @@ class Invoice extends CI_Controller{
         $this->load->view("plugin/modal/modal-css");
         $this->load->view("plugin/form/form-css");
         $this->load->view("req/head-close");
-        $this->load->view("crm/crm-open");
+        $this->load->view("finance/finance-open");
         $this->load->view("req/top-navbar");
         $this->load->view("req/navbar");
     }
@@ -24,8 +24,8 @@ class Invoice extends CI_Controller{
         $this->load->view("plugin/datatable/page-datatable-js");
         $this->load->view("plugin/form/form-js");
         $this->load->view("plugin/tabs/tabs-js");
-        $this->load->view("crm/invoice/js/request-ajax");
-        $this->load->view("crm/crm-close");
+        $this->load->view("finance/receivable/js/request-ajax");
+        $this->load->view("finance/finance-close");
         $this->load->view("req/html-close");
     }
     public function index(){
@@ -53,10 +53,10 @@ class Invoice extends CI_Controller{
             $counter++;
         }
         $this->req();
-        $this->load->view("crm/content-open");
-        $this->load->view("crm/invoice/category-header");
-        $this->load->view("crm/invoice/category-body",$data);
-        $this->load->view("crm/content-close");
+        $this->load->view("finance/content-open");
+        $this->load->view("finance/receivable/category-header");
+        $this->load->view("finance/receivable/category-body",$data);
+        $this->load->view("finance/content-close");
         $this->close();
     }
     
@@ -84,21 +84,24 @@ class Invoice extends CI_Controller{
             "oc" => $array["oc"]
         );
         $this->req();
-        $this->load->view("crm/content-open");
-        $this->load->view("crm/invoice/category-header");
-        $this->load->view("crm/invoice/add-invoice",$data);
-        $this->load->view("crm/content-close");
+        $this->load->view("finance/content-open");
+        $this->load->view("finance/receivable/category-header");
+        $this->load->view("finance/receivable/add-invoice",$data);
+        $this->load->view("finance/content-close");
         $this->close();
+    }
+    public function edit($i){
+
     }
     public function word(){
         header("Content-type:application/vnd.ms-word");
         header("Content-Disposition:attachment;Filename=invoice.doc");
         header("Pragma: no-cache");
         header("Expires:0");
-        $this->load->view("crm/print/invoice");
+        $this->load->view("finance/print/invoice");
     }
     public function pdf(){
-        $this->load->view("crm/pdf/invoice");
+        $this->load->view("finance/pdf/invoice");
     }
     public function getMetodePembayaran(){
         $where = array(
@@ -178,7 +181,7 @@ class Invoice extends CI_Controller{
         $where =array(
             "id_oc" => $this->input->post("id_oc"), /*yang penting uda tau uda DP*/
         );
-        redirect("crm/invoice");
+        redirect("finance/receivable");
 
     }
     public function getDp(){

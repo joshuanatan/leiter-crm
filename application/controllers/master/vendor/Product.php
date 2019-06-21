@@ -171,7 +171,7 @@ class Product extends CI_Controller{
         if($this->input->post("id_produk" == 0)){
             $data = array(
                 "bn_produk" => $this->input->post("bn_produk"),
-                "nama_produk" => $this->input->post("nama_produk"),
+                "nama_produk" => "-",
                 "bn_produk" => $uom,
                 "deskripsi_produk" => $this->input->post("deskripsi_produk"),
                 "id_user_add" => $this->session->id_user,
@@ -197,12 +197,12 @@ class Product extends CI_Controller{
             "bn_produk_vendor","nama_produk_vendor","satuan_produk_vendor","id_produk","deskripsi_produk_vendor","id_perusahaan"
         );
         $data = array(
-            $name[0] => $this->input->post($name[0]),
-            $name[1] => $this->input->post($name[1]),
-            $name[2] => $uom,
-            $name[3] => $last_id,
-            $name[4] => $this->input->post($name[4]),
-            $name[5] => $this->input->post($name[5]),
+            "bn_produk_vendor" => $this->input->post("bn_produk_vendor"),
+            "nama_produk_vendor" => "-",
+            "satuan_produk_vendor" => $uom,
+            "id_produk" => $last_id,
+            "deskripsi_produk_vendor" => $this->input->post("deskripsi_produk_vendor"),
+            "id_perusahaan" => $this->input->post("id_perusahaan"),
             
             "id_user_add" => $this->session->id_user
         );
@@ -217,6 +217,7 @@ class Product extends CI_Controller{
         redirect("master/vendor/product/items/".$this->session->id_supplier);
     }
     public function delete($i){
+        
         $where = array(
             "perusahaan.id_perusahaan" => $i
         );
@@ -266,6 +267,7 @@ class Product extends CI_Controller{
         redirect("master/vendor/product");
     }
     public function removecp($i,$page){
+        
         $data = array(
             "status_cp" => 1,
             "id_user_delete" => $this->session->id_user
