@@ -1,4 +1,33 @@
 <?php
+
+if ( ! function_exists('insertRow')){
+    function insertRow($table,$data){
+        $CI =& get_instance();
+        $CI->db->insert($table,$data);
+        return $CI->db->insert_id();
+    }
+}
+
+if ( ! function_exists('updateRow')){
+    function updateRow($table,$data,$where){
+        $CI =& get_instance();
+        $CI->db->update($table,$data,$where);
+    }
+}
+
+if ( ! function_exists('deleteRow')){
+    function deleteRow($table,$where){
+        $CI =& get_instance();
+        $CI->db->delete($table,$where);
+    }
+}
+
+if ( ! function_exists('selectRow')){
+    function selectRow($table,$where){
+        $CI =& get_instance();
+        return $CI->db->get_where($table,$where);
+    }
+}
 if ( ! function_exists('isExistsInTable')){
     function isExistsInTable($table,$where){
         $CI =& get_instance();
@@ -9,8 +38,8 @@ if ( ! function_exists('isExistsInTable')){
         else return 1; /*not exists*/
     }   
 }
-if ( ! function_exists('findMaxId')){
-    function findMaxId($table,$coloumn,$where){
+if ( ! function_exists('getMaxId')){
+    function getMaxId($table,$coloumn,$where){
         $CI =& get_instance();
         $CI->db->select("max(".$coloumn.") as maxId");
         $result = $CI->db->get_where($table,$where);

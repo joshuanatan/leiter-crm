@@ -18,10 +18,12 @@ ganti password staff dari admin
 Price request -> Request for Quotation (RFQ)
 kasih tempat untuk tambah customer manual (background: kalau ada customer sementara yang bisa jadi ga jadi customer. Field: nama perusahaan, nama PIC, nohp, email)
 add item pakenya text karena beda2 pake textarea (mau enter2)
-tambahin semacam notes untuk price request (backgroudnya: sebagai bahan pertimbangan aja, ngeliat harga-harga / potensi saingan).
-masukin attachment juga dalam penambahan price request (tidak wajib)(khusus barang baru)
+
+tambahin semacam notes untuk price request (backgroudnya: sebagai bahan pertimbangan aja, ngeliat harga-harga / potensi saingan).[done]
+masukin attachment juga dalam penambahan price request (tidak wajib)(khusus barang baru)[done]
+bisa upload attachment di vendor price request[done]
+
 contact person shipper yang paling atas aja
-bisa upload attachment di vendor price request
 margin yang di quotation jangan ancur, 2 angka blkg koma aja
 Durasi pembayaran pindahin ke bagian pembayaran.
 detail quotation yang bagian s&k dibuka saja 1 kalimat penuh.

@@ -4,16 +4,33 @@ function getContactPerson(){
     console.log(id_perusahaan);
     $(document).ready(function(){
         $.ajax({
-            url: "<?php echo base_url();?>master/customer/getcp",
-            data: {id_perusahaan:id_perusahaan},
-            type: "POST",
+            url: "<?php echo base_url();?>interface/contact_person/getContactPerson/"+id_perusahaan,
             dataType:"JSON",
             success:function(respond){
-                $("#cpperusahaan").html(respond);
+                var html = "<option>Choose CP</option>";
+                for(var a = 0; a<respond.length; a++){
+                    html += "<option value ='"+respond[a]["id_cp"]+"'>"+respond[a]["jk_cp"]+". "+respond[a]["nama_cp"]+"</option>";
+                }
+                $("#cpperusahaan").html(html);
             }
         });
     });
     
+}
+</script>
+<script>
+function getDetailContactPerson(){
+    var id_cp = $("#cpperusahaan").val();
+    $(document).ready(function(){
+        $.ajax({
+            url:"<?php echo base_url();?>interface/contact_person/getDetailContactPerson/"+id_cp,
+            dataType:"JSON",
+            success:function(respond){
+                $("#email_cp").val(respond["email_cp"]);
+                $("#nohp_cp").val(respond["nohp_cp"]);
+            }
+        })
+    });
 }
 </script>
 <script>

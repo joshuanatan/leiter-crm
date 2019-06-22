@@ -19,6 +19,15 @@ class Request extends CI_Controller{
         $this->load->view("req/top-navbar");
         $this->load->view("req/navbar");
     }
+    public function close(){
+        $this->load->view("req/script");
+        $this->load->view("plugin/datatable/page-datatable-js");
+        $this->load->view("plugin/form/form-js");
+        $this->load->view("plugin/tabs/tabs-js");
+        $this->load->view("crm/request/js/request-ajax");
+        $this->load->view("crm/crm-close");
+        $this->load->view("req/html-close");
+    }
     public function index(){
         $this->req();
         $where = array(
@@ -30,180 +39,152 @@ class Request extends CI_Controller{
                 "produk.status_produk" => 0
             ),
             "price_request" => array(
-                "price_request.status_request" => 0,
+                "price_request.status_aktif_request" => 0,
             ),
         );
-        $result["request"] = $this->Mdprice_request->select($where["price_request"]);
-        $counter = 0;
-        $array["request"] = array();
-        foreach($result["request"]->result() as $a){
-            $array["request"][$counter] = array(
-                "id_request" => $a->id_request,
-                "tgl_dateline_request" => $a->tgl_dateline_request,
-                "nama_perusahaan" => get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $a->id_perusahaan)),
-                "nama_cp" => get1Value("contact_person","nama_cp",array("id_cp" => $a->id_cp)),
-                "franco" => $a->franco,
-                "quantity" => getAmount("price_request_item","id_produk",array("id_request" => $a->id_request,"status_request_item" => 0))
-            );
-            $counter++;
-        }
-        $data = array(
-            "request_id" => $this->Mdprice_request->maxId(),
-            "customer" => $this->Mdperusahaan->select($where["customer"]),
-            "produk" => $this->Mdproduk->select($where["produk"]),
-            "request" => $array["request"]
+        $field = array(
+            "request" => array(
+                "id_request","no_request","id_perusahaan","id_cp","franco","bulan_request","tahun_request","status_request","tgl_dateline_request"
+            ),
+            "items" => array(
+                "nama_produk","jumlah_produk","notes_produk","file"
+            )
         );
+        $print = array(
+            "request" => array(
+                "id_request","no_request","id_perusahaan","id_cp","franco","bulan_request","tahun_request","status_request","dateline"
+            ),
+            "items" => array(
+                "nama_produk","jumlah_produk","notes_produk","file"
+            )
+        );
+        $result["request"] = selectRow("price_request",$where["price_request"]);
+        $data["request"] = foreachMultipleResult($result["request"],$field["request"],$print["request"]);
+
+        /*merubah id_perusahaan dan id_cp dan mencari jumlah jenis barang yang dipesan jadi nama masing-masing*/
+        for($a = 0; $a<count($data["request"]); $a++){ 
+            $data["request"][$a]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan"=>$data["request"][$a]["id_perusahaan"]));
+            $data["request"][$a]["nama_cp"] = get1Value("contact_person","nama_cp", array("id_cp" => $data["request"][$a]["id_cp"]));
+            $data["request"][$a]["jumlah"] = getAmount("price_request_item","id_request_item",array("no_request" => $data["request"][$a]["no_request"],"status_request_item" => 0));
+
+            /*ngeload item*/
+            $resultItem = selectRow("price_request_item",array("no_request" => $data["request"][$a]["no_request"]));
+            $items = foreachMultipleResult($resultItem,$field["items"],$print["items"]);
+            
+            $data["request"][$a]["items"] = $items;
+        }
+
         $this->load->view("crm/content-open");
         $this->load->view("crm/request/category-header");
         $this->load->view("crm/request/category-body",$data);
         $this->load->view("crm/content-close");
         $this->close();
-        $this->load->view("crm/request/js/dynamic-form-js",$data);
     }
-    public function close(){
-        $this->load->view("req/script");
-        $this->load->view("plugin/datatable/page-datatable-js");
-        $this->load->view("plugin/form/form-js");
-        $this->load->view("plugin/tabs/tabs-js");
-        $this->load->view("crm/request/js/request-ajax");
-        $this->load->view("crm/crm-close");
-        $this->load->view("req/html-close");
-    }
-    public function insertitems($result){
-        $name = array("id_produk","jumlah_produk");
-        $produk = array();
-        $jumlah = array();
-        /*tujuannya mau ngisi kedua array ini */
-        $counts = 0;
-        foreach($this->input->post("id_produk") as $b){
-            $produk[$counts] = $b;
-            $array[0][$counts] = $b;
-            $counts++;
-        }
-        $counts = 0;
-        foreach($this->input->post("jumlah_produk") as $b){
-            $jumlah[$counts] = $b;
-            $counts++;
-        }
-        for($a = 0; $a<count($produk); $a++){ /*berapa field yang mau dimasukin*/
-            $data = array(
-                "id_request" => $result,
-                "id_produk" => $produk[$a],
-                "jumlah_produk" => $jumlah[$a],
-                "id_user_add" => $this->session->id_user
-            );
-            $this->Mdprice_request_item->insert($data);
-        }
-        redirect("crm/request/items/".$result);
-    }
-    public function insert(){
-        $name = array("id_request","tgl_dateline_request","id_perusahaan","id_cp","id_user_add","franco");
-        $stock = 1;
-        if($this->input->post("requeststock") != ""){
-            foreach($this->input->post("requeststock") as $a){
-                $stock = 0;
-                $data = array(
-                    $name[0] => $this->input->post($name[0]),
-                    $name[1] => $this->input->post($name[1]),
-                    $name[2] => 0,
-                    $name[3] => 0,
-                    $name[4] => $this->session->id_user,
-                    $name[5] => $this->input->post($name[5]),
-                    "untuk_stock" => 0
-                );
-            }
-        }
-        if($stock == 1){
-            $data = array(
-                $name[0] => $this->input->post($name[0]),
-                $name[1] => $this->input->post($name[1]),
-                $name[2] => $this->input->post($name[2]),
-                $name[3] => $this->input->post($name[3]),
-                $name[4] => $this->session->id_user,
-                $name[5] => $this->input->post($name[5]),
-            );
-        }
-        $this->Mdprice_request->insert($data);
-        $result = $this->input->post($name[0]);
-        /* ------- insert barangnya --------- */
-        $name = array("id_produk","jumlah_produk");
-        $produk = array();
-        $jumlah = array();
-        /*tujuannya mau ngisi kedua array ini */
-        $counts = 0;
-        foreach($this->input->post("id_produk") as $b){
-            $produk[$counts] = $b;
-            $array[0][$counts] = $b;
-            $counts++;
-        }
-        $counts = 0;
-        foreach($this->input->post("jumlah_produk") as $b){
-            $jumlah[$counts] = $b;
-            $counts++;
-        }
-        for($a = 0; $a<count($produk); $a++){ /*berapa field yang mau dimasukin*/
-            $data = array(
-                "id_request" => $result,
-                "id_produk" => $produk[$a],
-                "jumlah_produk" => $jumlah[$a],
-                "id_user_add" => $this->session->id_user
-            );
-            $this->Mdprice_request_item->insert($data);
-        }
-        redirect("crm/request");
-    }
-    public function items($i){
-        $this->session->id_detail = $i;
+    public function add(){
         $where = array(
-            "produk_request" => array(
-                "price_request_item.id_request" => $i,
-                "status_request_item" => 0
-            ),
-            "price_request" => array(
-                "price_request.id_request" => $i
-            ),
-            "produk" => array(
-                "status_produk" => 0
-            ),
             "customer" => array(
                 "peran_perusahaan" => "CUSTOMER",
+                "status_perusahaan" => 0
+            ),
+            "maxId" => array(
+                "bulan_request" => date("m"),
+                "tahun_request" => date("Y")
+            )
+        );
+        $field = array(
+            "customer" => array(
+                "id_perusahaan", "nama_perusahaan"
+            )
+        );
+        $print = array(
+            "customer" => array(
+                "id_perusahaan","nama_perusahaan"
+            )
+        );
+        $result["customer"] = selectRow("perusahaan",$where["customer"]);
+        $data = array(
+            "maxId" => getMaxId("price_request","id_request", $where["maxId"]),
+            "customer" => foreachMultipleResult($result["customer"],$field["customer"],$print["customer"])
+        );
+
+        $this->req();
+        $this->load->view("crm/content-open");
+        $this->load->view("crm/request/category-header");
+        $this->load->view("crm/request/add-request",$data);
+        $this->load->view("crm/content-close");
+        $this->load->view("req/script");
+        $this->close();
+    }
+    public function edit($id_request,$bulan,$tahun){
+        $where = array(
+            "price_request" => array(
+                "id_request" => $id_request,
+                "bulan_request" => $bulan,
+                "tahun_request" => $tahun
+            ),
+            "perusahaan" => array(
                 "status_perusahaan" => 0,
+                "peran_perusahaan" => "CUSTOMER"
             ),
         );
-        $result["product_request"] = $this->Mdprice_request_item->select($where["produk_request"]);
-        $result["price_request"] = $this->Mdprice_request->select($where["price_request"]);
-
-        $counter = 0 ;
-        foreach($result["product_request"]->result() as $a){
-            $array["produk_request"][$counter] = array(
-                "id_request_item" => $a->id_request_item,
-                "bn_produk" => get1Value("produk","bn_produk",array("id_produk" => $a->id_produk)),
-                "nama_produk" => get1Value("produk","nama_produk",array("id_produk" => $a->id_produk)),
-                "quantity" => getTotal("price_request_item","jumlah_produk",array("id_produk" => $a->id_produk,"id_request" => $a->id_request)), /*hitung semua barang yang sejenis dan satu id request*/
-                "satuan" => get1Value("produk","satuan_produk", array("id_produk" => $a->id_produk))
-            );
-            $counter++;
-        }
-        foreach($result["price_request"]->result() as $a){
-            $array["price_request"] = array(
-                "id_request" => $a->id_request,
-                "dateline_request" => $a->tgl_dateline_request,
-                "franco"=> $a->franco,
-                "nama_perusahaan" => get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $a->id_perusahaan)),
-                "id_perusahaan" => $a->id_perusahaan,
-                "nama_cp" => get1Value("contact_person","nama_cp", array("id_cp" => $a->id_cp)),
-                "list_cp" => $this->Mdcontact_person->select(array("id_perusahaan" => $a->id_perusahaan)),
-                "id_cp" => $a->id_cp
-            );
-        }
-        $data = array(
-            "request_id" => $this->Mdprice_request->maxId(),
-            "produkrequest" => $array["produk_request"],
-            "request" => $array["price_request"],
-            "id_request" => $i,
-            "produk" => $this->Mdproduk->select($where["produk"]),
-            "customer" => $this->Mdperusahaan->select($where["customer"]),
+        $field = array(
+            "price_request" => array(
+                "id_request","no_request","tgl_dateline_request","id_perusahaan","id_cp","franco"
+            ),
+            "perusahaan" => array(
+                "id_perusahaan","nama_perusahaan"
+            ),
+            "cp" => array(
+                "id_cp","nama_cp","jk_cp"
+            ),
+            "detail_cp" => array(
+                "email_cp", "nohp_cp"
+            ),
+            "items" => array(
+                "nama_produk","jumlah_produk","notes_produk","file"
+            )
         );
+        $print = array(
+            "price_request" => array(
+                "id_request","no_request","tgl_dateline_request","id_perusahaan","id_cp","franco"
+            ),
+            "perusahaan" => array(
+                "id_perusahaan","nama_perusahaan"
+            ),
+            "cp" => array(
+                "id_cp","nama_cp","jk_cp"
+            ),
+            "detail_cp" => array(
+                "email_cp", "nohp_cp"
+            ),
+            "items" => array(
+                "nama_produk","jumlah_produk","notes_produk","file"
+            )
+        );
+        $result = selectRow("price_request",$where["price_request"]);
+        $data["price_request"] = foreachResult($result,$field["price_request"],$print["price_request"]);
+
+        $result = selectRow("perusahaan",$where["perusahaan"]);
+        $data["perusahaan"] = foreachMultipleResult($result,$field["perusahaan"],$print["perusahaan"]); /*list customer*/
+
+        $where["cp"] = array(
+            "id_perusahaan" => $data["price_request"]["id_perusahaan"],
+            "status_cp" => 0
+        );
+        $result = selectRow("contact_person",$where["cp"]);
+        $data["cp"] = foreachMultipleResult($result,$field["cp"],$print["cp"]); /*list cp*/
+
+        $where["detail_cp"] = array(
+            "id_cp" => $data["price_request"]["id_cp"]
+        );
+        $result = selectRow("contact_person",$where["detail_cp"]);
+        $data["detail_cp"] = foreachResult($result,$field["detail_cp"],$print["detail_cp"]);
+
+        $where["items"] = array(
+            "no_request" => $data["price_request"]["no_request"]
+        );
+        $result = selectRow("price_request_item",$where["items"]);
+        $data["items"] = foreachMultipleResult($result,$field["items"],$print["items"]);
 
         $this->req();
         $this->load->view("crm/content-open");
@@ -212,26 +193,164 @@ class Request extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->load->view("req/script");
         $this->close();
-        $this->load->view("crm/request/js/dynamic-form-js",$data);
     }
-    public function delete($i){
-        $where = array(
-            "id_request_item" => $i
+
+    public function insert(){
+        $data = array(
+            "id_request" => $this->input->post("id_request"),
+            "no_request" => $this->input->post("no_request"),
+            "tgl_dateline_request" => $this->input->post("tgl_dateline_request"),
+            "id_perusahaan" => $this->input->post("id_perusahaan"),
+            "id_cp" => $this->input->post("id_cp"),
+            "franco" => $this->input->post("franco"),
+            "bulan_request" => date("m"),
+            "tahun_request" => date("Y"),
+            "status_request" => 0 ,
+            "untuk_stock" => 1,
+            "status_aktif_request" => 0,
+            "id_user_add" => $this->session->id_user
+        );
+        insertRow("price_request",$data);
+        $checks = $this->input->post("checks");
+        if(count($checks) != 0){
+            $config['upload_path']          = './assets/rfq/';
+            $config['allowed_types']        = 'docx|jpeg|jpg|pdf|gif|png|xls|xlsx|doc';
+
+            $this->load->library('upload', $config);
+        }
+        foreach($checks as $a){
+            if($this->upload->do_upload("attachment".$a)){
+                $report = $this->upload->data();
+                $data = array(
+                    "no_request" => $this->input->post("no_request"),
+                    "nama_produk" => $this->input->post("item".$a),
+                    "jumlah_produk" => $this->input->post("jumlah_produk".$a),
+                    "notes_produk" => $this->input->post("notes".$a),
+                    "file" =>$report["file_name"],
+                    "id_user_add" => $this->session->id_user
+                );
+            }
+            else{
+                $report = array('upload_data' => $this->upload->display_errors());
+                $data = array(
+                    "no_request" => $this->input->post("no_request"),
+                    "nama_produk" => $this->input->post("item".$a),
+                    "jumlah_produk" => $this->input->post("jumlah_produk".$a),
+                    "notes_produk" => $this->input->post("notes".$a),
+                    "file" =>"-",
+                    "id_user_add" => $this->session->id_user
+                );
+            }
+            insertRow("price_request_item",$data);
+        }
+        redirect("crm/request");
+    }
+    public function update(){ /*terakhir disini*/
+        $where = array(            
+            "no_request" => $this->input->post("no_request"),
         );
         $data = array(
-            "status_request_item" => 1
+            "tgl_dateline_request" => $this->input->post("tgl_dateline_request"),
+            "id_perusahaan" => $this->input->post("id_perusahaan"),
+            "id_cp" => $this->input->post("id_cp"),
+            "franco" => $this->input->post("franco"),
         );
-        $this->Mdprice_request_item->update($data,$where);
-        redirect("crm/request/items/".$this->session->id_detail);
+        updateRow("price_request",$data,$where);
+        deleteRow("price_request_item",$where);
+        $checks_ordered = $this->input->post("ordered_checks");
+        $config['upload_path']          = './assets/rfq/';
+        $config['allowed_types']        = 'docx|jpeg|jpg|pdf|gif|png|xls|xlsx|doc';
+
+        $this->load->library('upload', $config);
+    
+        if($checks_ordered != "" && count($checks_ordered) != 0){
+            
+            foreach($checks_ordered as $a){
+                /*kalau dia centang dan upload file baru*/
+                if($this->upload->do_upload("ordered_new_attachment".$a)){ 
+                    $report = $this->upload->data();
+                    $data = array(
+                        "no_request" => $this->input->post("no_request"),
+                        "nama_produk" => $this->input->post("ordered_nama".$a),
+                        "jumlah_produk" => $this->input->post("ordered_amount".$a),
+                        "notes_produk" => $this->input->post("ordered_notes".$a),
+                        "file" =>$report["file_name"],
+                        "id_user_add" => $this->session->id_user
+                    );
+                }
+                /*kalau dia centang tapi tidak uplaod file baru*/
+                else{
+                    $report = array('upload_data' => $this->upload->display_errors());
+                    $data = array(
+                        "no_request" => $this->input->post("no_request"),
+                        "nama_produk" => $this->input->post("item".$a),
+                        "jumlah_produk" => $this->input->post("jumlah_produk".$a),
+                        "notes_produk" => $this->input->post("notes".$a),
+                        "file" =>$this->input->post("ordered_attachment".$a),
+                        "id_user_add" => $this->session->id_user
+                    );
+                }
+                insertRow("price_request_item",$data);
+                $checks = $this->input->post("checks");
+                
+            }
+        }
+        /*barang baru yang di centang*/
+        $checks = $this->input->post("checks");
+        
+        if($checks != "" && count($checks) != 0){
+            foreach($checks as $a){
+                /*yang dicentang, upload file*/
+                if($this->upload->do_upload("attachment".$a)){
+                    $report = $this->upload->data();
+                    $data = array(
+                        "no_request" => $this->input->post("no_request"),
+                        "nama_produk" => $this->input->post("item".$a),
+                        "jumlah_produk" => $this->input->post("jumlah_produk".$a),
+                        "notes_produk" => $this->input->post("notes".$a),
+                        "file" =>$report["file_name"],
+                        "id_user_add" => $this->session->id_user
+                    );
+                }
+                /*yang dicentang, tidak upload*/
+                else{
+                    $report = array('upload_data' => $this->upload->display_errors());
+                    $data = array(
+                        "no_request" => $this->input->post("no_request"),
+                        "nama_produk" => $this->input->post("item".$a),
+                        "jumlah_produk" => $this->input->post("jumlah_produk".$a),
+                        "notes_produk" => $this->input->post("notes".$a),
+                        "file" =>"-",
+                        "id_user_add" => $this->session->id_user
+                    );
+                }
+                insertRow("price_request_item",$data);
+            }
+        }
+        redirect("crm/request");
     }
-    public function remove($i){
+    public function delete($id_request,$bulan,$tahun){
         $where = array(
-            "id_request" => $i
+            "id_request" => $id_request,
+            "bulan_request" => $bulan,
+            "tahun_request" => $tahun
+        );
+        $data = array(
+            "status_aktif_request" => 1
+        );
+        updateRow("price_request",$data,$where);
+        redirect("crm/request");
+    }
+    public function confirm($id_request,$bulan,$tahun){
+        $where = array(
+            "id_request" => $id_request,
+            "bulan_request" => $bulan,
+            "tahun_request" => $tahun
         );
         $data = array(
             "status_request" => 1
         );
-        $this->Mdprice_request->update($data,$where);
+        updateRow("price_request",$data,$where);
         redirect("crm/request");
     }
     public function getRequestDetail(){
@@ -276,34 +395,6 @@ class Request extends CI_Controller{
         $total = getTotal("price_request_item","jumlah_produk",array("id_produk" => $id_produk,"id_request" => $id_request)); //harusnya yang 1 id _request
         $satuan_produk = get1Value("produk","satuan_produk",array("id_produk" => $id_produk));
         echo json_encode($total." ".$satuan_produk);
-    }
-    public function submitedit(){
-        $name = array(
-            "id_request","tgl_dateline_request","id_perusahaan","id_cp","franco"
-        );
-        $where = array(
-            $name[0] => $this->input->post($name[0]),
-        );
-        $data = array(
-            $name[1] => $this->input->post($name[1]),
-            $name[2] => $this->input->post($name[2]),
-            $name[3] => $this->input->post($name[3]),
-            $name[4] => $this->input->post($name[4]),
-            "id_user_edit" => $this->session->id_user,
-            "date_request_edit" => date("Y-m-d H:i:s")
-        );
-        $this->Mdprice_request->update($data,$where);
-        redirect("crm/request/items/".$this->input->post($name[0]));
-    }
-    public function submit($i){
-        $where = array(
-            "id_request" => $i
-        );
-        $data = array(
-            "status_request" => 2
-        );
-        $this->Mdprice_request->update($data,$where);
-        redirect("crm/request");
     }
 }
 ?>

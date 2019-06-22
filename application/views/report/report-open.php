@@ -1,1 +1,1 @@
-<body class="animsition site-menubar-fold site-menubar-push">
+<body class="animsition dashboard site-menubar-hide site-menubar-unfold">

@@ -1,127 +1,129 @@
 <div class="panel-body col-lg-12">
-    <form action = "<?php echo base_url();?>crm/request/submitedit" method = "POST">
-        <div class="col-lg-12 col-md-12" style = "z-index:10">
-            <div class="form-group">
-                <h4 class="example-title">Price Request ID</h4>
-                <input type="text" class="form-control" id="inputHelpText" value = "<?php echo "REQ-". sprintf("%05d",$request["id_request"]);?>" readonly>
-                <input type="hidden" name = "id_request" value = "<?php echo $request["id_request"];?>" class="form-control" id="inputHelpText">
-                <span class="text-help">Before:<?php echo "REQ-". sprintf("%05d",$request["id_request"]);?></span>
-            </div>
-            <div class="form-group">
-                <h4 class="example-title">Price Request Dateline</h4>
-                <input type="date" class="form-control" value = "<?php echo $request["dateline_request"];?>" name = "tgl_dateline_request" id="inputHelpText">
-                <?php
-                $date = date_create($request["dateline_request"]);
-
-                ?>
-                <span class="text-help">Before: <?php echo date_format($date,"d/m/Y");?></span>
-            </div>
-            <div class="form-group">
-                <h4 class="example-title">Franco</h4>
-                <input type="text" class="form-control" value = "<?php echo $request["franco"];?>" name = "franco" id="inputHelpText">
-                <span class="text-help">Before: <?php echo $request["franco"];?></span>
-            </div>
-            <div class="form-group">
-                <h4 class="example-title">Customer Firm Name</h4>
-                <select class = "form-control" data-plugin="select2" name = "id_perusahaan" id = "idperusahaan" onchange = "getContactPerson()">
-                    <option disabled selected>Choose Customer</option>
-                    <?php foreach($customer->result() as $b){ ?>
-                    <option value = "<?php echo $b->id_perusahaan;?>" <?php if($b->id_perusahaan == $request["id_perusahaan"]) echo "SELECTED"; ?> ><?php echo strtoupper($b->nama_perusahaan);?></option>
-                    <?php } ?>
-                </select>
-                <span class="text-help">Before: <?php echo $request["nama_perusahaan"];?></span>
-            </div>
-            <div class="form-group" >
-                <h4 class="example-title">Contact Person Name</h4>
-                <select tabindex="-3" class = "form-control" name = "id_cp" data-plugin="select2" id="cpperusahaan">
-                    <?php
-                    foreach($request["list_cp"]->result() as $b):?>
-                    <option value = "<?php echo $b->id_cp;?>"<?php if($b->id_cp == $request["id_cp"]) echo "Selected";?>><?php echo $b->nama_cp;?></option>
-
-                    <?php endforeach; ?>
-                </select>
-                <span class="text-help">Before: <?php echo ucwords($request["nama_cp"]);?></span>
-            </div>
-            <div class="form-group" >
-                <button type = "submit" class = "btn btn-primary col-lg-2 col-sm-12">SAVE CHANGES</button>
-                <span class="text-help">Don't forget to save the data before adding more items</span>
-            </div>
+    <form action = "<?php echo base_url();?>crm/request/update" method = "POST" enctype="multipart/form-data">
+        <div class = "form-group">
+            <h5 style = "opacity:0.5">Price Request ID</h5>
+            <input name = "no_request" type = "text" class = "form-control" value = "<?php echo $price_request["no_request"];?>" readonly>
         </div>
-        
-        <div class = "col-lg-12 col-md-12" style = "z-index:10">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mb-15">
-                    <button data-target="#TambahRequest" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button">
-                        <i class="icon wb-plus" aria-hidden="true"></i> Add Item Request
-                    </button>
-                    </div>
-                </div>
-            </div>
+        <div class = "form-group">
+            <h5 style = "opacity:0.5">Customer Name</h5>
+            <select id = "idperusahaan" onchange = "getContactPerson()" class = "form-control" name = "id_perusahaan" data-plugin = "select2">
+                <option>Choose Customer</option>
+                <?php for($a = 0; $a<count($perusahaan);$a++):?>
+                <option value = "<?php echo $perusahaan[$a]["id_perusahaan"];?>" <?php if($perusahaan[$a]["id_perusahaan"] == $price_request["id_perusahaan"]) echo "selected"; ?> ><?php echo $perusahaan[$a]["nama_perusahaan"];?></option>
+                <?php endfor;?>
+            </select>
+            <span class="text-help">Before:<?php echo get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $price_request["id_perusahaan"]));?></span>
+        </div>
+        <div class = "form-group">
+            <h5 style = "opacity:0.5">Customer PIC</h5>
+            <select class = "form-control" name = "id_cp" id = "cpperusahaan" onchange = "getDetailContactPerson()" data-plugin="select2">
+                <?php for($a = 0; $a<count($cp); $a++):?>
+                <option value = "<?php echo $cp[$a]["id_cp"]?>" <?php if($cp[$a]["id_cp"] == $price_request["id_cp"]) echo "selected"; ?> ><?php echo $cp[$a]["jk_cp"];?>. <?php echo $cp[$a]["nama_cp"]?></option>    
+                <?php endfor;?>
+            </select>
+            <span class="text-help">Before:<?php echo get1Value("contact_person","nama_cp",array("id_cp" => $price_request["id_cp"]));?></span>
+        </div>
+        <div class = "form-group">
+            <h5 style = "opacity:0.5">Email PIC</h5>
+            <input type = "text" class = "form-control" value = "<?php echo $detail_cp["email_cp"];?>" id = "email_cp" readonly>
+        </div>
+        <div class = "form-group">
+            <h5 style = "opacity:0.5">Phone Number PIC</h5>
+            <input type = "text" class = "form-control" value = "<?php echo $detail_cp["nohp_cp"];?>" id = "nohp_cp" readonly>
+        </div>
+        <div class = "form-group">
+            <h5 style = "opacity:0.5">Franco</h5>
+            <input type = "text" name = "franco" value = "<?php echo $price_request["franco"];?>" class = "form-control">
+            <span class="text-help">Before:<?php echo $price_request["franco"];?></span>
+        </div>
+        <div class = "form-group">
+            <h5 style = "opacity:0.5">Dateline</h5>
+            <?php
+            $date = date_create($price_request["tgl_dateline_request"]); 
+            ?>
+            <input type = "date" name = "tgl_dateline_request" value = "<?php echo $price_request["tgl_dateline_request"];?>" class = "form-control">
+            <span class="text-help">Before: <?php echo date_format($date,"d-m-Y");?></span>
+        </div>
+        <div class="form-group">
+            <h5 style = "opacity:0.5">Ordered Items</h5>
             <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
                 <thead>
                     <tr>
-                        <th>B/N Product</th>
-                        <th>Product Name</th>
+                        <th>#</th>
+                        <th>Item</th>
                         <th>Quantity</th>
-                        <th>Product UOM</th>
-                        <th>Actions</th>
+                        <th>Notes</th>
+                        <th>File</th>
+                        <th>Attachment</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php for($a = 0 ; $a<count($produkrequest); $a++): ?> 
+                <tbody id = "t1">
+                    <?php for($a = 0; $a<count($items); $a++):?>
                     <tr>
-                        <td><?php echo $produkrequest[$a]["bn_produk"];?></td>
-                        <td><?php echo $produkrequest[$a]["nama_produk"];?></td>
-                        <td><?php echo $produkrequest[$a]["quantity"];?></td>
-                        <td><?php echo $produkrequest[$a]["satuan"];?></td>
-                        <td class="actions">
-
-                            <a href = "<?php echo base_url();?>crm/request/delete/<?php echo $produkrequest[$a]["id_request_item"];?>" class="btn btn-outline btn-danger"
-                            data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
-                            
+                        <td>
+                            <div class = "checkbox-custom checkbox-primary">
+                                <input type = "checkbox" name = "ordered_checks[]" value = "<?php echo $a;?>" checked>
+                                <label></label>
+                            </div>
+                        </td>
+                        <td><textarea class = "form-control" name = "ordered_nama<?php echo $a;?>"><?php echo $items[$a]["nama_produk"];?></textarea></td>
+                        <td><input type = "text" class = "form-control" value = "<?php echo $items[$a]["jumlah_produk"];?>" name = "ordered_amount<?php echo $a;?>"></td>
+                        <td><textarea class = "form-control" name = "ordered_notes<?php echo $a;?>"><?php echo $items[$a]["notes_produk"];?></textarea></td>
+                        <td>
+                            <input type="text" name="ordered_attachment<?php echo $a;?>" value = "<?php echo $items[$a]["file"];?>" class = "form-control" readonly style = "margin-bottom:10px">
+                            <?php if($items[$a]["file"] != "-"):?>
+                            <a href = "<?php echo $items[$a]["notes_produk"];?>" class = "btn btn-outline btn-primary btn-sm">See Attachment</a>
+                            <?php endif;?>
+                        </td>
+                        <td>
+                            <input type = "file" class = "form-control" name = "ordered_new_attachment<?php echo $a;?>">
                         </td>
                     </tr>
-                    <?php endfor; ?>
+                    <?php endfor;?>
                 </tbody>
             </table>
-        <a class = "btn btn-primary btn-outline col-lg-2 col-sm-12" href = "<?php echo base_url();?>crm/request">BACK</a>
+        </div>
+        <div class="form-group">
+            <h5 style = "opacity:0.5">ITEMS</h5>
+            <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Notes</th>
+                        <th>Attachment</th>
+                    </tr>
+                </thead>
+                <tbody id = "t1">
+                    <?php for($a = 0; $a<10; $a++):?>
+                    <tr class='gradeA'>
+                        <td>
+                            <div class = "checkbox-custom checkbox-primary">
+                                <input type = "checkbox" value = "<?php echo $a;?>" name = "checks[]">
+                                <label></label>
+                            </div>
+                        </td>
+                        <td>
+                            <textarea class = "form-control" name = "item<?php echo $a;?>" placeholder="Item Description"></textarea>
+                        </td>
+                        <td>
+                            <input type='text' class='form-control' name='jumlah_produk<?php echo $a;?>' placeholder = "Amount + Unit of Measure"/>
+                        </td>
+                        <td> 
+                            <textarea class = "form-control" name = "notes<?php echo $a;?>"></textarea>
+                        </td>
+                        <td> 
+                            <input type="file" name="attachment<?php echo $a;?>" class = "form-control">
+                        </td>
+                    </tr>
+                    <?php endfor;?>
+                </tbody>
+            </table>
+        </div>
+        <div class = "form-group">
+            <button type = "submit" class = "btn btn-primary btn-outline col-lg-2">SUBMIT</button>
+            <a href = "<?php echo base_url();?>crm/request" class = "btn btn-primary btn-outline col-lg-2">BACK</a>
         </div>
     </form>
 </div>
-<div class="modal fade" id="TambahRequest" aria-hidden="false" aria-labelledby="TambahRequestLabel" style = "z-index:1000000" role="dialog">
-    <div class="modal-dialog modal-simple">
-        <form class="modal-content" action = "<?php echo base_url();?>crm/request/insertitems/<?php echo $id_request;?>" method = "post">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-                <h4 class="modal-title" id="exampleFormModalLabel">Price Request</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-xl-12 form-group">
-                        <table class="table table-bordered table-hover table-striped w-full" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Quantity</th>
-                                    <th>UOM</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id = "t1">
-                            </tbody>
-                        </table>
-                        <button type = "button" class = "btn btn-sm btn-success col-lg-12" onclick="add()">Add Item</button>
-                    </div>
-                    <div class="col-xl-12 form-group">
-                        <input type="hidden" value = "<?php echo $this->session->id_detail;?>" class="form-control" name="id_request" placeholder="Customer ID" readonly>
-                    </div>
-                </div>
-                <input type = "submit" class = "btn btn-primary btn-outline">
-            </div>
-        </form>
-    </div>
-</div>
-
