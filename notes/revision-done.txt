@@ -1,0 +1,8 @@
+welcome pagenya coba di cek confignya [done]
+
+Price request -> Request for Quotation (RFQ) [done]
+kasih tempat untuk tambah customer manual (background: kalau ada customer sementara yang bisa jadi ga jadi customer. Field: nama perusahaan, nama PIC, nohp, email)[done]
+add item pakenya text karena beda2 pake textarea (mau enter2)[done]
+tambahin semacam notes untuk price request (backgroudnya: sebagai bahan pertimbangan aja, ngeliat harga-harga / potensi saingan).[done]
+masukin attachment juga dalam penambahan price request (tidak wajib)(khusus barang baru)[done]
+bisa upload attachment di vendor price request[done]

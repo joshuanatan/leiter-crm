@@ -283,15 +283,14 @@ class Request extends CI_Controller{
                     $report = array('upload_data' => $this->upload->display_errors());
                     $data = array(
                         "no_request" => $this->input->post("no_request"),
-                        "nama_produk" => $this->input->post("item".$a),
-                        "jumlah_produk" => $this->input->post("jumlah_produk".$a),
-                        "notes_produk" => $this->input->post("notes".$a),
+                        "nama_produk" => $this->input->post("ordered_nama".$a),
+                        "jumlah_produk" => $this->input->post("ordered_amount".$a),
+                        "notes_produk" => $this->input->post("ordered_notes".$a),
                         "file" =>$this->input->post("ordered_attachment".$a),
                         "id_user_add" => $this->session->id_user
                     );
                 }
                 insertRow("price_request_item",$data);
-                $checks = $this->input->post("checks");
                 
             }
         }
@@ -353,6 +352,25 @@ class Request extends CI_Controller{
         updateRow("price_request",$data,$where);
         redirect("crm/request");
     }
+    public function insertnewcustomer(){
+        $data = array(
+            "nama_perusahaan" => $this->input->post("add_nama_customer"),
+            "jenis_perusahaan" => $this->input->post("add_segment_customer") ,
+            "permanent" => 1,
+            "peran_perusahaan" => "CUSTOMER"
+        );
+        $id_perusahaan = insertRow("perusahaan",$data);
+        $data = array(
+            "id_perusahaan" => $id_perusahaan,
+            "nama_cp" => $this->input->post("add_pic"),
+            "email_cp" =>  $this->input->post("add_email_pic"),
+            "jk_cp" =>  $this->input->post("add_jk_pic"),
+            "nohp_cp" =>  $this->input->post("add_phone_pic")
+        );
+        insertRow("contact_person",$data);
+        redirect("crm/request/add");
+    }
+
     public function getRequestDetail(){
         $where = array(
             "price_request.id_request" => $this->input->post("id_request")

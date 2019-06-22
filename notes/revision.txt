@@ -1,4 +1,4 @@
-welcome pagenya coba di cek confignya [done]
+
 product name hilangkan
 uom yang dropdown dihilangkan 
 fixkan panjang quotation
@@ -15,13 +15,8 @@ waktu order processing kasih akses untuk tambahin produk vendor
 nama shipping vendor diganti shipping
 nama product vendor diganti supplier
 ganti password staff dari admin
-Price request -> Request for Quotation (RFQ)
-kasih tempat untuk tambah customer manual (background: kalau ada customer sementara yang bisa jadi ga jadi customer. Field: nama perusahaan, nama PIC, nohp, email)
-add item pakenya text karena beda2 pake textarea (mau enter2)
 
-tambahin semacam notes untuk price request (backgroudnya: sebagai bahan pertimbangan aja, ngeliat harga-harga / potensi saingan).[done]
-masukin attachment juga dalam penambahan price request (tidak wajib)(khusus barang baru)[done]
-bisa upload attachment di vendor price request[done]
+
 
 contact person shipper yang paling atas aja
 margin yang di quotation jangan ancur, 2 angka blkg koma aja

@@ -5,7 +5,9 @@
             <input name = "no_request" type = "text" class = "form-control" value = "LI-<?php echo sprintf("%03d",$maxId);?>/RFQ/<?php echo bulanRomawi(date("m"));?>/<?php echo date("Y");?>" readonly>
         </div>
         <div class = "form-group">
+            <button class = "btn btn-sm btn-primary btn-outline" data-toggle = "modal" data-target = "#addNewCustomer" type = "button">ADD NEW CUSTOMER</button>
             <h5 style = "opacity:0.5">Customer Name</h5>
+            
             <select id = "idperusahaan" onchange = "getContactPerson()" class = "form-control" name = "id_perusahaan" data-plugin = "select2">
                 <option>Choose Customer</option>
                 <?php for($a = 0; $a<count($customer);$a++):?>
@@ -80,4 +82,47 @@
             <a href = "<?php echo base_url();?>crm/request" class = "btn btn-primary btn-outline col-lg-2">BACK</a>
         </div>
     </form>
+</div>
+<div class = "modal fade" id = "addNewCustomer" style = "z-index:1000000">
+    <div class = "modal-dialog modal-xl">
+        <div class ="modal-content">
+            <div class = "modal-header">
+                <h4 class = "modal-title">ADD NEW CUSTOMER</h4>
+            </div>
+            <form action = "<?php echo base_url();?>crm/request/insertnewcustomer" method = "POST">
+                <div class = "modal-body">
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Customer Firm</h5>
+                        <input type = "text" class = "form-control" name = "add_nama_customer">
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Customer Segment</h5>
+                        <input type = "text" class = "form-control" name = "add_segment_customer">
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Customer PIC</h5>
+                        <input type = "text" class = "form-control" name = "add_pic">
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Gender PIC</h5>
+                        <select class = "form-control" name = "add_jk_pic">
+                            <option value = "Mr">MR</option>
+                            <option value = "Ms">MS</option>
+                        </select>
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Email PIC</h5>
+                        <input type = "text" class = "form-control" name = "add_email_pic">
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Phone Number PIC</h5>
+                        <input type = "text" class = "form-control" name = "add_phone_pic">
+                    </div>
+                    <div class = "form-group">
+                        <button type = "submit" class = "btn btn-primary btn-outline col-lg-2">SUBMIT</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
