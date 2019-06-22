@@ -38,25 +38,26 @@ class Vendor extends CI_Controller{
     public function index(){
         $where = array(
             "request" => array(
-                "price_request.status_request" => 2
+                "price_request.status_request" => 1
             )
         );
-        $result["request"] = $this->Mdprice_request->select($where["request"]);
-        $counter = 0;
-        $data["request"] = array();
-        $array["request"] = array();
-        foreach($result["request"]->result() as $a){
-            $array["request"][$counter] = array(
-                "id_request" => $a->id_request,
-                "nama_perusahaan" => get1Value("perusahaan","nama_perusahaan", array("id_perusahaan" => $a->id_perusahaan)),
-                "nama_cp" => get1Value("contact_person","nama_cp", array("id_cp" => $a->id_cp)),
-                "untuk_stock" => $a->untuk_stock,
-            );
-            $counter++;
-        }
-        $data = array(
-            "request" => $array["request"]
+        $field = array(
+            "request" => array(
+                "no_request","id_perusahaan","id_cp","id_request","bulan_request","tahun_request","untuk_stock"
+            )
         );
+        $print = array(
+            "request" => array(
+                "no_request","id_perusahaan","id_cp","id_request","bulan_request","tahun_request","untuk_stock"
+            )
+        );    
+        $result["request"] = selectROw("price_request",$where["request"]);
+        $data["request"] = foreachMultipleResult($result["request"],$field["request"],$print["request"]);
+        for($a = 0; $a<count($data["request"]);$a++){
+            $data["request"][$a]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $data["request"][$a]["id_perusahaan"]));
+
+            $data["request"][$a]["nama_cp"] = get1Value("contact_person","nama_cp",array("id_cp" => $data["request"][$a]["id_cp"]));
+        }
         $this->req();
         $this->load->view("crm/content-open");
         $this->load->view("crm/vendor-deal/category-header");
@@ -64,19 +65,75 @@ class Vendor extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
-    public function produk($i){
-        $this->session->id_request = $i;
+    public function produk($id_request,$bulan,$tahun){
+        /*harusnya ini tampilin dulu semua barangnya apa aja*/
+        //$this->session->id_request = $id_request;
+        $this->session->link = $id_request."/".$bulan."/".$tahun;
         $where = array(
-            "requestitem" => array(
-                "price_request_item.id_request"=>$i,
-                "price_request_item.status_request_item" => 0,
+            "request_item" => array(
+                "no_request"=>"LI-".sprintf("%03d",$id_request)."/RFQ/".bulanRomawi((int)$bulan)."/".$tahun,
+                "status_request_item" => 0,
+            ),
+            "supplier" => array(
+                "peran_perusahaan" => "PRODUK",
+                "status_perusahaan" => 0
+            ),
+            "matauang" => array()
+        );
+        $field = array(
+            "request_item" => array(
+                "nama_produk","id_request_item","jumlah_produk","notes_produk","file"
+            ),
+            "mata_uang" => array(
+                "mata_uang"
+            ),
+            "supplier" => array(
+                "id_perusahaan","nama_perusahaan"
+            )
+        );
+        $print = array(
+            "request_item" => array(
+                "nama_produk","id_request_item","jumlah","notes","file"
+            ),
+            "mata_uang" => array(
+                "mata_uang"
+            ),
+            "supplier" => array(
+                "id_perusahaan","nama_perusahaan"
+            )
+        );
+        $result["request_item"] = selectRow("price_request_item",$where["request_item"]);
+        $data["request_item"] = foreachMultipleResult($result["request_item"],$field["request_item"],$print["request_item"]);
+
+        $result["mata_uang"] = selectRow("mata_uang",$where["matauang"]);
+        $data["mata_uang"] = foreachMultipleResult($result["mata_uang"],$field["mata_uang"],$print["mata_uang"]);
+
+        $result["supplier"] = selectRow("perusahaan",$where["supplier"]);
+        $data["supplier"] = foreachMultipleResult($result["supplier"],$field["supplier"],$print["supplier"]);
+        $this->req();
+        $this->load->view("crm/content-open");
+        $this->load->view("crm/vendor-deal/category-header");
+        $this->load->view("crm/vendor-deal/product-vendor-price",$data);
+        $this->load->view("crm/content-close");
+        $this->close();
+        $this->load->view("crm/vendor-deal/js/request-ajax");
+    }
+    public function supplier($id_request,$bulan,$tahun){
+        /*harusnya ini tampilin dulu semua barangnya apa aja*/
+        //$this->session->id_request = $id_request;
+        $this->session->link = $id_request."/".$bulan."/".$tahun;
+        $where = array(
+            "request_item" => array(
+                "no_request"=>"LI-".sprintf("$03d",$id_request)."/RFQ/".bulanRomawi((int)$bulan)."/".$tahun,
+                "status_request_item" => 0,
             ),
             "vendoritem" => array(
                 "status_produk_vendor" => 0,
             ),
             "matauang" => array()
         );
-        $result["request_item"] = $this->Mdprice_request_item->select($where["requestitem"]);
+        $result["request_item"] = selectRow("price_request_item",$where["request_item"]);
+        $data["request_item"] = "";
         $array["request_item"] = array();
         $counter = 0;
         foreach($result["request_item"]->result() as $a){

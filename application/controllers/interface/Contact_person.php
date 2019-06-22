@@ -52,6 +52,12 @@ class Contact_person extends CI_Controller{
         $result = selectRow("contact_person",$where);
         echo json_encode(foreachResult($result,$field,$print));
     }
+    /*method ini biasa dipanggil saat ada pemasukan supplier dan cp baru dengan metode ajax*/
+    public function insertContactPerson(){  
+        $data = $this->input->post("cp_data");
+        $id_cp = insertRow("contact_person",$data);
+        echo json_encode($id_cp);
+    }
 }   
 
 ?>
