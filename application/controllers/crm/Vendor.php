@@ -157,7 +157,7 @@ class Vendor extends CI_Controller{
         $this->close();
         $this->load->view("crm/vendor-deal/js/request-ajax");
     }
-    public function suppliershipping($i,$id_perusahaan){
+    public function suppliershipping($id_request_item,$id_perusahaan){
         $this->session->id_detail = $i;
         $this->session->id_supplier = $id_perusahaan;
         $where = array(

@@ -107,7 +107,7 @@
                 </td>
                 <td><textarea id = "notes<?php echo $a;?>" class = "form-control"></textarea></td>
                 <td><button class = "btn btn-primary btn-sm btn-outline" onclick = "submitData(<?php echo $a;?>)">SAVE</button></td>
-                <td><button class = "btn btn-primary btn-sm btn-outline">SHIPPING</button></td>
+                <td><a href = "<?php echo base_url();?>crm/vendor/suppliershipping/<?php ?>" class = "btn btn-primary btn-sm btn-outline">SHIPPING</a></td>
             </tr>
             <?php endfor;?>
         </tbody>
