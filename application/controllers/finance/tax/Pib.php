@@ -140,6 +140,39 @@ class Pib extends CI_Controller{
         insertRow("cashflow",$data);
 
         /*insert ke tax juga */
+        $data = array(
+            "bulan_pajak" => date("m"),
+            "tahun_pajak" => date("Y"),
+            "jumlah_pajak" => get1Value("pib","pph_impor",array("id_pib" => $id_pib)),
+            "tipe_pajak" => "MASUKAN",
+            "jenis_pajak" => "PPH",
+            "status_aktif_pajak" => 0,
+            "id_refrensi" => $this->input->post("id_refrensi")
+        );
+        insertRow("tax",$data);
+
+        $data = array(
+            "bulan_pajak" => date("m"),
+            "tahun_pajak" => date("Y"),
+            "jumlah_pajak" => get1Value("pib","ppn_impor",array("id_pib" => $id_pib)),
+            "tipe_pajak" => "MASUKAN",
+            "jenis_pajak" => "PPN",
+            "status_aktif_pajak" => 0,
+            "id_refrensi" => $this->input->post("id_refrensi")
+        );
+        insertRow("tax",$data);
+
+        $data = array(
+            "bulan_pajak" => date("m"),
+            "tahun_pajak" => date("Y"),
+            "jumlah_pajak" => get1Value("pib","bea_cukai",array("id_pib" => $id_pib)),
+            "tipe_pajak" => "MASUKAN",
+            "jenis_pajak" => "BEA CUKAI",
+            "status_aktif_pajak" => 0,
+            "id_refrensi" => $this->input->post("id_refrensi")
+        );
+        insertRow("tax",$data);
+        redirect("finance/tax/pib");
     }
     public function edit($id_pib){
         $where = array(
