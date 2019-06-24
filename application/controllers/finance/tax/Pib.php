@@ -37,7 +37,6 @@ class Pib extends CI_Controller{
                 );
                 $result["payment_detail"] = selectRow("pembayaran",$where["payment_detail"]);
                 $data["pib"][$a]["payment_detail"] = foreachResult($result["payment_detail"],$field["payment_detail"],$print["payment_detail"]);
-                echo $data["pib"][$a]["no_pib"];
             }
         }
         $this->req();
