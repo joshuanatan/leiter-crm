@@ -1,12 +1,13 @@
 <div class="panel-body col-lg-12">
-    <form action = "<?php echo base_url();?>finance/tax/ppn/detail">
+    <form action = "<?php echo base_url();?>finance/tax/ppn/detail" method = "POST">
         <div class="row">
             <div class = "col-lg-5">
                 <div class = "form-group">
                     <h5>MONTH</h5>
                     <select class = "form-control">
-                        <?php for($a= 1; $a<=12; $a++):?>
-                        <?php endfor;?>
+                        <?php foreach($bulan as $key=>$value): ?>
+                        <option value = "<?php echo $key;?>"><?PHP echo $value;?></option>
+                        <?php endforeach;?>
                     </select>
                 </div>
             </div>
@@ -14,7 +15,9 @@
                 <div class = "form-group">
                     <h5>YEAR</h5>
                     <select class = "form-control">
-                        
+                        <?php for($a = 0; $a<count($tahun);$a++):?>
+                        <option value = "<?php echo $tahun[$a];?>"><?php echo $tahun[$a];?></option>
+                        <?php endfor;?>
                     </select>
                 </div>
             </div>

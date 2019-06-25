@@ -41,23 +41,23 @@
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
-                <th>No Request</th>
-                <th>User Name</th> <!-- yang ngelaurin invoice ini -->
-                <th>Amount</th> <!-- ini yang tertulis. backgroundnya karena yang tertulis kadang belum termasuk pph 23-->
-                <th>Expanses Type</th> <!-- ini yang harus di bayarkan --> 
-                <th>Notes</th> <!-- catetan aja seperti nomor rekening, dsb -->
-                <th>Status</th>
+                <th>ID Tax</th>
+                <th>Jumlah Pajak</th> <!-- yang ngelaurin invoice ini -->
+                <th>ID Refrensi</th> <!-- ini yang tertulis. backgroundnya karena yang tertulis kadang belum termasuk pph 23-->
+                <th>Invoice</th> <!-- invoice yang dikeluarin vendor -->
             </tr>
         </thead>
         <tbody>
+            <?php for($a =0; $a<count($tax); $a++):?>
+            <?php if($tax[$a]["tipe_pajak"] == "MASUKAN"):?>
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td><?php echo $tax[$a]["id_tax"];?></td>
+                <td><?php echo $tax[$a]["jumlah_pajak"];?></td>
+                <td><?php echo $tax[$a]["id_refrensi"];?> </td>
+                <td><a href = "_blank" href = "<?php echo base_url();?>assets/dokumen/invoice/<?php echo $tax[$a]["id_refrensi"];?>" class = "btn btn-primary btn-outline btn-sm">INCOME INVOICE</a> </td>
             </tr>
+            <?php endif;?>
+            <?php endfor;?>
         </tbody>
     </table>
     <br/><br/>
@@ -69,25 +69,23 @@
         </div>
     </div>
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
-        <thead>
+    <thead>
             <tr>
-                <th>No Request</th>
-                <th>User Name</th> <!-- yang ngelaurin invoice ini -->
-                <th>Amount</th> <!-- ini yang tertulis. backgroundnya karena yang tertulis kadang belum termasuk pph 23-->
-                <th>Expanses Type</th> <!-- ini yang harus di bayarkan --> 
-                <th>Notes</th> <!-- catetan aja seperti nomor rekening, dsb -->
-                <th>Status</th>
+                <th>ID Tax</th>
+                <th>Jumlah Pajak</th> <!-- yang ngelaurin invoice ini -->
+                <th>ID Refrensi</th> <!-- ini yang tertulis. backgroundnya karena yang tertulis kadang belum termasuk pph 23-->
             </tr>
         </thead>
         <tbody>
+            <?php for($a =0; $a<count($tax); $a++):?>
+            <?php if($tax[$a]["tipe_pajak"] == "KELUARAN"):?>
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td><?php echo $tax[$a]["id_tax"];?></td>
+                <td><?php echo $tax[$a]["jumlah_pajak"];?></td>
+                <td><?php echo $tax[$a]["id_refrensi"];?> </td>
             </tr>
+            <?php endif;?>
+            <?php endfor;?>
         </tbody>
     </table>
 </div>

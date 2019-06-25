@@ -23,24 +23,230 @@ class Kpi extends CI_Controller{
         $this->load->view("plugin/tabs/tabs-js");
         //$this->load->view("plugin/chart-widget/chart-widget-js");
         $this->load->view("plugin/chart-js/chart-js-js");
-        $this->load->view("report/kpi/js/chart-js");
         $this->load->view("report/report-close");
         $this->load->view("req/html-close"); 
     }
     public function index(){
+        $where = array(
+            "week" => array(
+                "tahun" => date("Y")
+            )
+        );  
+        $field = array(
+            "week" => array(
+                "id_weeks","tgl_mulai","tgl_selesai"
+            ),
+            "employee" => array(
+                "id_user","nama_user"
+            )
+        );
+        $print = array(
+            "week" => array(
+                "id_weeks","tgl_mulai","tgl_selesai"
+            ),
+            "employee" => array(
+                "id_user","nama_user"
+            )
+        );
+        $result["week"] = selectRow("report_weeks",$where["week"]);
+        $result["employee"] = selectRow("user",array("status_user" => 0));
+        $data = array(
+            "maxId" => getMaxId("report_weeks","id_weeks",array("tahun" => date("Y"))),
+            "week" => foreachMultipleResult($result["week"],$field["week"],$print["week"]),
+            "employee" => foreachMultipleResult($result["employee"],$field["employee"],$print["employee"])
+        );
+        
         $this->req();
         $this->load->view("report/content-open");
         $this->load->view("report/kpi/category-header");
-        $this->load->view("report/kpi/category-body");
+        $this->load->view("report/kpi/category-body",$data);
         $this->load->view("report/content-close");
         $this->close();
     }
-    public function weekly($i){
+    public function user(){
+        $where = array(
+            "user" => array(
+                "status_user" => 0
+            )
+        );
+        $field = array(
+            "user" => array(
+                "nama_user","email_user","nohp_user","id_user"
+            )
+        );
+        $print = array(
+            "user" => array(
+                "nama_user","email_user","nohp_user","id_user"
+            )
+        );
+        $result["user"] = selectRow("user",$where["user"]);
+        $data["user"] = foreachMultipleResult($result["user"],$field["user"],$print["user"]);
+
+        for($a = 0; $a<count($data["user"]);$a++){
+            $where["kpi"] = array(
+                "id_user" => $data["user"][$a]["id_user"]
+            );
+            $result["kpi"] = selectRow("kpi_user",$where["kpi"]);
+            $field["kpi"] = array(
+                "kpi","target_kpi","status_aktif_kpi"
+            );
+            $print["kpi"] = array(
+                "kpi","target_kpi","status_aktif_kpi"
+            );
+            $data["user"][$a]["kpi"] = foreachMultipleResult($result["kpi"], $field["kpi"],$print["kpi"]);
+        }
+        $this->req();
+        $this->load->view("report/content-open");
+        $this->load->view("report/user/category-header");
+        $this->load->view("report/user/category-body",$data);
+        $this->load->view("report/content-close");
+        $this->close();
+    }
+    public function weekly($id_weeks){ /*ini udah ngecek peruser*/
+        
+        $where = array(
+            "week" => array(
+                "id_weeks" => $id_weeks
+            ),
+            "report" => array(
+                "id_user_add" => $this->input->post("user")
+            ),
+            "kpi_user" => array(
+                "id_user" => $this->input->post("user"),
+                "status_aktif_kpi" => 0
+            )
+        );
+        $field = array(
+            "week" => array(
+                "tgl_mulai","tgl_selesai"
+            ),
+            "report" => array(
+                "id_report","tipe_report","pic_target","location","progress_percentage","report","tgl_report","judul_report","attachment","support_need","next_plan"
+            ),
+            "kpi_user" => array(
+                "kpi","target_kpi"
+            )
+        );
+        $print = array(
+            "week" => array(
+                "tgl_mulai","tgl_selesai"
+            ),
+            "report" => array(
+                "id_report","tipe_report","pic_target","location","progress_percentage","report","tgl_report","judul_report","attachment","support_need","next_plan"
+            ),
+            "kpi_user" => array(
+                "kpi","target_kpi"
+            )
+        );
+        $result["week"] = selectRow("report_weeks",$where["week"]);
+        $data["week"] = foreachResult($result["week"],$field["week"],$print["week"]); 
+        $constraint = array(
+            "awal" => $data["week"]["tgl_mulai"],
+            "akhir" => $data["week"]["tgl_selesai"]
+        );
+        /*ambil start dan end date dari week*/
+        $result["report"] = selectRowBetweenDates("report","tgl_report",$constraint,$where["report"]);
+        $data["report"] = foreachMultipleResult($result["report"],$field["report"],$print["report"]);
+        
+        $result["kpi_user"] = selectRow("kpi_user",$where["kpi_user"]);
+        $data["kpi_user"] = foreachMultipleResult($result["kpi_user"],$field["kpi_user"],$print["kpi_user"]);
         $this->req();
         $this->load->view("report/content-open");
         $this->load->view("report/kpi/category-header");
-        $this->load->view("report/kpi/weekly-report");
+        $this->load->view("report/kpi/weekly-report",$data);
         $this->load->view("report/content-close");
         $this->close();
+        /*ambil week dulu, trus di loop sampe ke 0, kalau uda 5 trakhir, break*/
+        $counter = 0;
+        /*loop besarnya adalah tipe laporan*/
+        for($c = 0; $c<count($data["kpi_user"]);$c++){ /*pindah KPI*/
+            for($a = $id_weeks; $a>0 ; $a--){ /*pindah week*/
+                if($counter == 5){
+                    break;
+                }
+                /*ngambil tgl mulai dan akhir setiap iterasi weeks*/
+                $result["week"] = selectRow("report_weeks",array("id_weeks" => $a));
+                $data["week"] = foreachResult($result["week"],$field["week"],$print["week"]); 
+                $constraint = array(
+                    "awal" => $data["week"]["tgl_mulai"],
+                    "akhir" => $data["week"]["tgl_selesai"]
+                );
+                /*end mendapatkan tgl awal dan akhir*/
+                /*mendapatkan data sesuai user masing-masing dan setiap jenis kpi*/
+                $where = array(
+                    "report" => array(
+                        "id_user_add" => $this->input->post("user"),
+                        "tipe_report" => $data["kpi_user"][$c]["kpi"]
+                    ),
+                );
+                
+                /*mengambil reports pada tanggal sekian - sekian, yang idusernya sekian*/
+                $result["report"] = selectRowBetweenDates("report","tgl_report",$constraint,$where["report"]);
+                $jumlah_report = $result["report"]->num_rows(); /*untuk dapet banyaknya di item ini*/
+                
+                /*rencananya mau di count*/
+                /*dalam kpi graph mau ada target kpi, jumlah report, per week, per kpi*/
+                /*
+                $data["kpi_graph"][week][id_kpi] = array(
+                    "data" => array(
+                        "target_kpi" =>,
+                        "jumlah_report" =>
+                    )
+                )
+                */
+
+                $id_user = $this->input->post("user");
+                $data["kpi_graph"][$a][$c] = array( /*mingg1 kpi1, minggu 1 kpi 2*/ 
+                    "target_kpi" => get1Value("kpi_user","target_kpi",array("id_user" => $id_user, "kpi" => $data["kpi_user"][$c]["kpi"])),
+                    "jumlah_report" => $jumlah_report
+                );
+                $data["start_week"] = $id_weeks;
+                $counter++;
+            }
+            
+        }
+        $this->load->view("report/kpi/js/chart-js",$data);
+    }
+    public function insertKpi(){
+        /*hapus yang sudah ada dulu*/
+        /*delete semua kpi yang orang ini*/
+        $where = array(
+            "id_user" => $this->input->post("id_user"),
+        );
+        deleteRow("kpi_user",$where);
+
+
+        $checks = $this->input->post("check");
+        for($a = 0; $a<10; $a++){
+            /*kasih 1 ke semua elemen array*/
+            $status[$a] = 1;
+        }
+        foreach($checks as $a){
+            /*dari depan juga pake start 0, yang indexnya ada disini, dijadiin aktif*/
+            $status[$a] = 0;
+            
+        }
+        /*insert aja semua yang tertulis*/
+        for($a = 0; $a<10; $a++){
+            $data = array(
+                "id_user" => $this->input->post("id_user"),
+                "kpi" => $this->input->post("kpi".$a),
+                "target_kpi" => $this->input->post("target".$a),
+                "status_aktif_kpi" => $status[$a]
+            );
+            insertRow("kpi_user",$data);
+        }
+        redirect("report/kpi/user");
+        /*aktif non aktif, ikut centang*/
+    }
+    public function insertWeek(){
+        $data = array(
+            "id_weeks" => $this->input->post("week_id"),
+            "tahun" => date("Y"),
+            "tgl_mulai" => $this->input->post("start_date"),
+            "tgl_selesai" => $this->input->post("end_date"), 
+        );
+        insertRow("report_weeks",$data);
+        redirect("report/kpi");
     }
 }

@@ -1,3 +1,8 @@
+
+<?php $backgroundColor = array("rgba(178,34,34, .8)","rgba(4, 3, 86, .2)","rgba(124, 104, 238, .2)","rgba(30,144,254, .2)","rgba(137,205,250, .2)");?>
+<?php $borderColor = array("blue-grey","primary","primary","primary","primary");?>
+<?php $hoverBackgroundColor = array("rgba(178,34,34, 1)","rgba(4, 3, 86, .3)","rgba(124, 104, 238, .3)","rgba(30,144,254, .3)","rgba(137,205,250, .3)");?>
+
 <script>
 (function (global, factory) {
     if (typeof define === "function" && define.amd) {
@@ -144,50 +149,42 @@
     _jquery = babelHelpers.interopRequireDefault(_jquery);
     (function () {
         var barChartData = {
-            labels: ["KPI 1", "KPI 2", "KPI 3", "KPI 4"],
-            datasets: [{
-                label: "Target",
-                backgroundColor: "rgba(178,34,34, .8)",
-                borderColor: Config.colors("blue-grey", 300),
-                hoverBackgroundColor: "rgba(178,34,34, 1)",
-                borderWidth: 2,
-                data: [65, 5, 2, 1]
-            }, 
-            {
-                label: "Week 11",
-                backgroundColor: "rgba(4, 3, 86, .2)",
-                borderColor: Config.colors("primary", 600),
-                hoverBackgroundColor: "rgba(4, 3, 86, .3)",
-                borderWidth: 2,
-                data: [30, 20, 40, 25]
-            }, 
-            {
-                label: "Week 10",
-                backgroundColor: "rgba(124, 104, 238, .2)",
-                borderColor: Config.colors("primary", 600),
-                hoverBackgroundColor: "rgba(124, 104, 238, .3)",
-                borderWidth: 2,
-                data: [11, 22, 33, 44]
-            }, 
-            {
-                label: "Week 9",
-                backgroundColor: "rgba(30,144,254, .2)",
-                borderColor: Config.colors("primary", 600),
-                hoverBackgroundColor: "rgba(30,144,254, .3)",
-                borderWidth: 2,
-                data: [33, 23, 58, 11]
-            }, 
-            {
-                label: "Week 8",
-                backgroundColor: "rgba(137,205,250, .2)",
-                borderColor: Config.colors("primary", 600),
-                hoverBackgroundColor: "rgba(137,205,250, .3)",
-                borderWidth: 2,
-                data: [44, 2, 1, 1]
-            }
-        ]
+            <?php for($a = 0; $a<count($kpi_graph[$start_week]);$a++){
+                $kpi_labels[$a] = "KPI ".($a+1);
+            }?>
+            labels: <?php echo json_encode($kpi_labels);?>,
+            datasets: 
+            [
+                <?php $counterDays = 0;for($a = $start_week; $a>0; $a--):?> /*nge hold iterasi minggu*/
+                <?php if($counterDays == 5){
+                    break;
+                }
+                ?>
+                { /*week 1- sekian*/
+                    label: <?php if($a == 0) echo "'Target'"; else echo "'WEEK ".$a."'";?>,
+                    backgroundColor: <?php echo "'".$backgroundColor[$a]."'";?>,
+                    borderColor: Config.colors(<?php echo "'".$borderColor[$a]."'";?>, 600),
+                    hoverBackgroundColor: <?php echo "'".$hoverBackgroundColor[$a]."'";?>,
+                    borderWidth: 2,
+                    <?php $amounts = array();$counterData = -1;
+                    for($b = 0; $b<count($kpi_graph[$a]); $b++){ /*iterasi di sebuah minggu*/
+                        
+                        $counterData++;
+                        if($a == 0){
+                            $amounts[$counterData] = $kpi_graph[$a][$b]["target_kpi"];
+                        }
+                        else{
+                            $amounts[$counterData] = $kpi_graph[$a][$b]["jumlah_report"];
+                        }
+                         /*dalam sebuah minggu, di setiap kpi*/
+                    }
+                    ?>
+                    data: <?php echo json_encode($amounts[$counterData]);?> /*TARGET KPI1, TARGET KPI2, TARGET KPI3*/
+                }, 
+                <?php $counterDays++;endfor;?>
+            ]
         };
-        var myBar = new Chart(document.getElementById("exampleChartjsBar").getContext("2d"), {
+        var myBar = new Chart(document.getElementById("kpiGraph").getContext("2d"), {
         type: 'bar',
         data: barChartData,
         options: {

@@ -4,10 +4,29 @@ class Ppn extends CI_Controller{
         parent::__construct();
     }
     public function index(){
+        $data = array(
+            "bulan" => array(
+                "1" => "JANUARI",
+                "2" => "FEBRUARI",
+                "3" => "MARET",
+                "4" => "APRIL",
+                "5" => "MEI",
+                "6" => "JUNI",
+                "7" => "JULI",
+                "8" => "AGUSTUS",
+                "9" => "SEPTEMBER",
+                "10" => "OKTOBER",
+                "11" => "NOVEMBER",
+                "12" => "DESEMBER"
+            ),
+            "tahun" => array(
+                "2019"
+            )
+        );
         $this->req();
         $this->load->view("finance/content-open");
         $this->load->view("finance/tax/ppn/category-header");
-        $this->load->view("finance/tax/ppn/category-body");
+        $this->load->view("finance/tax/ppn/category-body",$data);
         $this->load->view("finance/content-close");
         $this->close();
     }
@@ -33,10 +52,29 @@ class Ppn extends CI_Controller{
         $this->load->view("req/html-close"); 
     }
     public function detail(){
+        $where = array(
+            "tax" => array(
+                "bulan_pajak" => $this->input->post("bulan_pajak"),
+                "tahun_pajak" => $this->input->post("tahun_pajak"),
+                "jenis_pajak" => $this->input->post("PPN")
+            )
+        );
+        $field = array(
+            "tax" => array(
+                "id_tax","jumlah_pajak","tipe_pajak","jenis_pajak","id_refrensi","status_aktif_pajak"
+            )
+        );
+        $print = array(
+            "tax" => array(
+                "id_tax","jumlah_pajak","tipe_pajak","jenis_pajak","id_refrensi","status_aktif_pajak"
+            )
+        );
+        $result["tax"] = selectRow("tax",$where["tax"]);
+        $data["tax"] = foreachMultipleResult($result["tax"],$field["tax"],$print["tax"]);
         $this->req();
         $this->load->view("finance/content-open");
         $this->load->view("finance/tax/ppn/category-header");
-        $this->load->view("finance/tax/ppn/detail-ppn");
+        $this->load->view("finance/tax/ppn/detail-ppn",$data);
         $this->load->view("finance/content-close");
         $this->close();
     }

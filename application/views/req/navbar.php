@@ -193,6 +193,11 @@
                                 <span class="site-menu-title">KPI</span>
                                 </a>
                             </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="<?php echo base_url();?>report/main">
+                                <span class="site-menu-title">Report</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul> 
