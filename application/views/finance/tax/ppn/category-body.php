@@ -5,7 +5,8 @@
                 <div class = "form-group">
                     <h5>MONTH</h5>
                     <select class = "form-control">
-
+                        <?php for($a= 1; $a<=12; $a++):?>
+                        <?php endfor;?>
                     </select>
                 </div>
             </div>
