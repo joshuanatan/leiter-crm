@@ -155,7 +155,7 @@
                                         </div>
                                         <div class = "form-group">
                                             <h5 style = "opacity:0.5">Amount</h5>
-                                            <input type = "text" class = "form-control" name = "amount_edit" oninput = "commas('amountReimburseEdit')" id = "amountReimburseEdit" value = "<?php echo number_format($reimburse[$a]["nominal_reimburse"]);?>">
+                                            <input type = "text" class = "form-control" name = "amount_edit" oninput = "commas('amountReimburseEdit')" id = "amountReimburseEdit" value = "<?php echo number_format($reimburse[$ga]["nominal_reimburse"]);?>">
                                         </div>
                                         <div class = "form-group">
                                             <h5 style = "opacity:0.5">Notes</h5>
