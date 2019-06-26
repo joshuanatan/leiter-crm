@@ -1,7 +1,7 @@
 <div class="panel-body col-lg-12">
     <div class="row">
         <div class = "col-lg-12">
-            <h3>KPI - SHINTA - WEEK 1</h3>
+            <h3>KPI - <?php echo strtoupper($kpi_detail["nama_user"]);?> - <?php echo strtoupper($kpi_detail["week"]); ?></h3>
         </div>
     </div>
     <hr/>
@@ -105,4 +105,7 @@
         </table>
     </div>
     <?php endfor;?>
+    <div class = "form-group">
+        <a href = "<?php echo base_url();?>report/kpi" class = "btn btn-primary btn-outline btn-sm col-lg-2">BACK</a>
+    </div>
 </div>

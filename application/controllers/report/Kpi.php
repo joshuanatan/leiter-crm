@@ -151,6 +151,10 @@ class Kpi extends CI_Controller{
         $result["report"] = selectRowBetweenDates("report","tgl_report",$constraint,$where["report"]);
         $data["report"] = foreachMultipleResult($result["report"],$field["report"],$print["report"]);
         
+        $data["kpi_detail"] = array(
+            "week" => "WEEK ".$id_weeks,
+            "nama_user" => get1Value("user","nama_user",array("id_user" => $this->input->post("user")))
+        );
         $result["kpi_user"] = selectRow("kpi_user",$where["kpi_user"]);
         $data["kpi_user"] = foreachMultipleResult($result["kpi_user"],$field["kpi_user"],$print["kpi_user"]);
         $this->req();
