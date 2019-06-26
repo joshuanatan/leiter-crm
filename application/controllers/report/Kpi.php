@@ -138,6 +138,9 @@ class Kpi extends CI_Controller{
                 "kpi","target_kpi"
             )
         );
+        $where["week"] = array(
+
+        );
         $result["week"] = selectRow("report_weeks",$where["week"]);
         $data["week"] = foreachResult($result["week"],$field["week"],$print["week"]); 
         $constraint = array(
@@ -156,55 +159,54 @@ class Kpi extends CI_Controller{
         $this->load->view("report/kpi/weekly-report",$data);
         $this->load->view("report/content-close");
         $this->close();
-        /*ambil week dulu, trus di loop sampe ke 0, kalau uda 5 trakhir, break*/
-        $counter = 0;
-        /*loop besarnya adalah tipe laporan*/
-        for($c = 0; $c<count($data["kpi_user"]);$c++){ /*pindah KPI*/
-            for($a = $id_weeks; $a>0 ; $a--){ /*pindah week*/
-                if($counter == 5){
-                    break;
-                }
-                /*ngambil tgl mulai dan akhir setiap iterasi weeks*/
-                $result["week"] = selectRow("report_weeks",array("id_weeks" => $a));
+        
+        /*fungsi untuk mencari jumlah report di masing2 week, user, kpi*/
+        $mingguMax = $id_weeks; /*jadi kalau misalnya maxnya di week 10, maka hitung turun terus sampe 6 karena cuman mau nampilin 5 kebelakang*/
+        $data["kpi_graph"] = array();
+        for($minggu = 0; $minggu<5; $minggu++){
+            $data["kpi_graph"][$minggu] = array(
+                "nama_week" => "Week ".$mingguMax
+            );
+            $result["kpi_user"] = selectRow("kpi_user",$where["kpi_user"]);
+            for($kpi = 0; $kpi< count($data["kpi_user"]) ; $kpi++){ /*ngeloop sesuai jumlah kpi user*/
+
+                /*mencari tgl awal dan tgl akhir minggu yang dituju*/
+                $where["week"] = array(
+                    "id_weeks" => $mingguMax
+                );
+                $result["week"] = selectRow("report_weeks",$where["week"]);
                 $data["week"] = foreachResult($result["week"],$field["week"],$print["week"]); 
                 $constraint = array(
                     "awal" => $data["week"]["tgl_mulai"],
                     "akhir" => $data["week"]["tgl_selesai"]
                 );
-                /*end mendapatkan tgl awal dan akhir*/
-                /*mendapatkan data sesuai user masing-masing dan setiap jenis kpi*/
-                $where = array(
-                    "report" => array(
-                        "id_user_add" => $this->input->post("user"),
-                        "tipe_report" => $data["kpi_user"][$c]["kpi"]
-                    ),
+                $where["report"] = array(
+                    "tipe_report" => $data["kpi_user"][$kpi]["kpi"], /*mendapatkan nama kpi dalam iterasi tersebut*/
+                    "id_user_add" => $this->input->post("user")
                 );
-                
-                /*mengambil reports pada tanggal sekian - sekian, yang idusernya sekian*/
-                $result["report"] = selectRowBetweenDates("report","tgl_report",$constraint,$where["report"]);
-                $jumlah_report = $result["report"]->num_rows(); /*untuk dapet banyaknya di item ini*/
-                
-                /*rencananya mau di count*/
-                /*dalam kpi graph mau ada target kpi, jumlah report, per week, per kpi*/
-                /*
-                $data["kpi_graph"][week][id_kpi] = array(
-                    "data" => array(
-                        "target_kpi" =>,
-                        "jumlah_report" =>
-                    )
-                )
-                */
+                /*end mencari tgl awal dan tgl akhir minggu yang dituju*/
 
-                $id_user = $this->input->post("user");
-                $data["kpi_graph"][$a][$c] = array( /*mingg1 kpi1, minggu 1 kpi 2*/ 
-                    "target_kpi" => get1Value("kpi_user","target_kpi",array("id_user" => $id_user, "kpi" => $data["kpi_user"][$c]["kpi"])),
-                    "jumlah_report" => $jumlah_report
+                /*mencari report dalam tanggal tersebut*/
+                $result["report"] = selectRowBetweenDates("report","tgl_report",$constraint,$where["report"]);
+                $data["report"] = foreachMultipleResult($result["report"],$field["report"],$print["report"]);
+                /* end jumlah report mingguan */
+
+                $data["kpi_graph"][$minggu]["kpi"][$kpi] = array(
+                    "nama_kpi" => $data["kpi_user"][$kpi]["kpi"],
+                    "jumlah_report" => count($data["report"]),
                 );
-                $data["start_week"] = $id_weeks;
-                $counter++;
             }
-            
+            $mingguMax--; /*pengurangan max minggu supaya ga sampe mines*/
+            if($mingguMax == 0) break;
         }
+        /*sekarang harus mencari target setiap kpi setiap orang */
+        for($kpi = 0; $kpi<count($data["kpi_user"]); $kpi++){ /*pake iterasi KPI*/
+            $data["kpi_graph_support"]["target_kpi"][$kpi]["target"] = $data["kpi_user"][$kpi]["target_kpi"];
+            $data["kpi_graph_support"]["target_kpi"][$kpi]["nama"] = $data["kpi_user"][$kpi]["kpi"];
+        }
+
+        /*ngeload kpi labelnya pake nama kpi*/
+
         $this->load->view("report/kpi/js/chart-js",$data);
     }
     public function insertKpi(){

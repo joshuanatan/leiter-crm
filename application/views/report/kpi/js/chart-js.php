@@ -1,4 +1,4 @@
-
+<?php print_r($kpi_graph);?>
 <?php $backgroundColor = array("rgba(178,34,34, .8)","rgba(4, 3, 86, .2)","rgba(124, 104, 238, .2)","rgba(30,144,254, .2)","rgba(137,205,250, .2)");?>
 <?php $borderColor = array("blue-grey","primary","primary","primary","primary");?>
 <?php $hoverBackgroundColor = array("rgba(178,34,34, 1)","rgba(4, 3, 86, .3)","rgba(124, 104, 238, .3)","rgba(30,144,254, .3)","rgba(137,205,250, .3)");?>
@@ -23,110 +23,7 @@
     "use strict";
 
     _jquery = babelHelpers.interopRequireDefault(_jquery);
-    (function () {
-        var stacked_bar = new Chartist.Bar('#chartBarStacked1 .ct-chart', {
-            labels: ['TGT', '12', ' 13', '14'],
-            series: [[5,11,15,20]]
-        }, {
-            stackBars: true,
-            fullWidth: true,
-            seriesBarDistance: 0,
-            chartPadding: {
-                top: -10,
-                right: 0,
-                bottom: 0,
-                left: 0
-            },
-            axisX: {
-                showLabel: true,
-                showGrid: false,
-                offset: 30
-            },
-            axisY: {
-                showLabel: true,
-                showGrid: true,
-                offset: 30
-            }
-        });
-    })(); // Chart Pie
-    (function () {
-        var stacked_bar = new Chartist.Bar('#chartBarStacked2 .ct-chart', {
-            labels: ['TGT', '12', ' 13', '14'],
-            series: [[20,30,50,40]]
-        }, {
-            stackBars: true,
-            fullWidth: true,
-            seriesBarDistance: 0,
-            chartPadding: {
-                top: -10,
-                right: 0,
-                bottom: 0,
-                left: 0
-            },
-            axisX: {
-                showLabel: true,
-                showGrid: false,
-                offset: 30
-            },
-            axisY: {
-                showLabel: true,
-                showGrid: true,
-                offset: 30
-            }
-        });
-    })(); // Chart Pie
-    (function () {
-        var stacked_bar = new Chartist.Bar('#chartBarStacked3 .ct-chart', {
-            labels: ['TGT', '12', ' 13', '14'],
-            series: [[11,10,15,20]]
-        }, {
-            stackBars: true,
-            fullWidth: true,
-            seriesBarDistance: 0,
-            chartPadding: {
-                top: -10,
-                right: 0,
-                bottom: 0,
-                left: 0
-            },
-            axisX: {
-                showLabel: true,
-                showGrid: false,
-                offset: 30
-            },
-            axisY: {
-                showLabel: true,
-                showGrid: true,
-                offset: 30
-            }
-        });
-    })(); // Chart Pie
-    (function () {
-        var stacked_bar = new Chartist.Bar('#chartBarStacked4 .ct-chart', {
-            labels: ['TGT', '12', ' 13', '14'],
-            series: [[11,10,15,20]]
-        }, {
-            stackBars: true,
-            fullWidth: true,
-            seriesBarDistance: 0,
-            chartPadding: {
-                top: -10,
-                right: 0,
-                bottom: 0,
-                left: 0
-            },
-            axisX: {
-                showLabel: true,
-                showGrid: false,
-                offset: 30
-            },
-            axisY: {
-                showLabel: true,
-                showGrid: true,
-                offset: 30
-            }
-        });
-    })(); // Chart Pie
+    
 });
 </script>
 <script>
@@ -149,39 +46,44 @@
     _jquery = babelHelpers.interopRequireDefault(_jquery);
     (function () {
         var barChartData = {
-            <?php for($a = 0; $a<count($kpi_graph[$start_week]);$a++){
-                $kpi_labels[$a] = "KPI ".($a+1);
+            <?php 
+            $kpi_label = array();
+            for($target = 0; $target<count($kpi_graph_support["target_kpi"]); $target++){
+                $kpi_label[$target] = $kpi_graph_support["target_kpi"][$target]["nama"];
             }?>
-            labels: <?php echo json_encode($kpi_labels);?>,
+            labels: <?php echo json_encode($kpi_label);?>,
             datasets: 
             [
-                <?php $counterDays = 0;for($a = $start_week; $a>0; $a--):?> /*nge hold iterasi minggu*/
-                <?php if($counterDays == 5){
-                    break;
-                }
-                ?>
-                { /*week 1- sekian*/
-                    label: <?php if($a == 0) echo "'Target'"; else echo "'WEEK ".$a."'";?>,
-                    backgroundColor: <?php echo "'".$backgroundColor[$a]."'";?>,
-                    borderColor: Config.colors(<?php echo "'".$borderColor[$a]."'";?>, 600),
-                    hoverBackgroundColor: <?php echo "'".$hoverBackgroundColor[$a]."'";?>,
+                { /*Target*/
+                    label: "TARGET",
+                    backgroundColor: "<?php echo $backgroundColor[0];?>",
+                    borderColor: Config.colors("<?php echo $borderColor[0];?>", 600),
+                    hoverBackgroundColor: "<?php echo $hoverBackgroundColor[0];?>",
                     borderWidth: 2,
-                    <?php $amounts = array();$counterData = -1;
-                    for($b = 0; $b<count($kpi_graph[$a]); $b++){ /*iterasi di sebuah minggu*/
-                        
-                        $counterData++;
-                        if($a == 0){
-                            $amounts[$counterData] = $kpi_graph[$a][$b]["target_kpi"];
-                        }
-                        else{
-                            $amounts[$counterData] = $kpi_graph[$a][$b]["jumlah_report"];
-                        }
-                         /*dalam sebuah minggu, di setiap kpi*/
+                    <?php 
+                    $amount = array();
+                    for($target = 0; $target<count($kpi_graph_support["target_kpi"]); $target++){
+                        $amount[$target] = $kpi_graph_support["target_kpi"][$target]["target"];
+                    }?>
+                    data: <?php echo json_encode($amount);?> /*TARGET KPI1, TARGET KPI2, TARGET KPI3*/
+                }, 
+                
+                <?php for($week = 0; $week < count($kpi_graph); $week++):?>
+                { /*week 1- sekian*/
+                    label: "WEEK <?php echo ($week+1)?>",
+                    backgroundColor: "<?php echo $backgroundColor[($week+1)];?>",
+                    borderColor: Config.colors("<?php echo $borderColor[($week+1)];?>", 600),
+                    hoverBackgroundColor: "<?php echo $hoverBackgroundColor[($week+1)];?>",
+                    borderWidth: 2,
+                    <?php 
+                    $amount = array();
+                    for($kpi = 0; $kpi<count($kpi_graph[$week]["kpi"]); $kpi++){
+                        $amount[$kpi] = $kpi_graph[$week]["kpi"][$kpi]["jumlah_report"];
                     }
                     ?>
-                    data: <?php echo json_encode($amounts[$counterData]);?> /*TARGET KPI1, TARGET KPI2, TARGET KPI3*/
+                    data: <?php echo json_encode($amount);?> /*TARGET KPI1, TARGET KPI2, TARGET KPI3*/
                 }, 
-                <?php $counterDays++;endfor;?>
+                <?php endfor;?>
             ]
         };
         var myBar = new Chart(document.getElementById("kpiGraph").getContext("2d"), {
