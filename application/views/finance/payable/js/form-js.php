@@ -21,6 +21,20 @@ function isExistsInRefrence(){
             });
         break;
         case "COURIER":
+            $.ajax({
+                url:"<?php echo base_url();?>interface/od/isExists/"+no_refrence,
+                dataType:"JSON",
+                success:function(respond){
+                    if(respond == 0){
+                        $("#resultMessage").html("REFRENCE FOUND");
+                        $("#resultMessage").css("color","green");
+                    }
+                    else{
+                        $("#resultMessage").html("REFRENCE NOT FOUND");
+                        $("#resultMessage").css("color","RED");
+                    }
+                }
+            });
         break;
     }
 }

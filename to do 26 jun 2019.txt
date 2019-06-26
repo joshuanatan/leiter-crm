@@ -73,12 +73,52 @@ Array
         )
 
 )
-sudut pandangnya itu
-semua value week 1 (0,1,2,3 => sesuai dengan jumlah kpi)
-semua value week 2
-semua value week 3
-semua value week 4
-nama kpinya -> week 0 (target) week 1, week 2, week 3
-week tetap, value jalan sejumlah kpi,
+kpi1 => array(
+     "target,week1,week2,week3,week4
+)
+kpi 2 => array(
+      "target","week1","week3  
+)
+lalu dikelompokan
+label = kpi1,kpi2
+value = ( 
+     target = targetkpi1, targetkpi2
+     week1 = value week1, value week2
+)
+$data["kpi1"]["target"]
+$data["kpi1"]["week1"]["jumlah"]
+
+==================
+yang bener berarti
+$data["week1"]["kpi1"]["jumlah"]
+$data["week1"]["kpi2"]["jumlah"]
+$data["week1"]["kpi3"]["jumlah"]
+$data["week1"]["kpi4"]["jumlah"]
+$data["week2"]["kpi1"]["jumlah"]
+
+$data = array(
+     [0] => array(
+          "nama_week" => "week1",
+          "kpi" => array(
+                [0] => array(
+                      "nama_kpi" => "kpi1",
+                      "jumlah_report" => 1 //jumlah report dalam week1 kpi 1
+                ),
+                [1] => array(
+                       "nama_kapi" => "kpi2",
+                       "jumlah_report" => 2,
+                )
+          )
+      )
+)
+current status = udah sesuai dengan arraynya	
+
 
 jadi waktu ngefor,
+for( week1, week2, target)
+   for(jumlah_report)
+       /*resultnya ini adalah week1 jumlah_report1, week1 value2, week 1, value3*/
+       /*resultnya ini adalah week2 jumlah_report1, week2, value2, week2, value3*/
+
+sehingga saat membacanya
+kpi 1, week 1 value 1, week 2 value 1
