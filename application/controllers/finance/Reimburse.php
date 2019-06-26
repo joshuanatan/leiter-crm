@@ -26,8 +26,6 @@ class Reimburse extends CI_Controller{
     public function index(){
         $where = array(
             "expanses_type" => array(
-                "variable_type" => "EXPANSES",
-                "usage_type" => "CASH",
                 "status_type" => 0
             ),
             "reimburse" => array(
@@ -47,7 +45,7 @@ class Reimburse extends CI_Controller{
                 "id_type","name_type"
             ),
             "reimburse" => array(
-                "id_reimburse","subject","amount","attachment","notes","id_user_add","tgl_reimburse_add","expanses_type","status_paid",
+                "id_reimburse","subject_reimburse","nominal_reimburse","attachment","notes","id_user_add","tgl_reimburse_add","expanses_type","status_paid",
             )
         );
         $result["expanses_type"] = selectRow("finance_usage_type",$where["expanses_type"]);
@@ -62,13 +60,17 @@ class Reimburse extends CI_Controller{
             if($data["reimburse"][$a]["status_paid"] == 0){
                 /*kalau sudah dibayar*/
                 /*load data dari pembayaran untuk reimburse ini */
-                $result["payment_data"] = selectRow("pembayaran",array("id_refrensi" => "REIMBURSE-".$data["reimburse"][$a]["id_reimburse"]));
+                $result["payment_data"] = selectRow("pembayaran",array("id_refrensi" => "RMBS-".$data["reimburse"][$a]["id_reimburse"]));
+                
                 $field["payment_data"] = array(
+                    "id_pembayaran","subject_pembayaran","tgl_bayar","attachment","notes_pembayaran","nominal_pembayaran","metode_pembayaran"
+                );
+                $print["payment_data"] = array(
                     "id_pembayaran","subject_pembayaran","tgl_bayar","attachment","notes_pembayaran","nominal_pembayaran","metode_pembayaran"
                 );
                 /*end data pembayaran*/
                 /*masukin ke variable payment data*/
-                $data["reimburse"][$a]["payment_data"] = foreachResult($result["payment_data"],$field["payment_data"],$field["payment_data"]);
+                $data["reimburse"][$a]["payment_data"] = foreachResult($result["payment_data"],$field["payment_data"],$print["payment_data"]);
             }
 
         }
@@ -133,6 +135,7 @@ class Reimburse extends CI_Controller{
             );
             updateRow("reimburse",$data,$where);
         }
+        redirect("finance/reimburse");
     }
     public function remove($id_reimburse){
         $where = array(
@@ -152,40 +155,33 @@ class Reimburse extends CI_Controller{
             "status_paid" => 0
         );
         updateRow("reimburse",$data,$where);
+        /*update ke pembayaran*/
         $config["upload_path"] = "./assets/dokumen/buktibayar/";
-        $config["allowed_types"] = "jpg|png|gif|jpeg";
+        $config["allowed_types"] = "gif|jpg|jpeg|pdf|png";
         $this->load->library("upload",$config);
-        if($this->upload->do_upload("pay_attachment")){
+        $fileData = array();
+        if($this->upload->do_upload("attachment")){
             $fileData = $this->upload->data();
         }
         else{
             $fileData["file_name"] = "-";
         }
-        /*insert pembayaran*/
         $data = array(
-            "id_refrensi" => "REIMBURSE-".$id_reimburse,
-            "subject_pembayaran" => $this->input->post("pay_subject"),
-            "tgl_bayar" => $this->input->post("pay_tgl_bayar"),
-            "attachment" => $fileData["file_name"],
-            "notes_pembayaran" => $this->input->post("pay_notes"),
+            "id_refrensi" => "RMBS-".$id_reimburse,
+            "subject_pembayaran" => $this->input->post("subject_pembayaran"),
+            "tgl_bayar" => $this->input->post("tgl_bayar"),
+            "attachment" =>  $fileData["file_name"],
+            "notes_pembayaran" =>  $this->input->post("notes_pembayaran"),
+            "nominal_pembayaran" =>  splitterMoney($this->input->post("nominal_pembayaran"),","),
+            "kurs_pembayaran" =>  1,
+            "mata_uang_pembayaran" => "IDR",
+            "total_pembayaran" => splitterMoney($this->input->post("nominal_pembayaran"),","),
             "metode_pembayaran" => $this->input->post("metode_pembayaran"),
-            "nominal_pembayaran"=> splitterMoney($this->input->post("pay_amount"),","),
-            "total_pembayaran"=> splitterMoney($this->input->post("pay_amount"),","),
-            "kurs_pembayaran" => 1,
-            "mata_uang_pembayaran" => "IDR"
+            "jenis_pembayaran" => "KELUAR",
+            "kategori_pembayaran" => 3
         );
         insertRow("pembayaran",$data);
-
-        /*insert ke cashflow*/
-        $data = array(
-            "id_jenis_transaksi" => 1, /*reimburse*/
-            "nominal" => $this->input->post("pay_amount"),
-            "tgl_transaksi" => $this->input->post("pay_tgl_bayar"),
-            "metode_pembayaran" => $this->input->post("metode_pembayaran"),
-            "id_refrensi" => "REIMBURSE-".$id_reimburse,
-            "bukti_bon" => $fileData["file_name"],
-        );
-        insertRow("cashflow",$data);
+        redirect("finance/reimburse");
     }
 }
 
