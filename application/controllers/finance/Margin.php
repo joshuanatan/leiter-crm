@@ -130,8 +130,6 @@ class Margin extends CI_Controller{
         $id_oc = $this->input->post("id_oc");
         $total = $this->input->post("current_supplier");
         $add = $this->input->post("harga_supplier");
-        echo $total;
-        echo $add;
         $data = array(
             "harga_supplier" => ($total+$add),
             "notes_supplier" => $this->input->post("notes_supplier")
@@ -147,8 +145,6 @@ class Margin extends CI_Controller{
         $id_oc = $this->input->post("id_oc");
         $total = $this->input->post("current_shipping");
         $add = $this->input->post("harga_shipping");
-        echo $total;
-        echo $add;
         $data = array(
             "harga_shipping" => ($total+$add),
             "notes_shipper" => $this->input->post("notes_shipper")
@@ -164,8 +160,6 @@ class Margin extends CI_Controller{
         $id_oc = $this->input->post("id_oc");
         $total = $this->input->post("current_courier");
         $add = $this->input->post("harga_courier");
-        echo $total;
-        echo $add;
         $data = array(
             "harga_courier" => ($total+$add),
             "notes_courier" => $this->input->post("notes_courier")
