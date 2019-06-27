@@ -18,23 +18,17 @@ class expanses extends CI_Controller{
     public function index(){
         $where = array(
             "finance_type" => array(
-                "status_type" => 0
             )
         );
-        $result["finance_type"] = $this->Mdfinance_usage_type->select($where["finance_type"]);
-        $data = array(
-            "finance_type" => array()
+        $field = array(
+            "id_type","is_patent","name_type","kode_type","status_type"
         );
-        $counter = 0;
-        foreach($result["finance_type"]->result() as $a){
-            $data["finance_type"][$counter] = array(
-                "id_type" => $a->id_type,
-                "variable_type" => $a->variable_type,
-                "usage_type" => $a->usage_type,
-                "name_type" => $a->name_type
-            );  
-            $counter++;
-        }
+        $print = array(
+            "id_type","is_patent","name_type","kode_type","status_type"
+        );
+        $result["finance_type"] = selectRow("finance_usage_type",$where["finance_type"]);
+        $data["finance_type"] = foreachMultipleResult($result["finance_type"],$field,$print);
+        
         $this->req();
         $this->load->view("master/content-open");
         $this->load->view("master/expanses/category-header");
@@ -52,12 +46,13 @@ class expanses extends CI_Controller{
     }
     public function insert(){
         $data = array(
-            "variable_type" => $this->input->post("variable_type"),
-            "usage_type" => $this->input->post("usage_type"),
+            "is_patent" => 1,
             "name_type" => ucwords($this->input->post("name_type")),
+            "kode_type" => $this->input->post("kode_type"),
+            "status_type" => 0,
             "id_user_add" => $this->session->id_user
         );
-        $this->Mdfinance_usage_type->insert($data);
+        insertRow("finance_usage_type",$data);
         redirect("master/expanses");
     }
     public function delete($id_type){
@@ -75,9 +70,9 @@ class expanses extends CI_Controller{
             "id_type" => $id_type
         );
         $data = array(
-            "variable_type" => $this->input->post("variable_type"),
-            "usage_type" => $this->input->post("usage_type"),
-            "name_type" => $this->input->post("name_type")
+            "name_type" => ucwords($this->input->post("name_type")),
+            "kode_type" => $this->input->post("kode_type"),
+            "id_user_edit" => $this->session->id_user
         );
         $this->Mdfinance_usage_type->update($data,$where);
         redirect("master/expanses");
