@@ -13,24 +13,21 @@
             <tr>
                 <th>Customer PO No</th> <!-- nanti ini keisi waktu nambahin OC-->
                 <th>Order Confirmation No</th>
-                <th>Items</th>
-                <th>Supplier Price</th>
-                <th>Shipping Price</th>
-                <th>Courier Price</th>
-                <th>Selling Price</th>
-                <th>Margin</th>
+                <th>Items Amount</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
+            <?php for($a = 0; $a<count($oc); $a++):?>
             <tr>
-                <td></td>
-                <td><td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td><?php echo $oc[$a]["no_po_customer"];?></td>
+                <td><?php echo $oc[$a]["no_oc"];?></td>
+                <td><?php echo $oc[$a]["items"];?> Items</td>
+                <td>
+                    <a href = "<?php echo base_url();?>finance/margin/detail/<?php echo $oc[$a]["id_oc"];?>" class = "btn btn-outline btn-sm btn-primary">Items Detail</a>
+                </td>
             </tr>
+            <?php endfor;?>
         </tbody>
     </table>
 </div>
