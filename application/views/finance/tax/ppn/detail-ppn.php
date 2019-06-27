@@ -102,9 +102,11 @@ for($a =0; $a<count($tax); $a++){
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
     <thead>
             <tr>
-                <th>ID Tax</th>
+            <th>ID Tax</th>
                 <th>Jumlah Pajak</th> <!-- yang ngelaurin invoice ini -->
-                <th>ID Refrensi</th> <!-- ini yang tertulis. backgroundnya karena yang tertulis kadang belum termasuk pph 23-->
+                <th>ID Tagihan</th> <!-- ini yang tertulis. backgroundnya karena yang tertulis kadang belum termasuk pph 23-->
+                <th>Bukti Bayar</th>
+             
             </tr>
         </thead>
         <tbody>
@@ -112,8 +114,14 @@ for($a =0; $a<count($tax); $a++){
             <?php if($tax[$a]["tipe_pajak"] == "KELUARAN"):?>
             <tr>
                 <td><?php echo $tax[$a]["id_tax"];?></td>
-                <td><?php echo $tax[$a]["jumlah_pajak"];?></td>
-                <td><?php echo $tax[$a]["id_refrensi"];?> </td>
+                <td><?php echo number_format($tax[$a]["jumlah_pajak"]);?></td>
+                <td>
+                    <a target = "_blank" href = "<?php echo base_url();?>finance/receivable/"><?php echo $ppn[$a]["no_tagihan"];?></a>
+                </td>
+                <td>
+                    <a target = "_blank" href = "<?php echo base_url();?>assets/dokumen/buktibayar/<?php echo $tax[$a]["bukti_bayar"];?>" class = "btn btn-primary btn-outline btn-sm">BUKTI BAYAR</a>
+                </td>
+
             </tr>
             <?php endif;?>
             <?php endfor;?>

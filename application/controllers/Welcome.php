@@ -8,6 +8,7 @@ class Welcome extends CI_Controller{
     public function index(){
         if($this->session->id_user == "") redirect("login/welcome");
         $this->load->view("req/head");
+        $this->load->view("plugin/chart-js/chart-js-css");
         $this->load->view("req/head-close");
         $this->load->view("req/top-navbar");
         $this->load->view("req/navbar");
@@ -16,6 +17,8 @@ class Welcome extends CI_Controller{
         /*--------------------------------------------------------*/
         $this->load->view("req/script");
         $this->load->view("req/html-close");
+        $this->load->view("plugin/chart-js/chart-js-js");
+        $this->load->view("welcome/js/chart-js");
     }
     public function detail(){
         $this->load->view("req/head");

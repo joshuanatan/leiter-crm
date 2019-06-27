@@ -79,8 +79,8 @@ class Ppn extends CI_Controller{
                 $data["ppn"][$a]["no_tagihan"] = get1Value("tagihan","no_invoice",array("id_tagihan" => $id_tagihan));
             }
             else{
-                $data["tax"][$a]["invoice"] = get1Value("invoice","id_invoice",array("no_invoice" => $id_tagihan)); /*nanti a href aja */
-                $data["ppn"][$a]["no_tagihan"] = get1Value("tagihan","no_invoice",array("id_tagihan" => $id_tagihan));
+                $data["tax"][$a]["invoice"] = get1Value("invoice_core","id_invoice",array("id_invoice" => $id_tagihan)); /*nanti a href aja */
+                $data["ppn"][$a]["no_tagihan"] = get1Value("invoice_core","no_invoice",array("id_invoice" => $id_tagihan));
             }
             if($data["tax"][$a]["is_pib"] == 0){ /*refrence ke tax*/
                 $data["ppn"][$a]["no_tagihan"] = $data["tax"][$a]["id_refrensi"];

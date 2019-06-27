@@ -144,20 +144,7 @@ class Od extends CI_Controller{
         $this->load->view("crm/print/od");
     }
     public function getOD(){
-        $where = array(
-            "id_oc" => $this->input->post("id_oc")
-        );
-        $result = $this->Mdod_core->select($where);
-        $data = array();
-        $counter = 0 ;
-        foreach($result->result() as $a){
-            $data[$counter] = array(
-                "id_od" => $a->id_od,
-                "no_od" => $a->no_od
-            );
-            $counter++;
-        }
-        echo json_encode($data);
+        
     }
     public function getOdItemPayment(){
         $where = array(

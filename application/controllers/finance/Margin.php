@@ -192,7 +192,7 @@ class Margin extends CI_Controller{
         $margin = $data["item_margin"]["harga_supplier"]+$data["item_margin"]["harga_shipping"]+$data["item_margin"]["harga_courier"];
         $harga_jual = get1Value("quotation_item","final_selling_price",array("id_quotation_item" => $id_quotation_item));
         $data = array(
-            "margin_produk" => (($harga_jual-$margin)/$harga_jual)*100
+            "margin_produk" => round((($harga_jual-$margin)/$harga_jual)*100,2)
         );
         $where = array(
             "id_quotation_item" => $id_quotation_item
