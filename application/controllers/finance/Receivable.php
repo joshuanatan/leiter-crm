@@ -37,7 +37,7 @@ class Receivable extends CI_Controller{
         
         $counter = 0 ;
         foreach($result["invoice"]->result() as $a){
-            if($a->id_od == ""){ $od = "-"; $status = "DOWN PAYMENT";} else{ $od = "OD-".sprintf("%05d",$a->id_od);$status = "REST PAYMENT";}
+            if($a->id_od == "0"){ $od = "-"; $status = "DOWN PAYMENT";} else{ $od = "OD-".sprintf("%05d",$a->id_od);$status = "REST PAYMENT";}
 
             $data["invoice"][$counter] = array(
                 "id_invoice" =>$a->id_invoice,

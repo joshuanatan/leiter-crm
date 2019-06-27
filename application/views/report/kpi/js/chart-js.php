@@ -1,4 +1,4 @@
-<?php print_r($kpi_graph);?>
+<?php //print_r($kpi_graph);?>
 <?php $backgroundColor = array("rgba(178,34,34, .8)","rgba(4, 3, 86, .2)","rgba(124, 104, 238, .2)","rgba(30,144,254, .2)","rgba(137,205,250, .2)");?>
 <?php $borderColor = array("blue-grey","primary","primary","primary","primary");?>
 <?php $hoverBackgroundColor = array("rgba(178,34,34, 1)","rgba(4, 3, 86, .3)","rgba(124, 104, 238, .3)","rgba(30,144,254, .3)","rgba(137,205,250, .3)");?>

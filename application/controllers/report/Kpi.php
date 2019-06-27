@@ -138,9 +138,6 @@ class Kpi extends CI_Controller{
                 "kpi","target_kpi"
             )
         );
-        $where["week"] = array(
-
-        );
         $result["week"] = selectRow("report_weeks",$where["week"]);
         $data["week"] = foreachResult($result["week"],$field["week"],$print["week"]); 
         $constraint = array(
