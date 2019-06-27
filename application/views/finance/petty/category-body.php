@@ -2,9 +2,12 @@
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-            <a href = "<?php echo base_url();?>finance/reimburse/insert" class="btn btn-outline btn-primary" data-toggle = "modal" data-target = "#addPetty">
-                <i class="icon wb-plus" aria-hidden="true"></i> Insert Petty Transaction
-            </a>
+                <button class="btn btn-outline btn-primary" data-toggle = "modal" data-target = "#insertPetty">
+                    <i class="icon wb-plus" aria-hidden="true"></i> Insert Petty Transaction
+                </button>
+                <!--<button class="btn btn-outline btn-primary" data-toggle = "modal" data-target = "#addPetty">
+                    <i class="icon wb-plus" aria-hidden="true"></i> Recharge Petty
+                </button>-->
             </div>
         </div>
     </div>
@@ -52,7 +55,7 @@
                                         </div>
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">Payment Subject</h5>
-                                            <input type = "text" class = "form-control" name = "subject" value = <?php echo $petty[$a]["subject"];?>>
+                                            <input type = "text" class = "form-control" name = "subject" value = "<?php echo $petty[$a]["subject"];?>">
                                         </div>
                                         <div class = "form-group">
                                             <h5 style = "opacity:0.5">Expanses</h5>
@@ -90,7 +93,7 @@
         </tbody>
     </table>
 </div>
-<div class = "modal fade" id = "addPetty">
+<div class = "modal fade" id = "insertPetty">
     <div class = "modal-dialog modal-xl">
         <div class = "modal-content">
             <div class = "modal-header">
@@ -124,6 +127,26 @@
                     </div>
                     <div class = "form-group">
                         <button type = "submit" class = "btn btn-primary btn-outline btn-sm">SUBMIT</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class = "modal fade" id = "addPettys">
+    <div class = "modal-dialog modal-xl">
+        <div class = "modal-content">
+            <div class = "modal-header">
+                <h4 class = "modal-title">Recharge Petty</h4>
+            </div>
+            <form action = "<?php echo base_url();?>finance/petty/rechargePetty" method = "POST">
+                <div class = "modal-body">
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Additional Petty</h5>
+                        <input type = "text" class = "form-control" name = "petty" oninput = "commas('recharge_petty')" id = "recharge_petty">
+                    </div>
+                    <div class = "form-group">
+                        <button class = "btn btn-outline btn-primary btn-sm">SUBMIT</button>
                     </div>
                 </div>
             </form>

@@ -102,50 +102,41 @@ class Pib extends CI_Controller{
         updateRow("pib",$data,$where);
         /*done ubah jadi paid*/
 
-        $config = array(
-            "upload_path" => "./assets/dokumen/buktibayar/",
-            "allowed_types" => "jpg|png|jpeg|gif|pdf"
-        );
+        $config["upload_path"] = "./assets/dokumen/buktibayar/";
+        $config["allowed_types"] = "gif|jpg|jpeg|pdf|png";
         $this->load->library("upload",$config);
-        if($this->upload->do_upload("pay_attachment")){
+        $fileData = array();
+        if($this->upload->do_upload("attachment")){
             $fileData = $this->upload->data();
         }
         else{
             $fileData["file_name"] = "-";
         }
-        /*masukin ke table pembayran */
         $data = array(
-            "id_refrensi" =>  $this->input->post("id_refrensi"), /*id pib harusnya*/
+            "id_refrensi" => $this->input->post("id_refrensi"),
             "subject_pembayaran" => $this->input->post("subject_pembayaran"),
             "tgl_bayar" => $this->input->post("tgl_bayar"),
-            "attachment" => $fileData["file_name"],
-            "notes_pembayaran" => $this->input->post("notes_pembayaran"),
-            "nominal_pembayaran" => splitterMoney($this->input->post("nominal"),","),
-            "kurs_pembayaran" => 1,
+            "nominal_pembayaran" =>  splitterMoney($this->input->post("nominal_pembayaran"),","),
+            "metode_pembayaran" => $this->input->post("metode_pembayaran"),
+            "notes_pembayaran" =>  $this->input->post("notes_pembayaran"),
+            "kurs_pembayaran" =>  1,
             "mata_uang_pembayaran" => "IDR",
-            "total_pembayaran" => splitterMoney($this->input->post("nominal"),","),
-            "metode_pembayaran" => $this->input->post("metode_pembayaran")
+            "total_pembayaran" => splitterMoney($this->input->post("nominal_pembayaran"),","),
+            "attachment" =>  $fileData["file_name"],
+            "jenis_pembayaran" => "KELUAR",
+            "kategori_pembayaran" => 5
         );
         insertRow("pembayaran",$data);
-
-        /*masukin ke cashflow*/
-        $data = array(
-            "id_jenis_transaksi" => 5,
-            "nominal" => splitterMoneY($this->input->post("nominal"),","),
-            "id_refrensi" => $this->input->post("id_refrensi"),
-            "bukti_bon" => $fileData["file_name"],
-            "metode_pembayaran" => $this->input->post("metode_pembayaran")
-        );
-        insertRow("cashflow",$data);
 
         /*insert ke tax juga */
         $data = array(
             "bulan_pajak" => date("m"),
             "tahun_pajak" => date("Y"),
             "jumlah_pajak" => get1Value("pib","pph_impor",array("id_pib" => $id_pib)),
-            "tipe_pajak" => "MASUKAN",
+            "tipe_pajak" => "-",
             "jenis_pajak" => "PPH",
             "status_aktif_pajak" => 0,
+            "is_pib" => 0,
             "id_refrensi" => $this->input->post("id_refrensi")
         );
         insertRow("tax",$data);
@@ -157,6 +148,7 @@ class Pib extends CI_Controller{
             "tipe_pajak" => "MASUKAN",
             "jenis_pajak" => "PPN",
             "status_aktif_pajak" => 0,
+            "is_pib" => 0,
             "id_refrensi" => $this->input->post("id_refrensi")
         );
         insertRow("tax",$data);
@@ -165,9 +157,10 @@ class Pib extends CI_Controller{
             "bulan_pajak" => date("m"),
             "tahun_pajak" => date("Y"),
             "jumlah_pajak" => get1Value("pib","bea_cukai",array("id_pib" => $id_pib)),
-            "tipe_pajak" => "MASUKAN",
+            "tipe_pajak" => "-",
             "jenis_pajak" => "BEA CUKAI",
             "status_aktif_pajak" => 0,
+            "is_pib" => 0,
             "id_refrensi" => $this->input->post("id_refrensi")
         );
         insertRow("tax",$data);

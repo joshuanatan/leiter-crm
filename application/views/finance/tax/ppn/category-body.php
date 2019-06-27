@@ -4,7 +4,7 @@
             <div class = "col-lg-5">
                 <div class = "form-group">
                     <h5>MONTH</h5>
-                    <select class = "form-control">
+                    <select class = "form-control" name = "bulan_pajak">
                         <?php foreach($bulan as $key=>$value): ?>
                         <option value = "<?php echo $key;?>"><?PHP echo $value;?></option>
                         <?php endforeach;?>
@@ -14,7 +14,7 @@
             <div class = "col-lg-5">
                 <div class = "form-group">
                     <h5>YEAR</h5>
-                    <select class = "form-control">
+                    <select class = "form-control" name = "tahun_pajak">
                         <?php for($a = 0; $a<count($tahun);$a++):?>
                         <option value = "<?php echo $tahun[$a];?>"><?php echo $tahun[$a];?></option>
                         <?php endfor;?>

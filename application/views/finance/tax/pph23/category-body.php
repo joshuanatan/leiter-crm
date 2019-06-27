@@ -1,34 +1,32 @@
 <div class="panel-body col-lg-12">
-    <div class = "row">
-        <div class="col-lg-3">
-            <div class="card card-block p-25 bg-blue-600">
-                <div class="counter counter-lg counter-inverse">
-                    <div class="counter-label text-uppercase">TOTAL PPH</div>
-                    <span class="counter-number">1,000,000</span>
+    <form action = "<?php echo base_url();?>finance/tax/pph23/detail" method = "POST">
+        <div class="row">
+            <div class = "col-lg-5">
+                <div class = "form-group">
+                    <h5>MONTH</h5>
+                    <select class = "form-control" name = "bulan_pajak">
+                        <?php foreach($bulan as $key=>$value): ?>
+                        <option value = "<?php echo $key;?>"><?PHP echo $value;?></option>
+                        <?php endforeach;?>
+                    </select>
+                </div>
+            </div>
+            <div class = "col-lg-5">
+                <div class = "form-group">
+                    <h5>YEAR</h5>
+                    <select class = "form-control" name = "tahun_pajak">
+                        <?php for($a = 0; $a<count($tahun);$a++):?>
+                        <option value = "<?php echo $tahun[$a];?>"><?php echo $tahun[$a];?></option>
+                        <?php endfor;?>
+                    </select>
+                </div>
+            </div>
+            <div class  = "col-lg-2">
+                <div class = "form-group">
+                    <h5>Go</h5>
+                    <button type = "submit" class = "btn btn-primary btn-outline">CHECK PPH STATS</button>
                 </div>
             </div>
         </div>
-    </div>
-    <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
-        <thead>
-            <tr>
-                <th>No Request</th>
-                <th>User Name</th> <!-- yang ngelaurin invoice ini -->
-                <th>Amount</th> <!-- ini yang tertulis. backgroundnya karena yang tertulis kadang belum termasuk pph 23-->
-                <th>Expanses Type</th> <!-- ini yang harus di bayarkan --> 
-                <th>Notes</th> <!-- catetan aja seperti nomor rekening, dsb -->
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
+    </form>
 </div>

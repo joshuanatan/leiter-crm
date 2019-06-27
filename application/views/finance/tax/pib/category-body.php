@@ -44,8 +44,8 @@
                 <td>
                     
 
-                    <button class = "btn btn-sm btn-primary btn-outline" data-toggle = "modal" data-target = "#pay<?php echo $a;?>">PAY</button>
                     <?php if($pib[$a]["status_bayar_pib"] == 1):?> 
+                    <button class = "btn btn-sm btn-primary btn-outline" data-toggle = "modal" data-target = "#pay<?php echo $a;?>">PAY</button>
                     <button class = "btn btn-sm btn-primary btn-outline" data-toggle = "modal" data-target = "#edit<?php echo $a;?>">EDIT</button>
                     <div class = "modal fade" id ="edit<?php echo $a;?>">
                         <div class = "modal-dialog modal-xl">
@@ -86,6 +86,12 @@
                                         <div class = "form-group">
                                             <h5 style = "opacity:0.5">Attachment</h5>
                                             <input type = "file" class = "form-control" name = "attachment">
+                                            <br/>
+                                            <?php if($pib[$a]["attachment"] != "-"): ?>
+                                                <a href = "<?php echo base_url();?>assets/dokumen/pib/<?php echo $pib[$a]["attachment"];?>" class = "btn btn-primary btn-outline btn-sm">DOCUMENT</a>
+                                            <?php else:?>
+                                                <button class = "btn btn-danger btn-outline btn-sm">NO DOCUMENT</button>
+                                            <?php endif;?>
                                         </div>
                                         <div class = "form-group">
                                             <button class = "btn btn-outline btn-primary btn-sm" type = "submit">SUBMIT</button>
@@ -108,17 +114,6 @@
                                             <input type = "text" class = "form-control" name = "id_refrensi" value = "<?php echo $pib[$a]["no_pib"];?>">
                                         </div>
                                         <div class = "form-group">
-                                            <h5 style = "opacity:0.5">Payment Method</h5>
-                                            <select class = "form-control" name = "metode_pembayaran">
-                                                <option value = "0">TRANSFER</option>
-                                                <option value = "1">CASH</option>
-                                            </select>
-                                        </div>
-                                        <div class = "form-group">
-                                            <h5 style = "opacity:0.5">Payment Amount</h5>
-                                            <input oninput = "commas('paymentAmount')" id = "paymentAmount" type = "text" class = "form-control" name = "nominal" value = "<?php echo number_format($pib[$a]["total_tagihan"]);?>">
-                                        </div>
-                                        <div class = "form-group">
                                             <h5 style = "opacity:0.5">Payment Subject</h5>
                                             <input type = "text" class = "form-control" name = "subject_pembayaran">
                                         </div>
@@ -127,12 +122,23 @@
                                             <input type = "date" class = "form-control" name = "tgl_bayar">
                                         </div>
                                         <div class = "form-group">
-                                            <h5 style = "opacity:0.5">Attachment</h5>
-                                            <input type = "file" class = "form-control" name = "pay_attachment">
+                                            <h5 style = "opacity:0.5">Payment Amount</h5>
+                                            <input oninput = "commas('paymentAmount')" id = "paymentAmount" type = "text" class = "form-control" name = "nominal_pembayaran" value = "<?php echo number_format($pib[$a]["total_tagihan"]);?>">
+                                        </div>
+                                        <div class = "form-group">
+                                            <h5 style = "opacity:0.5">Payment Method</h5>
+                                            <select class = "form-control" name = "metode_pembayaran">
+                                                <option value = "0">TRANSFER</option>
+                                                <option value = "1">CASH</option>
+                                            </select>
                                         </div>
                                         <div class = "form-group">
                                             <h5 style = "opacity:0.5">Payment Notes</h5>
                                             <textarea class = "form-control" name = "notes_pembayaran"></textarea>
+                                        </div>
+                                        <div class = "form-group">
+                                            <h5 style = "opacity:0.5">Attachment</h5>
+                                            <input type = "file" class = "form-control" name = "pay_attachment">
                                         </div>
                                         <div class = "form-group">
                                             <button class = "btn btn-primary btn-outline btn-sm">SUBMIT</button>
@@ -144,7 +150,8 @@
                     </div>
                     <a href = "<?php echo base_url();?>finance/tax/pib/remove/<?php echo $pib[$a]["id_pib"];?>" class = "btn btn-danger btn-outline btn-sm"><i class ="fa fa-trash"></i></a>
                     <?php else:?>
-                    <div class = "modal fade" id = "pay<?php echo $a;?>">
+                    <button class = "btn btn-sm btn-primary btn-outline" data-toggle = "modal" data-target = "#detail<?php echo $a;?>">DETAIL</button>
+                    <div class = "modal fade" id = "detail<?php echo $a;?>">
                         <div class = "modal-dialog modal-xl">
                             <div class = "modal-content">
                                 <div class = "modal-header">
@@ -153,7 +160,15 @@
                                 <div class = "modal-body">
                                     <div class = "form-group">
                                         <h5 style = "opacity:0.5">No Refrensi</h5>
-                                        <input readonly type = "text" class = "form-control" value = "<?php echo $pib[$a]["payment_detail"]["id_refrensi"];?>" readonly>
+                                        <input readonly type = "text" class = "form-control" value = "<?php echo $pib[$a]["payment_detail"]["id_refrensi"];?>" name = "id_refrensi" readonly>
+                                    </div>
+                                    <div class = "form-group">
+                                        <h5 style = "opacity:0.5">Payment Subject</h5>
+                                        <input readonly type = "text" class = "form-control" value = "<?php echo $pib[$a]["payment_detail"]["subject_pembayaran"];?>" name = "subject_pembayaran">
+                                    </div>
+                                    <div class = "form-group">
+                                        <h5 style = "opacity:0.5">Payment Date</h5>
+                                        <input readonly type = "text" class = "form-control" name = "tgl_bayar" value = "<?php echo $pib[$a]["payment_detail"]["tgl_bayar"];?>">
                                     </div>
                                     <div class = "form-group">
                                         <h5 style = "opacity:0.5">Payment Method</h5>
@@ -162,14 +177,6 @@
                                     <div class = "form-group">
                                         <h5 style = "opacity:0.5">Payment Amount</h5>
                                         <input readonly type = "text" class = "form-control" value = "<?php echo number_format($pib[$a]["payment_detail"]["nominal_pembayaran"]);?>">
-                                    </div>
-                                    <div class = "form-group">
-                                        <h5 style = "opacity:0.5">Payment Subject</h5>
-                                        <input readonly type = "text" class = "form-control" value = "<?php echo $pib[$a]["payment_detail"]["subject_pembayaran"];?>">
-                                    </div>
-                                    <div class = "form-group">
-                                        <h5 style = "opacity:0.5">Payment Date</h5>
-                                        <input readonly type = "text" class = "form-control" value = "<?php echo $pib[$a]["payment_detail"]["tgl_bayar"];?>">
                                     </div>
                                     <div class = "form-group">
                                         <h5 style = "opacity:0.5">Attachment</h5>
@@ -203,12 +210,12 @@
                         <input type ="text" class = "form-control" name = "no_pib">
                     </div>
                     <div class = "form-group">
-                        <h5 style = "opacity:0.5">PPN Impor</h5>
-                        <input type ="text" class = "form-control" name = "ppn_impor" oninput = "commas('ppn_impor')" id = "ppn_impor">
-                    </div>
-                    <div class = "form-group">
                         <h5 style = "opacity:0.5">PPH Impor</h5>
                         <input type ="text" class = "form-control" name = "pph_impor" oninput = "commas('pph_impor')" id = "pph_impor">
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">PPN Impor</h5>
+                        <input type ="text" class = "form-control" name = "ppn_impor" oninput = "commas('ppn_impor')" id = "ppn_impor">
                     </div>
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">BEA Masuk</h5>

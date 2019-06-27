@@ -25,8 +25,6 @@ class Petty extends CI_Controller{
     public function index(){
         $where = array(
             "expanses_type" => array(
-                "variable_type" => "EXPANSES",
-                "usage_type" => "CASH",
                 "status_type" => 0
             ),
             "petty" => array(
@@ -90,13 +88,7 @@ class Petty extends CI_Controller{
         );
         $id_petty_cash = insertRow("petty_cash",$data);
 
-        $data = array(
-            "id_jenis_transaksi" => $this->input->post("expanses"),
-            "nominal" => $money,
-            "id_refrensi" => "PETTY-".$id_petty_cash,
-            "bukti_bon" => $fileData["file_name"]
-        );
-        insertRow("cashflow",$data);
+        redirect("finance/petty");
     }
     public function remove($id_transaksi_petty){
         $where = array(
@@ -106,13 +98,6 @@ class Petty extends CI_Controller{
             "status_aktif_petty" => 1
         );
         updateRow("petty_cash",$data,$where);
-        $where = array(
-            "id_refrensi" => "PETTY-".$id_transaksi_petty
-        );
-        $data = array(
-            "status_aktif_transaksi" => 1
-        );
-        updateRow("cashflow",$data,$where);
         redirect("finance/petty");
     }
     public function update($id_transaksi_petty){
@@ -136,15 +121,7 @@ class Petty extends CI_Controller{
                 "attachment" => $fileData["file_name"],
             );
             updateRow("petty_cash",$data,$where);
-            $where = array(
-                "id_refrensi" => "PETTY-".$id_transaksi_petty
-            );
-            $data = array(
-                "id_jenis_transaksi" => $this->input->post("expanses"),
-                "nominal" => $money,
-                "bukti_bon" => $fileData["file_name"]
-            );
-            updateRow("cashflow",$data,$where);
+            
         }
         else{
             $data = array(
@@ -156,14 +133,6 @@ class Petty extends CI_Controller{
                 "notes" => $this->input->post("notes"),
             );
             updateRow("petty_cash",$data,$where);
-            $where = array(
-                "id_refrensi" => "PETTY-".$id_transaksi_petty
-            );
-            $data = array(
-                "id_jenis_transaksi" => $this->input->post("expanses"),
-                "nominal" => $money,
-            );        
-            updateRow("cashflow",$data,$where);
         }
         
         
