@@ -9,6 +9,7 @@ class Price_request_item extends CI_Controller{
     return value : nama_produk, jumlah_produk, notes_produk, file
     */
     public function getDetailRequestItem($id_request_item){
+        $this->session->id_request_item = $id_request_item; /*untuk ngeset harga vendor butuh id_request_item*/
         $where = array(
             "id_request_item" => $id_request_item
         );
@@ -22,4 +23,5 @@ class Price_request_item extends CI_Controller{
         $data = foreachResult($result,$field,$print);
         echo json_encode($data);
     }
+    
 }

@@ -21,21 +21,14 @@
                             <div class="tab-pane active" id="primaryData" role="tabpanel">
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Quotation</h5>
-                                    <select onchange = "quotationDetail()" id = "id_quotation" name = "id_quotation" class = "form-control" data-plugin ="select2">
-                                    <option value = "0" disabled selected>Choose Quotation</option>
-                                    <?php foreach($oc->result() as $a){ ?>)
-                                        <option value = "<?php echo $a->id_quo;?>-<?php echo $a->versi_quo;?>"><?php echo "QUO-".sprintf("%05d",$a->id_quo);?> Ver.<?php echo $a->versi_quo;?></option>
-                                    <?php 
-                                    }
-                                    ?>
+                                    <select onchange = "quotationDetail()" id = "no_quotation" name = "no_quotation" class = "form-control" data-plugin ="select2">
+                                        <option value = "0" disabled selected>Choose Quotation</option>
+                                        <?php for($a = 0; $a<count($oc); $a++): ?>
+                                        <option value = "<?php echo $oc[$a]["no_quo"];?> , <?php echo $oc[$a]["versi_quo"]; ?>"><?php echo $oc[$a]["no_quo"];?> - Ver. <?php echo $oc[$a]["versi_quo"]; ?></option>
+                                        <?php endfor;?>
                                     </select>
                                 </div>
-                                <div class = "form-group"> <!-- nanti bentuknya nomorquotation/versi -->
-                                    <h5 style = "color:darkgrey; opacity:0.8">Quotation No</h5> 
-                                    <input name = "no_quo"  id="no_quo" type ="text" value = "" class = "form-control" readonly><!-- auto keisi dari onchange -->
-                                    <input name = "id_quo"  id = "id_quo"  type ="hidden" value = ""/> <!-- keisi setelah dia pilih dari select itu -->
-                                    <input name = "versi_quo" id = "versi_quo"  type ="hidden" value = ""/> <!-- keisi setelah dia pilih dari select itu -->
-                                </div>
+                                
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
                                     <input type ="text" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
@@ -68,27 +61,27 @@
                             <div class="tab-pane" id="payment" role="tabpanel">
                                 
                                 <!-- nanti ngeload sesuai kebutuhan klo ada dp atau kalau ada 2x pembayaran -->
-                                <div class = "form-group containerDp" style = "display:none"> <!-- textarea klo DP % -->
+                                <div class = "form-group containerDp"> <!-- textarea klo DP % -->
                                     <h5 style = "color:darkgrey; opacity:0.8">DP Percentage</h5>
                                     <input name = "persen[]" readonly id = "persenDp" value = "%" type ="text" class = "form-control">
                                 </div>
-                                <div class = "form-group containerDp" style = "display:none"> <!-- Nominal DP -->
+                                <div class = "form-group containerDp"> <!-- Nominal DP -->
                                     <h5 style = "color:darkgrey; opacity:0.8">DP Amount</h5>
                                     <input name = "jumlah[]" readonly id = "jumlahDp" type ="text" class = "form-control">
                                 </div>
-                                <div class = "form-group containerDp" style = "display:none"> <!-- Nominal DP -->
+                                <div class = "form-group containerDp"> <!-- Nominal DP -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Payment Trigger</h5>
                                     <input name = "jumlah[]" readonly id = "triggerDp" type ="text" class = "form-control">
                                 </div>
-                                <div class = "form-group containerSisa" style = "display:none"> <!-- textarea klo DP% -->
+                                <div class = "form-group containerSisa"> <!-- textarea klo DP% -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Rest Percentage</h5>
                                     <input name = "persen[]" readonly id = "persenSisa" value = "%" type ="text" class = "form-control">
                                 </div>
-                                <div class = "form-group containerSisa" style = "display:none"> <!-- Nominal DP -->
+                                <div class = "form-group containerSisa"> <!-- Nominal DP -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Rest Amount</h5>
                                     <input name = "jumlah[]" readonly id = "jumlahSisa" type ="text" class = "form-control">
                                 </div>
-                                <div class = "form-group containerSisa  " style = "display:none"> <!-- Nominal DP -->
+                                <div class = "form-group containerSisa"> <!-- Nominal DP -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Payment Trigger</h5>
                                     <input name = "jumlah[]" readonly id = "triggerSisa" type ="text" class = "form-control">
                                 </div>
@@ -102,7 +95,7 @@
                             <div class="tab-pane" id="detail" role="tabpanel">
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">No OC</h5>
-                                    <input name ="no_oc" value = "OC-<?php echo sprintf("%05d",$maxId);?>" type ="text" class = "form-control" readonly> <!-- keisi sendiri dari db max(), bentuknya berformat -->
+                                    <input name ="no_oc" value = "LI<?php echo date("Y");?><?php echo sprintf("%04d",$maxId);?>" type ="text" class = "form-control" readonly> <!-- keisi sendiri dari db max(), bentuknya berformat -->
                                     <input value = "<?php echo $maxId;?>" type ="hidden" name = "id_oc" class = "form-control" readonly> <!-- buat isi dalam bentuk angka -->
                                 </div>
                                 <div class = "form-group">

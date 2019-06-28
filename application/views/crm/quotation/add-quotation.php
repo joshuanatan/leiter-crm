@@ -22,15 +22,15 @@
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Price Request</h5>
                                     <select onchange = "detailPriceRequest()" id = "id_request" name = "id_request" class = "form-control" data-plugin ="select2">
-                                        <option selected disabled>Item Request ID</option>
+                                        <option selected disabled>RFQ</option>
                                         <?php foreach($request->result() as $a){ ?> 
-                                        <option value = "<?php echo $a->id_request?>"><?php echo "REQ-".sprintf('%05d',$a->id_request);?></option>
+                                        <option value = "<?php echo $a->no_request;?>"><?php echo $a->no_request;?></option>
                                         <?php } ?>
                                     </select>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Quotation No</h5> <!-- nanti ganti jadi select -->
-                                    <input name = "no_quo" type ="text" class = "form-control" readonly  value = "QUO-<?php echo sprintf('%05d',$quotation_id);?>">
+                                    <input id = "no_quo" name = "no_quo" type ="text" class = "form-control" readonly  value = "LI-<?php echo sprintf("%03d",$quotation_id);?>/QUO/<?php echo bulanRomawi(date("m"));?>/2019">
                                     <input name = "id_quo"  type ="hidden" value = "<?php echo $quotation_id;?>" id = "id_quo"/>
                                 </div>
                                 <div class = "form-group">
@@ -72,7 +72,8 @@
                                     <select class = "form-control" id="shippers" onchange = "getShippingPrice()">
                                         <option selected disabled>Choose Shipping Vendor</option>
                                     </select>
-                                </div><div class = "form-group">
+                                </div>
+                                <div class = "form-group">
                                     <input name = "Abc" type ="text" id = "hargashipping" class = "form-control" disabled placeholder = "Shipping Price">
                                 </div>
                                 
@@ -83,7 +84,7 @@
                                     </select>
                                 </div>
                                 <div class = "form-group">
-                                    <input name = "Abc" type ="text" id = "hargaCourier" class = "form-control" disabled placeholder = "Product Price">
+                                    <input name = "Abc" type ="text" id = "hargaCourier" class = "form-control" disabled placeholder = "Courier Price">
                                 </div>
                                 
                                 <div class = "form-group" onclick = "getTotal()">
@@ -119,36 +120,41 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="payment" role="tabpanel">
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Total Quotation Amount</h5>
+                                    <input type = "text" id = "totalQuotation" class = "form-control" readonly onclick = "countTotal()">
+                                    <input type = "hidden" id = "totalQuotationClean" class = "form-control" readonly>
+                                </div>
                                 <div class = "form-group containerDp" style = ""> <!-- textarea klo DP % -->
                                     <h5 style = "color:darkgrey; opacity:0.8">DP Percentage</h5>
-                                    <input name = "persen[]" id = "persenDp" value = "%" oninput = "paymentWithDP()" type ="text" class = "form-control">
+                                    <input name = "persenDp" id = "persenDp" oninput = "paymentWithDP()" type ="text" class = "form-control">
                                 </div>
                                 <div class = "form-group containerDp" style = ""> <!-- Nominal DP -->
                                     <h5 style = "color:darkgrey; opacity:0.8">DP Amount</h5>
-                                    <input name = "" id = "jumlahDp" type ="text" class = "form-control">
-                                    <input name = "jumlah[]" id = "jumlahDpClean" type ="hidden" class = "form-control">
+                                    <input name = "jumlahDp" id = "jumlahDp" type ="text" class = "form-control">
+                                    <input name = "jumlahDpClean" id = "jumlahDpClean" type ="hidden" class = "form-control">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Payment Method</h5>
                                     <select class = "form-control" id = "paymentMethod" name = "paymentMethod">
-                                        <option value = "before">BEFORE DELIVERY</option>
-                                        <option value = "before">AFTER DELIVERY</option>
+                                        <option value = "1">BEFORE DELIVERY</option>
+                                        <option value = "2">AFTER DELIVERY</option>
                                     </select>
                                 </div>
                                 <div class = "form-group containerSisa" style = ""> <!-- textarea klo DP% -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Rest Percentage</h5>
-                                    <input name = "persen[]" id = "persenSisa" value = "%" type ="text" class = "form-control">
+                                    <input name = "persenSisa" id = "persenSisa" type ="text" class = "form-control">
                                 </div>
                                 <div class = "form-group containerSisa" style = ""> <!-- Nominal DP -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Rest Amount</h5>
-                                    <input name = "jumlah[]" id = "jumlahSisa" type ="text" class = "form-control">
-                                    <input name = "" id = "jumlahSisaClean" type ="hidden" class = "form-control">
+                                    <input name = "" id = "jumlahSisa" type ="text" class = "form-control">
+                                    <input name = "jumlahSisaClean" id = "jumlahSisaClean" type ="hidden" class = "form-control">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Payment Method</h5>
-                                    <select class = "form-control" id = "paymentMethod" name = "paymentMethod">
-                                        <option value = "before">BEFORE DELIVERY</option>
-                                        <option value = "before">AFTER DELIVERY</option>
+                                    <select class = "form-control" id = "paymentMethod" name = "paymentMethod2">
+                                        <option value = "1">BEFORE DELIVERY</option>
+                                        <option value = "2">AFTER DELIVERY</option>
                                     </select>
                                 </div>
                                 <div class = "form-group">
@@ -170,7 +176,7 @@
                             <div class="tab-pane" id="detail" role="tabpanel">
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">No Quotation</h5>
-                                    <input value = "QUO-<?php echo sprintf('%05d',$quotation_id) ?>" type ="text" class = "form-control" readonly>
+                                    <input value = "LI-<?php echo sprintf("%03d",$quotation_id);?>/QUO/<?php echo bulanRomawi(date("m"));?>/2019" type ="text" class = "form-control" readonly>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Quotation Perihal</h5>

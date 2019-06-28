@@ -11,7 +11,7 @@
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
-                <th>Quotation ID</th>
+                <th>No Quotation</th>
                 <th>Version</th>
                 <th>Customer Firm</th>
                 <th>Customer Name</th>
@@ -23,7 +23,7 @@
         <tbody>
             <?php for($a = 0 ; $a<count($quotation);$a++){ ?> 
             <tr class="gradeA">
-                <td><?php echo $quotation[$a]["id_quotation"];?></td>
+                <td><?php echo $quotation[$a]["no_quo"];?></td>
                 <td><?php echo $quotation[$a]["version"];?></td>
                 <td><?php echo $quotation[$a]["nama_perusahaan"];?></td>
                 <td><?php echo $quotation[$a]["nama_cp"];?></td>
@@ -35,7 +35,7 @@
                     <button class = "btn btn-sm btn-warning btn-outline">LOSS</button>
                     <?php } ?>
                     <?php if($quotation[$a]["status_quotation"] == 2){ ?> 
-                    <button class = "btn btn-sm btn-success btn-outline">ACCEPTED</button>
+                    <button class = "btn btn-sm btn-success btn-outline">WIN</button>
                     <?php } ?>
                     <?php if($quotation[$a]["status_quotation"] == 3){ echo "&nbsp"; } ?> 
                 </td>
@@ -43,14 +43,11 @@
                 <td class="actions">
                     
                     <a href = "<?php echo base_url();?>crm/quotation/edit/<?php echo $quotation[$a]["id_quotation"];?>/<?php echo $quotation[$a]["version"];?>" class="btn btn-outline btn-primary"><i class="icon wb-edit" aria-hidden="true"></i></a>
-                    <!-- setelah email dikirim, gabisa di edit / dihapus -->
-                    <a href = "#" class = "btn btn-outline btn-warning" data-trigger="hover" data-content="Send to Customer" data-trigger="hover" data-toggle="popover"><i class = "icon wb-chat"></i></a>
-
                     <a href = "<?php echo base_url();?>crm/quotation/revision/<?php echo $quotation[$a]["id_quotation"];?>/<?php echo $quotation[$a]["version"];?>" class="btn btn-outline btn-success" data-content="Do Revision Here" data-trigger="hover" data-toggle="popover"><i class="icon wb-eye" aria-hidden="true"></i></a>
 
                     <a href = "<?php echo base_url();?>crm/quotation/loss/<?php echo $quotation[$a]["id_quotation"];?>/<?php echo $quotation[$a]["version"];?>" class="btn btn-outline btn-danger" data-content="Quotation Loss" data-trigger="hover" data-toggle="popover"><i class="icon wb-trash" aria-hidden="true"></i></a> 
                     
-                    <a href = "<?php echo base_url();?>crm/quotation/accepted/<?php echo $quotation[$a]["id_quotation"];?>/<?php echo $quotation[$a]["version"];?>" class="btn btn-outline btn-primary" data-content="Proceed to Order Confirmation" data-trigger="hover" data-toggle="popover"><i class="icon wb-briefcase" aria-hidden="true"></i></a>
+                    <a href = "<?php echo base_url();?>crm/quotation/accepted/<?php echo $quotation[$a]["id_quotation"];?>/<?php echo $quotation[$a]["version"];?>/<?php echo $quotation[$a]["bulan_quotation"];?>/<?php echo $quotation[$a]["tahun_quotation"];?>" class="btn btn-outline btn-success" data-content="Proceed to Order Confirmation" data-trigger="hover" data-toggle="popover"><i class="icon fa fa-check" aria-hidden="true"></i></a>
                 </td>
             </tr>
             <?php } ?>

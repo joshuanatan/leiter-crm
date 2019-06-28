@@ -16,31 +16,46 @@ function getDetailPriceRequestItem(){
             url: "<?php echo base_url();?>interface/harga_vendor/getEachSupplierPrice/"+id_request_item,
             dataType: "JSON",
             success:function(respond){
-                for(var a = 0 ; a<10; a++){
-                    $("#supplier"+a).val("");
-                    $("#pic"+a).val("");
-                    $("#email"+a).html("");
-                    $("#phone"+a).html("");
-                    $("#price"+a).val("");
-                    $("#rate"+a).val("");
-                    $("#kurs"+a).val("");
-                    $("#notes"+a).val("");
+                html = "";
+                shipperSupplierOption = "<option>Choose Supplier</option>";
+                for(var a =0; a<respond.length; a++){
+                    html += "<tr><td>"+respond[a]["nama_perusahaan"]+"</td><td>"+respond[a]["nama_cp"]+"</td><td>"+addCommas(respond[a]["harga_produk"])+"</td><td>"+addCommas(respond[a]["vendor_price_rate"])+"</td><td>"+respond[a]["mata_uang"]+"</td><td>"+respond[a]["notes"]+"</td><td><a target = '_blank' href = '<?php echo base_url();?>assets/dokumen/hargasupplier/"+respond[a]["attachment"]+"' class = 'btn btn-outline btn-primary btn-sm'>DOCUMENT</a></td></tr>";
+
+                    shipperSupplierOption += "<option value = '"+respond[a]["id_harga_vendor"]+"'>"+respond[a]["nama_perusahaan"]+"</option>";
+
                 }
-                for(var a = 0; a<respond.length; a++){
-                    $("#supplier"+a).val(respond[a]["id_perusahaan"]);
-                    $("#pic"+a).val(respond[a]["id_cp"]);
-                    $("#email"+a).html(respond[a]["email_cp"]);
-                    $("#phone"+a).html(respond[a]["nohp_cp"]);
-                    $("#price"+a).val(respond[a]["harga_produk"]);
-                    $("#rate"+a).val(respond[a]["vendor_price_rate"]);
-                    $("#kurs"+a).val(respond[a]["mata_uang"]);
-                    $("#notes"+a).val(respond[a]["notes"]);
-                    commas('price'+a);
-                    commas('rate'+a);
+                $(".listSupplier").html(shipperSupplierOption);
+                $("#t1").html(html);
+            }
+        });
+        $.ajax({
+            url: "<?php echo base_url();?>interface/harga_vendor/getEachCourierPrice/"+id_request_item,
+            dataType: "JSON",
+            success:function(respond){
+                html = "";
+                for(var a =0; a<respond.length; a++){
+                    html += "<tr><td>"+respond[a]["nama_perusahaan"]+"</td><td>"+respond[a]["nama_cp"]+"</td><td>"+addCommas(respond[a]["harga_produk"])+"</td><td>"+addCommas(respond[a]["vendor_price_rate"])+"</td><td>"+respond[a]["mata_uang"]+"</td><td>"+respond[a]["metode_pengiriman"]+"</td><td>"+respond[a]["notes"]+"</td><td><a target = '_blank' href = '<?php echo base_url();?>assets/dokumen/hargasupplier/"+respond[a]["attachment"]+"' class = 'btn btn-outline btn-primary btn-sm'>DOCUMENT</a></td></tr>";
                 }
+                $("#assignedCourierList").html(html);
             }
         });
     });
+}
+</script>
+<script>
+function getShipperList(){
+    var id_harga_vendor = $("#idhargaSupplierShipper").val();
+    $.ajax({
+        url:"<?php echo base_url();?>interface/harga_vendor/getEachShippingPrice/"+id_harga_vendor,
+        dataType:"JSON",
+        success: function(respond){
+            var html = "";
+            for(var a = 0; a<respond.length;a++){
+                html += "<tr><td>"+respond[a]["nama_perusahaan"]+"</td><td>"+respond[a]["nama_cp"]+"</td><td>"+addCommas(respond[a]["harga_produk"])+"</td><td>"+addCommas(respond[a]["vendor_price_rate"])+"</td><td>"+respond[a]["mata_uang"]+"</td><td>"+respond[a]["metode_pengiriman"]+"</td><td>"+respond[a]["notes"]+"</td><td><a href = '<?php echo base_url();?>assets/dokumen/hargasupplier/"+respond[a]["attachment"]+"' target = '_blank' class = 'btn btn-sm btn-primary btn-outline'>DOCUMENT</a></td></tr>";
+            }
+            $("#assignedShipperList").html(html);
+        }
+    })
 }
 </script>
 <script>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 14, 2019 at 06:24 AM
+-- Generation Time: Jun 27, 2019 at 10:39 AM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.10
 
@@ -56,7 +56,13 @@ INSERT INTO `contact_person` (`id_cp`, `nama_cp`, `jk_cp`, `email_cp`, `nohp_cp`
 (33, 'Celine Kow', 'Ms', 'celine@sefar.com', '', '', 0, 20, 11, '2019-06-12 09:41:26', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (34, 'Selahattin Sahin', 'Mr', 'ssahin@ugurgrubu.com', '089677898878', 'Marketing', 1, 20, 11, '2019-06-12 09:45:04', 11, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
 (35, 'Vivian Beh', 'Ms', 'vivian.beh@cargo-partner.com', '0808089988', 'CEO', 0, 21, 11, '2019-06-12 13:56:46', 11, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(36, 'Emily', 'Ms', 'emily@penanshin.com.sg', '0808080808', 'CEO', 1, 21, 11, '2019-06-12 14:01:29', 0, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00');
+(36, 'Emily', 'Ms', 'emily@penanshin.com.sg', '0808080808', 'CEO', 1, 21, 11, '2019-06-12 14:01:29', 0, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
+(37, 'Joshua Natan', 'Mr', 'joshuanatan.jn@gmail.com', '089616961915', 'CEO', 0, 22, 11, '2019-06-14 15:18:37', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(38, 'Davin', 'Mr', 'davin@gmail.com', '089272989', 'Marketing', 0, 22, 11, '2019-06-14 15:19:07', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(39, 'CP 1', 'Mr', 'cp@gmail.com', '08980980', 'CEO', 0, 23, 11, '2019-06-14 15:21:16', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(42, 'Joshua Natan', 'Mr', 'joshuanatan.jn@gmail.com', '089616961915', '-', 0, 26, 0, '2019-06-22 09:11:13', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(43, '', 'Mr', '', '', '-', 0, NULL, 0, '2019-06-22 22:19:44', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(44, '', 'Mr', '', '', '-', 0, NULL, 0, '2019-06-22 22:20:52', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -66,10 +72,10 @@ INSERT INTO `contact_person` (`id_cp`, `nama_cp`, `jk_cp`, `email_cp`, `nohp_cp`
 
 CREATE TABLE `finance_usage_type` (
   `id_type` int(11) NOT NULL,
-  `variable_type` varchar(200) NOT NULL DEFAULT '-',
-  `usage_type` varchar(200) NOT NULL DEFAULT '-',
-  `name_type` varchar(200) NOT NULL DEFAULT '-',
-  `status_type` int(11) NOT NULL DEFAULT '0',
+  `is_patent` int(11) NOT NULL COMMENT '0: paten, gabole diliat dan dirubah, 1, bisa diedit',
+  `name_type` varchar(200) NOT NULL DEFAULT '-' COMMENT 'nama tipe pemasukan / pengeluaran',
+  `kode_type` varchar(200) NOT NULL COMMENT 'untuk penginputan cashflow secara manual seperti pengeluaran dan yang lain sebagainya, guna menjadi potakan dalam id. contoh: gaji-001',
+  `status_type` int(11) NOT NULL DEFAULT '0' COMMENT '0:aktif, 1 tidak',
   `id_user_add` int(11) NOT NULL DEFAULT '0',
   `date_type_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_user_edit` int(11) NOT NULL DEFAULT '0',
@@ -82,9 +88,13 @@ CREATE TABLE `finance_usage_type` (
 -- Dumping data for table `finance_usage_type`
 --
 
-INSERT INTO `finance_usage_type` (`id_type`, `variable_type`, `usage_type`, `name_type`, `status_type`, `id_user_add`, `date_type_add`, `id_user_edit`, `date_type_edit`, `id_user_delete`, `date_type_delete`) VALUES
-(1, 'EXPANSE', 'BANK', 'Reimburse', 1, 11, '2019-06-12 01:36:45', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(2, 'INCOME', 'BANK', 'Bunga Bank', 1, 11, '2019-06-12 01:48:34', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+INSERT INTO `finance_usage_type` (`id_type`, `is_patent`, `name_type`, `kode_type`, `status_type`, `id_user_add`, `date_type_add`, `id_user_edit`, `date_type_edit`, `id_user_delete`, `date_type_delete`) VALUES
+(1, 0, 'Reimburse', 'RMBS', 0, 11, '2019-06-12 01:36:45', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(2, 1, 'Bunga Bank', 'BGBNK', 0, 11, '2019-06-12 01:48:34', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(3, 0, 'Pembayaran Supplier/Shipper/Courier', 'PMBYRN', 0, 11, '2019-06-24 11:38:34', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(4, 1, 'Fotokopi', 'FC', 0, 0, '2019-06-24 13:02:32', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(5, 0, 'Pembayaran Pajak', 'TAX', 0, 11, '2019-06-25 00:37:41', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(6, 1, 'Tol', 'TOL', 1, 11, '2019-06-27 14:15:03', 11, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -101,7 +111,8 @@ CREATE TABLE `harga_vendor` (
   `satuan_harga_produk` int(11) NOT NULL DEFAULT '1',
   `vendor_price_rate` int(11) NOT NULL DEFAULT '1',
   `mata_uang` varchar(100) NOT NULL DEFAULT 'USD',
-  `status_harga_vendor` int(11) NOT NULL DEFAULT '0',
+  `status_harga_vendor` int(11) NOT NULL DEFAULT '1',
+  `notes` text,
   `id_user_add` int(11) NOT NULL,
   `date_harga_vendor_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_user_edit` int(11) NOT NULL DEFAULT '0',
@@ -114,10 +125,9 @@ CREATE TABLE `harga_vendor` (
 -- Dumping data for table `harga_vendor`
 --
 
-INSERT INTO `harga_vendor` (`id_harga_vendor`, `id_request_item`, `id_perusahaan`, `id_cp`, `harga_produk`, `satuan_harga_produk`, `vendor_price_rate`, `mata_uang`, `status_harga_vendor`, `id_user_add`, `date_harga_vendor_add`, `id_user_edit`, `date_harga_vendor_edit`, `id_user_delete`, `date_harga_vendor_delete`) VALUES
-(45, 1, 20, 33, 210000, 1, 10000, 'EUR', 0, 11, '2019-06-13 03:33:51', 0, NULL, 0, NULL),
-(46, 6, 20, 33, 200000, 1, 10000, 'USD', 0, 11, '2019-06-13 17:57:24', 0, NULL, 0, NULL),
-(47, 7, 20, 33, 60000, 1, 12000, 'EUR', 0, 11, '2019-06-13 19:15:34', 0, NULL, 0, NULL);
+INSERT INTO `harga_vendor` (`id_harga_vendor`, `id_request_item`, `id_perusahaan`, `id_cp`, `harga_produk`, `satuan_harga_produk`, `vendor_price_rate`, `mata_uang`, `status_harga_vendor`, `notes`, `id_user_add`, `date_harga_vendor_add`, `id_user_edit`, `date_harga_vendor_edit`, `id_user_delete`, `date_harga_vendor_delete`) VALUES
+(53, 40, 23, 39, 12000, 1, 1110, 'EUR', 1, 'tgl 23', 0, '2019-06-22 22:47:14', 0, NULL, 0, NULL),
+(54, 40, 20, 33, 11000, 1, 1200, 'IDR', 1, 'tgl 25', 0, '2019-06-22 23:12:59', 0, NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -130,10 +140,15 @@ CREATE TABLE `invoice_core` (
   `no_invoice` varchar(100) NOT NULL,
   `id_oc` int(11) NOT NULL,
   `id_od` int(11) DEFAULT '0' COMMENT '0 kalau ga pake od',
-  `persen_pembayaran` int(11) NOT NULL,
+  `bulan_invoice` varchar(10) NOT NULL,
+  `tahun_invoice` int(11) NOT NULL,
   `nominal_pembayaran` bigint(20) NOT NULL,
   `kurs_pembayaran` int(11) NOT NULL DEFAULT '1',
   `mata_uang` varchar(10) NOT NULL DEFAULT 'IDR',
+  `is_ppn` int(11) NOT NULL,
+  `ppn` int(11) NOT NULL,
+  `franco` varchar(200) NOT NULL,
+  `up` varchar(200) NOT NULL,
   `status_lunas` int(11) NOT NULL DEFAULT '1' COMMENT '1: blum lunas, 0 lunas',
   `status_aktif_invoice` int(11) NOT NULL DEFAULT '1' COMMENT '1: blum aktif, 0 aktif',
   `id_user_add` int(11) DEFAULT '0',
@@ -148,8 +163,73 @@ CREATE TABLE `invoice_core` (
 -- Dumping data for table `invoice_core`
 --
 
-INSERT INTO `invoice_core` (`id_invoice`, `no_invoice`, `id_oc`, `id_od`, `persen_pembayaran`, `nominal_pembayaran`, `kurs_pembayaran`, `mata_uang`, `status_lunas`, `status_aktif_invoice`, `id_user_add`, `tgl_invoice_add`, `id_user_edit`, `tgl_invoice_edit`, `id_user_delete`, `tgl_user_delete`) VALUES
-(1, 'PO-000001', 3, NULL, 50, 1500000000, 1, 'IDR', 1, 1, 11, '2019-06-14 09:20:46', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+INSERT INTO `invoice_core` (`id_invoice`, `no_invoice`, `id_oc`, `id_od`, `bulan_invoice`, `tahun_invoice`, `nominal_pembayaran`, `kurs_pembayaran`, `mata_uang`, `is_ppn`, `ppn`, `franco`, `up`, `status_lunas`, `status_aktif_invoice`, `id_user_add`, `tgl_invoice_add`, `id_user_edit`, `tgl_invoice_edit`, `id_user_delete`, `tgl_user_delete`) VALUES
+(1, '190601/LI/06/19', 3, 2, '06', 2019, 124667, 1, 'IDR', 0, 11333, '', '', 1, 0, 11, '2019-06-27 14:40:31', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(2, '190602/LI/06/19', 3, 0, '06', 2019, 187000, 1, 'IDR', 0, 17000, 'jakarta', 'finance department', 1, 0, 11, '2019-06-27 14:40:56', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `item_margin`
+--
+
+CREATE TABLE `item_margin` (
+  `id_quotation_item` int(11) NOT NULL,
+  `margin_produk` decimal(11,2) NOT NULL,
+  `harga_supplier` int(11) NOT NULL,
+  `harga_shipping` int(11) NOT NULL,
+  `harga_courier` int(11) NOT NULL,
+  `notes_supplier` text NOT NULL,
+  `notes_shipper` text NOT NULL,
+  `notes_courier` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `item_margin`
+--
+
+INSERT INTO `item_margin` (`id_quotation_item`, `margin_produk`, `harga_supplier`, `harga_shipping`, `harga_courier`, `notes_supplier`, `notes_shipper`, `notes_courier`) VALUES
+(7, '72.26', 35800, 45000, 13500, 'test1,\r\ntest2', 'test1,\r\ntest2', 'test2');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `kpi_user`
+--
+
+CREATE TABLE `kpi_user` (
+  `id_kpi_user` int(11) NOT NULL COMMENT 'JANGAN NGERFRENCE KESINI KARENA INI BAKAL DI DELETE INSERT TERUS',
+  `id_user` int(11) NOT NULL,
+  `kpi` varchar(200) NOT NULL COMMENT 'LANGSUNG TEMBAK KESINI DAN ID USER AJA UNTUK PENCACATAN KPI',
+  `target_kpi` int(11) NOT NULL,
+  `status_aktif_kpi` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `kpi_user`
+--
+
+INSERT INTO `kpi_user` (`id_kpi_user`, `id_user`, `kpi`, `target_kpi`, `status_aktif_kpi`) VALUES
+(21, 27, 'kpi 23', 10, 0),
+(22, 27, 'kpi 24', 11, 0),
+(23, 27, '', 0, 1),
+(24, 27, '', 0, 1),
+(25, 27, '', 0, 1),
+(26, 27, '', 0, 1),
+(27, 27, '', 0, 1),
+(28, 27, '', 0, 1),
+(29, 27, '', 0, 1),
+(30, 27, '', 0, 1),
+(41, 11, 'kpi 1', 11, 0),
+(42, 11, 'kpi 2', 21, 0),
+(43, 11, 'kpi 3', 12, 0),
+(44, 11, 'kpi 4', 13, 0),
+(45, 11, 'kpi 5', 14, 1),
+(46, 11, 'kpi 6', 15, 0),
+(47, 11, '', 0, 1),
+(48, 11, '', 0, 1),
+(49, 11, '', 0, 1),
+(50, 11, '', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -659,10 +739,12 @@ DELIMITER ;
 
 CREATE TABLE `metode_pembayaran` (
   `id_metode_pembayaran` int(11) NOT NULL,
-  `urutan_pembayaran` int(11) NOT NULL,
   `persentase_pembayaran` int(11) NOT NULL,
   `nominal_pembayaran` bigint(11) NOT NULL,
   `trigger_pembayaran` int(11) NOT NULL COMMENT '1: sesudah OC; 2: setelah OD;',
+  `persentase_pembayaran2` int(11) DEFAULT NULL,
+  `nominal_pembayaran2` int(11) DEFAULT NULL,
+  `trigger_pembayaran2` int(11) NOT NULL,
   `id_quotation` int(11) NOT NULL,
   `id_versi` int(11) NOT NULL,
   `kurs` varchar(100) NOT NULL,
@@ -675,29 +757,9 @@ CREATE TABLE `metode_pembayaran` (
 -- Dumping data for table `metode_pembayaran`
 --
 
-INSERT INTO `metode_pembayaran` (`id_metode_pembayaran`, `urutan_pembayaran`, `persentase_pembayaran`, `nominal_pembayaran`, `trigger_pembayaran`, `id_quotation`, `id_versi`, `kurs`, `id_oc`, `status_invoice`, `id_invoice`) VALUES
-(60, 1, 0, 1500000000, 1, 1, 1, 'IDR', 0, 1, 0),
-(61, 2, 50, 1500000000, 1, 1, 1, 'IDR', 0, 1, 0),
-(62, 1, 0, 1500000000, 1, 1, 2, 'IDR', 0, 1, 0),
-(63, 2, 50, 1500000000, 1, 1, 2, 'IDR', 0, 1, 0),
-(64, 1, 0, 1500000000, 1, 1, 3, 'IDR', 0, 1, 0),
-(65, 2, 50, 1500000000, 1, 1, 3, 'IDR', 0, 1, 0),
-(66, 1, 0, 1500000000, 1, 1, 4, 'IDR', 0, 1, 0),
-(67, 2, 50, 1500000000, 1, 1, 4, 'IDR', 0, 1, 0),
-(68, 1, 0, 1500000000, 1, 1, 5, 'IDR', 0, 1, 0),
-(69, 2, 50, 1500000000, 1, 1, 5, 'IDR', 0, 1, 0),
-(70, 1, 0, 1500000000, 1, 1, 6, 'IDR', 0, 1, 0),
-(71, 2, 50, 1500000000, 1, 1, 6, 'IDR', 0, 1, 0),
-(72, 1, 0, 1500000000, 1, 1, 7, 'IDR', 0, 1, 0),
-(73, 2, 50, 1500000000, 1, 1, 7, 'IDR', 0, 1, 0),
-(74, 1, 50, 1500000000, 1, 1, 8, 'IDR', 3, 1, 0),
-(75, 2, 50, 1500000000, 2, 1, 8, 'IDR', 3, 1, 0),
-(76, 1, 50, 5000000000, 1, 2, 1, 'IDR', 0, 1, 0),
-(77, 2, 50, 5000000000, 2, 2, 1, 'IDR', 0, 1, 0),
-(78, 1, 0, 0, 0, 2, 2, 'IDR', 0, 1, 0),
-(79, 2, 100, 10040000000, 2, 2, 2, 'IDR', 0, 1, 0),
-(80, 1, 0, 0, 0, 2, 3, 'IDR', 4, 1, 0),
-(81, 2, 100, 10040000000, 2, 2, 3, 'IDR', 4, 1, 0);
+INSERT INTO `metode_pembayaran` (`id_metode_pembayaran`, `persentase_pembayaran`, `nominal_pembayaran`, `trigger_pembayaran`, `persentase_pembayaran2`, `nominal_pembayaran2`, `trigger_pembayaran2`, `id_quotation`, `id_versi`, `kurs`, `id_oc`, `status_invoice`, `id_invoice`) VALUES
+(74, 50, 170000, 1, 50, 170000, 2, 1, 8, 'IDR', 3, 1, 0),
+(80, 0, 0, 0, 100, 200000, 2, 2, 3, 'IDR', 4, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -751,6 +813,8 @@ CREATE TABLE `od_core` (
   `id_courier` int(11) NOT NULL,
   `delivery_method` varchar(100) NOT NULL,
   `status_od` int(11) NOT NULL DEFAULT '0',
+  `bulan_od` varchar(10) NOT NULL,
+  `tahun_od` int(11) NOT NULL,
   `id_user_add` int(11) NOT NULL,
   `date_od_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_user_edit` int(11) NOT NULL DEFAULT '0',
@@ -763,9 +827,9 @@ CREATE TABLE `od_core` (
 -- Dumping data for table `od_core`
 --
 
-INSERT INTO `od_core` (`id_od`, `no_od`, `id_oc`, `id_courier`, `delivery_method`, `status_od`, `id_user_add`, `date_od_add`, `id_user_edit`, `date_od_edit`, `id_user_delete`, `date_od_delete`) VALUES
-(1, 'OD-00001', 3, 21, 'LAND', 0, 11, '2019-06-14 01:55:12', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(2, 'OD-00002', 3, 21, 'LAND', 0, 11, '2019-06-14 01:55:58', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+INSERT INTO `od_core` (`id_od`, `no_od`, `id_oc`, `id_courier`, `delivery_method`, `status_od`, `bulan_od`, `tahun_od`, `id_user_add`, `date_od_add`, `id_user_edit`, `date_od_edit`, `id_user_delete`, `date_od_delete`) VALUES
+(1, '190601/LI/SJ/19', 3, 21, 'LAND', 0, '06', 2019, 11, '2019-06-14 01:55:12', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(2, '190602/LI/SJ/19', 3, 21, 'LAND', 0, '06', 2019, 11, '2019-06-14 01:55:58', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -785,7 +849,7 @@ CREATE TABLE `od_item` (
 --
 
 INSERT INTO `od_item` (`id_od_item`, `id_od`, `id_quotation_item`, `item_qty`) VALUES
-(2, 1, 7, 15),
+(2, 1, 7, 10),
 (3, 2, 7, 20);
 
 -- --------------------------------------------------------
@@ -801,6 +865,7 @@ CREATE TABLE `order_confirmation` (
   `versi_quotation` int(11) NOT NULL,
   `no_po_customer` varchar(200) NOT NULL,
   `status_oc` int(11) NOT NULL DEFAULT '0' COMMENT 'kalau 0, masih oc, 1: delete, 2 sudah po, 3 udah oc',
+  `status_aktif_oc` int(11) NOT NULL DEFAULT '0' COMMENT '0 aktif, 1, tidak aktof',
   `id_user_add` int(11) NOT NULL,
   `date_oc_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_user_edit` int(11) NOT NULL DEFAULT '0',
@@ -813,9 +878,43 @@ CREATE TABLE `order_confirmation` (
 -- Dumping data for table `order_confirmation`
 --
 
-INSERT INTO `order_confirmation` (`id_oc`, `no_oc`, `id_quotation`, `versi_quotation`, `no_po_customer`, `status_oc`, `id_user_add`, `date_oc_add`, `id_user_edit`, `date_oc_edit`, `id_user_delete`, `date_oc_delete`) VALUES
-(3, 'OC-00003', 1, 8, 'PO-000001', 0, 11, '2019-06-13 20:49:49', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(4, 'OC-00004', 2, 3, 'PO-000002', 2, 11, '2019-06-14 02:56:33', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+INSERT INTO `order_confirmation` (`id_oc`, `no_oc`, `id_quotation`, `versi_quotation`, `no_po_customer`, `status_oc`, `status_aktif_oc`, `id_user_add`, `date_oc_add`, `id_user_edit`, `date_oc_edit`, `id_user_delete`, `date_oc_delete`) VALUES
+(3, 'LI-20190003', 1, 8, 'PO/CUST/2019/001', 0, 0, 11, '2019-06-13 20:49:49', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(4, 'LI-20190004', 2, 3, 'PO/CUST/2019/002', 2, 0, 11, '2019-06-14 02:56:33', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pembayaran`
+--
+
+CREATE TABLE `pembayaran` (
+  `id_pembayaran` int(11) NOT NULL,
+  `id_refrensi` varchar(200) NOT NULL COMMENT 'nomor tagihan / id tagihan (untuk uang keluar) / no invoice leiter (untuk uang masuk)',
+  `subject_pembayaran` varchar(200) NOT NULL COMMENT 'judul pembayarannya',
+  `tgl_bayar` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'harusnay ini ada input dari depan karena ga setiap kali bayar langsung di masukin ke sistem',
+  `attachment` text NOT NULL COMMENT 'bukti bayarnya',
+  `notes_pembayaran` text NOT NULL,
+  `nominal_pembayaran` int(11) NOT NULL COMMENT 'yang dibayarkan dalam mata uang masing-masing',
+  `kurs_pembayaran` int(11) NOT NULL COMMENT 'mata uang pembayaran terhadap idr ',
+  `mata_uang_pembayaran` varchar(10) NOT NULL,
+  `total_pembayaran` int(11) NOT NULL COMMENT 'dalam IDR',
+  `metode_pembayaran` int(11) NOT NULL COMMENT 'bank & cash',
+  `jenis_pembayaran` varchar(200) NOT NULL COMMENT 'MASUK / KELUAR',
+  `kategori_pembayaran` int(11) NOT NULL COMMENT 'ngerefrence ke finance_usage_type'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pembayaran`
+--
+
+INSERT INTO `pembayaran` (`id_pembayaran`, `id_refrensi`, `subject_pembayaran`, `tgl_bayar`, `attachment`, `notes_pembayaran`, `nominal_pembayaran`, `kurs_pembayaran`, `mata_uang_pembayaran`, `total_pembayaran`, `metode_pembayaran`, `jenis_pembayaran`, `kategori_pembayaran`) VALUES
+(13, '2', 'Pembayaran sefar DP', '2019-07-03 00:00:00', 'error_login.png', 'Pembayaran 1/3', 2484000, 1, 'IDR', 2484000, 0, 'KELUAR', 3),
+(14, '3', 'Pelunasan Tiki', '2019-07-06 00:00:00', '-', 'barang sudah sampai semua', 3850000, 1, 'IDR', 3850000, 0, 'KELUAR', 3),
+(18, 'RMBS-5', 'Pembayaran uang tol jeen', '2019-07-02 00:00:00', '593213.jpg', 'semagnat ya ', 400000, 1, 'IDR', 400000, 0, 'KELUAR', 3),
+(19, 'RMBS-6', 'ganti uang beli atk', '2019-06-26 00:00:00', '381811.jpg', 'sudah ya', 230000, 1, 'IDR', 230000, 0, 'KELUAR', 3),
+(20, 'RMBS-7', 'Pembayaran uang makan', '2019-06-27 00:00:00', '-', '', 34000, 1, 'IDR', 34000, 1, 'KELUAR', 3),
+(23, '00000000447120190509700469', 'pembayaran pib sefar', '2019-06-27 00:00:00', '-', 'pembayaran barang masuk', 156748000, 1, 'IDR', 156748000, 0, 'KELUAR', 5);
 
 -- --------------------------------------------------------
 
@@ -826,11 +925,13 @@ INSERT INTO `order_confirmation` (`id_oc`, `no_oc`, `id_quotation`, `versi_quota
 CREATE TABLE `perusahaan` (
   `id_perusahaan` int(11) NOT NULL,
   `nama_perusahaan` varchar(200) NOT NULL DEFAULT '-',
-  `jenis_perusahaan` varchar(100) NOT NULL DEFAULT '-',
+  `nofax_perusahaan` varchar(100) NOT NULL DEFAULT '-',
   `alamat_perusahaan` text,
   `notelp_perusahaan` varchar(15) NOT NULL DEFAULT '-',
   `peran_perusahaan` varchar(100) NOT NULL DEFAULT '-',
+  `jenis_perusahaan` varchar(200) NOT NULL,
   `status_perusahaan` int(11) NOT NULL DEFAULT '0',
+  `permanent` int(11) NOT NULL DEFAULT '0' COMMENT '0: permanen, 1: Tidak permanen',
   `id_user_add` int(11) NOT NULL DEFAULT '0',
   `date_perusahaan_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_user_edit` int(11) NOT NULL DEFAULT '0',
@@ -843,11 +944,70 @@ CREATE TABLE `perusahaan` (
 -- Dumping data for table `perusahaan`
 --
 
-INSERT INTO `perusahaan` (`id_perusahaan`, `nama_perusahaan`, `jenis_perusahaan`, `alamat_perusahaan`, `notelp_perusahaan`, `peran_perusahaan`, `status_perusahaan`, `id_user_add`, `date_perusahaan_add`, `id_user_edit`, `date_perusahaan_edit`, `id_user_delete`, `date_perusahaan_delete`) VALUES
-(18, 'PT Adil Makmur Fajar', 'Food', 'Jl. Industri Raya No. 1 Km. 21, \r\nDesa Budimulya, Kec. Cikupa, \r\nTangerang 15710', '5963470-71', 'CUSTOMER', 0, 11, '2019-06-11 23:33:10', 11, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
-(19, 'PT Agarindo Bogatama', 'Food', 'Jelambar Selatan II No. 4, \r\nGedung Agar-agar', '569 66930', 'CUSTOMER', 0, 11, '2019-06-11 23:56:55', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(20, 'SEFAR SINGAPORE PTE LTD', '', '8 Kallang Avenue #04-03 Aperia Tower 1 \r\nSINGAPORE 339509 ', '+65 6299 9092 ', 'PRODUK', 0, 11, '2019-06-12 09:41:26', 11, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
-(21, 'Cargo-partner Logistics Pte. Ltd.', 'Glass Expert Shipper', '300 Tampines Avenue 5 #07-04 Income @ Tampines Junction SG-529653 Singapore Singapore', '+65 6578 5094', 'SHIPPING', 0, 11, '2019-06-12 13:56:46', 11, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00');
+INSERT INTO `perusahaan` (`id_perusahaan`, `nama_perusahaan`, `nofax_perusahaan`, `alamat_perusahaan`, `notelp_perusahaan`, `peran_perusahaan`, `jenis_perusahaan`, `status_perusahaan`, `permanent`, `id_user_add`, `date_perusahaan_add`, `id_user_edit`, `date_perusahaan_edit`, `id_user_delete`, `date_perusahaan_delete`) VALUES
+(18, 'PT Adil Makmur Fajar', '12345678', 'Jl. Industri Raya No. 1 Km. 21, \r\nDesa Budimulya, Kec. Cikupa, \r\nTangerang 15710', '5963470-71', 'CUSTOMER', 'Food', 0, 0, 11, '2019-06-11 23:33:10', 11, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
+(19, 'PT Agarindo Bogatama', '12345678', 'Jelambar Selatan II No. 4, \r\nGedung Agar-agar', '569 66930', 'CUSTOMER', 'Food', 0, 0, 11, '2019-06-11 23:56:55', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(20, 'SEFAR SINGAPORE PTE LTD', '12345678', '8 Kallang Avenue #04-03 Aperia Tower 1 \r\nSINGAPORE 339509 ', '+65 6299 9092 ', 'PRODUK', '-', 0, 0, 11, '2019-06-12 09:41:26', 11, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
+(21, 'Cargo-partner Logistics Pte. Ltd.', '12345678', '300 Tampines Avenue 5 #07-04 Income @ Tampines Junction SG-529653 Singapore Singapore', '+65 6578 5094', 'SHIPPING', 'Glass Expert Shipper', 0, 0, 11, '2019-06-12 13:56:46', 11, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
+(22, 'PT Example', '12345678', 'Kembang Molek IX\r\nKembangan Selatan\r\n11610', '54808080', 'CUSTOMER', 'Sugar ', 0, 0, 11, '2019-06-14 15:18:37', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(23, 'PT Product Vendor', '12345678', 'Alamat 1\r\nalamt 2', '08980980', 'PRODUK', 'Machine', 0, 0, 11, '2019-06-14 15:21:16', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(26, 'PT Example 2', '-', NULL, '-', 'CUSTOMER', 'Food', 0, 1, 0, '2019-06-22 09:11:12', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(31, '', '-', NULL, '-', 'PRODUK', '', 0, 1, 0, '2019-06-22 22:19:44', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(32, '', '-', NULL, '-', 'PRODUK', '', 0, 1, 0, '2019-06-22 22:20:53', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `petty_cash`
+--
+
+CREATE TABLE `petty_cash` (
+  `id_transaksi_petty` int(11) NOT NULL,
+  `id_user_add` int(11) NOT NULL,
+  `amount` int(11) NOT NULL,
+  `expanses_type` varchar(200) NOT NULL,
+  `notes` text NOT NULL,
+  `attachment` varchar(200) NOT NULL,
+  `status_transaksi_petty` int(11) NOT NULL,
+  `status_aktif_petty` int(11) NOT NULL,
+  `tgl_transaksi_petty` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `subject` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `petty_cash`
+--
+
+INSERT INTO `petty_cash` (`id_transaksi_petty`, `id_user_add`, `amount`, `expanses_type`, `notes`, `attachment`, `status_transaksi_petty`, `status_aktif_petty`, `tgl_transaksi_petty`, `subject`) VALUES
+(12, 11, 30000, '4', 'makanan rapat', '5932136.jpg', 0, 0, '2019-06-26 00:00:00', 'Pembayaran makanan');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pib`
+--
+
+CREATE TABLE `pib` (
+  `id_pib` int(11) NOT NULL,
+  `no_pib` varchar(200) NOT NULL,
+  `tgl_pib_masuk` date NOT NULL,
+  `ppn_impor` int(11) NOT NULL,
+  `pph_impor` int(11) NOT NULL,
+  `bea_cukai` int(11) NOT NULL,
+  `no_po` varchar(200) NOT NULL,
+  `notes_pib` text NOT NULL,
+  `attachment` text NOT NULL,
+  `status_aktif_pib` int(11) NOT NULL,
+  `status_bayar_pib` int(11) NOT NULL DEFAULT '1' COMMENT '1 belum bayar,0 sudah bayar',
+  `tgl_input_pib` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pib`
+--
+
+INSERT INTO `pib` (`id_pib`, `no_pib`, `tgl_pib_masuk`, `ppn_impor`, `pph_impor`, `bea_cukai`, `no_po`, `notes_pib`, `attachment`, `status_aktif_pib`, `status_bayar_pib`, `tgl_input_pib`) VALUES
+(4, '00000000447120190509700469', '2019-05-01', 90805000, 22702000, 43241000, 'PO-000001', 'Biaya PIB nanshin 49 - sefar- barang ica #2 petrokimia 2321 pa1', '38181.jpg', 0, 0, '2019-06-27 07:42:13');
 
 -- --------------------------------------------------------
 
@@ -945,29 +1105,33 @@ INSERT INTO `po_setting` (`id_po_setting`, `id_oc`, `sudah_po`, `tgl_po`, `id_us
 --
 
 CREATE TABLE `price_request` (
-  `id_request` int(11) NOT NULL,
-  `tgl_dateline_request` date NOT NULL,
-  `status_request` int(11) NOT NULL DEFAULT '0',
-  `id_perusahaan` int(11) NOT NULL COMMENT 'perlu untuk menjaga kalau ada pegawai yang pindah kantor dan masih berinteraksi dengan leiter',
-  `id_cp` int(11) NOT NULL,
+  `id_request` int(11) NOT NULL COMMENT 'mempermudah mendapatkan no rfq',
+  `no_request` varchar(200) NOT NULL COMMENT 'yang keluar di dokumen, yang selalu unik, kurang lebih seperti id request, tahun, bulan yang jadi composite key gitu',
+  `tgl_dateline_request` date DEFAULT NULL,
+  `id_perusahaan` int(11) DEFAULT NULL COMMENT 'perlu untuk menjaga kalau ada pegawai yang pindah kantor dan masih berinteraksi dengan leiter',
+  `id_cp` int(11) DEFAULT NULL,
   `franco` varchar(200) DEFAULT NULL,
+  `bulan_request` varchar(11) NOT NULL,
+  `tahun_request` varchar(11) NOT NULL,
+  `status_request` int(11) NOT NULL DEFAULT '0' COMMENT '0: rfq, 1 (setelah rfq): vendor price, 2 (setelah vendor price) quotation, 3 (setelah quotation).',
+  `untuk_stock` int(11) NOT NULL DEFAULT '1' COMMENT '0: untuk stock, 1 tidak stock',
+  `status_aktif_request` int(11) NOT NULL COMMENT '0 aktif, 1 tidak aktif. penolakan dari vendor price itu rubahnya kesini',
   `id_user_add` int(11) NOT NULL,
   `date_request_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_user_edit` int(11) NOT NULL DEFAULT '0',
   `date_request_edit` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `id_user_delete` int(11) NOT NULL DEFAULT '0',
-  `date_request_delete` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `status_buatquo` int(11) NOT NULL DEFAULT '1' COMMENT '1 : yang belum dibuat quo, yang 0 sudah jadi quo',
-  `untuk_stock` int(11) NOT NULL DEFAULT '1' COMMENT '0: untuk stock, 1 tidak stock'
+  `date_request_delete` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `price_request`
 --
 
-INSERT INTO `price_request` (`id_request`, `tgl_dateline_request`, `status_request`, `id_perusahaan`, `id_cp`, `franco`, `id_user_add`, `date_request_add`, `id_user_edit`, `date_request_edit`, `id_user_delete`, `date_request_delete`, `status_buatquo`, `untuk_stock`) VALUES
-(1, '2019-06-15', 3, 18, 30, 'Medan', 11, '2019-06-13 09:56:44', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1),
-(2, '2019-06-29', 3, 19, 31, 'Surabaya', 11, '2019-06-13 17:56:52', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 0, 1);
+INSERT INTO `price_request` (`id_request`, `no_request`, `tgl_dateline_request`, `id_perusahaan`, `id_cp`, `franco`, `bulan_request`, `tahun_request`, `status_request`, `untuk_stock`, `status_aktif_request`, `id_user_add`, `date_request_add`, `id_user_edit`, `date_request_edit`, `id_user_delete`, `date_request_delete`) VALUES
+(1, 'LI-001/RFQ/VI/2019', '2019-07-14', 18, 30, 'Surabaya', '06', '2019', 1, 1, 0, 11, '2019-06-21 23:52:37', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(2, 'LI-002/RFQ/VI/2019', '2019-06-29', 19, 31, 'Surabaya', '06', '2019', 1, 1, 0, 11, '2019-06-22 00:11:53', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(3, 'LI-003/RFQ/VI/2019', '2019-06-30', 26, 42, 'Surabaya', '06', '2019', 1, 1, 0, 11, '2019-06-22 09:11:44', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -977,9 +1141,11 @@ INSERT INTO `price_request` (`id_request`, `tgl_dateline_request`, `status_reque
 
 CREATE TABLE `price_request_item` (
   `id_request_item` int(11) NOT NULL,
-  `id_request` int(11) NOT NULL,
-  `id_produk` int(11) NOT NULL,
-  `jumlah_produk` int(11) NOT NULL,
+  `no_request` varchar(200) NOT NULL,
+  `nama_produk` text,
+  `jumlah_produk` varchar(200) DEFAULT NULL,
+  `notes_produk` text,
+  `file` text,
   `status_request_item` int(11) NOT NULL DEFAULT '0',
   `id_user_add` int(11) NOT NULL,
   `date_request_item_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -994,12 +1160,15 @@ CREATE TABLE `price_request_item` (
 -- Dumping data for table `price_request_item`
 --
 
-INSERT INTO `price_request_item` (`id_request_item`, `id_request`, `id_produk`, `jumlah_produk`, `status_request_item`, `id_user_add`, `date_request_item_add`, `id_user_edit`, `date_request_item_edit`, `id_user_delete`, `date_request_item_delete`, `sudah_po`) VALUES
-(1, 1, 9, 100, 0, 11, '2019-06-12 22:20:27', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
-(4, 1, 11, 200, 1, 11, '2019-06-12 23:28:15', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
-(5, 1, 9, 50, 0, 11, '2019-06-12 23:54:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
-(6, 2, 9, 200, 0, 11, '2019-06-13 17:56:52', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
-(7, 2, 11, 100, 0, 11, '2019-06-13 17:56:52', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1);
+INSERT INTO `price_request_item` (`id_request_item`, `no_request`, `nama_produk`, `jumlah_produk`, `notes_produk`, `file`, `status_request_item`, `id_user_add`, `date_request_item_add`, `id_user_edit`, `date_request_item_edit`, `id_user_delete`, `date_request_item_delete`, `sudah_po`) VALUES
+(36, 'LI-002/RFQ/VI/2019', 'Sefar Accuflow 03-600-20 ADBLUE 75cm', '30meter', 'harga 30ribu', 'assignment3_0000002027110.docx', 0, 11, '2019-06-22 07:24:07', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
+(37, 'LI-002/RFQ/VI/2019', 'items 4', '40meter', 'harga 40ribu', 'assignment4_00000020271.docx', 0, 11, '2019-06-22 07:24:07', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
+(38, 'LI-002/RFQ/VI/2019', 'items 5', '50meter', 'harga 50ribu', '-', 0, 11, '2019-06-22 07:24:08', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
+(39, 'LI-001/RFQ/VI/2019', 'Sefar Accuflow 07-230-60 75cm', '10 meter', '10ribu / meter', 'assignment1_0000002027110.docx', 0, 11, '2019-06-22 07:24:49', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
+(40, 'LI-001/RFQ/VI/2019', 'items 2', '20 mter', '20ribu/meter', '-', 0, 11, '2019-06-22 07:24:49', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
+(50, 'LI-003/RFQ/VI/2019', 'item 1', '10 meter', '10ribu/meter', 'assignment5_000000202713.docx', 0, 11, '2019-06-22 09:15:34', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
+(51, 'LI-003/RFQ/VI/2019', 'item 2', '20 meter', '20ribu/meter2', 'assignment5_000000202714.docx', 0, 11, '2019-06-22 09:15:34', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
+(52, 'LI-003/RFQ/VI/2019', 'item3', '30 meter', '30ribu/meter', '-', 0, 11, '2019-06-22 09:15:34', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -1277,9 +1446,10 @@ INSERT INTO `produk` (`id_produk`, `bn_produk`, `nama_produk`, `satuan_produk`, 
 (9, '3F03-0600-075-00', 'Sefar Accuflow 03-600-20 ADBLUE 75cm', 'M', 'Color: ADBLUE\r\nLength: 75 CM', 'images1.png', 0, 11, '2019-06-11 22:04:09', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (10, '3F06-0150-075-00', 'Sefar Accuflow 06-150-30 75cm', 'M', '-', 'default.jpg', 1, 11, '2019-06-11 22:08:10', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (11, '3F07-0230-075-00', 'Sefar Accuflow 07-230-60 75cm', 'M', 'Length: 75 Cm', 'jute-fabric-roll1.png', 0, 11, '2019-06-11 22:39:50', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(12, '3F03-0600-075-000', 'Sefar Accuflow 03-600-20 ADBLUE 75cm0', 'M0', 'Color: ADBLUE0\r\nLength: 75 CM0', 'images.png', 1, 11, '2019-06-11 23:08:29', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(12, '3F03-0600-075-000', 'Sefar Accuflow 03-600-20 ADBLUE 75cm0', 'M0', 'Sefar Accuflow 03-600-20 ADBLUE 75cm0', 'images.png', 1, 11, '2019-06-11 23:08:29', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (13, '3F03-0600-075-00', 'Sefar Accuflow 03-600-20 ADBLUE 75cm', 'M', 'Color: ADBLUE\r\nLength: 75 CM', 'default.jpg', 1, 11, '2019-06-11 23:09:12', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(14, '3F03-0600-075-00', 'Sefar Accuflow 03-600-20 ADBLUE 75cm', 'M', 'Color: ADBLUE\r\nLength: 75 CM', 'default.jpg', 1, 11, '2019-06-11 23:09:35', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+(14, '3F03-0600-075-00', 'Sefar Accuflow 03-600-20 ADBLUE 75cm', 'M', 'Color: ADBLUE\r\nLength: 75 CM', 'default.jpg', 1, 11, '2019-06-11 23:09:35', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(15, '3100-2026-005-00', '', 'M', 'Filter Bag for Dust Filters made of 07-351-600NFI, Size: 120mm (Dia) x 3035mm (L) , Top Open , Bottom Round', 'beats1.png', 0, 11, '2019-06-15 19:12:41', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1310,7 +1480,8 @@ CREATE TABLE `produk_vendor` (
 
 INSERT INTO `produk_vendor` (`id_produk_vendor`, `bn_produk_vendor`, `nama_produk_vendor`, `satuan_produk_vendor`, `deskripsi_produk_vendor`, `status_produk_vendor`, `id_perusahaan`, `id_produk`, `id_user_add`, `date_produk_vendor_add`, `id_user_edit`, `date_produk_vendor_edit`, `id_user_delete`, `date_produk_vendor_delete`) VALUES
 (14, '3F03-0600-055-11', 'Sefar Accuflow 03-600-20 ADBLUE 50 items/package', 'PACKAGE', 'Color: ADBLUE\r\nAmount: 50 items/package', 0, 20, 9, 11, '2019-06-12 13:38:39', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(15, '3F07-0230-075-00', 'Sefar Accuflow 07-230-60 80cm', 'M', 'Length: 80Cm', 0, 20, 11, 11, '2019-06-13 19:14:31', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+(15, '3F07-0230-075-00', 'Sefar Accuflow 07-230-60 80cm', 'M', 'Length: 80Cm', 0, 20, 11, 11, '2019-06-13 19:14:31', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(16, '0834-32432-444', 'Tepung beras', 'PACKAGE', 'packages', 0, 23, 0, 11, '2019-06-14 15:24:35', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1347,17 +1518,8 @@ CREATE TABLE `quotation` (
 --
 
 INSERT INTO `quotation` (`id_quo`, `versi_quo`, `id_request`, `no_quo`, `hal_quo`, `id_perusahaan`, `id_cp`, `up_cp`, `durasi_pengiriman`, `franco`, `durasi_pembayaran`, `mata_uang_pembayaran`, `alamat_perusahaan`, `dateline_quo`, `status_quo`, `id_user_add`, `date_quo_add`, `id_user_edit`, `date_quo_edit`, `id_user_delete`, `date_quo_delete`) VALUES
-(1, 1, 1, 'QUO-00001', 'Penawaran Barang 1', 18, 30, 'Bapak Jhony Kurniawan', 12, 'Medan', 12, 'IDR', 'Jl. Industri Raya No. 1 Km. 21, \r\nDesa Budimulya, Kec. Cikupa, \r\nTangerang 15710', '2019-07-05', 0, 11, '2019-06-13 14:32:57', 11, NULL, 0, NULL),
-(1, 2, 1, 'QUO-00001 Rev 1', 'Penawaran Barang 1', 18, 30, 'Bapak Jhony Kurniawan', 12, 'Medan', 12, 'IDR', 'Jl. Industri Raya No. 1 Km. 21, \r\nDesa Budimulya, Kec. Cikupa, \r\nTangerang 15710', '2019-07-05', 0, 11, '2019-06-13 15:00:33', 0, NULL, 0, NULL),
-(1, 3, 1, 'QUO-00001 Rev 1 Rev 2', 'Penawaran Barang 1', 18, 30, 'Bapak Jhony Kurniawan', 12, 'Medan', 12, 'IDR', 'Jl. Industri Raya No. 1 Km. 21, \r\nDesa Budimulya, Kec. Cikupa, \r\nTangerang 15710', '2019-07-05', 0, 11, '2019-06-13 15:05:11', 0, NULL, 0, NULL),
-(1, 4, 1, 'QUO-00001 Rev 1 Rev 2 Rev 3', 'Penawaran Barang 1', 18, 30, 'Bapak Jhony Kurniawan', 12, 'Medan', 12, 'IDR', 'Jl. Industri Raya No. 1 Km. 21, \r\nDesa Budimulya, Kec. Cikupa, \r\nTangerang 15710', '2019-07-05', 0, 11, '2019-06-13 15:08:36', 0, NULL, 0, NULL),
-(1, 5, 1, 'QUO-00001 Rev 1 Rev 2 Rev 3 Rev 4', 'Penawaran Barang 1', 18, 30, 'Bapak Jhony Kurniawan', 12, 'Medan', 12, 'IDR', 'Jl. Industri Raya No. 1 Km. 21, \r\nDesa Budimulya, Kec. Cikupa, \r\nTangerang 15710', '2019-07-05', 0, 11, '2019-06-13 16:58:43', 0, NULL, 0, NULL),
-(1, 6, 1, 'QUO-00001 Rev 1 Rev 2 Rev 3 Rev 5', 'Penawaran Barang 1', 18, 30, 'Bapak Jhony Kurniawan', 12, 'Medan', 12, 'IDR', 'Jl. Industri Raya No. 1 Km. 21, \r\nDesa Budimulya, Kec. Cikupa, \r\nTangerang 15710', '2019-07-05', 0, 11, '2019-06-13 17:04:41', 0, NULL, 0, NULL),
-(1, 7, 1, 'QUO-00001 Rev 1 Rev 2 Rev 3 Rev 6', 'Penawaran Barang 1', 18, 30, 'Bapak Jhony Kurniawan', 12, 'Medan', 12, 'IDR', 'Jl. Industri Raya No. 1 Km. 21, \r\nDesa Budimulya, Kec. Cikupa, \r\nTangerang 15710', '2019-07-05', 0, 11, '2019-06-13 17:05:25', 0, NULL, 0, NULL),
-(1, 8, 1, 'QUO-00001 Rev 1 Rev 2 Rev 3 Rev 7', 'Penawaran Barang 1', 18, 30, 'Bapak Jhony Kurniawan', 12, 'Medan', 12, 'IDR', 'Jl. Industri Raya No. 1 Km. 21, \r\nDesa Budimulya, Kec. Cikupa, \r\nTangerang 15710', '2019-07-05', 3, 11, '2019-06-13 17:07:28', 0, NULL, 0, NULL),
-(2, 1, 2, 'QUO-00002', 'Penawaran 1', 19, 31, 'Bapak Jhony', 8, 'Medan', 8, 'IDR', 'Jelambar Selatan II No. 4, \r\nGedung Agar-agar', '2019-06-21', 0, 11, '2019-06-13 19:23:30', 0, NULL, 0, NULL),
-(2, 2, 2, 'QUO-00002 Rev 1', 'Penawaran 1', 19, 31, 'Bapak Jhony', 8, 'Medan', 8, 'IDR', 'Jelambar Selatan II No. 4, \r\nGedung Agar-agar', '2019-06-21', 0, 11, '2019-06-13 19:25:27', 0, NULL, 0, NULL),
-(2, 3, 2, 'QUO-00002 Rev 1 Rev 2', 'Penawaran 1', 19, 31, 'Bapak Jhony', 12, 'Medan', 12, 'IDR', 'Jelambar Selatan II No. 4, \r\nGedung Agar-agar', '2019-06-21', 3, 11, '2019-06-13 19:29:24', 0, NULL, 0, NULL);
+(1, 8, 1, 'LI-001/QUO/VI/2019 ver. 8', 'Penawaran Barang 1', 18, 30, 'Bapak Jhony Kurniawan', 12, 'Medan', 12, 'IDR', 'Jl. Industri Raya No. 1 Km. 21, \r\nDesa Budimulya, Kec. Cikupa, \r\nTangerang 15710', '2019-07-05', 3, 11, '2019-06-13 17:07:28', 0, NULL, 0, NULL),
+(2, 3, 2, 'LI-002/QUO/VI/2019 ver. 3', 'Penawaran 1', 19, 31, 'Bapak Jhony', 12, 'Medan', 12, 'IDR', 'Jelambar Selatan II No. 4, \r\nGedung Agar-agar', '2019-06-21', 3, 11, '2019-06-13 19:29:24', 0, NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1370,10 +1532,10 @@ CREATE TABLE `quotation_item` (
   `id_quotation` int(11) NOT NULL,
   `quo_version` int(11) NOT NULL,
   `id_request_item` int(11) NOT NULL,
-  `id_cp_shipper` int(11) NOT NULL,
+  `id_shipper` int(11) NOT NULL,
   `metode_shipping` varchar(200) NOT NULL,
-  `id_cp_vendor` int(11) NOT NULL,
-  `id_cp_courier` int(11) NOT NULL,
+  `id_supplier` int(11) NOT NULL,
+  `id_courier` int(11) NOT NULL,
   `metode_courier` varchar(200) NOT NULL,
   `item_amount` int(11) NOT NULL,
   `selling_price` bigint(20) NOT NULL,
@@ -1389,13 +1551,90 @@ CREATE TABLE `quotation_item` (
 -- Dumping data for table `quotation_item`
 --
 
-INSERT INTO `quotation_item` (`id_quotation_item`, `id_quotation`, `quo_version`, `id_request_item`, `id_cp_shipper`, `metode_shipping`, `id_cp_vendor`, `id_cp_courier`, `metode_courier`, `item_amount`, `selling_price`, `final_amount`, `final_selling_price`, `margin_price`, `id_oc`, `status_oc_item`, `sudah_po`) VALUES
-(4, 1, 1, 4, 21, 'AIR', 20, 35, 'AIR', 150, 3000000000, 0, 0, '20.923', 0, 1, 1),
-(6, 1, 5, 1, 21, 'AIR', 20, 35, 'AIR', 150, 3000000000, 0, 0, '20.923', 0, 1, 1),
-(7, 1, 8, 1, 21, 'AIR', 20, 35, 'AIR', 150, 3500000000, 150, 3000000000, '32.220', 3, 0, 1),
-(9, 2, 1, 1, 21, 'SEA', 20, 35, 'SEA', 300, 2000000000, 0, 0, '2.386', 0, 1, 1),
-(10, 2, 2, 7, 21, 'AIR', 20, 35, 'AIR', 350, 7500000000, 0, 0, '9.335', 0, 1, 1),
-(12, 2, 3, 7, 21, 'AIR', 20, 35, 'AIR', 350, 7850000000, 500, 9000000000, '13.378', 4, 0, 1);
+INSERT INTO `quotation_item` (`id_quotation_item`, `id_quotation`, `quo_version`, `id_request_item`, `id_shipper`, `metode_shipping`, `id_supplier`, `id_courier`, `metode_courier`, `item_amount`, `selling_price`, `final_amount`, `final_selling_price`, `margin_price`, `id_oc`, `status_oc_item`, `sudah_po`) VALUES
+(7, 1, 8, 36, 21, 'AIR', 20, 21, 'AIR', 30, 3500000000, 30, 340000, '32.220', 3, 0, 1),
+(12, 2, 3, 39, 21, 'AIR', 20, 21, 'AIR', 10, 7850000000, 10, 200000, '13.378', 4, 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reimburse`
+--
+
+CREATE TABLE `reimburse` (
+  `id_reimburse` int(11) NOT NULL,
+  `subject_reimburse` varchar(200) NOT NULL,
+  `nominal_reimburse` int(11) NOT NULL,
+  `attachment` text NOT NULL,
+  `notes` text NOT NULL,
+  `id_user_add` int(11) NOT NULL,
+  `tgl_reimburse_add` datetime DEFAULT NULL,
+  `expanses_type` int(11) NOT NULL,
+  `status_paid` int(11) NOT NULL DEFAULT '1',
+  `status_aktif_reimburse` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `reimburse`
+--
+
+INSERT INTO `reimburse` (`id_reimburse`, `subject_reimburse`, `nominal_reimburse`, `attachment`, `notes`, `id_user_add`, `tgl_reimburse_add`, `expanses_type`, `status_paid`, `status_aktif_reimburse`) VALUES
+(4, 'Bayar uang tol', 350000, '-', '25 hari bolak balik', 11, '2019-06-26 00:00:00', 4, 1, 1),
+(5, 'Bayar tol 1 bulan 1', 400000, '593213.jpg', 'bolak balik 28hari ', 11, '2019-06-26 00:00:00', 4, 0, 0),
+(6, 'Pembelian ATK dan buku tulis', 230000, '38181.jpg', 'beli atk buat kantor request by abc', 11, '2019-06-26 00:00:00', 4, 0, 0),
+(7, 'uang makan', 34000, '381811.jpg', 'makan sama client', 11, '2019-06-26 00:00:00', 3, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `report`
+--
+
+CREATE TABLE `report` (
+  `id_report` int(11) NOT NULL,
+  `tipe_report` varchar(200) NOT NULL,
+  `pic_target` varchar(200) NOT NULL COMMENT 'lawan bicara',
+  `location` text NOT NULL COMMENT 'dari mana melakukan hal guna memenuhi KPI ini dan waktunya juga',
+  `progress_percentage` int(11) NOT NULL,
+  `report` text NOT NULL COMMENT 'menjelaskan progress percentage',
+  `tgl_report` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status_aktif_report` int(11) NOT NULL,
+  `id_user_add` int(11) NOT NULL,
+  `judul_report` varchar(200) NOT NULL,
+  `attachment` text NOT NULL,
+  `support_need` text NOT NULL,
+  `next_plan` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `report`
+--
+
+INSERT INTO `report` (`id_report`, `tipe_report`, `pic_target`, `location`, `progress_percentage`, `report`, `tgl_report`, `status_aktif_report`, `id_user_add`, `judul_report`, `attachment`, `support_need`, `next_plan`) VALUES
+(1, 'kpi 1', 'waefawefea', 'efweafew', 221, 'awefawefa', '2019-06-28 20:39:16', 0, 11, 'weafawefawef', 'jute-fabric-roll1.png', 'awefawefawef', 'waefawef'),
+(2, 'kpi 2', 'target pic 1', 'location 1', 21, 'report 1', '2019-06-27 20:40:32', 0, 11, 'report title 1', 'images.png', 'support\r\nneed\r\n1', 'next\r\nplan\r\n1'),
+(3, 'kpi 1', 'joshua natan - isupport indonesia', 'resto dekat sini ', 90, 'hampir sekaliii tinggal kasih apanya', '2019-07-09 14:33:53', 0, 11, 'Cek week 2', '593213.jpg', 'butuh quotation aja', 'tinggal tanda tangan kontrak');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `report_weeks`
+--
+
+CREATE TABLE `report_weeks` (
+  `id_weeks` int(11) NOT NULL,
+  `tahun` int(11) NOT NULL,
+  `tgl_mulai` date NOT NULL,
+  `tgl_selesai` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `report_weeks`
+--
+
+INSERT INTO `report_weeks` (`id_weeks`, `tahun`, `tgl_mulai`, `tgl_selesai`) VALUES
+(1, 2019, '2019-06-26', '2019-07-03'),
+(2, 2019, '2019-07-04', '2019-07-10');
 
 -- --------------------------------------------------------
 
@@ -1421,12 +1660,14 @@ CREATE TABLE `satuan` (
 
 INSERT INTO `satuan` (`id_satuan`, `nama_satuan`, `status_satuan`, `id_user_add`, `date_satuan_add`, `id_user_edit`, `date_satuan_edit`, `id_user_delete`, `date-satuan_delete`) VALUES
 (9, 'M', 0, 11, '2019-06-11 22:04:09', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(10, 'M0', 0, 11, '2019-06-11 23:08:29', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(10, 'M0', 1, 11, '2019-06-11 23:08:29', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (11, 'KM', 1, 0, '2019-06-12 00:47:45', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (12, 'ASDF', 1, 0, '2019-06-12 00:47:57', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (13, 'PCS', 0, 11, '2019-06-12 10:31:44', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (14, 'ROLL', 0, 11, '2019-06-12 13:31:59', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(15, 'PACKAGE', 0, 11, '2019-06-12 13:35:25', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+(15, 'PACKAGE', 0, 11, '2019-06-12 13:35:25', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(16, 'Package', 0, 11, '2019-06-14 15:24:35', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(17, 'PACKAGE', 0, 11, '2019-06-14 15:24:35', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1439,6 +1680,71 @@ CREATE TABLE `success_project` (
   `id_quo` int(11) NOT NULL,
   `status_po` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tagihan`
+--
+
+CREATE TABLE `tagihan` (
+  `id_tagihan` int(11) NOT NULL,
+  `no_invoice` varchar(100) DEFAULT NULL COMMENT 'nomor invoice dair yang ngeluarin',
+  `no_refrence` varchar(100) DEFAULT NULL COMMENT 'no refrence ke sistem kita entah od atau po',
+  `peruntukan_tagihan` varchar(200) DEFAULT NULL COMMENT 'kalau supplier/shipper, rujuk ke PO leiter vendor, untuk courier, merujuk ke surat jalan',
+  `rekening_pembayaran` varchar(200) DEFAULT NULL COMMENT 'karena semua pembayaran invoice pake bank, jadi uda paten ada rekneing pembayaran. Siapa tau mau masukin atas nama',
+  `subtotal` int(11) DEFAULT NULL COMMENT 'dalam mata uang sendiri2',
+  `is_ppn` int(11) DEFAULT NULL,
+  `is_pph` int(11) DEFAULT NULL,
+  `ppn` int(11) DEFAULT '0',
+  `pph` int(11) DEFAULT '0',
+  `discount` int(11) DEFAULT NULL COMMENT 'kurangin dlu ke subtotal, dalam mata uang yang sama',
+  `total` int(11) DEFAULT NULL COMMENT 'dalam mata uang tersebut; hasil dari subtotal-diskon+ppn-pph',
+  `mata_uang` varchar(10) DEFAULT NULL COMMENT 'mata uang untuk bayar',
+  `notes_tagihan` text,
+  `attachment` varchar(200) DEFAULT NULL COMMENT 'invoice dari mereka, entah pdf atau foto',
+  `dateline_invoice` date DEFAULT NULL COMMENT 'batas pembayaran dair mereka sebelum kena charge',
+  `status_lunas` int(11) DEFAULT '1' COMMENT '1: belum. 0 sudah lunas',
+  `status_aktif_invoice` int(11) DEFAULT '0' COMMENT '0:aktif, 1: deleted'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tagihan`
+--
+
+INSERT INTO `tagihan` (`id_tagihan`, `no_invoice`, `no_refrence`, `peruntukan_tagihan`, `rekening_pembayaran`, `subtotal`, `is_ppn`, `is_pph`, `ppn`, `pph`, `discount`, `total`, `mata_uang`, `notes_tagihan`, `attachment`, `dateline_invoice`, `status_lunas`, `status_aktif_invoice`) VALUES
+(2, 'PO-0001/sefar/2019/16', 'PO-0002', 'SUPPLIER', '2830498839 A/N Joshua Natan', 2300000, 0, 0, 230000, 46000, 0, 2484000, 'IDR', '', 'CV_-_Joshua_Natan_W.pdf', '2019-06-27', 0, 0),
+(3, 'PO/tiki/20019/2018/11', 'OD-00011', 'COURIER', '23451234 A/N Jaya Tiki Nasional SEKALI', 4200000, 0, 1, 350000, 0, 700000, 3850000, 'IDR', 'Bayar setelah sampai DISINI', 'error_login.png', '2020-04-01', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tax`
+--
+
+CREATE TABLE `tax` (
+  `id_tax` int(11) NOT NULL,
+  `bulan_pajak` varchar(10) NOT NULL,
+  `tahun_pajak` int(11) NOT NULL,
+  `jumlah_pajak` int(11) NOT NULL,
+  `tipe_pajak` varchar(200) NOT NULL COMMENT 'MASUKAN / KELUARAN / -',
+  `jenis_pajak` varchar(200) NOT NULL COMMENT 'PPN,PPH23',
+  `status_aktif_pajak` int(11) NOT NULL,
+  `id_refrensi` varchar(200) NOT NULL COMMENT 'nomor invoice, id pib, dll',
+  `is_pib` int(11) NOT NULL DEFAULT '1' COMMENT '1: non pib, 0, pib'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tax`
+--
+
+INSERT INTO `tax` (`id_tax`, `bulan_pajak`, `tahun_pajak`, `jumlah_pajak`, `tipe_pajak`, `jenis_pajak`, `status_aktif_pajak`, `id_refrensi`, `is_pib`) VALUES
+(8, '06', 2019, 230000, 'MASUKAN', 'PPN', 0, '2', 1),
+(9, '06', 2019, 46000, '-', 'PPH', 0, '2', 1),
+(10, '06', 2019, 350000, 'MASUKAN', 'PPN', 0, '3', 1),
+(17, '06', 2019, 22702000, '-', 'PPH', 0, '00000000447120190509700469', 0),
+(18, '06', 2019, 90805000, 'MASUKAN', 'PPN', 0, '00000000447120190509700469', 0),
+(19, '06', 2019, 43241000, '-', 'BEA CUKAI', 0, '00000000447120190509700469', 0);
 
 -- --------------------------------------------------------
 
@@ -1550,7 +1856,9 @@ INSERT INTO `variable_courier_price` (`id_variable_courier`, `shipping_purpose`,
 (15, 'CUSTOMER', 'SEA', 35, 21, 'Variable 2 Courier SEA', 11000, 14500, 'USD', 0, 1, 11, '2019-06-13 03:33:28', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (16, 'CUSTOMER', 'SEA', 35, 21, 'Variable 3 Courier SEA', 1600000, 1, 'IDR', 0, 1, 11, '2019-06-13 03:33:28', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (17, 'CUSTOMER', 'AIR', 35, 21, 'Variable Courier 1', 12000, 11000, 'USD', 0, 6, 11, '2019-06-13 19:20:41', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(18, 'CUSTOMER', 'SEA', 35, 21, 'Courier SEA', 87600, 7800, 'IDR', 0, 7, 11, '2019-06-13 19:21:09', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+(18, 'CUSTOMER', 'SEA', 35, 21, 'Courier SEA', 87600, 7800, 'IDR', 0, 7, 11, '2019-06-13 19:21:09', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(19, 'CUSTOMER', 'AIR', 35, 21, '-', 0, 0, 'USD', 0, 9, 11, '2019-06-17 17:44:38', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(20, 'CUSTOMER', 'AIR', 35, 21, '-', 0, 0, 'USD', 0, 10, 11, '2019-06-17 18:02:29', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1596,7 +1904,13 @@ INSERT INTO `variable_shipping_price` (`id_variable_shipping`, `id_supplier`, `s
 (46, 20, 'SUPPLIER', 'AIR', 35, 21, 'Variable item 1', 123000, 3450, 'USD', 0, 6, 11, '2019-06-13 19:18:53', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (47, 20, 'SUPPLIER', 'AIR', 35, 21, 'Variable item 2', 345000, 12300, 'USD', 0, 6, 11, '2019-06-13 19:18:53', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (48, 20, 'SUPPLIER', 'SEA', 35, 21, 'Variable SEA 2', 789000, 8670, 'USD', 0, 6, 11, '2019-06-13 19:20:05', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(49, 20, 'SUPPLIER', 'SEA', 35, 21, 'Variable SEA 1 4', 99000, 88000, 'USD', 0, 6, 11, '2019-06-13 19:20:05', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+(49, 20, 'SUPPLIER', 'SEA', 35, 21, 'Variable SEA 1 4', 99000, 88000, 'USD', 0, 6, 11, '2019-06-13 19:20:05', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(50, 20, 'SUPPLIER', 'AIR', 35, 21, 'Variable SEA 1', 1100, 5400, 'USD', 1, 8, 11, '2019-06-14 13:52:01', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(51, 20, 'SUPPLIER', 'AIR', 35, 21, 'Variable AIR 1', 1200, 1100, 'USD', 1, 8, 11, '2019-06-14 13:52:57', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(52, 20, 'SUPPLIER', 'SEA', 35, 21, 'Secara sadar SEA', 1200, 110000, 'USD', 0, 8, 11, '2019-06-14 13:53:16', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(53, 20, 'SUPPLIER', 'AIR', 35, 21, '-', 0, 0, 'USD', 0, 8, 11, '2019-06-17 17:43:43', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(54, 20, 'SUPPLIER', 'AIR', 35, 21, '-', 0, 0, 'USD', 0, 9, 11, '2019-06-17 18:01:13', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(55, 20, 'SUPPLIER', 'AIR', 35, 21, '-', 0, 0, 'USD', 0, 10, 11, '2019-06-17 18:01:40', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 --
 -- Indexes for dumped tables
@@ -1625,6 +1939,18 @@ ALTER TABLE `harga_vendor`
 --
 ALTER TABLE `invoice_core`
   ADD PRIMARY KEY (`id_invoice`);
+
+--
+-- Indexes for table `item_margin`
+--
+ALTER TABLE `item_margin`
+  ADD PRIMARY KEY (`id_quotation_item`);
+
+--
+-- Indexes for table `kpi_user`
+--
+ALTER TABLE `kpi_user`
+  ADD PRIMARY KEY (`id_kpi_user`);
 
 --
 -- Indexes for table `log_privilage`
@@ -1681,10 +2007,28 @@ ALTER TABLE `order_confirmation`
   ADD PRIMARY KEY (`id_oc`);
 
 --
+-- Indexes for table `pembayaran`
+--
+ALTER TABLE `pembayaran`
+  ADD PRIMARY KEY (`id_pembayaran`);
+
+--
 -- Indexes for table `perusahaan`
 --
 ALTER TABLE `perusahaan`
   ADD PRIMARY KEY (`id_perusahaan`);
+
+--
+-- Indexes for table `petty_cash`
+--
+ALTER TABLE `petty_cash`
+  ADD PRIMARY KEY (`id_transaksi_petty`);
+
+--
+-- Indexes for table `pib`
+--
+ALTER TABLE `pib`
+  ADD PRIMARY KEY (`id_pib`);
 
 --
 -- Indexes for table `po_core`
@@ -1708,7 +2052,7 @@ ALTER TABLE `po_setting`
 -- Indexes for table `price_request`
 --
 ALTER TABLE `price_request`
-  ADD PRIMARY KEY (`id_request`);
+  ADD PRIMARY KEY (`no_request`);
 
 --
 -- Indexes for table `price_request_item`
@@ -1747,6 +2091,24 @@ ALTER TABLE `quotation_item`
   ADD PRIMARY KEY (`id_quotation_item`);
 
 --
+-- Indexes for table `reimburse`
+--
+ALTER TABLE `reimburse`
+  ADD PRIMARY KEY (`id_reimburse`);
+
+--
+-- Indexes for table `report`
+--
+ALTER TABLE `report`
+  ADD PRIMARY KEY (`id_report`);
+
+--
+-- Indexes for table `report_weeks`
+--
+ALTER TABLE `report_weeks`
+  ADD PRIMARY KEY (`id_weeks`,`tahun`);
+
+--
 -- Indexes for table `satuan`
 --
 ALTER TABLE `satuan`
@@ -1757,6 +2119,18 @@ ALTER TABLE `satuan`
 --
 ALTER TABLE `success_project`
   ADD PRIMARY KEY (`id_success_project`);
+
+--
+-- Indexes for table `tagihan`
+--
+ALTER TABLE `tagihan`
+  ADD PRIMARY KEY (`id_tagihan`);
+
+--
+-- Indexes for table `tax`
+--
+ALTER TABLE `tax`
+  ADD PRIMARY KEY (`id_tax`);
 
 --
 -- Indexes for table `user`
@@ -1784,25 +2158,31 @@ ALTER TABLE `variable_shipping_price`
 -- AUTO_INCREMENT for table `contact_person`
 --
 ALTER TABLE `contact_person`
-  MODIFY `id_cp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id_cp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `finance_usage_type`
 --
 ALTER TABLE `finance_usage_type`
-  MODIFY `id_type` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_type` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `harga_vendor`
 --
 ALTER TABLE `harga_vendor`
-  MODIFY `id_harga_vendor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id_harga_vendor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `invoice_core`
 --
 ALTER TABLE `invoice_core`
-  MODIFY `id_invoice` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_invoice` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `kpi_user`
+--
+ALTER TABLE `kpi_user`
+  MODIFY `id_kpi_user` int(11) NOT NULL AUTO_INCREMENT COMMENT 'JANGAN NGERFRENCE KESINI KARENA INI BAKAL DI DELETE INSERT TERUS', AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `log_privilage`
@@ -1838,13 +2218,31 @@ ALTER TABLE `metode_pembayaran`
 -- AUTO_INCREMENT for table `od_item`
 --
 ALTER TABLE `od_item`
-  MODIFY `id_od_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_od_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `pembayaran`
+--
+ALTER TABLE `pembayaran`
+  MODIFY `id_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `perusahaan`
 --
 ALTER TABLE `perusahaan`
-  MODIFY `id_perusahaan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id_perusahaan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+
+--
+-- AUTO_INCREMENT for table `petty_cash`
+--
+ALTER TABLE `petty_cash`
+  MODIFY `id_transaksi_petty` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `pib`
+--
+ALTER TABLE `pib`
+  MODIFY `id_pib` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `po_item`
@@ -1853,16 +2251,10 @@ ALTER TABLE `po_item`
   MODIFY `id_po_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT for table `price_request`
---
-ALTER TABLE `price_request`
-  MODIFY `id_request` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
 -- AUTO_INCREMENT for table `price_request_item`
 --
 ALTER TABLE `price_request_item`
-  MODIFY `id_request_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_request_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `privilage`
@@ -1874,31 +2266,55 @@ ALTER TABLE `privilage`
 -- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
-  MODIFY `id_produk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_produk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `produk_vendor`
 --
 ALTER TABLE `produk_vendor`
-  MODIFY `id_produk_vendor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_produk_vendor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `quotation_item`
 --
 ALTER TABLE `quotation_item`
-  MODIFY `id_quotation_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_quotation_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `reimburse`
+--
+ALTER TABLE `reimburse`
+  MODIFY `id_reimburse` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `report`
+--
+ALTER TABLE `report`
+  MODIFY `id_report` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `satuan`
 --
 ALTER TABLE `satuan`
-  MODIFY `id_satuan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_satuan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `success_project`
 --
 ALTER TABLE `success_project`
   MODIFY `id_success_project` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tagihan`
+--
+ALTER TABLE `tagihan`
+  MODIFY `id_tagihan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tax`
+--
+ALTER TABLE `tax`
+  MODIFY `id_tax` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -1910,13 +2326,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `variable_courier_price`
 --
 ALTER TABLE `variable_courier_price`
-  MODIFY `id_variable_courier` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_variable_courier` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `variable_shipping_price`
 --
 ALTER TABLE `variable_shipping_price`
-  MODIFY `id_variable_shipping` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id_variable_shipping` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

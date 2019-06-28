@@ -55,7 +55,13 @@
                                                 <td><?php echo $request[$a]["items"][$b]["nama_produk"];?></td>
                                                 <td><?php echo $request[$a]["items"][$b]["jumlah_produk"];?></td>
                                                 <td><?php echo $request[$a]["items"][$b]["notes_produk"];?></td>
-                                                <td><a href = "<?php if( $request[$a]["items"][$b]["file"] == "-") echo "#"; else echo base_url();?>assets/rfq/<?php echo $request[$a]["items"][$b]["file"];?>" class = "btn btn-primary btn-sm">DOWNLOAD</a></td>
+                                                <td>
+                                                    <?php if($request[$a]["items"][$b]["file"] != "-"):?>
+                                                    <a target = "_blank" href = "<?php if( $request[$a]["items"][$b]["file"] == "-") echo "#"; else echo base_url();?>assets/rfq/<?php echo $request[$a]["items"][$b]["file"];?>" class = "btn btn-primary btn-sm">DOWNLOAD</a>
+                                                    <?php else:?>
+                                                    <button class = "btn btn-danger btn-sm">NO DOCUMENT</button>
+                                                    <?php endif;?>
+                                                </td>
                                             </tr>
                                             <?php endfor;?>
                                         </tbody>
@@ -79,11 +85,11 @@
                 <td class="actions">
                     
                     <?php if($request[$a]["status_request"] == 0):?>
-                    <a href = "<?php echo base_url();?>crm/request/edit/<?php echo $request[$a]["id_request"];?>/<?php echo $request[$a]["bulan_request"];?>/<?php echo $request[$a]["tahun_request"];?>" class="btn btn-outline btn-primary"><i class="icon wb-edit" aria-hidden="true"></i></a>
+                    <a href = "<?php echo base_url();?>crm/request/edit/<?php echo $request[$a]["id_request"];?>/<?php echo $request[$a]["bulan_request"];?>/<?php echo $request[$a]["tahun_request"];?>" class="btn btn-outline btn-primary btn-sm"><i class="icon wb-edit" aria-hidden="true"></i></a>
 
-                    <a href = "<?php echo base_url();?>crm/request/delete/<?php echo $request[$a]["id_request"];?>/<?php echo $request[$a]["bulan_request"];?>/<?php echo $request[$a]["tahun_request"];?>" class="btn btn-outline btn-danger" data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
+                    <a href = "<?php echo base_url();?>crm/request/delete/<?php echo $request[$a]["id_request"];?>/<?php echo $request[$a]["bulan_request"];?>/<?php echo $request[$a]["tahun_request"];?>" class="btn btn-outline btn-danger btn-sm" data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
                     
-                    <a href = "<?php echo base_url();?>crm/request/confirm/<?php echo $request[$a]["id_request"];?>/<?php echo $request[$a]["bulan_request"];?>/<?php echo $request[$a]["tahun_request"];?>" class="btn btn-outline btn-success"
+                    <a href = "<?php echo base_url();?>crm/request/confirm/<?php echo $request[$a]["id_request"];?>/<?php echo $request[$a]["bulan_request"];?>/<?php echo $request[$a]["tahun_request"];?>" class="btn btn-outline btn-success btn-sm"
                     data-toggle="tooltip"><i class="icon wb-check" aria-hidden="true"></i></a>
                     <?php endif;?>
                     

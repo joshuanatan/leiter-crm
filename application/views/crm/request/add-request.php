@@ -78,8 +78,8 @@
             <input type="hidden" value = "<?php echo $maxId;?>" class="form-control" name="id_request" placeholder="Customer ID" readonly>
         </div>
         <div class = "form-group">
-            <button type = "submit" class = "btn btn-primary btn-outline col-lg-2">SUBMIT</button>
-            <a href = "<?php echo base_url();?>crm/request" class = "btn btn-primary btn-outline col-lg-2">BACK</a>
+            <button type = "submit" class = "btn btn-primary btn-outline col-lg-2 btn-sm">SUBMIT</button>
+            <a href = "<?php echo base_url();?>crm/request" class = "btn btn-primary btn-outline col-lg-2 btn-sm">BACK</a>
         </div>
     </form>
 </div>
@@ -119,7 +119,7 @@
                         <input type = "text" class = "form-control" name = "add_phone_pic">
                     </div>
                     <div class = "form-group">
-                        <button type = "submit" class = "btn btn-primary btn-outline col-lg-2">SUBMIT</button>
+                        <button type = "submit" class = "btn btn-primary btn-outline col-lg-2 btn-sm">SUBMIT</button>
                     </div>
                 </div>
             </form>

@@ -1,0 +1,24 @@
+dashboard (Pak robert):
+-sales 3 tahun terakhir (bar chart), controllernya january (barnya representasi bulannya) (po - oc customer, ambil uangnya)
+
+-quotation win dan loss / bulan (bar chart) controller(bulan, batangnya, quotation, loss, win)
+
+-top 10 customer (bar chart), ketauan dalam 3 taun (controllernya customer, batangnya sales 3 taun terakhir (ambil uangnya))
+
+-tagihan yang due date minggu ini dan yang telat (tabel)
+
+
+dashboard (Finance):
+-tagihan yang due date minggu ini dan yang telat (tabel) nama customer, no po, jumlah yang harus dibayar, due date, udah dp atau belom (kalau dia tipenya 100%, kosongin aja, estimasi tgl pembayaran (text aja))
+
+-invoice yang keluar minggu ini (tabel & teks) (background: tiap jumat kasih laporan jumlah invoice yang keluar & detailnya)
+
+dashboard (order processing):
+
+-quotation win dan loss / bulan (bar chart) controller(bulan, batangnya, quotation, loss, win)
+
+-po customer yang on progress (tabel). (po customer, nama customer, tgl po, [due date pengiriman ke customer], notes, nama barang & quantity, tombol done
+
+
+top navbar:
+-logo bulan diganti logo leiter

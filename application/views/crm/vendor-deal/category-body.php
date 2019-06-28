@@ -24,11 +24,8 @@
                 <td><?php echo $request[$a]["nama_perusahaan"];?></td>
                 <td><?php echo $request[$a]["nama_cp"];?></td>
                 <td>
-                    <a href = "<?php echo base_url();?>crm/vendor/produk/<?php echo $request[$a]["id_request"];?>/<?php echo $request[$a]["bulan_request"];?>/<?php echo $request[$a]["tahun_request"];?>" class="btn btn-outline btn-primary col-lg-5"><i class="icon wb-book" aria-hidden="true"></i>Product Vendor Price</a>
+                    <a href = "<?php echo base_url();?>crm/vendor/produk/<?php echo $request[$a]["id_request"];?>/<?php echo $request[$a]["bulan_request"];?>/<?php echo $request[$a]["tahun_request"];?>" class="btn btn-outline btn-primary btn-sm"><i class="icon wb-book" aria-hidden="true"></i>Product Vendor Price</a>
                     <?php if($request[$a]["untuk_stock"]): ?>
-
-                    <a href = "<?php echo base_url();?>crm/vendor/courier/<?php echo $request[$a]["id_request"];?>/<?php echo $request[$a]["bulan_request"];?>/<?php echo $request[$a]["tahun_request"];?>" data-target="#RequestData" class="btn btn-outline btn-primary col-lg-5"><i class="icon wb-book" aria-hidden="true"></i>Courier Vendor Price</a>
-                    
                     <?php endif;?>
                 </td>
                 <td>
@@ -40,8 +37,9 @@
                 </td>
                 <td class="actions">
                     
-                    <a href = "<?php echo base_url();?>crm/vendor/delete/<?php echo $request[$a]["id_request"];?>" class="btn btn-outline btn-danger" data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
-                    <a href = "<?php echo base_url();?>crm/vendor/submit/<?php echo $request[$a]["id_request"];?>" class="btn btn-outline btn-success" data-trigger = "hover" data-content = <?php if($request[$a]["untuk_stock"] == 1) echo "Proceed to Quotation"; else echo "Proceed to PO";?> data-toggle="popover"><i class="icon fa fa-check" aria-hidden="true"></i></a>
+                    <a href = "<?php echo base_url();?>crm/vendor/delete/<?php echo $request[$a]["id_request"];?>" class="btn btn-outline btn-danger btn-sm" data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
+
+                    <a href = "<?php echo base_url();?>crm/vendor/submit/<?php echo $request[$a]["id_request"];?>" class="btn btn-outline btn-success btn-sm" data-trigger = "hover" data-content = <?php if($request[$a]["untuk_stock"] == 1) echo "Proceed to Quotation"; else echo "Proceed to PO";?> data-toggle="popover"><i class="icon fa fa-check" aria-hidden="true"></i></a>
                     
                 </td>
             </tr> 

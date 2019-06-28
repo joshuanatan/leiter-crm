@@ -50,20 +50,41 @@ class Harga_vendor extends CI_Controller{
             "id_request_item" => $id_request_item
         );
         $field = array(
-            "id_harga_vendor","id_perusahaan","id_cp","harga_produk","vendor_price_rate","mata_uang","notes"
+            "id_harga_vendor","nama_perusahaan","nama_cp","harga_produk", "vendor_price_rate","mata_uang","notes","attachment"
         );
         $print = array(
-            "id_harga_vendor","id_perusahaan","id_cp","harga_produk","vendor_price_rate","mata_uang","notes"
+            "id_harga_vendor","nama_perusahaan","nama_cp","harga_produk", "vendor_price_rate","mata_uang","notes","attachment"
         );
         $result = selectRow("harga_vendor",$where);
         $data = foreachMultipleResult($result,$field,$print);
-        for($a = 0; $a<count($data); $a++){
-            $data[$a]["harga_vendor"] = $data[$a]["harga_produk"]*$data[$a]["vendor_price_rate"];
-            $data[$a]["nama_vendor"] = get1Value("perusahaan","nama_perusahaan", array("id_perusahaan" => $data[$a]["id_perusahaan"]));
-            $data[$a]["nama_cp"] = get1Value("contact_person","id_cp",array("id_cp" => $data[$a]["id_cp"]));
-            $data[$a]["email_cp"] = get1Value("contact_person","email_cp",array("id_cp" => $data[$a]["id_cp"]));
-            $data[$a]["nohp_cp"] = get1Value("contact_person","nohp_cp",array("id_cp" => $data[$a]["id_cp"]));
-        }
+        echo json_encode($data);
+    }
+    public function getEachCourierPrice($id_request_item){
+        $where = array(
+            "id_request_item" => $id_request_item
+        );
+        $field = array(
+            "nama_perusahaan","nama_cp","harga_produk", "vendor_price_rate","mata_uang","notes","attachment","metode_pengiriman"
+        );
+        $print = array(
+            "nama_perusahaan","nama_cp","harga_produk", "vendor_price_rate","mata_uang","notes","attachment","metode_pengiriman"
+        );
+        $result = selectRow("harga_courier",$where);
+        $data = foreachMultipleResult($result,$field,$print);
+        echo json_encode($data);
+    }
+    public function getEachShippingPrice($id_harga_vendor){
+        $where = array(
+            "id_harga_vendor" => $id_harga_vendor
+        );
+        $field = array(
+            "nama_perusahaan","nama_cp","harga_produk", "vendor_price_rate","mata_uang","notes","attachment","metode_pengiriman"
+        );
+        $print = array(
+            "nama_perusahaan","nama_cp","harga_produk", "vendor_price_rate","mata_uang","notes","attachment","metode_pengiriman"
+        );
+        $result = selectRow("harga_shipping",$where);
+        $data = foreachMultipleResult($result,$field,$print);
         echo json_encode($data);
     }
     /*method ini digunakan untuk menginsert harga vendor*/

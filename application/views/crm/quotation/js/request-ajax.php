@@ -1,22 +1,23 @@
 <script>
 function detailPriceRequest(){
     
-    var id_request = $("#id_request").val();
+    var no_request = $("#id_request").val();
     $(document).ready(function(){
         $.ajax({
-            data:{id_request:id_request},
-            url:"<?php echo base_url();?>crm/request/getRequestDetail",
+            data:{no_request:no_request},
+            url:"<?php echo base_url();?>interface/request/getRequestDetail",
             type: "POST",
             dataType: "JSON",
             success:function(respond){
-                $(".perusahaanCust").val(respond["nama_perusahaan"]);
-                $(".namaCust").val(respond["nama_cp"]);
-                $("#idCust").val(respond["id_cp"]);
-                $("#idPerusahaan").val(respond["id_perusahaan"]);
-                $("#alamatCust").val(respond["alamat_perusahaan"]);
-                $("#franco").val(respond["franco"]);
-                for(var a = 0; a<respond["items"].length; a++){
-                    $("#itemsOrdered").append("<option value = '"+respond["items"][a]["id_request_item"]+"'>"+respond["items"][a]["nama_produk"]+"</option>");
+                $(".perusahaanCust").val(respond["price_request"]["nama_perusahaan"]);
+                $(".namaCust").val(respond["price_request"]["nama_cp"]);
+                $("#idCust").val(respond["price_request"]["id_cp"]);
+                $("#idPerusahaan").val(respond["price_request"]["id_perusahaan"]);
+                $("#alamatCust").val(respond["price_request"]["alamat_perusahaan"]);
+                $("#franco").val(respond["price_request"]["franco"]);
+                
+                for(var a = 0; a<respond["price_request_item"].length; a++){
+                    $("#itemsOrdered").append("<option value = '"+respond["price_request_item"][a]["id_request_item"]+"'>"+respond["price_request_item"][a]["nama_produk"]+"</option>detailPriceRequest");
                 }
             }
 
@@ -68,7 +69,7 @@ function loadVendors(){
         $("#primaryData").attr("disabled","true");
         var id_request_item = $("#itemsOrdered").val();
         $.ajax({
-            url:"<?php echo base_url();?>crm/request/getAmountOrders",
+            url:"<?php echo base_url();?>interface/request/getAmountOrders",
             data: {id_request_item:id_request_item},
             dataType: "JSON",
             type: "POST",
@@ -76,26 +77,32 @@ function loadVendors(){
                 $("#itemamount").val(respond);
             }
         });
+
         $.ajax({
-            url:"<?php echo base_url();?>crm/vendor/getVendors",
+            url:"<?php echo base_url();?>interface/vendor/getVendors",
             data: {id_request_item:id_request_item},
             dataType: "JSON",
             type: "POST",
             success:function(respond){
                 var html = "<option>Choose Supplier</option>";
                 for(var a = 0 ; a<respond.length; a++){
-                    html += "<option value = '"+respond[a]["id_perusahaan"]+"'>"+respond[a]["nama_perusahaan"]+"</option>"
+                    html += "<option value = '"+respond[a]["id_harga_vendor"]+"'>"+respond[a]["nama_perusahaan"]+"</option>"
                 }
                 $("#products").html(html);
             }
         });
+
         $.ajax({
-            url:"<?php echo base_url();?>crm/vendor/getCouriers",
+            url:"<?php echo base_url();?>interface/vendor/getCouriers",
             data: {id_request_item:id_request_item},
             dataType: "JSON",
             type: "POST",
             success:function(respond){
-                $("#courier").html(respond);
+                var html = "<option>Choose Courier</option>";
+                for(var a = 0 ; a<respond.length; a++){
+                    html += "<option value = '"+respond[a]["id_harga_courier"]+"'>"+respond[a]["nama_perusahaan"]+"</option>"
+                }
+                $("#courier").html(html);
             }
         });
         
@@ -106,17 +113,14 @@ function loadVendors(){
 function getShippingPrice(){
     $("#hargashipping").val("");
     $(document).ready(function(){
-        var id_perusahaan = $("#shippers").val();
-        var id_supplier = $("#products").val();
-        //alert(id_perusahaan);
-        var comp = id_perusahaan.split("-");
+        var id_harga_shipping = $("#shippers").val();
         $.ajax({
-            data:{id_perusahaan:comp[0],metode_pengiriman:comp[1],id_supplier:id_supplier},
-            url: "<?php echo base_url();?>crm/vendor/getShipperPrice",
+            data:{id_harga_shipping:id_harga_shipping},
+            url: "<?php echo base_url();?>interface/vendor/getShipperPrice",
             dataType: "JSON",
             type: "POST",
             success:function(respond){
-                $("#hargashipping").val(respond);
+                $("#hargashipping").val(respond["harga_produk"]*respond["vendor_price_rate"]);
             }
         }); 
     }); 
@@ -127,25 +131,25 @@ function getVendorPrice(){
     $(document).ready(function(){
         $("#hargaProduk").val("");
         $("#hargashipping").val("");
-        var id_perusahaan = $("#products").val();
-        var id_request_item = $("#itemsOrdered").val();
+        var id_harga_vendor = $("#products").val();
         $.ajax({
-            data:{id_perusahaan:id_perusahaan},
-            url: "<?php echo base_url();?>crm/vendor/getVendorPrices",
+            data:{id_harga_vendor:id_harga_vendor},
+            url: "<?php echo base_url();?>interface/vendor/getVendorPrices",
             dataType: "JSON",
             type: "POST",
             success:function(respond){
-                $("#hargaProduk").val(respond["items"]["harga_produk"]*respond["items"]["rate"]);
+                $("#hargaProduk").val(respond["harga_produk"]*respond["vendor_price_rate"]);
                 /*harus ngisi shipper*/
+                var id_request_item = $("#itemsOrdered").val();
                 $.ajax({
-                    data:{id_perusahaan:id_perusahaan,id_request_item:id_request_item},
-                    url: "<?php echo base_url();?>crm/vendor/getShipper",
+                    data:{id_harga_vendor:id_harga_vendor},
+                    url: "<?php echo base_url();?>interface/vendor/getShipper",
                     dataType: "JSON",
                     type: "POST",
                     success:function(responde){
                         var html = "<option>Choose Shipper</option>";
                         for(var a = 0; a<responde.length; a++){
-                            html += "<option value = '"+responde[a]["id_perusahaan"]+"-"+responde[a]["metode_pengiriman"]+"'>"+responde[a]["nama_perusahaan"]+" - "+responde[a]["metode_pengiriman"]+"</option>";
+                            html += "<option value = '"+responde[a]["id_harga_shipping"]+"'>"+responde[a]["nama_perusahaan"]+" - "+responde[a]["metode_pengiriman"]+"</option>";
                         }
                         $("#shippers").html(html);
                     }
@@ -159,15 +163,14 @@ function getVendorPrice(){
 function getCourierPrice(){
     $("#hargaCourier").val("");
     $(document).ready(function(){
-        var id_perusahaan = $("#courier").val();
-        var comp = id_perusahaan.split("-");
+        var id_harga_courier = $("#courier").val();
         $.ajax({
-            data:{id_cp:comp[0],metode_pengiriman:comp[1]},
-            url: "<?php echo base_url();?>crm/vendor/getCourierPrices",
+            data:{id_harga_courier:id_harga_courier},
+            url: "<?php echo base_url();?>interface/vendor/getCourierPrices",
             dataType: "JSON",
             type: "POST",
             success:function(respond){
-                $("#hargaCourier").val(respond);
+                $("#hargaCourier").val(respond["harga_produk"]*respond["vendor_price_rate"]);
             }
         }); 
     }); 
@@ -203,41 +206,39 @@ function getTotal(){
 <script>
 function quotationItem(){
     $(document).ready(function(){
-        var id_quotation = $("#id_quo").val();
-        var id_request_item = <?php if($this->session->id_request_item != "") echo $this->session->id_request_item; else echo 1; ?>;
-        var item_amount = $("#itemamount").val();
-        
-        var selling_price_formatted = $("#inputNominal").val();
-        var selling_price = parseInt(splitter(selling_price_formatted,","));
 
+        var selling_price_formatted = $("#inputNominal").val();
         var margin_price = $("#totalMargin").val();
         var splitMargin = margin_price.split("%");
-        var margin_price = splitMargin[0];
 
-        var id_cp_shipper = $("#shippers").val();
-        var comp = id_cp_shipper.split("-");
-
-        var id_cp_vendor = $("#products").val();
-
-        var id_cp_courier = $("#courier").val();
-        var comp2 = id_cp_courier.split("-");
-        //alert(margin_price);
+        var no_quotation = $("#no_quo").val();
+        var id_request_item = $("#itemsOrdered").val();
         var versi_quo = $("#versi_quo").val();
-        //alert(versi_quo);
+        var item_amount = $("#itemamount").val();
+        var selling_price = parseInt(splitter(selling_price_formatted,","));
+        var margin_price = splitMargin[0];
+        var id_harga_shipping = $("#shippers").val();
+        var id_harga_vendor = $("#products").val();
+        var id_harga_courier = $("#courier").val();
+        
         $.ajax({
-            data:{id_quotation:id_quotation,id_request_item:id_request_item,quo_version:versi_quo,item_amount:item_amount,selling_price:selling_price,margin_price:margin_price,id_cp_shipper:comp[0],id_cp_vendor:id_cp_vendor,id_cp_courier:comp2[0],metode_shipping:comp[1],metode_courier:comp2[1]},
-            url:"<?php echo base_url();?>crm/quotation/addItemToQuotation",
+            data:{no_quotation:no_quotation,id_request_item:id_request_item,versi_quo:versi_quo,item_amount:item_amount,selling_price:selling_price,margin_price:margin_price,id_harga_shipping:id_harga_shipping,id_harga_vendor:id_harga_vendor,id_harga_courier:id_harga_courier},
+            url:"<?php echo base_url();?>interface/quotation/addItemToQuotation",
             type:"POST",
             success:function(respond){
                 //alert("ITEM ADDED TO QUOTATION");
                 $.ajax({
-                    data:{id_quotation:id_quotation,quo_version:versi_quo},
-                    url:"<?php echo base_url();?>crm/quotation/getQuotationItem",
+                    data:{no_quotation:no_quotation,quo_version:versi_quo},
+                    url:"<?php echo base_url();?>interface/quotation/getQuotationItem",
                     dataType:"JSON",
                     type:"POST",
                     success:function(respond){
-                        //alert("uueay");
-                        $("#t1").html(respond);
+                        
+                        var html = "";
+                        for(var a = 0; a<respond.length; a++){
+                            html = "<tr><td>"+respond[a]["id_request_item"]+"</td><td>"+respond[a]["nama_produk"]+"</td><td>"+respond[a]["item_amount"]+"</td><td>"+respond[a]["selling_price"]+"</td><td>"+respond[a]["margin_price"]+"%</td><td><button type = 'button' class = 'btn btn-danger btn-outline btn-sm' onclick = 'removeQuotationItem("+respond[a]["id_quotation_item"]+")'>REMOVE</button></td></tr>";
+                        }
+                        $("#t1").html(html);
                     }
                 });
             }
@@ -272,16 +273,19 @@ function removeQuotationItem(i){
 </script>
 <script>
 function showItem(){
-    var id_quotation = $("#id_quo").val();
+    var no_quotation = $("#no_quo").val();
     var versi_quo = $("#versi_quo").val();
     //alert(id_quotation); alert(versi_quo);
     $.ajax({
-        data:{id_quotation:id_quotation,quo_version:versi_quo},
-        url:"<?php echo base_url();?>crm/quotation/getQuotationItem",
+        data:{no_quotation:no_quotation,quo_version:versi_quo},
+        url:"<?php echo base_url();?>interface/quotation/getQuotationItem",
         dataType:"JSON",
         type:"POST",
         success:function(respond){
-            $("#t1").html(respond);
+            var html = "";
+            for(var a = 0; a<respond.length; a++){
+                html = "<tr><td>"+respond[a]["id_request_item"]+"</td><td>"+respond[a]["nama_produk"]+"</td><td>"+respond[a]["item_amount"]+"</td><td>"+respond[a]["selling_price"]+"</td><td>"+respond[a]["margin_price"]+"%</td><td><button type = 'button' class = 'btn btn-danger btn-outline btn-sm' onclick = 'removeQuotationItem("+respond[a]["id_quotation_item"]+")'>REMOVE</button></td></tr>";
+            }
         }
     });
 }

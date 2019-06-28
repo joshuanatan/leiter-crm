@@ -89,7 +89,7 @@
                         <ul class="site-menu-sub">
                         <li class="site-menu-item">
                                 <a class="animsition-link" href="<?php echo base_url();?>crm/request">
-                                <span class="site-menu-title">Price Request</span>
+                                <span class="site-menu-title">RFQ</span>
                                 </a>
                             </li>
                             <li class="site-menu-item">

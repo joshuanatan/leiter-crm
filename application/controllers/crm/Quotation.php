@@ -58,6 +58,9 @@ class Quotation extends CI_Controller{
                 "nama_cp" => get1Value("contact_person","nama_cp", array("id_cp" => $a->id_cp)),
                 "status_quotation" => $a->status_quo,
                 "sending_date" => $a->date_quo_add,
+                "no_quo" => $a->no_quo,
+                "bulan_quotation" => $a->bulan_quotation,
+                "tahun_quotation" => $a->tahun_quotation
             );
             $counter++;
         }
@@ -276,12 +279,15 @@ class Quotation extends CI_Controller{
             ),
             "price_request" => array(
                 "price_request.status_request" => 3,
-                "status_buatquo" => 1,
+                "status_buat_quo" => 1,
                 "untuk_stock" => 1
             ),
+            
         );
+        $result["request"] = selectRow("price_request",$where["price_request"]);
+
         $data = array(
-            "quotation_id" => $this->Mdquotation->maxId(),
+            "quotation_id" => getMaxId("quotation","id_quo",array("bulan_quotation" => date("m"),"tahun_quotation" => date("Y"))),
             "quotation" => $this->Mdquotation->select($where["quotation"]),
             "request" => $this->Mdprice_request->select($where["price_request"]),
         );
@@ -300,50 +306,31 @@ class Quotation extends CI_Controller{
             $data += [$name[$a] => $this->input->post($name[$a])];
         }
         $data += ["id_user_add" => $this->session->id_user];
+        $data += ["bulan_quotation" => date("m")];
+        $data += ["tahun_quotation" => date("Y")];
         $this->Mdquotation->insert($data);
         
         /*---- Metode Pembayaran ----*/
-
-        $method = $this->input->post("paymentMethod");
-        //$methodDetail = explode("",$method);
-
-        $persen = $this->input->post("persen");
-        $persenDetail = array();
-        $b=0;
-        foreach($persen as $a){
-            $persenDetail[$b] = $a;
-            $b++;
-        }
-
-        $jumlah = $this->input->post("jumlah");
-        $jumlahDetail = array();
-        $b = 0;
-        foreach($jumlah as $a){
-            $jumlahDetail[$b] = $a;
-            $b++;
-        }
-        //echo count($jumlahDetail);
-        //print_r($jumlahDetail);
-        $kurs = $this->input->post("mata_uang_pembayaran");
-
-        for($a = 0; $a<count($jumlahDetail);$a++){
-            $data = array(
-                "urutan_pembayaran" => $a+1,
-                "persentase_pembayaran" => $persenDetail[$a],
-                "nominal_pembayaran" => splitterMoney($jumlahDetail[$a],","),
-                "trigger_pembayaran" => $method[$a],
-                "id_quotation" => $this->input->post("id_quo"),
-                "id_versi" => $this->input->post("versi_quo"),
-                "kurs" => $kurs
-            );
-            $this->Mdmetode_pembayaran->insert($data);
-        }
+        
+        $pembayaran = array(
+            "persentase_pembayaran" => $this->input->post("persenDp"),
+            "nominal_pembayaran" => $this->input->post("jumlahDpClean"),
+            "trigger_pembayaran" => $this->input->post("paymentMethod"),
+            "persentase_pembayaran2" =>$this->input->post("persenSisa"),
+            "nominal_pembayaran2" => $this->input->post("jumlahSisaClean"),
+            "trigger_pembayaran2" =>$this->input->post("paymentMethod2"),
+            "no_quotation" =>$this->input->post("no_quo"),
+            "versi_quotation" =>$this->input->post("versi_quo"),
+            "kurs" => $this->input->post("mata_uang_pembayaran"),
+        );
+        insertRow("metode_pembayaran",$pembayaran);
+        
         /*update status buat quotation di price request supaya gabisa dibuat ulang yang udah pernah dibuat*/
         $where = array(
             "id_request" => $this->input->post("id_request")
         );
         $data = array(
-            "status_buatquo" => 0
+            "status_buat_quo" => 0
         );
         $this->Mdprice_request->update($data,$where);
         redirect("crm/quotation");
@@ -359,40 +346,18 @@ class Quotation extends CI_Controller{
         
         /*---- Metode Pembayaran ----*/
 
-        $method = $this->input->post("paymentMethod");
-        //$methodDetail = explode("",$method);
-
-        $persen = $this->input->post("persen");
-        $persenDetail = array();
-        $b=0;
-        foreach($persen as $a){
-            $persenDetail[$b] = $a;
-            $b++;
-        }
-
-        $jumlah = $this->input->post("jumlah");
-        $jumlahDetail = array();
-        $b = 0;
-        foreach($jumlah as $a){
-            $jumlahDetail[$b] = $a;
-            $b++;
-        }
-        //echo count($jumlahDetail);
-        //print_r($jumlahDetail);
-        $kurs = $this->input->post("mata_uang_pembayaran");
-
-        for($a = 0; $a<count($jumlahDetail);$a++){
-            $data = array(
-                "urutan_pembayaran" => $a+1,
-                "persentase_pembayaran" => $persenDetail[$a],
-                "nominal_pembayaran" => splitterMoney($jumlahDetail[$a],","),
-                "trigger_pembayaran" => $method[$a],
-                "id_quotation" => $this->input->post("id_quo"),
-                "id_versi" => $this->input->post("versi_quo"),
-                "kurs" => $kurs
-            );
-            $this->Mdmetode_pembayaran->insert($data);
-        }
+        $pembayaran = array(
+            "persentase_pembayaran" => $this->input->post("persenDp"),
+            "nominal_pembayaran" => $this->input->post("jumlahDpClean"),
+            "trigger_pembayaran" => $this->input->post("paymentMethod"),
+            "persentase_pembayaran2" =>$this->input->post("persenSisa"),
+            "nominal_pembayaran2" => $this->input->post("jumlahSisaClean"),
+            "trigger_pembayaran2" =>$this->input->post("paymentMethod2"),
+            "no_quotation" =>$this->input->post("no_quo"),
+            "versi_quotation" =>$this->input->post("versi_quo"),
+            "kurs" => $this->input->post("mata_uang_pembayaran"),
+        );
+        insertRow("metode_pembayaran",$pembayaran);
         /*update status buat quotation di price request supaya gabisa dibuat ulang yang udah pernah dibuat*/
         redirect("crm/quotation");
     }
@@ -407,13 +372,15 @@ class Quotation extends CI_Controller{
         $this->Mdquotation->update($data,$where);
         redirect("crm/quotation");
     }
-    public function accepted($id,$ver){
+    public function accepted($id,$ver,$bulan,$tahun){
         $data = array(
             "status_quo" => 2
         );
         $where = array(
             "versi_quo" => $ver,
-            "id_quo" => $id
+            "id_quo" => $id,
+            "bulan_quotation" => $bulan,
+            "tahun_quotation" => $tahun
         );
         $this->Mdquotation->update($data,$where);
         redirect("crm/quotation");

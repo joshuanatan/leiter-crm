@@ -1,0 +1,42 @@
+receivable
+> add invoice
+ > dropdown order confirmation tambahin nama perusahaan customer
+>category body
+ > tambahin kolom nama perusahaan customer
+ > delete
+ > liat detail pembayaran
+
+payable
+>category body
+ >dateline ganti due date
+ >no refrencenya salah, harusnya no invoice
+ >rate di detail kurang splitter
+ >kalau ga ada dokumen di disable aja
+>add invoice
+ >help di transfer to bank/norekning/an
+
+tax
+>detail
+ >(keluaran - masukan) kalau mines kasih mines
+ >kalau hasilnya positif, reportnya "kurang bayar", kalau negatif, "lebih bayar"
+ >tabel ppn, keluarin tanggal bayar
+ >jadi ada tabel isinya nomor invoice, masa pajak, no pajak, confirm. setiap invoice akan ke list di "category-body"nya ppn, nanti harus isi masa pajak, no pajak, dll dan di confirm
+>pph 23
+ > ubah pph jadi pph23
+ > ada error di detail
+>pib
+ >pph pib != pph23
+ >semua pph23 -> pph impor
+>margin calculation
+ >insert invoice dihilangkan
+ >nama customer
+ >pakenya perinvoice
+>reimburse
+ >status dan dokumen, kolomnya ketukar
+
+kpi
+>add employee hilangkan
+>tombol back di set target
+>(optional) bisa keluar untuk pdf
+>visit report(masuk ke report sendiri) (tiap orang bisa ngelakuin call dan visi report)
+>call report (masuk ke report sendiri)

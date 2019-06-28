@@ -29,13 +29,13 @@
                 <td><?php echo $oc[$a]["versi_quotation"];?></td>
                 <td><?php echo $oc[$a]["nama_perusahaan"];?></td>
                 <td><?php echo $oc[$a]["nama_cp"];?></td>
-                <td><?php echo $oc[$a]["no_po"];?></td>
+                <td><?php echo $oc[$a]["no_po_customer"];?></td>
                 <td><?php echo $oc[$a]["jumlah_item"];?></td>
                 <td class="actions">
                     
-                    <a href = "<?php echo base_url();?>crm/oc/delete/<?php echo $oc[$a]["id_oc"];?>" class="btn btn-outline btn-danger" data-content="Delete OC" data-trigger="hover" data-toggle="popover"><i class="icon wb-trash" aria-hidden="true"></i></a> 
+                    <a href = "<?php echo base_url();?>crm/oc/delete/<?php echo $oc[$a]["id_oc"];?>/<?php echo $oc[$a]["bulan_oc"];?>/<?php echo $oc[$a]["tahun_oc"];?>" class="btn btn-outline btn-danger" data-content="Delete OC" data-trigger="hover" data-toggle="popover"><i class="icon wb-trash" aria-hidden="true"></i></a> 
                     
-                    <a href = "<?php echo base_url();?>crm/oc/accepted/<?php echo $oc[$a]["id_oc"];?>" class="btn btn-outline btn-primary" data-content="Proceed to PO Vendor" data-trigger="hover" data-toggle="popover"><i class="icon wb-briefcase" aria-hidden="true"></i></a>
+                    <a href = "<?php echo base_url();?>crm/oc/accepted/<?php echo $oc[$a]["id_oc"];?>/<?php echo $oc[$a]["bulan_oc"];?>/<?php echo $oc[$a]["tahun_oc"];?>" class="btn btn-outline btn-primary" data-content="Proceed to PO Vendor" data-trigger="hover" data-toggle="popover"><i class="icon wb-briefcase" aria-hidden="true"></i></a>
                 </td>
             </tr>     
             <?php

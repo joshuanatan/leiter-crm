@@ -65,8 +65,8 @@ class Pph23 extends CI_Controller{
             $data["pph"][$a]["no_tagihan"] = get1Value("tagihan","no_invoice",array("id_tagihan" => $id_tagihan));
         }
         
-        if($data["tax"][$a]["is_pib"] == 0){ /*refrence ke tax*/
-            $data["pph"][$a]["no_tagihan"] = $data["tax"][$a]["id_refrensi"];
+        if($data["pph"][$a]["is_pib"] == 0){ /*refrence ke tax*/
+            $data["pph"][$a]["no_tagihan"] = $data["pph"][$a]["id_refrensi"];
         }
         $this->req();
         $this->load->view("finance/content-open");
