@@ -9,7 +9,7 @@ class Od extends CI_Controller{
     }  
     public function getOd(){
         $where = array(
-            "id_oc" => $this->input->post("id_oc")
+            "no_oc" => $this->input->post("no_oc")
         );
         $field = array(
             "id_od","no_od"
@@ -36,12 +36,12 @@ class Od extends CI_Controller{
         );
         $result = selectRow("od_item",$where);
         $data = foreachMultipleResult($result,$field,$print); /*1 od bisa banyak item*/
-        $id_oc = get1Value("od_core","id_oc",$where);
+        $no_oc = get1Value("od_core","no_oc",$where);
         for($a = 0; $a<count($data);$a++){ /*puter setiap item*/
             /*ambil harga, item, dan nama produk tiap item*/
             $sellingPrice = get1Value("quotation_item","final_selling_price",array("id_quotation_item" => $data[$a]["id_quotation_item"]));
             $finalAmount = get1Value("quotation_item","final_amount",array("id_quotation_item" => $data[$a]["id_quotation_item"]));
-            $persenSisa = get1Value("metode_pembayaran","persentase_pembayaran2",array("id_oc" => $id_oc));
+            $persenSisa = get1Value("metode_pembayaran","persentase_pembayaran2",array("no_oc" => $no_oc));
 
             $id_produk = get1Value("quotation_item","id_request_item",array("id_quotation_item" => $data[$a]["id_quotation_item"]));
             $nama_produk = get1Value("price_request_item","nama_produk",array("id_request_item" => $id_produk));

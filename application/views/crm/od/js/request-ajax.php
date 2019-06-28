@@ -1,9 +1,10 @@
 <script>
-function loadOcDetail(){
-    var id_oc = $("#idoc").val();
+function loadPoDetail(){
+    var no_oc = $("#idpo").val();
+    /*
     $.ajax({
-        url:"<?php echo base_url();?>crm/oc/getOcDetail",
-        data:{id_oc:id_oc, result:"array"},
+        url:"<?php echo base_url();?>interface/oc/loadPoDetail",
+        data:{id_oc:id_oc},
         type:"POST",
         dataType:"JSON",
         success:function(respond){
@@ -13,15 +14,16 @@ function loadOcDetail(){
             $("#franco").val(respond["franco"]);
         }
     });
+    */
     $.ajax({
-        url:"<?php echo base_url();?>crm/oc/getOcItem",
+        url:"<?php echo base_url();?>interface/oc/getOcItem",
         type:"POST",
         dataType:"JSON",
-        data:{id_oc:id_oc, result:"array"},
+        data:{no_oc:no_oc},
         success:function(respond){
             var html = "";
-            for(var a =0; a<respond.length; a++){
-                html += "<tr><td>"+respond[a]["nama_produk"]+"<input type = 'hidden' name = 'id_quotation_item[]' value = '"+respond[a]["id_quotation_item"]+"'></td><td>"+respond[a]["jumlah_pesan"]+"</td><td>"+respond[a]["terkirim"]+"</td><td><input type ='text' class = 'form-control' name = 'jumlah_kirim[]'></td><td>"+respond[a]["uom"]+"</td></tr>"
+            for(var a =0; a<respond["item_oc"].length; a++){
+                html += "<tr><td>"+respond["item_oc"][a]["nama_produk"]+"<input type = 'hidden' name = 'id_quotation_item[]' value = '"+respond["item_oc"][a]["id_quotation_item"]+"'></td><td>"+respond["item_oc"][a]["item_amount"]+"</td><td>"+respond["item_oc"][a]["terkirim"]+"</td><td><input type ='text' class = 'form-control' name = 'jumlah_kirim[]'></td></tr>"
             }
             $("#t1").html(html);
         }

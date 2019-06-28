@@ -25,35 +25,39 @@ class Od extends CI_Controller{
                 "status_od" => 0
             )
         );
-        $result = array(
-            "od" => $this->Mdod_core->select($where["od"]),
+        $field["od"] = array(
+            "no_od", "id_od","no_oc","id_courier","delivery_method","date_od_add"
         );
-        $counter = 0;
-        $data["od"] = array();
-        foreach($result["od"]->result() as $a){
-            $data["od"][$counter] = array(
-                "id_od" => $a->id_od,
-                "no_od" => $a->no_od,
-                "no_oc" => get1value("order_confirmation","no_oc", array("id_oc" => $a->id_oc)),
-                "no_po_cusomter" => get1Value("order_confirmation","no_po_customer",array("id_oc" => $a->id_oc)),
-                "nama_courier" => get1value("perusahaan","nama_perusahaan", array("id_perusahaan" => $a->id_courier)),
-                "nama_perusahaan" =>  get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => get1Value("quotation","id_perusahaan",array("id_quo" => get1Value("order_confirmation","id_quotation",array("id_oc" => $a->id_oc)))))),
-                "franco" => get1value("quotation","franco",array("id_quo" => get1Value("order_confirmation","id_quotation",array("id_oc" => $a->id_oc)))),
-                "date_issued" => $a->date_od_add,
-                
-            );
-            $data["od"][$counter]["items"] = array();
-            $result["od_item"] = $this->Mdod_item->select(array("id_od" => $a->id_od));
-            $counter2 = 0;
-            foreach($result["od_item"]->result() as $items){
-                $data["od"][$counter]["items"][$counter2] = array(
-                    "nama_produk" => get1Value("produk","nama_produk", array("id_produk" => get1Value("price_request_item","id_produk",array("id_request_item" => get1Value("quotation_item","id_request_item",array("id_quotation_item" => $items->id_quotation_item)))))),
-                    "jumlah" => $items->item_qty
-                );
-                $counter2++;
+        $print["od"] = array(
+            "no_od", "id_od","no_oc","id_courier","delivery_method","date_od_add"
+        );
+        $field["od_item"] = array(
+            "id_quotation_item","id_od_item","item_qty"
+        );
+        $print["od_item"] = array(
+            "id_quotation_item","id_od_item","item_qty"
+        );
+        $result["od"] = selectRow("od_core",$where["od"]);
+        $data["od"] = foreachMultipleResult($result["od"],$field["od"],$print["od"]);
+
+        for($a = 0; $a<count($data["od"]);$a++){
+            $data["od"][$a]["nama_courier"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $data["od"][$a]["id_courier"]));
+            $data["od"][$a]["no_quotation"] = get1Value("order_confirmation","no_quotation",array("no_oc" => $data["od"][$a]["no_oc"]));
+            $data["od"][$a]["id_perusahaan"] = get1Value("quotation","id_perusahaan",array("no_quo" => $data["od"][$a]["no_quotation"])); 
+            $data["od"][$a]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $data["od"][$a]["id_perusahaan"]));
+            $data["od"][$a]["no_po_customer"] = get1Value("order_confirmation","no_po_customer",array("no_oc" => $data["od"][$a]["no_oc"]));
+
+            $data["od"][$a]["franco"] = get1Value("quotation","franco",array("no_quo" => $data["od"][$a]["no_quotation"])); 
+            $data["od"][$a]["items"] = array();
+            $result["od_item"] = selectRow("od_item",array("no_od" => $data["od"][$a]["no_od"]));
+            $data["od"][$a]["items"] = foreachMultipleResult($result["od_item"],$field["od_item"],$print["od_item"]);
+            for($b = 0; $b<count($data["od"][$a]["items"]); $b++){
+                $data["od"][$a]["items"][$b]["id_request_item"] = get1Value("quotation_item","id_request_item",array("id_quotation_item" => $data["od"][$a]["items"][$b]["id_quotation_item"]));
+
+                $data["od"][$a]["items"][$b]["nama_produk"] = get1Value("price_request_item","nama_produk",array("id_request_item" => $data["od"][$a]["items"][$b]["id_request_item"]));
             }
-            $counter++;
         }
+
         $this->req();
         $this->load->view("crm/content-open");
         $this->load->view("crm/od/category-header");
@@ -80,11 +84,11 @@ class Od extends CI_Controller{
                 "peran_perusahaan" => "SHIPPING"
             )
         );
-        $result["order_confirmation"] = $this->Mdorder_confirmation->select($where["order_confirmation"]);
+        $result["order_confirmation"] = selectRow("order_confirmation",$where["order_confirmation"]);
         $result["courier"] = $this->Mdperusahaan->select($where["courier"]);
         $data["order_confirmation"] = $result["order_confirmation"]; 
         $data["courier"] = $result["courier"]; 
-        $data["maxId"] = findMaxId("od_core","id_od",array());
+        $data["maxId"] = getMaxId("od_core","id_od",array("bulan_od" => date("m"),"tahun_od" => date("Y")));
         $this->req();
         $this->load->view("crm/content-open");
         $this->load->view("crm/od/category-header");
@@ -121,7 +125,7 @@ class Od extends CI_Controller{
         }
         for($a = 0; $a<count($array["jumlah_kirim"]); $a++){
             $data = array(
-                "id_od" => $this->input->post("id_od"),
+                "no_od" => $this->input->post("no_od"),
                 "id_quotation_item" => $array["id_quotation_item"][$a],
                 "item_qty" => $array["jumlah_kirim"][$a]
             );
@@ -132,7 +136,9 @@ class Od extends CI_Controller{
         $data = array(
             "id_od" => $this->input->post("id_od"),
             "no_od" => $this->input->post("no_od"),
-            "id_oc" => $this->input->post("id_oc"),
+            "no_oc" => $this->input->post("no_oc"),
+            "bulan_od" => date("m"),
+            "tahun_od" => date("Y"),
             "id_courier" => $this->input->post("courier"),
             "delivery_method" => $this->input->post("method"),
             "id_user_add" => $this->session->id_user

@@ -2,7 +2,7 @@
 class Invoice extends CI_Controller{
     public function getDp(){
         $where = array(
-            "id_oc" => $this->input->post("id_oc"),
+            "no_oc" => $this->input->post("no_oc"),
             "status_invoice" => 1,
             "trigger_pembayaran" => 1
         );

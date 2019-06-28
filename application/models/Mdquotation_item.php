@@ -2,7 +2,6 @@
 class Mdquotation_item extends CI_Model{
     public function select($data){
         $this->db->join("price_request_item","price_request_item.id_request_item = quotation_item.id_request_item","inner");
-        $this->db->join("produk","produk.id_produk = price_request_item.id_produk","inner");
         return $this->db->get_where("quotation_item",$data);
     }
     public function insert($data){

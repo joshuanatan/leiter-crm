@@ -23,7 +23,7 @@
                                     <select onchange = "oc_detail()" id = "idoc" name = "id_oc" class = "form-control" data-plugin ="select2">
                                         <option value = "0" disabled selected>Choose Order Confirmation</option>
                                         <?php for($a = 0;  $a<count($oc); $a++): ?>
-                                        <option value = "<?php echo $oc[$a]["id_oc"];?>"><?php echo $oc[$a]["no_oc"];?></option>
+                                        <option value = "<?php echo $oc[$a]["no_oc"];?>"><?php echo $oc[$a]["no_oc"];?></option>
                                         <?php endfor;?>
                                     </select>
                                 </div>

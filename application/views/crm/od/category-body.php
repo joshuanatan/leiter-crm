@@ -27,12 +27,12 @@
             <tr class="gradeA">
                 <td><?php echo $od[$a]["no_od"];?></td>
                 <td><?php echo $od[$a]["no_oc"];?></td>
-                <td><?php echo $od[$a]["no_po_cusomter"];?></td>
-                <td><?php echo $od[$a]["nama_courier"];?></td>
+                <td><?php echo $od[$a]["no_po_customer"];?></td>
                 <td><?php echo $od[$a]["nama_perusahaan"];?></td>
+                <td><?php echo $od[$a]["nama_courier"];?></td>
                 <td><?php echo $od[$a]["franco"];?></td>
                 <td><button class = "btn btn-primary btn-outline" type = "button" data-target = "#detail<?php echo $a;?>" data-toggle = "modal">Detail Items</button></td>
-                <td><?php echo $od[$a]["date_issued"];?></td>
+                <td><?php echo $od[$a]["date_od_add"];?></td>
                 <td class="actions">
                     <a href = "<?php echo base_url();?>crm/od/remove/<?php echo $od[$a]["id_od"];?>" class = "btn btn-danger btn-sm btn-outline">REMOVE</a>
                 </td>
@@ -48,7 +48,7 @@
                         <div class="modal-body">
                             <ul>
                             <?php for($b = 0 ; $b<count($od[$a]["items"]); $b++): ?>
-                            <li><?php echo $od[$a]["items"][$b]["nama_produk"]." - ".$od[$a]["items"][$b]["jumlah"];?></li>
+                            <li><?php echo $od[$a]["items"][$b]["nama_produk"]." - ".$od[$a]["items"][$b]["item_qty"];?></li>
 
                             <?php endfor;?>
                             </ul>

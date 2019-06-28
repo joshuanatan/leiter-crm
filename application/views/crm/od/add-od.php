@@ -15,23 +15,19 @@
                             <div class="tab-pane active" id="primaryData" role="tabpanel">
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">No Order Delivery</h5>
-                                    <input type ="text" value = "OD-<?php echo sprintf("%05d",$maxId);?>" name = "no_od" class = "form-control" readonly>
+                                    <input type ="text" value = "<?php echo date("y").date("m").sprintf("%03d",$maxId)?>/LI/SJ/<?php echo date("y");?>" name = "no_od" class = "form-control" readonly>
                                     <input type ="hidden" value = "<?php echo $maxId;?>" name = "id_od" class = "form-control" readonly>
                                 </div>
                                 <div class = "form-group"> <!-- nanti bentuknya nomorquotation/versi -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Order Confirmation No</h5> 
-                                    <select name = "id_oc" class = "form-control" onchange = "loadOcDetail()" data-plugin = "select2" id = "idoc">
-                                        <option selected>Choose No OC</option>
+                                    <select name = "no_oc" class = "form-control" onchange = "loadPoDetail()" data-plugin = "select2" id = "idpo">
+                                        <option selected>Choose No PO Customer</option>
                                         <?php foreach($order_confirmation->result() as $a): ?>
-                                        <option value = "<?php echo $a->id_oc;?>"><?php echo $a->no_oc;?></option>
+                                        <option value = "<?php echo $a->no_oc;?>"><?php echo $a->no_po_customer;?></option>
                                         <?php endforeach;?>
                                     </select>
                                 </div>
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">No PO Customer</h5>
-                                    <input type ="text" id = "nopo" class = "form-control perusahaanCust" readonly>
-                                </div>
-                                
+                                <!--
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Customer Firm</h5>
                                     <input type ="text" id = "namaperusahaan" class = "form-control perusahaanCust" readonly>
@@ -44,9 +40,10 @@
                                     <h5 style = "color:darkgrey; opacity:0.8">Franco</h5>
                                     <input name = "" id = "franco" type ="text" class = "form-control namaCust" readonly>
                                 </div>
+-->
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Courier</h5>
-                                    <select name = "courier" class = "form-control" onchange = "loadDeliveryMethod()" data-plugin = "select2" id = "idcourier">
+                                    <select name = "courier" class = "form-control" data-plugin = "select2" id = "idcourier">
                                         <option selected>Choose Courier</option>
                                         <?php foreach($courier->result() as $a): ?>
                                         <option value = "<?php echo $a->id_perusahaan;?>"><?php echo $a->nama_perusahaan;?></option>
@@ -56,7 +53,9 @@
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Delivery Method</h5>
                                     <select name = "method" id = "method" class = "form-control namaCust">
-                                        
+                                        <option value = "SEA">SEA</option>
+                                        <option value = "AIR">AIR</option>
+                                        <option value = "LAND">LAND</option>
                                     </select>
                                 </div>
                             </div>
@@ -70,7 +69,6 @@
                                             <th>Order Quantity</th>
                                             <th>Sent Quantity</th>
                                             <th>Send Amount</th>
-                                            <th>Unit of Measure</th>
                                         </thead>
                                         <tbody id ="t1">
                                             <td></td>

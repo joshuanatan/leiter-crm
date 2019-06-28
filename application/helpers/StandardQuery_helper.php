@@ -76,10 +76,15 @@ if ( ! function_exists('getTotal')){
         $CI =& get_instance();
         $CI->db->select("sum(".$coloumn.") as 'total'");
         $result = $CI->db->get_where($table,$where);
+        $adaTotal = 1;
+        if($result->num_rows() == 0) return 0;
         foreach($result->result() as $a){
+            $adaTotal = 0;
             return $a->total;
             break;
         }
+        if($adaTotal == 1)
+            return 0;
     }
 }
 if(! function_exists('selectRowBetweenDates')){

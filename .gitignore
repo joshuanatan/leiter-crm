@@ -33,3 +33,17 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 leiter2018/
 template-main/
+user_guide/
+assets/dokumen/buktibayar/
+assets/dokumen/hargasupplier/
+assets/dokumen/invoice/
+assets/dokumen/petty/
+assets/dokumen/pib/
+assets/dokumen/report/
+notes/
+meeting/
+application/config/config.php
+application/config/database.php
+*.zip
+*.txt
+assets/rfq

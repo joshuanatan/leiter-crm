@@ -66,10 +66,10 @@ class Receivable extends CI_Controller{
             )   
         );
         $field["oc"] = array(
-            "id_oc","no_oc","id_quotation","versi_quotation","no_po_customer","date_oc_add",
+            "id_oc","no_oc","no_quotation","versi_quotation","no_po_customer","date_oc_add",
         );
         $print["oc"] = array(
-            "id_oc","no_oc","id_quotation","versi_quotation","no_po_customer","date_issued",
+            "id_oc","no_oc","no_quotation","versi_quotation","no_po_customer","date_issued",
         );
         $result["oc"] = selectRow("order_confirmation",$where["oc"]);
         $data["oc"] = foreachMultipleResult($result["oc"],$field["oc"],$print["oc"]);

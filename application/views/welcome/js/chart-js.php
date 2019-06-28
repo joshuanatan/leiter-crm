@@ -71,22 +71,114 @@
 
   (function () {
     var barChartData = {
-      labels: ["January", "February", "March", "April", "May", "June", "July"],
+      labels: ["January", "February", "March", "April", "May", "June", "July","Agst","September","November","December"],
       datasets: [{
-        label: "First",
+        label: "Quotation",
         backgroundColor: "rgba(204, 213, 219, .2)",
         borderColor: Config.colors("blue-grey", 300),
         hoverBackgroundColor: "rgba(204, 213, 219, .3)",
         borderWidth: 2,
-        data: [65, 45, 75, 50, 60, 45, 55]
+        data: [65, 45, 75, 50, 60, 45, 55,23,56,77,56,23]
       }, {
-        label: "Second",
+        label: "Win",
         backgroundColor: "rgba(98, 168, 234, .2)",
         borderColor: Config.colors("primary", 600),
         hoverBackgroundColor: "rgba(98, 168, 234, .3)",
         borderWidth: 2,
-        data: [30, 20, 40, 25, 45, 35, 40]
+        data: [30, 20, 40, 25, 45, 35, 40,23,12,55,24,23]
+      }, {
+        label: "Loss",
+        backgroundColor: "rgba(98, 168, 234, .2)",
+        borderColor: Config.colors("primary", 600),
+        hoverBackgroundColor: "rgba(98, 168, 234, .3)",
+        borderWidth: 2,
+        data: [30, 20, 40, 25, 45, 35, 40,23,34,12,22,0]
       }]
+    };
+    var myBar = new Chart(document.getElementById("exampleChartjsBar2").getContext("2d"), {
+      type: 'bar',
+      data: barChartData,
+      options: {
+        responsive: true,
+        scales: {
+          xAxes: [{
+            display: true
+          }],
+          yAxes: [{
+            display: true
+          }]
+        }
+      }
+    });
+  })(); // Example Chartjs Radar
+  (function () {
+    var barChartData = {
+      labels: ["Customer 2", "Customer 3", "Customer 4", "Customer 5", "Customer 6", "Customer 7", "Customer 8","Customer 9","Customer 10","Customer 11"],
+      datasets: [{
+        label: "Quotation",
+        backgroundColor: "rgba(204, 213, 219, .2)",
+        borderColor: Config.colors("blue-grey", 300),
+        hoverBackgroundColor: "rgba(204, 213, 219, .3)",
+        borderWidth: 2,
+        data: [65, 45, 75, 50, 60, 45, 55,23,56,77]
+      }, {
+        label: "Win",
+        backgroundColor: "rgba(98, 168, 234, .2)",
+        borderColor: Config.colors("primary", 600),
+        hoverBackgroundColor: "rgba(98, 168, 234, .3)",
+        borderWidth: 2,
+        data: [30, 20, 40, 25, 45, 35, 40,23,12,55,24,23]
+      }, {
+        label: "Loss",
+        backgroundColor: "rgba(98, 168, 234, .2)",
+        borderColor: Config.colors("primary", 600),
+        hoverBackgroundColor: "rgba(98, 168, 234, .3)",
+        borderWidth: 2,
+        data: [30, 20, 40, 25, 45, 35, 40,23,34,12]
+      }]
+    };
+    var myBar = new Chart(document.getElementById("exampleChartjsBar3").getContext("2d"), {
+      type: 'bar',
+      data: barChartData,
+      options: {
+        responsive: true,
+        scales: {
+          xAxes: [{
+            display: true
+          }],
+          yAxes: [{
+            display: true
+          }]
+        }
+      }
+    });
+  })(); // Example Chartjs Radar
+  (function () {
+    var barChartData = {
+      labels: ["January", "February", "March", "April", "May", "June", "July","Agst","September","November","December"],
+      datasets: [{
+        label: "2017",
+        backgroundColor: "rgba(204, 213, 219, .2)",
+        borderColor: Config.colors("blue-grey", 300),
+        hoverBackgroundColor: "rgba(204, 213, 219, .3)",
+        borderWidth: 2,
+        data: [65, 45, 75, 50, 60, 45, 55,43,66,78,99,34]
+      }, {
+        label: "2018",
+        backgroundColor: "rgba(98, 168, 234, .2)",
+        borderColor: Config.colors("primary", 600),
+        hoverBackgroundColor: "rgba(98, 168, 234, .3)",
+        borderWidth: 2,
+        data: [30, 20, 40, 25, 45, 35, 40,43,66,78,99,34]
+      }, {
+        label: "2019",
+        backgroundColor: "rgba(98, 168, 234, .2)",
+        borderColor: Config.colors("primary", 600),
+        hoverBackgroundColor: "rgba(98, 168, 234, .3)",
+        borderWidth: 2,
+        data: [30, 20, 40, 25, 45, 35, 40,43,66,78,99,34]
+      }
+      ]
     };
     var myBar = new Chart(document.getElementById("exampleChartjsBar").getContext("2d"), {
       type: 'bar',

@@ -2,8 +2,11 @@
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-                <a class = "btn btn-primary btn-outline" href = "<?php echo base_url();?>crm/po/create">Create Purchase Order</a>
-                <a class = "btn btn-primary btn-outline" href = "<?php echo base_url();?>crm/po/stock">Purchase Order for Stock</a>
+                <!--<a class = "btn btn-primary btn-outline" href = "<?php echo base_url();?>crm/po/create">Create Purchase Order</a>-->
+                <button class = "btn btn-primary btn-outline" data-toggle = "modal" data-target = "#addPO">Create Purchase Order</button>
+                <button class = "btn btn-primary btn-outline" data-toggle = "modal" data-target = "#addPO">Purchase Order for Stock</button>
+                <!--
+                <a class = "btn btn-primary btn-outline" href = "<?php echo base_url();?>crm/po/stock">Purchase Order for Stock</a>-->
             </div>
         </div>
     </div>
@@ -36,4 +39,62 @@
             <?php endfor; ?>
         </tbody>
     </table>
+</div>
+<div class = "modal fade" id = "addPO">
+    <div class = "modal-dialog modal-lg">
+        <div class = "modal-content">
+            <div class = "modal-header">
+                <h4 class = "modal-title">CREATE PURCHASE ORDER</h4>
+            </div>
+            <div class = "modal-body">
+                <div class = "form-group">
+                    <h5 style = "opacity:0.5">NO PO</h5>
+                    <input type = "text" class = "form-control" name = "no_po">
+                </div>
+                <div class = "form-group">
+                    <h5 style = "opacity:0.5">ID PO Customer</h5>
+                    <select class = "form-control" name = "po_customer">
+                        <option>PO/CUST/001/180</option>
+                    </select>
+                </div>
+                <div class = "form-group">
+                    <h5 style = "opacity:0.5">Supplier</h5>
+                    <input type = "text" class = "form-control" name = "no_po">
+                </div>
+                <div class = "form-group">
+                    <h5 style = "opacity:0.5">Shipper</h5>
+                    <input type = "text" class = "form-control" name = "no_po">
+                </div>
+                <div class = "form-group">
+                    <h5 style = "opacity:0.5">Shipping Method</h5>
+                    <input type = "text" class = "form-control" name = "no_po">
+                </div>
+                <div class = "form-group">
+                    <table class = "table table-bordered table-stripped" style = "Width:100%" data-plugin = "dataTable">
+                        <thead>
+                            <th>#</th>
+                            <th>Item Name</th>
+                            <th>Quantity</th>
+                            <th>Amount</th>
+                        </thead>
+                        <tbody>
+                            <?php for($a = 0; $a<15; $a++):?>
+                            <tr>
+                                <td>
+                                    <div class = "checkbox-custom checkbox-primary">
+                                        <input type = "checkbox">
+                                        <label></label>
+                                    </div>
+                                </td>
+                                <td><input type = "text" class = "form-control" name = "" value = "Item<?php echo ($a+1);?>"></td>
+                                <td><input type = "text" class = "form-control" name = ""></td>
+                                <td><input type = "text" class = "form-control" name = ""></td>
+                            </tr>
+                            <?php endfor;?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

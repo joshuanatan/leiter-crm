@@ -24,7 +24,7 @@ function changePayment(){
             $("#paymentWithOdT1").html();
             $.ajax({
                 url:"<?php echo base_url();?>interface/invoice/getDp",
-                data:{id_oc:oc},
+                data:{no_oc:oc},
                 type:"POST",
                 dataType:"JSON",
                 success:function(respond){
@@ -35,10 +35,10 @@ function changePayment(){
             });
         break;
         case 2:
-            var oc = $("#idoc").val();
+            var no_oc = $("#idoc").val();
             console.log(oc);
             $.ajax({
-                data:{id_oc:oc},
+                data:{no_oc:no_oc},
                 url: "<?php echo base_url();?>interface/od/getOd",
                 type:"POST",
                 dataType:"JSON",
