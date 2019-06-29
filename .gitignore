@@ -47,3 +47,6 @@ application/config/database.php
 *.zip
 *.txt
 assets/rfq
+tests/
+testing-plan/
+queries/
