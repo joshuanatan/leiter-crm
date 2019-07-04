@@ -59,33 +59,40 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="payment" role="tabpanel">
-                                
+                                <div class = "row">
                                 <!-- nanti ngeload sesuai kebutuhan klo ada dp atau kalau ada 2x pembayaran -->
-                                <div class = "form-group containerDp"> <!-- textarea klo DP % -->
-                                    <h5 style = "color:darkgrey; opacity:0.8">DP Percentage</h5>
-                                    <input name = "persen[]" readonly id = "persenDp" value = "%" type ="text" class = "form-control">
+                                    <div class = "form-group col-lg-4 containerDp"> <!-- textarea klo DP % -->
+                                        <h5 style = "color:darkgrey; opacity:0.8">DP Percentage</h5>
+                                        <input name = "persen[]" readonly id = "persenDp" value = "%" type ="text" class = "form-control">
+                                    </div>
+                                    <div class = "form-group col-lg-4 containerDp"> <!-- Nominal DP -->
+                                        <h5 style = "color:darkgrey; opacity:0.8">Payment Trigger</h5>
+                                        <input name = "jumlah[]" readonly id = "triggerDp" type ="text" class = "form-control">
+                                    </div>
+                                    <div class = "form-group col-lg-4 containerDp"> <!-- Nominal DP -->
+                                        <h5 style = "color:darkgrey; opacity:0.8">DP Amount</h5>
+                                        <input name = "jumlah[]" readonly id = "jumlahDp" type ="text" class = "form-control">
+                                    </div>
                                 </div>
-                                <div class = "form-group containerDp"> <!-- Nominal DP -->
-                                    <h5 style = "color:darkgrey; opacity:0.8">DP Amount</h5>
-                                    <input name = "jumlah[]" readonly id = "jumlahDp" type ="text" class = "form-control">
-                                </div>
-                                <div class = "form-group containerDp"> <!-- Nominal DP -->
-                                    <h5 style = "color:darkgrey; opacity:0.8">Payment Trigger</h5>
-                                    <input name = "jumlah[]" readonly id = "triggerDp" type ="text" class = "form-control">
-                                </div>
-                                <div class = "form-group containerSisa"> <!-- textarea klo DP% -->
-                                    <h5 style = "color:darkgrey; opacity:0.8">Rest Percentage</h5>
-                                    <input name = "persen[]" readonly id = "persenSisa" value = "%" type ="text" class = "form-control">
-                                </div>
-                                <div class = "form-group containerSisa"> <!-- Nominal DP -->
-                                    <h5 style = "color:darkgrey; opacity:0.8">Rest Amount</h5>
-                                    <input name = "jumlah[]" readonly id = "jumlahSisa" type ="text" class = "form-control">
-                                </div>
-                                <div class = "form-group containerSisa"> <!-- Nominal DP -->
-                                    <h5 style = "color:darkgrey; opacity:0.8">Payment Trigger</h5>
-                                    <input name = "jumlah[]" readonly id = "triggerSisa" type ="text" class = "form-control">
+                                <div class = "row">
+                                    <div class = "form-group col-lg-4 containerSisa"> <!-- textarea klo DP% -->
+                                        <h5 style = "color:darkgrey; opacity:0.8">Rest Percentage</h5>
+                                        <input name = "persen[]" readonly id = "persenSisa" value = "%" type ="text" class = "form-control">
+                                    </div>
+                                    <div class = "form-group col-lg-4 containerSisa"> <!-- Nominal DP -->
+                                        <h5 style = "color:darkgrey; opacity:0.8">Payment Trigger</h5>
+                                        <input name = "jumlah[]" readonly id = "triggerSisa" type ="text" class = "form-control">
+                                    </div>
+                                    <div class = "form-group col-lg-4 containerSisa"> <!-- Nominal DP -->
+                                        <h5 style = "color:darkgrey; opacity:0.8">Rest Amount</h5>
+                                        <input name = "jumlah[]" readonly id = "jumlahSisa" type ="text" class = "form-control">
+                                    </div>
                                 </div>
                                 <!-- end ngeloadnya pembayaran -->
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Durasi Pembayaran</h5>
+                                    <input name = "durasi_pembayaran" id = "durasi_pembayaran" type ="text" class = "form-control">
+                                </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Mata Uang Pembayaran</h5>
                                     <input name = "mata_uang_pembayaran" id = "kurs" type ="text" class = "form-control" readonly>
@@ -121,10 +128,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="tambahan" role="tabpanel">
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Durasi Pembayaran</h5>
-                                    <input name = "durasi_pembayaran" id = "durasi_pembayaran" type ="text" class = "form-control">
-                                </div>
+                                
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Durasi Pengiriman</h5>
                                     <input name = "durasi_pengiriman" id = "durasi_pengiriman" type ="text" class = "form-control"> 

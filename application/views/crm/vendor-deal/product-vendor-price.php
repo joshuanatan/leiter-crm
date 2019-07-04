@@ -1,8 +1,8 @@
 
 <div class="panel-body col-lg-12">
     <div class = "form-group">
-        <div class = "col-lg-6" style = "margin-left:0px; padding-left:0px">
-            <select class = "form-control col-lg-6" id = "items" onchange = "getDetailPriceRequestItem()">
+        <div class = "col-lg-6" style = "margin-left:0px; padding-left:0px" style = "z-index:1">
+            <select class = "form-control col-lg-6" id = "items" onchange = "getDetailPriceRequestItem()" data-plugin="select2" style="z-index: 1 !important;">
                 <option selected disabled>Choose Item List</option>
                 <?php for($a = 0 ; $a<count($request_item); $a++): ?> 
                 <option value = "<?php echo $request_item[$a]["id_request_item"];?>"><?php echo $request_item[$a]["nama_produk"];?></option>
@@ -13,7 +13,7 @@
     <div>
         <div class = "form-group">
             <h5 style = "opacity:0.5">Product Name</h5>
-            <textarea class = "form-control" readonly id = "nama_produk"></textarea>
+            <textarea class = "form-control nama_produk" readonly id = ""></textarea>
         </div>
         <div class = "form-group">
             <h5 style = "opacity:0.5">Product Quantity</h5>
@@ -41,14 +41,35 @@
                     <h4 class = "modal-title">ADD SUPPLIER PRICE</h4>
                 </div>
                 <form action = "<?php echo base_url();?>crm/vendor/insertHargaSupplier" method = "POST" enctype = "multipart/form-data">
-                    <div class = "modal-body">
+                    <div class = "modal-body actual-select" >
                         <div class = "form-group">
+                            <button class = "btn btn-primary btn-sm" data-toggle = "modal" type = "button" data-target="#supplierBaru">New Supplier</button>
+                            
                             <h5 style = "opacity:0.5">Supplier Name</h5>
-                            <input type = "text" class = "form-control" name = "nama_perusahaan">
+                            <select class = "form-control actual-select" onchange = "getCp('id_supplier','supplier_cp')" name = "id_perusahaan" id = "id_supplier" data-plugin="select2">
+                                <?php for($sup = 0; $sup<count($supplier);$sup++):?>
+                                <option>Select Supplier</option>
+                                <option value = "<?php echo $supplier[$sup]["id_perusahaan"];?>"><?php echo $supplier[$sup]["nama_perusahaan"];?></option>
+                                <?php endfor;?>
+                            </select>
                         </div>
                         <div class = "form-group">
-                            <h5 style = "opacity:0.5">Supplier PIC</h5>
-                            <input type = "text" class = "form-control" name = "nama_cp">
+                            <h5 style = "opacity:0.5">PIC Supplier</h5>
+                            <select onchange = "getDetailCp('supplier_cp','email_pic_supplier','phone_pic_supplier')" class = "form-control actual-select" name = "id_cp" data-plugin="select2" id = "supplier_cp">
+                                
+                            </select>
+                        </div>
+                        <div class = "form-group">
+                            <h5 style = "opacity:0.5">Email PIC</h5>
+                            <input type = "text" class = "form-control" readonly id = "email_pic_supplier">
+                        </div>
+                        <div class = "form-group">
+                            <h5 style = "opacity:0.5">No Handphone PIC</h5>
+                            <input type = "text" class = "form-control" readonly id = "phone_pic_supplier">
+                        </div>
+                        <div class = "form-group">
+                            <h5 style = "opacity:0.5">Vendor Product Name</h5>
+                            <textarea class = "form-control" name = "nama_produk_vendor"></textarea>
                         </div>
                         <div class = "form-group">
                             <h5 style = "opacity:0.5">Price</h5>
@@ -91,17 +112,37 @@
                 <form action = "<?php echo base_url();?>crm/vendor/insertHargaShipping" method = "POST" enctype = "multipart/form-data">
                     <div class = "modal-body">
                         <div class = "form-group">
+                            <button class = "btn btn-primary btn-sm" data-toggle = "modal" type = "button" data-target="#shipperBaru">New Shipper</button>
                             <h5 style = "opacity:0.5">Supplier Name</h5>
-                            <select class = "form-control listSupplier" name = "id_harga_vendor">
+                            <select class = "form-control listSupplier" id = "listSupplier" name = "id_harga_vendor" data-plugin="select2">
+                                <?php for($ship = 0; $ship<count($shipper); $ship++):?>
+                                <option value = "<?php echo $shipper[$ship]["id_perusahaan"];?>"><?php echo $shipper[$ship]["nama_perusahaan"];?></option>
+                                <?php endfor;?>
                             </select>
                         </div>
                         <div class = "form-group">
                             <h5 style = "opacity:0.5">Shipper Name</h5>
-                            <input type = "text" class = "form-control" name = "nama_perusahaan">
+                            <select class = "form-control actual-select" onchange = "getCp('id_shipper','shipper_cp')" name = "id_perusahaan" id = "id_shipper" data-plugin="select2">
+                                <option>Select Shipper</option>   
+                                <?php for($ship = 0; $ship<count($shipper);$ship++):?>
+                                
+                                <option value = "<?php echo $shipper[$ship]["id_perusahaan"];?>"><?php echo $shipper[$ship]["nama_perusahaan"];?></option>
+                                <?php endfor;?>
+                            </select>
                         </div>
                         <div class = "form-group">
                             <h5 style = "opacity:0.5">Shipper PIC</h5>
-                            <input type = "text" class = "form-control" name = "nama_cp">
+                            <select onchange = "getDetailCp('shipper_cp','email_pic_shipper','phone_pic_shipper')" class = "form-control actual-select" name = "id_cp" data-plugin="select2" id = "shipper_cp">
+                                
+                            </select>
+                        </div>
+                        <div class = "form-group">
+                            <h5 style = "opacity:0.5">Email PIC</h5>
+                            <input type = "text" class = "form-control" readonly id = "email_pic_shipper">
+                        </div>
+                        <div class = "form-group">
+                            <h5 style = "opacity:0.5">No Handphone PIC</h5>
+                            <input type = "text" class = "form-control" readonly id = "phone_pic_shipper">
                         </div>
                         <div class = "form-group">
                             <h5 style = "opacity:0.5">Shipping Method</h5>
@@ -165,6 +206,7 @@
                             <th>Method</th>
                             <th>Notes</th>
                             <th>Attachment</th>
+                            <th style = "width:15%">Actions</th>
                         </thead>
                         <tbody id = "assignedShipperList">
 
@@ -183,12 +225,29 @@
                 <form action = "<?php echo base_url();?>crm/vendor/insertHargaCourier" method = "POST" enctype = "multipart/form-data">
                     <div class = "modal-body">
                         <div class = "form-group">
+                            <button class = "btn btn-primary btn-sm" data-toggle = "modal" type = "button" data-target="#shipperBaru">New Courier</button>
                             <h5 style = "opacity:0.5">Courier Name</h5>
-                            <input type = "text" class = "form-control" name = "nama_perusahaan">
+                            <select class = "form-control actual-select" onchange = "getCp('id_courier','courier_cp')" name = "id_perusahaan" id = "id_courier" data-plugin="select2">
+                                <option>Select Courier</option>   
+                                <?php for($ship = 0; $ship<count($shipper);$ship++):?>
+                                
+                                <option value = "<?php echo $shipper[$ship]["id_perusahaan"];?>"><?php echo $shipper[$ship]["nama_perusahaan"];?></option>
+                                <?php endfor;?>
+                            </select>
                         </div>
                         <div class = "form-group">
                             <h5 style = "opacity:0.5">Courier PIC</h5>
-                            <input type = "text" class = "form-control" name = "nama_cp">
+                            <select onchange = "getDetailCp('courier_cp','email_pic_courier','phone_pic_courier')" class = "form-control actual-select" name = "id_cp" data-plugin="select2" id = "courier_cp">
+                                
+                            </select>
+                        </div>
+                        <div class = "form-group">
+                            <h5 style = "opacity:0.5">Email PIC</h5>
+                            <input type = "text" class = "form-control" readonly id = "email_pic_courier">
+                        </div>
+                        <div class = "form-group">
+                            <h5 style = "opacity:0.5">No Handphone PIC</h5>
+                            <input type = "text" class = "form-control" readonly id = "phone_pic_courier">
                         </div>
                         <div class = "form-group">
                             <h5 style = "opacity:0.5">Price</h5>
@@ -230,7 +289,7 @@
             </div>
         </div>
     </div>
-    <div class = "modal fade" id = "viewCourier">
+    <div class = "modal fade" style = "height:800px" id = "viewCourier">
         <div class = "modal-dialog modal-lg">
             <div class = "modal-content">
                 <div class = "modal-header">
@@ -247,6 +306,7 @@
                             <th>Method</th>
                             <th>Notes</th>
                             <th>Attachment</th>
+                            <th style = "width:15%">Actions</th>
                         </thead>
                         <tbody id = "assignedCourierList">
 
@@ -266,6 +326,7 @@
                 <th style = "width:10%">Currency</th>
                 <th style = "width:15%">Notes</th>
                 <th style = "width:15%">Attachment</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody id = "t1">
@@ -273,4 +334,82 @@
         </tbody>
     </table>
     <a href = "<?php echo base_url();?>crm/vendor" class = "btn btn-primary btn-outline">BACK</a>
+</div>
+<div class = "modal fade" id = "supplierBaru" style = "z-index:1000000">
+    <form action = "<?php echo base_url();?>crm/vendor/insertNewSupplier" method = "POST">
+        <div class = "modal-dialog">
+            <div class = "modal-content">
+                <div class = "modal-header">
+                    <h4 class = modal-title>NEW SUPPLIER</h4>                                     
+                </div>
+                <div class = "modal-body">
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Supplier Firm</h5>
+                        <input type = "text" class = "form-control" name = "add_nama_supplier">
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Supplier PIC</h5>
+                        <input type = "text" class = "form-control" name = "add_pic">
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Gender PIC</h5>
+                        <select class = "form-control" name = "add_jk_pic">
+                            <option value = "Mr">MR</option>
+                            <option value = "Ms">MS</option>
+                        </select>
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Email PIC</h5>
+                        <input type = "text" class = "form-control" name = "add_email_pic">
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Phone Number PIC</h5>
+                        <input type = "text" class = "form-control" name = "add_phone_pic">
+                    </div>
+                    <div class = "form-group">
+                        <button type = "submit" class = "btn btn-primary btn-sm">SUBMIT</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class = "modal fade" id = "shipperBaru" style = "z-index:1000000">
+    <form action = "<?php echo base_url();?>crm/vendor/insertNewShipper" method = "POST">
+        <div class = "modal-dialog">
+            <div class = "modal-content">
+                <div class = "modal-header">
+                    <h4 class = modal-title>NEW SUPPLIER</h4>                                     
+                </div>
+                <div class = "modal-body">
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Supplier Firm</h5>
+                        <input type = "text" class = "form-control" name = "add_nama_supplier">
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Supplier PIC</h5>
+                        <input type = "text" class = "form-control" name = "add_pic">
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Gender PIC</h5>
+                        <select class = "form-control" name = "add_jk_pic">
+                            <option value = "Mr">MR</option>
+                            <option value = "Ms">MS</option>
+                        </select>
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Email PIC</h5>
+                        <input type = "text" class = "form-control" name = "add_email_pic">
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Phone Number PIC</h5>
+                        <input type = "text" class = "form-control" name = "add_phone_pic">
+                    </div>
+                    <div class = "form-group">
+                        <button type = "submit" class = "btn btn-primary btn-sm">SUBMIT</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>

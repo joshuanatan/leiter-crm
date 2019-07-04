@@ -14,10 +14,10 @@ class Price_request_item extends CI_Controller{
             "id_request_item" => $id_request_item
         );
         $field = array(
-            "nama_produk","jumlah_produk","notes_produk","file"
+            "nama_produk","jumlah_produk","notes_produk","file","satuan_produk"
         );
         $print = array(
-            "nama_produk","jumlah_produk","notes_produk","file"
+            "nama_produk","jumlah_produk","notes_produk","file","satuan_produk"
         );
         $result = selectRow("price_request_item",$where);
         $data = foreachResult($result,$field,$print);

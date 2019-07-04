@@ -94,7 +94,7 @@
                             </li>
                             <li class="site-menu-item">
                                 <a class="animsition-link" href="<?php echo base_url();?>crm/vendor">
-                                <span class="site-menu-title">Vendor's Deal</span>
+                                <span class="site-menu-title">Vendor Price</span>
                                 </a>
                             </li>
                             <li class="site-menu-item">

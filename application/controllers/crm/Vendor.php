@@ -43,15 +43,15 @@ class Vendor extends CI_Controller{
         );
         $field = array(
             "request" => array(
-                "no_request","id_perusahaan","id_cp","id_request","bulan_request","tahun_request","untuk_stock"
+                "no_request","id_perusahaan","id_cp","id_request","bulan_request","tahun_request","untuk_stock","id_submit_request"
             )
         );
         $print = array(
             "request" => array(
-                "no_request","id_perusahaan","id_cp","id_request","bulan_request","tahun_request","untuk_stock"
+                "no_request","id_perusahaan","id_cp","id_request","bulan_request","tahun_request","untuk_stock","id_submit_request"
             )
         );    
-        $result["request"] = selectROw("price_request",$where["request"]);
+        $result["request"] = $this->Mdprice_request->getListPriceRequest($where["request"]);
         $data["request"] = foreachMultipleResult($result["request"],$field["request"],$print["request"]);
         for($a = 0; $a<count($data["request"]);$a++){
             $data["request"][$a]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $data["request"][$a]["id_perusahaan"]));
@@ -65,17 +65,21 @@ class Vendor extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
-    public function produk($id_request,$bulan,$tahun){
+    public function produk($id_submit_request){
         /*harusnya ini tampilin dulu semua barangnya apa aja*/
         //$this->session->id_request = $id_request;
-        $this->session->link = $id_request."/".$bulan."/".$tahun;
+        $this->session->link = $id_submit_request;
         $where = array(
             "request_item" => array(
-                "no_request"=>"LI-".sprintf("%03d",$id_request)."/RFQ/".bulanRomawi((int)$bulan)."/".$tahun,
+                "id_submit_request" => $id_submit_request,
                 "status_request_item" => 0,
             ),
             "supplier" => array(
                 "peran_perusahaan" => "PRODUK",
+                "status_perusahaan" => 0
+            ),
+            "shipper" => array(
+                "peran_perusahaan" => "SHIPPING",
                 "status_perusahaan" => 0
             ),
             "matauang" => array()
@@ -108,8 +112,13 @@ class Vendor extends CI_Controller{
         $result["mata_uang"] = selectRow("mata_uang",$where["matauang"]);
         $data["mata_uang"] = foreachMultipleResult($result["mata_uang"],$field["mata_uang"],$print["mata_uang"]);
 
-        $result["supplier"] = selectRow("perusahaan",$where["supplier"]);
+        $result["supplier"] = $this->Mdperusahaan->getListPerusahaan($where["supplier"]);
         $data["supplier"] = foreachMultipleResult($result["supplier"],$field["supplier"],$print["supplier"]);
+        
+        $result["shipper"] = $this->Mdperusahaan->getListPerusahaan($where["shipper"]);
+        $data["shipper"] = foreachMultipleResult($result["shipper"],$field["supplier"],$print["supplier"]);
+
+
         $this->req();
         $this->load->view("crm/content-open");
         $this->load->view("crm/vendor-deal/category-header");
@@ -118,14 +127,22 @@ class Vendor extends CI_Controller{
         $this->close();
         $this->load->view("crm/vendor-deal/js/request-ajax");
     }
-    public function supplier($id_request,$bulan,$tahun){
+    public function supplier($id_submit_request){
         /*harusnya ini tampilin dulu semua barangnya apa aja*/
         //$this->session->id_request = $id_request;
-        $this->session->link = $id_request."/".$bulan."/".$tahun;
+        $this->session->link = $id_submit_request;
         $where = array(
             "request_item" => array(
-                "no_request"=>"LI-".sprintf("%03d",$id_request)."/RFQ/".bulanRomawi((int)$bulan)."/".$tahun,
+                "id_submit_request" => $id_submit_request,
                 "status_request_item" => 0,
+            ),
+            "supplier" => array(
+                "peran_perusahaan" => "PRODUK",
+                "status_perusahaan" => 0
+            ),
+            "shipper" => array(
+                "peran_perusahaan" => "SHIPPING",
+                "status_perusahaan" => 0
             ),
             "mata_uang" => array(),
         );
@@ -137,7 +154,7 @@ class Vendor extends CI_Controller{
                 "mata_uang"
             ),
             "supplier" => array(
-                "id_perusahaan","nama_perusahaan","notelp_perusahaan","nama_cp","nohp_cp","email_cp"
+                "id_perusahaan","nama_perusahaan"
             )
         );
         $print = array(
@@ -157,6 +174,11 @@ class Vendor extends CI_Controller{
         $result["mata_uang"] = selectRow("mata_uang",$where["mata_uang"]);
         $data["mata_uang"] = foreachMultipleResult($result["mata_uang"],$field["mata_uang"],$print["mata_uang"]);
 
+        $result["supplier"] = $this->Mdperusahaan->getListPerusahaan($where["supplier"]);
+        $data["supplier"] = foreachMultipleResult($result["supplier"],$field["supplier"],$print["supplier"]);
+        
+        $result["shipper"] = $this->Mdperusahaan->getListPerusahaan($where["shipper"]);
+        $data["shipper"] = foreachMultipleResult($result["shipper"],$field["supplier"],$print["supplier"]);
         $this->req();
         $this->load->view("crm/content-open");
         $this->load->view("crm/vendor-deal/category-header");
@@ -756,18 +778,6 @@ class Vendor extends CI_Controller{
         $this->Mdprice_request->update($data,$where);
         redirect("crm/vendor");
     }
-    public function getShippingMethod(){
-        $where = array(
-            "id_perusahaan" => $this->input->post("id_perusahaan"),
-            "Status_metode_pengiriman" => 0
-        );
-        $result = $this->Mdmetode_pengiriman_shipping->select($where);
-        $html = "<option>Select Shipping Method</option>";
-        foreach($result->result() as $a){
-            $html .= "<option value = '".$a->metode_pengiriman."'>".$a->metode_pengiriman."</option>";
-        }
-        echo json_encode($html);
-    }
     public function insertHargaSupplier(){
         $config = array(
             "upload_path" => "./assets/dokumen/hargasupplier/",
@@ -782,8 +792,9 @@ class Vendor extends CI_Controller{
         }
         $data = array(
             "id_request_item" =>  $this->session->id_request_item,
-            "nama_perusahaan" =>  $this->input->post("nama_perusahaan"),
-            "nama_cp" =>  $this->input->post("nama_cp"),
+            "id_perusahaan" =>  $this->input->post("id_perusahaan"),
+            "id_cp" =>  $this->input->post("id_cp"),
+            "nama_produk_vendor" =>  $this->input->post("nama_produk_vendor"),
             "harga_produk" =>  splitterMoney($this->input->post("price"),","),
             "vendor_price_rate" => splitterMoney($this->input->post("rate"),","),
             "mata_uang" => $this->input->post("currency"),
@@ -807,8 +818,8 @@ class Vendor extends CI_Controller{
         }
         $data = array(
             "id_request_item" =>  $this->session->id_request_item,
-            "nama_perusahaan" =>  $this->input->post("nama_perusahaan"),
-            "nama_cp" =>  $this->input->post("nama_cp"),
+            "id_perusahaan" =>  $this->input->post("id_perusahaan"),
+            "id_cp" =>  $this->input->post("id_cp"),
             "harga_produk" =>  splitterMoney($this->input->post("price"),","),
             "vendor_price_rate" => splitterMoney($this->input->post("rate"),","),
             "metode_pengiriman" => $this->input->post("metode_pengiriman"),
@@ -833,8 +844,8 @@ class Vendor extends CI_Controller{
         }
         $data = array(
             "id_harga_vendor" =>  $this->input->post("id_harga_vendor"),
-            "nama_perusahaan" =>  $this->input->post("nama_perusahaan"),
-            "nama_cp" =>  $this->input->post("nama_cp"),
+            "id_perusahaan" =>  $this->input->post("id_perusahaan"),
+            "id_cp" =>  $this->input->post("id_cp"),
             "harga_produk" =>  splitterMoney($this->input->post("price"),","),
             "vendor_price_rate" => splitterMoney($this->input->post("rate"),","),
             "metode_pengiriman" => $this->input->post("metode_pengiriman"),
@@ -843,6 +854,172 @@ class Vendor extends CI_Controller{
             "attachment" =>  $fileData["file_name"],
         );
         insertRow("harga_shipping",$data);
+        redirect("crm/vendor/supplier/".$this->session->link);
+    }
+    public function editHargaSupplier(){
+        $config = array(
+            "upload_path" => "./assets/dokumen/hargasupplier/",
+            "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
+        );
+        $this->load->library("upload",$config);
+        if($this->upload->do_upload("attachment")){
+            $fileData = $this->upload->data();
+            $data = array(
+                "harga_produk" => splitterMoney($this->input->post("harga_produk"),","),
+                "vendor_price_rate" => splitterMoney($this->input->post("vendor_price_rate"),","),
+                "mata_uang" => $this->input->post("mata_uang"),
+                "nama_produk_vendor" => $this->input->post("nama_produk_vendor"),
+                "notes" => $this->input->post("notes"),
+                "attachment" => $fileData["file_name"]
+            );
+            $where = array(
+                "id_harga_vendor" => $this->input->post("id_harga_vendor")
+            );
+            updateRow("harga_vendor",$data,$where);
+        }
+        else{
+            $fileData["file_name"] = "-";
+            $data = array(
+                "harga_produk" => splitterMoney($this->input->post("harga_produk"),","),
+                "vendor_price_rate" => splitterMoney($this->input->post("vendor_price_rate"),","),
+                "mata_uang" => $this->input->post("mata_uang"),
+                "nama_produk_vendor" => $this->input->post("nama_produk_vendor"),
+                "notes" => $this->input->post("notes"),
+            );
+            $where = array(
+                "id_harga_vendor" => $this->input->post("id_harga_vendor")
+            );
+            updateRow("harga_vendor",$data,$where);
+        }
+        redirect("crm/vendor/supplier/".$this->session->link);
+    }
+    public function editHargaCourier(){
+        $config = array(
+            "upload_path" => "./assets/dokumen/hargasupplier/",
+            "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
+        );
+        $this->load->library("upload",$config);
+        if($this->upload->do_upload("attachment")){
+            $fileData = $this->upload->data();
+            $data = array(
+                "harga_produk" => splitterMoney($this->input->post("harga_produk"),","),
+                "vendor_price_rate" => splitterMoney($this->input->post("vendor_price_rate"),","),
+                "mata_uang" => $this->input->post("mata_uang"),
+                "metode_pengiriman" => $this->input->post("metode_pengiriman"),
+                "notes" => $this->input->post("notes"),
+                "attachment" => $fileData["file_name"]
+            );
+            $where = array(
+                "id_harga_courier" => $this->input->post("id_harga_courier")
+            );
+            updateRow("harga_courier",$data,$where);
+        }
+        else{
+            $fileData["file_name"] = "-";
+            $data = array(
+                "harga_produk" => splitterMoney($this->input->post("harga_produk"),","),
+                "vendor_price_rate" => splitterMoney($this->input->post("vendor_price_rate"),","),
+                "mata_uang" => $this->input->post("mata_uang"),
+                "metode_pengiriman" => $this->input->post("metode_pengiriman"),
+                "notes" => $this->input->post("notes"),
+            );
+            $where = array(
+                "id_harga_courier" => $this->input->post("id_harga_courier")
+            );
+            updateRow("harga_courier",$data,$where);
+        }
+        redirect("crm/vendor/supplier/".$this->session->link);
+    }
+    public function editHargaShipper(){
+        $config = array(
+            "upload_path" => "./assets/dokumen/hargasupplier/",
+            "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
+        );
+        $this->load->library("upload",$config);
+        if($this->upload->do_upload("attachment")){
+            $fileData = $this->upload->data();
+            $data = array(
+                "harga_produk" => splitterMoney($this->input->post("harga_produk"),","),
+                "vendor_price_rate" => splitterMoney($this->input->post("vendor_price_rate"),","),
+                "mata_uang" => $this->input->post("mata_uang"),
+                "metode_pengiriman" => $this->input->post("metode_pengiriman"),
+                "notes" => $this->input->post("notes"),
+                "attachment" => $fileData["file_name"]
+            );
+            $where = array(
+                "id_harga_shipping" => $this->input->post("id_harga_shipping")
+            );
+            updateRow("harga_shipping",$data,$where);
+        }
+        else{
+            $fileData["file_name"] = "-";
+            $data = array(
+                "harga_produk" => splitterMoney($this->input->post("harga_produk"),","),
+                "vendor_price_rate" => splitterMoney($this->input->post("vendor_price_rate"),","),
+                "mata_uang" => $this->input->post("mata_uang"),
+                "metode_pengiriman" => $this->input->post("metode_pengiriman"),
+                "notes" => $this->input->post("notes"),
+            );
+            $where = array(
+                "id_harga_shipping" => $this->input->post("id_harga_shipping")
+            );
+            updateRow("harga_shipping",$data,$where);
+        }
+        redirect("crm/vendor/supplier/".$this->session->link);
+    }
+    public function deleteHargaVendor($id_harga_vendor){
+        $where = array(
+            "id_harga_vendor" => $id_harga_vendor
+        );
+        deleteRow("harga_vendor",$where);
+        redirect("crm/vendor/supplier/".$this->session->link);
+    }
+    public function deleteHargaCourier($id_harga_courier){
+        $where = array(
+            "id_harga_courier" => $id_harga_courier
+        );
+        deleteRow("harga_courier",$where);
+        redirect("crm/vendor/supplier/".$this->session->link);
+    }
+    public function deleteHargaShipping($id_harga_shipping){
+        $where = array(
+            "id_harga_shipping" => $id_harga_shipping
+        );
+        deleteRow("harga_shipping",$where);
+        redirect("crm/vendor/supplier/".$this->session->link);
+    }
+    public function insertNewSupplier(){
+        $data = array(
+            "nama_perusahaan" => $this->input->post("add_nama_supplier"),
+            "permanent" => 1,
+            "peran_perusahaan" => "PRODUK",
+        );
+        $id_perusahaan = insertRow("perusahaan",$data);
+        $data = array(
+            "nama_cp" => $this->input->post("add_pic"),
+            "jk_cp" => $this->input->post("add_jk_pic"),
+            "email_cp" => $this->input->post("add_email_pic"),
+            "nohp_cp" => $this->input->post("add_phone_pic"),
+            "id_perusahaan" => $id_perusahaan
+        );
+        insertRow("contact_person",$data);
+        redirect("crm/vendor/supplier"/$this->session->link);
+    }
+    public function insertNewShipper(){
+        $data = array(
+            "nama_perusahaan" => $this->input->post("add_nama_supplier"),
+            "permanent" => 1,
+            "peran_perusahaan" => "SHIPPING",
+        );
+        $id_perusahaan = insertRow("perusahaan",$data);
+        $data = array(
+            "nama_cp" => $this->input->post("add_pic"),
+            "jk_cp" => $this->input->post("add_jk_pic"),
+            "email_cp" => $this->input->post("add_email_pic"),
+            "nohp_cp" => $this->input->post("add_phone_pic"),
+            "id_perusahaan" => $id_perusahaan
+        );
+        insertRow("contact_person",$data);
         redirect("crm/vendor/supplier/".$this->session->link);
     }
 }

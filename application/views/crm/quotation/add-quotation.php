@@ -48,45 +48,54 @@
                             </div>
                             <!-- fungsi -->
                             <div class="tab-pane" id="items" role="tabpanel">
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Items</h5>
-                                    <select class = "form-control" id = "itemsOrdered" data-plugin = "select2" onchange = "loadVendors()">
-                                        <option selected disabled>Choose Item</option>
-                                    </select>
+                                <div class = "row">
+                                    <div class = "form-group col-lg-5">
+                                        <h5 style = "color:darkgrey; opacity:0.8">Items</h5>
+                                        <select class = "form-control" id = "itemsOrdered" data-plugin = "select2" onchange = "loadVendors()">
+                                            <option selected disabled>Choose Item</option>
+                                        </select>
+                                    </div>
+                                    <div class = "form-group col-lg-2">
+                                        <h5 style = "color:darkgrey; opacity:0.8">Quantity</h5>
+                                        <input name = "Abc" type ="text" class = "form-control" id = "itemamount" value = "">
+                                    </div>
                                 </div>
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Quantity</h5>
-                                    <input name = "Abc" type ="text" class = "form-control" id = "itemamount" value = "">
+                                <div class = "row">
+                                    <div class = "form-group col-lg-5">
+                                        <h5 style = "color:darkgrey; opacity:0.8">Supplier</h5>
+                                        <select class = "form-control" id = "products" onchange = "getVendorPrice()">
+                                            <option selected disabled>Choose Product Vendor</option>
+                                        </select>
+                                    </div>
+                                    <div class = "form-group col-lg-5">
+                                        <h5 style = "color:darkgrey; opacity:0.8">Supplier Price</h5>
+                                        <input name = "Abc" type ="text" id = "hargaProduk" class = "form-control" disabled placeholder = "Product Price">
+                                    </div>
                                 </div>
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Supplier</h5>
-                                    <select class = "form-control" id = "products" onchange = "getVendorPrice()">
-                                        <option selected disabled>Choose Product Vendor</option>
-                                    </select>
+                                <div class = "row">
+                                    <div class = "form-group col-lg-5">
+                                        <h5 style = "color:darkgrey; opacity:0.8">Shipping</h5>
+                                        <select class = "form-control" id="shippers" onchange = "getShippingPrice()">
+                                            <option selected disabled>Choose Shipping Vendor</option>
+                                        </select>
+                                    </div>
+                                    <div class = "form-group col-lg-5">
+                                        <h5 style = "color:darkgrey; opacity:0.8">Shipping Price</h5>
+                                        <input name = "Abc" type ="text" id = "hargashipping" class = "form-control" disabled placeholder = "Shipping Price">
+                                    </div>
                                 </div>
-                                <div class = "form-group">
-                                    <input name = "Abc" type ="text" id = "hargaProduk" class = "form-control" disabled placeholder = "Product Price">
+                                <div class = "row">
+                                    <div class = "form-group col-lg-5">
+                                        <h5 style = "color:darkgrey; opacity:0.8">Courier</h5>
+                                        <select class = "form-control" id = "courier" onchange = "getCourierPrice()">
+                                            <option selected disabled>Choose Courier</option>
+                                        </select>
+                                    </div>
+                                    <div class = "form-group col-lg-5">
+                                        <h5 style = "color:darkgrey; opacity:0.8">Courier Price</h5>
+                                        <input name = "Abc" type ="text" id = "hargaCourier" class = "form-control" disabled placeholder = "Courier Price">
+                                    </div>
                                 </div>
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Shipping</h5>
-                                    <select class = "form-control" id="shippers" onchange = "getShippingPrice()">
-                                        <option selected disabled>Choose Shipping Vendor</option>
-                                    </select>
-                                </div>
-                                <div class = "form-group">
-                                    <input name = "Abc" type ="text" id = "hargashipping" class = "form-control" disabled placeholder = "Shipping Price">
-                                </div>
-                                
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Courier</h5>
-                                    <select class = "form-control" id = "courier" onchange = "getCourierPrice()">
-                                        <option selected disabled>Choose Courier</option>
-                                    </select>
-                                </div>
-                                <div class = "form-group">
-                                    <input name = "Abc" type ="text" id = "hargaCourier" class = "form-control" disabled placeholder = "Courier Price">
-                                </div>
-                                
                                 <div class = "form-group" onclick = "getTotal()">
                                     <h5 style = "color:darkgrey; opacity:0.8">Total Price</h5>
                                     <input name = "Abc"  type ="text" class = "form-control" id = "totalPrice" disabled placeholder = "Click to get Total Price">
@@ -100,8 +109,8 @@
                                     <input name = "Abc"  type ="text" class = "form-control" id = "totalMargin" disabled placeholder = "Margin">
                                 </div>
                                 <div class = "form-group">
-                                    <button type = "button" onclick = "quotationItem()" class = "col-lg-3 btn btn-primary btn-outline">ADD TO QUOTATION</button>
-                                    <button type = "button" onclick = "showItem()" class = "col-lg-3 btn btn-primary btn-outline">SHOW QUOTATION ITEM</button>
+                                    <button type = "button" onclick = "quotationItem()" class = "col-lg-2 btn btn-primary btn-outline btn-sm">ADD TO QUOTATION</button>
+                                    <button type = "button" onclick = "showItem()" class = "col-lg-2 btn btn-primary btn-outline btn-sm">SHOW QUOTATION ITEM</button>
                                 </div>
                                 <div class = "form-group col-lg-12">
                                     <table class = "table table-stripped col-lg-12" style = "width:100%" data-plugin = "dataTable">
@@ -125,37 +134,45 @@
                                     <input type = "text" id = "totalQuotation" class = "form-control" readonly onclick = "countTotal()">
                                     <input type = "hidden" id = "totalQuotationClean" class = "form-control" readonly>
                                 </div>
-                                <div class = "form-group containerDp" style = ""> <!-- textarea klo DP % -->
-                                    <h5 style = "color:darkgrey; opacity:0.8">DP Percentage</h5>
-                                    <input name = "persenDp" id = "persenDp" oninput = "paymentWithDP()" type ="text" class = "form-control">
+                                <div class = "row">
+                                    <div class = "form-group col-lg-4 containerDp" style = ""> <!-- textarea klo DP % -->
+                                        <h5 style = "color:darkgrey; opacity:0.8">DP Percentage</h5>
+                                        <input name = "persenDp" id = "persenDp" oninput = "paymentWithDP()" type ="text" class = "form-control">
+                                    </div>
+                                    <div class = "form-group col-lg-4">
+                                        <h5 style = "color:darkgrey; opacity:0.8">Payment Method</h5>
+                                        <select class = "form-control" id = "paymentMethod" name = "paymentMethod">
+                                            <option value = "1">BEFORE DELIVERY</option>
+                                            <option value = "2">AFTER DELIVERY</option>
+                                        </select>
+                                    </div>
+                                    <div class = "form-group col-lg-4 containerDp" style = ""> <!-- Nominal DP -->
+                                        <h5 style = "color:darkgrey; opacity:0.8">DP Amount</h5>
+                                        <input name = "jumlahDp" id = "jumlahDp" type ="text" class = "form-control">
+                                        <input name = "jumlahDpClean" id = "jumlahDpClean" type ="hidden" class = "form-control">
+                                    </div>
                                 </div>
-                                <div class = "form-group containerDp" style = ""> <!-- Nominal DP -->
-                                    <h5 style = "color:darkgrey; opacity:0.8">DP Amount</h5>
-                                    <input name = "jumlahDp" id = "jumlahDp" type ="text" class = "form-control">
-                                    <input name = "jumlahDpClean" id = "jumlahDpClean" type ="hidden" class = "form-control">
+                                <div class = "row">
+                                    <div class = "form-group col-lg-4 containerSisa" style = ""> <!-- textarea klo DP% -->
+                                        <h5 style = "color:darkgrey; opacity:0.8">Rest Percentage</h5>
+                                        <input name = "persenSisa" id = "persenSisa" type ="text" class = "form-control">
+                                    </div>
+                                    <div class = "form-group col-lg-4">
+                                        <h5 style = "color:darkgrey; opacity:0.8">Payment Method</h5>
+                                        <select class = "form-control" id = "paymentMethod" name = "paymentMethod2">
+                                            <option value = "1">BEFORE DELIVERY</option>
+                                            <option value = "2">AFTER DELIVERY</option>
+                                        </select>
+                                    </div>  
+                                    <div class = "form-group col-lg-4 containerSisa" style = ""> <!-- Nominal DP -->
+                                        <h5 style = "color:darkgrey; opacity:0.8">Rest Amount</h5>
+                                        <input name = "" id = "jumlahSisa" type ="text" class = "form-control">
+                                        <input name = "jumlahSisaClean" id = "jumlahSisaClean" type ="hidden" class = "form-control">
+                                    </div>
                                 </div>
                                 <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Payment Method</h5>
-                                    <select class = "form-control" id = "paymentMethod" name = "paymentMethod">
-                                        <option value = "1">BEFORE DELIVERY</option>
-                                        <option value = "2">AFTER DELIVERY</option>
-                                    </select>
-                                </div>
-                                <div class = "form-group containerSisa" style = ""> <!-- textarea klo DP% -->
-                                    <h5 style = "color:darkgrey; opacity:0.8">Rest Percentage</h5>
-                                    <input name = "persenSisa" id = "persenSisa" type ="text" class = "form-control">
-                                </div>
-                                <div class = "form-group containerSisa" style = ""> <!-- Nominal DP -->
-                                    <h5 style = "color:darkgrey; opacity:0.8">Rest Amount</h5>
-                                    <input name = "" id = "jumlahSisa" type ="text" class = "form-control">
-                                    <input name = "jumlahSisaClean" id = "jumlahSisaClean" type ="hidden" class = "form-control">
-                                </div>
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Payment Method</h5>
-                                    <select class = "form-control" id = "paymentMethod" name = "paymentMethod2">
-                                        <option value = "1">BEFORE DELIVERY</option>
-                                        <option value = "2">AFTER DELIVERY</option>
-                                    </select>
+                                    <h5 style = "color:darkgrey; opacity:0.8">Durasi Pembayaran (... minggu setelah invoice diterima)</h5>
+                                    <input name = "durasi_pembayaran" type ="text" class = "form-control">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Mata Uang Pembayaran</h5>
@@ -202,10 +219,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="tambahan" role="tabpanel">
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Durasi Pembayaran</h5>
-                                    <input name = "durasi_pembayaran" type ="text" class = "form-control">
-                                </div>
+                                
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Durasi Pengiriman</h5>
                                     <input name = "durasi_pengiriman" type ="text" class = "form-control"> Minggu
