@@ -53,7 +53,7 @@
                                             <tr>
                                                 <td><?php echo ($b+1);?></td>
                                                 <td><?php echo $request[$a]["items"][$b]["nama_produk"];?></td>
-                                                <td><?php echo $request[$a]["items"][$b]["jumlah_produk"];?></td>
+                                                <td><?php echo $request[$a]["items"][$b]["jumlah_produk"];?> <?php echo $request[$a]["items"][$b]["satuan_produk"];?></td>
                                                 <td><?php echo $request[$a]["items"][$b]["notes_produk"];?></td>
                                                 <td>
                                                     <?php if($request[$a]["items"][$b]["file"] != "-"):?>
@@ -85,11 +85,11 @@
                 <td class="actions">
                     
                     <?php if($request[$a]["status_request"] == 0):?>
-                    <a href = "<?php echo base_url();?>crm/request/edit/<?php echo $request[$a]["id_request"];?>/<?php echo $request[$a]["bulan_request"];?>/<?php echo $request[$a]["tahun_request"];?>" class="btn btn-outline btn-primary btn-sm"><i class="icon wb-edit" aria-hidden="true"></i></a>
+                    <a href = "<?php echo base_url();?>crm/request/edit/<?php echo $request[$a]["id_submit_request"];?>" class="btn btn-outline btn-primary btn-sm"><i class="icon wb-edit" aria-hidden="true"></i></a>
 
-                    <a href = "<?php echo base_url();?>crm/request/delete/<?php echo $request[$a]["id_request"];?>/<?php echo $request[$a]["bulan_request"];?>/<?php echo $request[$a]["tahun_request"];?>" class="btn btn-outline btn-danger btn-sm" data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
+                    <a href = "<?php echo base_url();?>crm/request/delete/<?php echo $request[$a]["id_submit_request"];?>" class="btn btn-outline btn-danger btn-sm" data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
                     
-                    <a href = "<?php echo base_url();?>crm/request/confirm/<?php echo $request[$a]["id_request"];?>/<?php echo $request[$a]["bulan_request"];?>/<?php echo $request[$a]["tahun_request"];?>" class="btn btn-outline btn-success btn-sm"
+                    <a href = "<?php echo base_url();?>crm/request/confirm/<?php echo $request[$a]["id_submit_request"];?>" class="btn btn-outline btn-success btn-sm"
                     data-toggle="tooltip"><i class="icon wb-check" aria-hidden="true"></i></a>
                     <?php endif;?>
                     

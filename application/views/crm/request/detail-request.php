@@ -67,7 +67,7 @@
                             </div>
                         </td>
                         <td><textarea class = "form-control" name = "ordered_nama<?php echo $a;?>"><?php echo $items[$a]["nama_produk"];?></textarea></td>
-                        <td><input type = "text" class = "form-control" value = "<?php echo $items[$a]["jumlah_produk"];?>" name = "ordered_amount<?php echo $a;?>"></td>
+                        <td><input type = "text" class = "form-control" value = "<?php echo $items[$a]["jumlah_produk"]." ".$items[$a]["satuan_produk"];?>" name = "ordered_amount<?php echo $a;?>"></td>
                         <td><textarea class = "form-control" name = "ordered_notes<?php echo $a;?>"><?php echo $items[$a]["notes_produk"];?></textarea></td>
                         <td>
                             <input type="text" name="ordered_attachment<?php echo $a;?>" value = "<?php echo $items[$a]["file"];?>" class = "form-control" readonly style = "margin-bottom:10px">

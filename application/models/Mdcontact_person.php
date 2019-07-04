@@ -19,5 +19,12 @@ class Mdcontact_person extends CI_Model{
         $this->db->join("price_request","price_request.id_perusahaan = perusahaan.id_perusahaan","inner");
         return $this->db->get_where("contact_person",$where);
     }
+    
+    /* dari sini kebawah, itu yang kepake di sistem setelah review menjelang terakhir*/
+    public function getListCp($where){
+        $this->db->where("status_cp",0);
+        $this->db->order_by("date_cp_add","DESC");
+        return $this->db->get_where("contact_person",$where);
+    }
 }
 ?>

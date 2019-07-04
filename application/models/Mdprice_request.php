@@ -34,5 +34,11 @@ class Mdprice_request extends CI_Model{
         $this->db->group_by("price_request_item.id_request");
         return $this->db->get_where("price_request",$data);
     }
+    /* dari sini kebawah, itu yang kepake di sistem setelah review menjelang terakhir*/
+    public function getListPriceRequest($where){
+        $this->db->where("status_aktif_request",0); /*yang aktif*/
+        $this->db->order_by("date_request_add","DESC");
+        return $this->db->get_where("price_request",$where); /*bisa jadi di pilih per segment atau yang tidak permanen dsb*/
+    }
 }
 ?>

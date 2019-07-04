@@ -26,5 +26,11 @@ class Mdperusahaan extends CI_Model{
         $this->db->where("status_perusahaan",0);
         return $this->db->get_where("price_request_item",$data);
     }
+    /* dari sini kebawah, itu yang kepake di sistem setelah review menjelang terakhir*/
+    public function getListPerusahaan($where){
+        $this->db->where("status_perusahaan",0); /*yang aktif*/
+        $this->db->order_by("date_perusahaan_add","DESC");
+        return $this->db->get_where("perusahaan",$where); /*bisa jadi di pilih per segment atau yang tidak permanen dsb*/
+    }
 }
 ?>
