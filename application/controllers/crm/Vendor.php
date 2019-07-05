@@ -82,7 +82,10 @@ class Vendor extends CI_Controller{
                 "peran_perusahaan" => "SHIPPING",
                 "status_perusahaan" => 0
             ),
-            "matauang" => array()
+            "matauang" => array(),
+            "detail_request" => array(
+                "id_submit_request" => $id_submit_request
+            )
         );
         $field = array(
             "request_item" => array(
@@ -93,6 +96,9 @@ class Vendor extends CI_Controller{
             ),
             "supplier" => array(
                 "id_perusahaan","nama_perusahaan"
+            ),
+            "detail_request" => array(
+                "id_perusahaan","franco"
             )
         );
         $print = array(
@@ -104,6 +110,9 @@ class Vendor extends CI_Controller{
             ),
             "supplier" => array(
                 "id_perusahaan","nama_perusahaan"
+            ),
+            "detail_request" => array(
+                "id_perusahaan","franco"
             )
         );
         $result["request_item"] = selectRow("price_request_item",$where["request_item"]);
@@ -118,7 +127,10 @@ class Vendor extends CI_Controller{
         $result["shipper"] = $this->Mdperusahaan->getListPerusahaan($where["shipper"]);
         $data["shipper"] = foreachMultipleResult($result["shipper"],$field["supplier"],$print["supplier"]);
 
-
+        $result["detail_request"] = selectRow("price_request",$where["detail_request"]);
+        $data["detail_request"] = foreachResult($result["detail_request"],$field["detail_request"],$print["detail_request"]);
+        $data["detail_request"]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $data["detail_request"]["id_perusahaan"]));
+        $data["detail_request"]["alamat_pengiriman"] = get1Value("perusahaan","alamat_pengiriman",array("id_perusahaan" => $data["detail_request"]["id_perusahaan"]));
         $this->req();
         $this->load->view("crm/content-open");
         $this->load->view("crm/vendor-deal/category-header");
@@ -127,141 +139,271 @@ class Vendor extends CI_Controller{
         $this->close();
         $this->load->view("crm/vendor-deal/js/request-ajax");
     }
-    public function supplier($id_submit_request){
-        /*harusnya ini tampilin dulu semua barangnya apa aja*/
-        //$this->session->id_request = $id_request;
-        $this->session->link = $id_submit_request;
+    /*function*/
+    public function delete($i){
         $where = array(
-            "request_item" => array(
-                "id_submit_request" => $id_submit_request,
-                "status_request_item" => 0,
-            ),
-            "supplier" => array(
-                "peran_perusahaan" => "PRODUK",
-                "status_perusahaan" => 0
-            ),
-            "shipper" => array(
-                "peran_perusahaan" => "SHIPPING",
-                "status_perusahaan" => 0
-            ),
-            "mata_uang" => array(),
+            "price_request.id_request" => $i
         );
-        $field = array(
-            "request_item" => array(
-                "id_request_item","nama_produk","jumlah_produk","notes_produk","file"
-            ),
-            "mata_uang" => array(
-                "mata_uang"
-            ),
-            "supplier" => array(
-                "id_perusahaan","nama_perusahaan"
-            )
-        );
-        $print = array(
-            "request_item" => array(
-                "id_request_item","nama_produk","jumlah_produk","notes_produk","file"
-            ),
-            "mata_uang" => array(
-                "mata_uang"
-            ),
-            "supplier" => array(
-                "id_perusahaan","nama_perusahaan","notelp_perusahaan","nama_cp","nohp_cp","email_cp"
-            )
-        );
-        $result["request_item"] = selectRow("price_request_item",$where["request_item"]);
-        $data["request_item"] = foreachMultipleResult($result["request_item"],$field["request_item"],$print["request_item"]);
-        
-        $result["mata_uang"] = selectRow("mata_uang",$where["mata_uang"]);
-        $data["mata_uang"] = foreachMultipleResult($result["mata_uang"],$field["mata_uang"],$print["mata_uang"]);
-
-        $result["supplier"] = $this->Mdperusahaan->getListPerusahaan($where["supplier"]);
-        $data["supplier"] = foreachMultipleResult($result["supplier"],$field["supplier"],$print["supplier"]);
-        
-        $result["shipper"] = $this->Mdperusahaan->getListPerusahaan($where["shipper"]);
-        $data["shipper"] = foreachMultipleResult($result["shipper"],$field["supplier"],$print["supplier"]);
-        $this->req();
-        $this->load->view("crm/content-open");
-        $this->load->view("crm/vendor-deal/category-header");
-        $this->load->view("crm/vendor-deal/product-vendor-price",$data);
-        $this->load->view("crm/content-close");
-        $this->close();
-        $this->load->view("crm/vendor-deal/js/request-ajax");
-    }
-    public function suppliershipping($id_request_item,$id_perusahaan){
-        $this->session->id_detail = $id_request_item;
-        $this->session->id_supplier = $id_perusahaan;
-        $where = array(
-            "requestitem" => array(
-                "price_request_item.id_request_item"=>$id_request_item,
-            ),
-            "shipper" => array(
-                "perusahaan.peran_perusahaan" => "SHIPPING",
-                "perusahaan.status_perusahaan" => 0
-            ),
-        );
-        $result["requestitem"] = $this->Mdprice_request_item->select($where["requestitem"]);
-        $array["request_item"] = array();
-        foreach($result["requestitem"]->result() as $a){
-            $array["request_item"] = array(
-                "id_request_item" => $a->id_request_item,
-                "bn_produk" => get1Value("produk","bn_produk",array("id_produk" => $a->id_produk)),
-                "nama_produk" => get1Value("produk","nama_produk",array("id_produk" => $a->id_produk)),
-                "jumlah_produk" => getTotal("price_request_item","jumlah_produk",array("id_request" => $a->id_request, "id_produk" => $a->id_produk, "status_request_item" => 0)),
-                "satuan_produk" => get1Value("produk","satuan_produk",array("id_produk" => $a->id_produk)),
-                "nama_perusahaan" => get1Value("perusahaan","nama_perusahaan", array("id_perusahaan" => $id_perusahaan)),
-                "alamat_perusahaan" => get1Value("perusahaan","alamat_perusahaan", array("id_perusahaan" => $id_perusahaan)),
-            );
-        }
-
-
         $data = array(
-            "requestitemid" => $i,
-            "requestitem" => $array["request_item"],
-            "shipper" => $this->Mdperusahaan->select($where["shipper"]),
+            "price_request.status_request" => 1
         );
-        $this->req();
-        $this->load->view("crm/content-open");
-        $this->load->view("crm/vendor-deal/category-header");
-        $this->load->view("crm/vendor-deal/shipping-vendor-price",$data);
-        $this->load->view("crm/content-close");
-        $this->close();
-        $this->load->view("crm/vendor-deal/js/request-ajax");
+        $this->Mdprice_request->update($data,$where);
+        redirect("crm/vendor");
     }
-    public function courier($i){
-        $this->session->id_detail = $i;
+    public function submit($i){
         $where = array(
-            "requestitem" => array(
-                "price_request_item.id_request"=>$i,
-                "status_request_item" => 0
-            ),
-            "shipper" => array(
-                "perusahaan.peran_perusahaan" => "SHIPPING",
-                "perusahaan.status_perusahaan" => 0
-            ),
-            
+            "price_request.id_request" => $i
         );
-        $result["requestitem"] = $this->Mdprice_request_item->select($where["requestitem"]);
-        $array["requestitem"] = array();
-        $counter = 0 ;
-        foreach($result["requestitem"]->result() as $a){
-            $array["requestitem"][$counter] = array(
-                "id_request_item" => $a->id_request_item,
-                "nama_produk" => get1Value("produk","nama_produk", array("id_produk" => $a->id_produk))
-            );
-            $counter++;
+        $data = array(
+            "price_request.status_request" => 3
+        );
+        $this->Mdprice_request->update($data,$where);
+        redirect("crm/vendor");
+    }
+    public function insertHargaSupplier(){
+        $config = array(
+            "upload_path" => "./assets/dokumen/hargasupplier/",
+            "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
+        );
+        $this->load->library("upload",$config);
+        if($this->upload->do_upload("attachment")){
+            $fileData = $this->upload->data();
+        }
+        else{
+            $fileData["file_name"] = "-";
         }
         $data = array(
-            "requestitem" => $array["requestitem"],
-            "franco" => get1Value("price_request","franco",array("id_request" => $i)),
-            "shipper" => $this->Mdperusahaan->select($where["shipper"])
+            "id_request_item" =>  $this->session->id_request_item,
+            "id_perusahaan" =>  $this->input->post("id_perusahaan"),
+            "id_cp" =>  $this->input->post("id_cp"),
+            "nama_produk_vendor" =>  $this->input->post("nama_produk_vendor"),
+            "harga_produk" =>  splitterMoney($this->input->post("price"),","),
+            "vendor_price_rate" => splitterMoney($this->input->post("rate"),","),
+            "mata_uang" => $this->input->post("currency"),
+            "notes" => $this->input->post("notes"),
+            "attachment" =>  $fileData["file_name"],
         );
-        $this->req();
-        $this->load->view("crm/content-open");
-        $this->load->view("crm/vendor-deal/category-header");
-        $this->load->view("crm/vendor-deal/courier-vendor-price",$data);
-        $this->load->view("crm/content-close");
-        $this->close();
-        $this->load->view("crm/vendor-deal/js/request-ajax");
+        insertRow("harga_vendor",$data);
+        redirect("crm/vendor/supplier/".$this->session->link);
+    }
+    public function insertHargaCourier(){
+        $config = array(
+            "upload_path" => "./assets/dokumen/hargasupplier/",
+            "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
+        );
+        $this->load->library("upload",$config);
+        if($this->upload->do_upload("attachment")){
+            $fileData = $this->upload->data();
+        }
+        else{
+            $fileData["file_name"] = "-";
+        }
+        $data = array(
+            "id_request_item" =>  $this->session->id_request_item,
+            "id_perusahaan" =>  $this->input->post("id_perusahaan"),
+            "id_cp" =>  $this->input->post("id_cp"),
+            "harga_produk" =>  splitterMoney($this->input->post("price"),","),
+            "vendor_price_rate" => splitterMoney($this->input->post("rate"),","),
+            "metode_pengiriman" => $this->input->post("metode_pengiriman"),
+            "mata_uang" => $this->input->post("currency"),
+            "notes" => $this->input->post("notes"),
+            "attachment" =>  $fileData["file_name"],
+        );
+        insertRow("harga_courier",$data);
+        redirect("crm/vendor/supplier/".$this->session->link);
+    }
+    public function insertHargaShipping(){
+        $config = array(
+            "upload_path" => "./assets/dokumen/hargasupplier/",
+            "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
+        );
+        $this->load->library("upload",$config);
+        if($this->upload->do_upload("attachment")){
+            $fileData = $this->upload->data();
+        }
+        else{
+            $fileData["file_name"] = "-";
+        }
+        $data = array(
+            "id_harga_vendor" =>  $this->input->post("id_harga_vendor"),
+            "id_perusahaan" =>  $this->input->post("id_perusahaan"),
+            "id_cp" =>  $this->input->post("id_cp"),
+            "harga_produk" =>  splitterMoney($this->input->post("price"),","),
+            "vendor_price_rate" => splitterMoney($this->input->post("rate"),","),
+            "metode_pengiriman" => $this->input->post("metode_pengiriman"),
+            "mata_uang" => $this->input->post("currency"),
+            "notes" => $this->input->post("notes"),
+            "attachment" =>  $fileData["file_name"],
+        );
+        insertRow("harga_shipping",$data);
+        redirect("crm/vendor/supplier/".$this->session->link);
+    }
+    public function editHargaSupplier(){
+        $config = array(
+            "upload_path" => "./assets/dokumen/hargasupplier/",
+            "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
+        );
+        $this->load->library("upload",$config);
+        if($this->upload->do_upload("attachment")){
+            $fileData = $this->upload->data();
+            $data = array(
+                "harga_produk" => splitterMoney($this->input->post("harga_produk"),","),
+                "vendor_price_rate" => splitterMoney($this->input->post("vendor_price_rate"),","),
+                "mata_uang" => $this->input->post("mata_uang"),
+                "nama_produk_vendor" => $this->input->post("nama_produk_vendor"),
+                "notes" => $this->input->post("notes"),
+                "attachment" => $fileData["file_name"]
+            );
+            $where = array(
+                "id_harga_vendor" => $this->input->post("id_harga_vendor")
+            );
+            updateRow("harga_vendor",$data,$where);
+        }
+        else{
+            $fileData["file_name"] = "-";
+            $data = array(
+                "harga_produk" => splitterMoney($this->input->post("harga_produk"),","),
+                "vendor_price_rate" => splitterMoney($this->input->post("vendor_price_rate"),","),
+                "mata_uang" => $this->input->post("mata_uang"),
+                "nama_produk_vendor" => $this->input->post("nama_produk_vendor"),
+                "notes" => $this->input->post("notes"),
+            );
+            $where = array(
+                "id_harga_vendor" => $this->input->post("id_harga_vendor")
+            );
+            updateRow("harga_vendor",$data,$where);
+        }
+        redirect("crm/vendor/supplier/".$this->session->link);
+    }
+    public function editHargaCourier(){
+        $config = array(
+            "upload_path" => "./assets/dokumen/hargasupplier/",
+            "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
+        );
+        $this->load->library("upload",$config);
+        if($this->upload->do_upload("attachment")){
+            $fileData = $this->upload->data();
+            $data = array(
+                "harga_produk" => splitterMoney($this->input->post("harga_produk"),","),
+                "vendor_price_rate" => splitterMoney($this->input->post("vendor_price_rate"),","),
+                "mata_uang" => $this->input->post("mata_uang"),
+                "metode_pengiriman" => $this->input->post("metode_pengiriman"),
+                "notes" => $this->input->post("notes"),
+                "attachment" => $fileData["file_name"]
+            );
+            $where = array(
+                "id_harga_courier" => $this->input->post("id_harga_courier")
+            );
+            updateRow("harga_courier",$data,$where);
+        }
+        else{
+            $fileData["file_name"] = "-";
+            $data = array(
+                "harga_produk" => splitterMoney($this->input->post("harga_produk"),","),
+                "vendor_price_rate" => splitterMoney($this->input->post("vendor_price_rate"),","),
+                "mata_uang" => $this->input->post("mata_uang"),
+                "metode_pengiriman" => $this->input->post("metode_pengiriman"),
+                "notes" => $this->input->post("notes"),
+            );
+            $where = array(
+                "id_harga_courier" => $this->input->post("id_harga_courier")
+            );
+            updateRow("harga_courier",$data,$where);
+        }
+        redirect("crm/vendor/supplier/".$this->session->link);
+    }
+    public function editHargaShipper(){
+        $config = array(
+            "upload_path" => "./assets/dokumen/hargasupplier/",
+            "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
+        );
+        $this->load->library("upload",$config);
+        if($this->upload->do_upload("attachment")){
+            $fileData = $this->upload->data();
+            $data = array(
+                "harga_produk" => splitterMoney($this->input->post("harga_produk"),","),
+                "vendor_price_rate" => splitterMoney($this->input->post("vendor_price_rate"),","),
+                "mata_uang" => $this->input->post("mata_uang"),
+                "metode_pengiriman" => $this->input->post("metode_pengiriman"),
+                "notes" => $this->input->post("notes"),
+                "attachment" => $fileData["file_name"]
+            );
+            $where = array(
+                "id_harga_shipping" => $this->input->post("id_harga_shipping")
+            );
+            updateRow("harga_shipping",$data,$where);
+        }
+        else{
+            $fileData["file_name"] = "-";
+            $data = array(
+                "harga_produk" => splitterMoney($this->input->post("harga_produk"),","),
+                "vendor_price_rate" => splitterMoney($this->input->post("vendor_price_rate"),","),
+                "mata_uang" => $this->input->post("mata_uang"),
+                "metode_pengiriman" => $this->input->post("metode_pengiriman"),
+                "notes" => $this->input->post("notes"),
+            );
+            $where = array(
+                "id_harga_shipping" => $this->input->post("id_harga_shipping")
+            );
+            updateRow("harga_shipping",$data,$where);
+        }
+        redirect("crm/vendor/supplier/".$this->session->link);
+    }
+    public function deleteHargaVendor($id_harga_vendor){
+        $where = array(
+            "id_harga_vendor" => $id_harga_vendor
+        );
+        deleteRow("harga_vendor",$where);
+        redirect("crm/vendor/supplier/".$this->session->link);
+    }
+    public function deleteHargaCourier($id_harga_courier){
+        $where = array(
+            "id_harga_courier" => $id_harga_courier
+        );
+        deleteRow("harga_courier",$where);
+        redirect("crm/vendor/supplier/".$this->session->link);
+    }
+    public function deleteHargaShipping($id_harga_shipping){
+        $where = array(
+            "id_harga_shipping" => $id_harga_shipping
+        );
+        deleteRow("harga_shipping",$where);
+        redirect("crm/vendor/supplier/".$this->session->link);
+    }
+    public function insertNewSupplier(){
+        $data = array(
+            "nama_perusahaan" => $this->input->post("add_nama_supplier"),
+            "alamat_perusahaan" => $this->input->post("add_address_pic"),
+            "permanent" => 1,
+            "peran_perusahaan" => "PRODUK",
+        );
+        $id_perusahaan = insertRow("perusahaan",$data);
+        $data = array(
+            "nama_cp" => $this->input->post("add_pic"),
+            "jk_cp" => $this->input->post("add_jk_pic"),
+            "email_cp" => $this->input->post("add_email_pic"),
+            "nohp_cp" => $this->input->post("add_phone_pic"),
+            "id_perusahaan" => $id_perusahaan
+        );
+        insertRow("contact_person",$data);
+        redirect("crm/vendor/supplier"/$this->session->link);
+    }
+    public function insertNewShipper(){
+        $data = array(
+            "nama_perusahaan" => $this->input->post("add_nama_supplier"),
+            "permanent" => 1,
+            "peran_perusahaan" => "SHIPPING",
+        );
+        $id_perusahaan = insertRow("perusahaan",$data);
+        $data = array(
+            "nama_cp" => $this->input->post("add_pic"),
+            "jk_cp" => $this->input->post("add_jk_pic"),
+            "email_cp" => $this->input->post("add_email_pic"),
+            "nohp_cp" => $this->input->post("add_phone_pic"),
+            "id_perusahaan" => $id_perusahaan
+        );
+        insertRow("contact_person",$data);
+        redirect("crm/vendor/supplier/".$this->session->link);
     }
     /*ajax*/
     public function getvendorprice(){
@@ -633,394 +775,6 @@ class Vendor extends CI_Controller{
         $final += ["currency" => "IDR"];
         echo json_encode($final);
         
-    }
-    /*function*/
-    public function removecouriervariable($i){
-        $where = array(
-            "id_variable_courier" => $i
-        );
-        $data = array(
-            "status_variable" => 1
-        );
-        $this->Mdvariable_courier_price->update($data,$where);
-        redirect("crm/vendor/courier/".$this->session->id_detail);
-    }
-    public function insertshippingdata(){
-        $nama = array();
-        $cost = array();
-        $rate = array();
-        $mata_uang = array();
-
-        $variablee = $this->input->post("variable");
-        $biayae = $this->input->post("biaya");
-        $kurse = $this->input->post("kurs");
-        $mata_uange = $this->input->post("mata_uang");
-        //echo var_dump($this->input->post("variable"));
-        $count = 0;
-        foreach($variablee as $a){
-            $nama[$count] = $a;
-            $count++;
-        }
-        //echo "countnya = ".$count;
-        $count = 0;
-        foreach($biayae as $a){
-            $cost[$count] = splitterMoney($a,",");
-            $count++;
-        }
-        $count = 0;
-        foreach($kurse as $a){
-            $rate[$count] = splitterMoney($a,",");
-            $count++;
-        }
-        $count = 0;
-        foreach($mata_uange as $a){
-            $mata_uang[$count] = $a;
-            $count++;
-        }
-        
-        for($a = 0; $a<count($cost); $a++){
-            $data = array(
-                "id_perusahaan" => $this->input->post("id_perusahaan"),
-                "shipping_purpose" => $this->input->post("shipping_purpose"),
-                "id_supplier" => $this->session->id_supplier,
-                "id_cp" => $this->input->post("id_cp"),
-                "metode_pengiriman" => $this->input->post("metode_pengiriman"),
-                "nama_variable" => $nama[$a],
-                "biaya_variable" => $cost[$a],
-                "kurs_variable" => $rate[$a],
-                "mata_uang" => $mata_uang[$a],
-                "id_request_item" => $this->input->post("items"),
-                "id_user_add" => $this->session->id_user
-            );
-            $this->Mdvariable_shipping_price->insert($data);
-        }
-        redirect("crm/vendor/suppliershipping/".$this->session->id_detail."/".$this->session->id_supplier);
-
-    }
-    public function insertcouriershippingdata(){
-        $nama = array();
-        $cost = array();
-        $rate = array();
-        $mata_uang = array();
-
-        $mata_uange = $this->input->post("mata_uang");
-        $variablee = $this->input->post("variable");
-        $biayae = $this->input->post("biaya");
-        $kurse = $this->input->post("kurs");
-        //echo var_dump($this->input->post("variable"));
-        $count = 0;
-        foreach($variablee as $a){
-            $nama[$count] = $a;
-            $count++;
-        }
-        //echo "countnya = ".$count;
-        $count = 0;
-        foreach($biayae as $a){
-            $cost[$count] = $a;
-            $count++;
-        }
-        $count = 0;
-        foreach($kurse as $a){
-            $rate[$count] = $a;
-            $count++;
-        }
-        $count = 0;
-        foreach($mata_uange as $a){
-            $mata_uang[$count] = $a;
-            $count++;
-        }
-        
-        for($a = 0; $a<count($cost); $a++){
-            $data = array(
-                "shipping_purpose" => $this->input->post("shipping_purpose"),
-                "id_perusahaan" => $this->input->post("id_perusahaan"),
-                "id_cp" => $this->input->post("id_cp"),
-                "metode_pengiriman" => $this->input->post("metode_pengiriman"),
-                "nama_variable" => $nama[$a],
-                "biaya_variable" => splitterMoney($cost[$a],","),
-                "kurs_variable" => splitterMoney($rate[$a],","),
-                "mata_uang" => $mata_uang[$a],
-                "id_request_item" => $this->input->post("items"),
-                "id_user_add" => $this->session->id_user
-            );
-            $this->Mdvariable_courier_price->insert($data);
-        }
-        redirect("crm/vendor/courier/".$this->session->id_detail);
-
-    }
-    public function removevariable($i){
-        $where = array(
-            "id_variable_shipping" => $i
-        );
-        $data = array(
-            "status_variable" => 1
-        );
-        $this->Mdvariable_shipping_price->update($data,$where);
-        redirect("crm/vendor/suppliershipping/".$this->session->id_detail."/".$this->session->id_supplier);
-    }
-    public function delete($i){
-        $where = array(
-            "price_request.id_request" => $i
-        );
-        $data = array(
-            "price_request.status_request" => 1
-        );
-        $this->Mdprice_request->update($data,$where);
-        redirect("crm/vendor");
-    }
-    public function submit($i){
-        $where = array(
-            "price_request.id_request" => $i
-        );
-        $data = array(
-            "price_request.status_request" => 3
-        );
-        $this->Mdprice_request->update($data,$where);
-        redirect("crm/vendor");
-    }
-    public function insertHargaSupplier(){
-        $config = array(
-            "upload_path" => "./assets/dokumen/hargasupplier/",
-            "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
-        );
-        $this->load->library("upload",$config);
-        if($this->upload->do_upload("attachment")){
-            $fileData = $this->upload->data();
-        }
-        else{
-            $fileData["file_name"] = "-";
-        }
-        $data = array(
-            "id_request_item" =>  $this->session->id_request_item,
-            "id_perusahaan" =>  $this->input->post("id_perusahaan"),
-            "id_cp" =>  $this->input->post("id_cp"),
-            "nama_produk_vendor" =>  $this->input->post("nama_produk_vendor"),
-            "harga_produk" =>  splitterMoney($this->input->post("price"),","),
-            "vendor_price_rate" => splitterMoney($this->input->post("rate"),","),
-            "mata_uang" => $this->input->post("currency"),
-            "notes" => $this->input->post("notes"),
-            "attachment" =>  $fileData["file_name"],
-        );
-        insertRow("harga_vendor",$data);
-        redirect("crm/vendor/supplier/".$this->session->link);
-    }
-    public function insertHargaCourier(){
-        $config = array(
-            "upload_path" => "./assets/dokumen/hargasupplier/",
-            "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
-        );
-        $this->load->library("upload",$config);
-        if($this->upload->do_upload("attachment")){
-            $fileData = $this->upload->data();
-        }
-        else{
-            $fileData["file_name"] = "-";
-        }
-        $data = array(
-            "id_request_item" =>  $this->session->id_request_item,
-            "id_perusahaan" =>  $this->input->post("id_perusahaan"),
-            "id_cp" =>  $this->input->post("id_cp"),
-            "harga_produk" =>  splitterMoney($this->input->post("price"),","),
-            "vendor_price_rate" => splitterMoney($this->input->post("rate"),","),
-            "metode_pengiriman" => $this->input->post("metode_pengiriman"),
-            "mata_uang" => $this->input->post("currency"),
-            "notes" => $this->input->post("notes"),
-            "attachment" =>  $fileData["file_name"],
-        );
-        insertRow("harga_courier",$data);
-        redirect("crm/vendor/supplier/".$this->session->link);
-    }
-    public function insertHargaShipping(){
-        $config = array(
-            "upload_path" => "./assets/dokumen/hargasupplier/",
-            "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
-        );
-        $this->load->library("upload",$config);
-        if($this->upload->do_upload("attachment")){
-            $fileData = $this->upload->data();
-        }
-        else{
-            $fileData["file_name"] = "-";
-        }
-        $data = array(
-            "id_harga_vendor" =>  $this->input->post("id_harga_vendor"),
-            "id_perusahaan" =>  $this->input->post("id_perusahaan"),
-            "id_cp" =>  $this->input->post("id_cp"),
-            "harga_produk" =>  splitterMoney($this->input->post("price"),","),
-            "vendor_price_rate" => splitterMoney($this->input->post("rate"),","),
-            "metode_pengiriman" => $this->input->post("metode_pengiriman"),
-            "mata_uang" => $this->input->post("currency"),
-            "notes" => $this->input->post("notes"),
-            "attachment" =>  $fileData["file_name"],
-        );
-        insertRow("harga_shipping",$data);
-        redirect("crm/vendor/supplier/".$this->session->link);
-    }
-    public function editHargaSupplier(){
-        $config = array(
-            "upload_path" => "./assets/dokumen/hargasupplier/",
-            "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
-        );
-        $this->load->library("upload",$config);
-        if($this->upload->do_upload("attachment")){
-            $fileData = $this->upload->data();
-            $data = array(
-                "harga_produk" => splitterMoney($this->input->post("harga_produk"),","),
-                "vendor_price_rate" => splitterMoney($this->input->post("vendor_price_rate"),","),
-                "mata_uang" => $this->input->post("mata_uang"),
-                "nama_produk_vendor" => $this->input->post("nama_produk_vendor"),
-                "notes" => $this->input->post("notes"),
-                "attachment" => $fileData["file_name"]
-            );
-            $where = array(
-                "id_harga_vendor" => $this->input->post("id_harga_vendor")
-            );
-            updateRow("harga_vendor",$data,$where);
-        }
-        else{
-            $fileData["file_name"] = "-";
-            $data = array(
-                "harga_produk" => splitterMoney($this->input->post("harga_produk"),","),
-                "vendor_price_rate" => splitterMoney($this->input->post("vendor_price_rate"),","),
-                "mata_uang" => $this->input->post("mata_uang"),
-                "nama_produk_vendor" => $this->input->post("nama_produk_vendor"),
-                "notes" => $this->input->post("notes"),
-            );
-            $where = array(
-                "id_harga_vendor" => $this->input->post("id_harga_vendor")
-            );
-            updateRow("harga_vendor",$data,$where);
-        }
-        redirect("crm/vendor/supplier/".$this->session->link);
-    }
-    public function editHargaCourier(){
-        $config = array(
-            "upload_path" => "./assets/dokumen/hargasupplier/",
-            "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
-        );
-        $this->load->library("upload",$config);
-        if($this->upload->do_upload("attachment")){
-            $fileData = $this->upload->data();
-            $data = array(
-                "harga_produk" => splitterMoney($this->input->post("harga_produk"),","),
-                "vendor_price_rate" => splitterMoney($this->input->post("vendor_price_rate"),","),
-                "mata_uang" => $this->input->post("mata_uang"),
-                "metode_pengiriman" => $this->input->post("metode_pengiriman"),
-                "notes" => $this->input->post("notes"),
-                "attachment" => $fileData["file_name"]
-            );
-            $where = array(
-                "id_harga_courier" => $this->input->post("id_harga_courier")
-            );
-            updateRow("harga_courier",$data,$where);
-        }
-        else{
-            $fileData["file_name"] = "-";
-            $data = array(
-                "harga_produk" => splitterMoney($this->input->post("harga_produk"),","),
-                "vendor_price_rate" => splitterMoney($this->input->post("vendor_price_rate"),","),
-                "mata_uang" => $this->input->post("mata_uang"),
-                "metode_pengiriman" => $this->input->post("metode_pengiriman"),
-                "notes" => $this->input->post("notes"),
-            );
-            $where = array(
-                "id_harga_courier" => $this->input->post("id_harga_courier")
-            );
-            updateRow("harga_courier",$data,$where);
-        }
-        redirect("crm/vendor/supplier/".$this->session->link);
-    }
-    public function editHargaShipper(){
-        $config = array(
-            "upload_path" => "./assets/dokumen/hargasupplier/",
-            "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
-        );
-        $this->load->library("upload",$config);
-        if($this->upload->do_upload("attachment")){
-            $fileData = $this->upload->data();
-            $data = array(
-                "harga_produk" => splitterMoney($this->input->post("harga_produk"),","),
-                "vendor_price_rate" => splitterMoney($this->input->post("vendor_price_rate"),","),
-                "mata_uang" => $this->input->post("mata_uang"),
-                "metode_pengiriman" => $this->input->post("metode_pengiriman"),
-                "notes" => $this->input->post("notes"),
-                "attachment" => $fileData["file_name"]
-            );
-            $where = array(
-                "id_harga_shipping" => $this->input->post("id_harga_shipping")
-            );
-            updateRow("harga_shipping",$data,$where);
-        }
-        else{
-            $fileData["file_name"] = "-";
-            $data = array(
-                "harga_produk" => splitterMoney($this->input->post("harga_produk"),","),
-                "vendor_price_rate" => splitterMoney($this->input->post("vendor_price_rate"),","),
-                "mata_uang" => $this->input->post("mata_uang"),
-                "metode_pengiriman" => $this->input->post("metode_pengiriman"),
-                "notes" => $this->input->post("notes"),
-            );
-            $where = array(
-                "id_harga_shipping" => $this->input->post("id_harga_shipping")
-            );
-            updateRow("harga_shipping",$data,$where);
-        }
-        redirect("crm/vendor/supplier/".$this->session->link);
-    }
-    public function deleteHargaVendor($id_harga_vendor){
-        $where = array(
-            "id_harga_vendor" => $id_harga_vendor
-        );
-        deleteRow("harga_vendor",$where);
-        redirect("crm/vendor/supplier/".$this->session->link);
-    }
-    public function deleteHargaCourier($id_harga_courier){
-        $where = array(
-            "id_harga_courier" => $id_harga_courier
-        );
-        deleteRow("harga_courier",$where);
-        redirect("crm/vendor/supplier/".$this->session->link);
-    }
-    public function deleteHargaShipping($id_harga_shipping){
-        $where = array(
-            "id_harga_shipping" => $id_harga_shipping
-        );
-        deleteRow("harga_shipping",$where);
-        redirect("crm/vendor/supplier/".$this->session->link);
-    }
-    public function insertNewSupplier(){
-        $data = array(
-            "nama_perusahaan" => $this->input->post("add_nama_supplier"),
-            "permanent" => 1,
-            "peran_perusahaan" => "PRODUK",
-        );
-        $id_perusahaan = insertRow("perusahaan",$data);
-        $data = array(
-            "nama_cp" => $this->input->post("add_pic"),
-            "jk_cp" => $this->input->post("add_jk_pic"),
-            "email_cp" => $this->input->post("add_email_pic"),
-            "nohp_cp" => $this->input->post("add_phone_pic"),
-            "id_perusahaan" => $id_perusahaan
-        );
-        insertRow("contact_person",$data);
-        redirect("crm/vendor/supplier"/$this->session->link);
-    }
-    public function insertNewShipper(){
-        $data = array(
-            "nama_perusahaan" => $this->input->post("add_nama_supplier"),
-            "permanent" => 1,
-            "peran_perusahaan" => "SHIPPING",
-        );
-        $id_perusahaan = insertRow("perusahaan",$data);
-        $data = array(
-            "nama_cp" => $this->input->post("add_pic"),
-            "jk_cp" => $this->input->post("add_jk_pic"),
-            "email_cp" => $this->input->post("add_email_pic"),
-            "nohp_cp" => $this->input->post("add_phone_pic"),
-            "id_perusahaan" => $id_perusahaan
-        );
-        insertRow("contact_person",$data);
-        redirect("crm/vendor/supplier/".$this->session->link);
     }
 }
 ?>

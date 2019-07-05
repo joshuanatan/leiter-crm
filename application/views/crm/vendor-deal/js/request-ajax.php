@@ -83,6 +83,21 @@ function getCp(get_data_from, put_data_from){
 }
 </script>
 <script>
+function getAlamatPerusahaan(id_perusahaan, alamat_perusahaan){
+    var id_harga_vendor = $("#"+id_perusahaan).val(); /*value seletnya itu id_harga_vendor*/
+    $.ajax({
+        url:"<?php echo base_url();?>interface/perusahaan/getAlamatPerusahaan/"+id_harga_vendor,
+        data: {tipe_variable:"id_harga_vendor"},
+        type: "POST",
+        dataType:"JSON",
+        success:function(respond){
+            console.log("alamat_supplier");
+            $("#"+alamat_perusahaan).val(respond);
+        }
+    })
+}
+</script>
+<script>
 function getDetailCp(get_data_from,email_pic,nohp_pic){
     var id_cp = $("#"+get_data_from).val();
     $.ajax({

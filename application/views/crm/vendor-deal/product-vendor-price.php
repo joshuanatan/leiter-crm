@@ -1,7 +1,12 @@
 
 <div class="panel-body col-lg-12">
     <div class = "form-group">
+        <h5 style = "opacity:0.5">Nama Customer</h5>
+        <input type = "text" readonly value = "<?php echo $detail_request["nama_perusahaan"];?>" class = "form-control">
+    </div>
+    <div class = "form-group">
         <div class = "col-lg-6" style = "margin-left:0px; padding-left:0px" style = "z-index:1">
+            <h5 style = "opacity:0.5">RFQ Item</h5>
             <select class = "form-control col-lg-6" id = "items" onchange = "getDetailPriceRequestItem()" data-plugin="select2" style="z-index: 1 !important;">
                 <option selected disabled>Choose Item List</option>
                 <?php for($a = 0 ; $a<count($request_item); $a++): ?> 
@@ -114,11 +119,16 @@
                         <div class = "form-group">
                             <button class = "btn btn-primary btn-sm" data-toggle = "modal" type = "button" data-target="#shipperBaru">New Shipper</button>
                             <h5 style = "opacity:0.5">Supplier Name</h5>
-                            <select class = "form-control listSupplier" id = "listSupplier" name = "id_harga_vendor" data-plugin="select2">
-                                <?php for($ship = 0; $ship<count($shipper); $ship++):?>
-                                <option value = "<?php echo $shipper[$ship]["id_perusahaan"];?>"><?php echo $shipper[$ship]["nama_perusahaan"];?></option>
+                            <select class = "form-control actual-select listSupplier" onchange = "getCp('id_supplier_buat_shipping','supplier_cp');getAlamatPerusahaan('id_supplier_buat_shipping','alamat_supplier')" name = "id_perusahaan" id = "id_supplier_buat_shipping" data-plugin="select2">
+                                <option>Select Supplier</option>
+                                <?php for($sup = 0; $sup<0;$sup++):?>
+                                <option value = "<?php echo $supplier[$sup]["id_perusahaan"];?>"><?php echo $supplier[$sup]["nama_perusahaan"];?></option>
                                 <?php endfor;?>
                             </select>
+                        </div>
+                        <div class = "form-group">
+                            <h5 style = "opacity:0.5">Alamat Supplier</h5>
+                            <textarea class = "form-control" id = "alamat_supplier" readonly></textarea>
                         </div>
                         <div class = "form-group">
                             <h5 style = "opacity:0.5">Shipper Name</h5>
@@ -224,6 +234,14 @@
                 </div>
                 <form action = "<?php echo base_url();?>crm/vendor/insertHargaCourier" method = "POST" enctype = "multipart/form-data">
                     <div class = "modal-body">
+                        <div class = "form-group">
+                            <h5 style = "opacity:0.5">Alamat Pengiriman</h5>
+                            <textarea class = "form-control" readonly><?php echo $detail_request["alamat_pengiriman"];?></textarea>
+                        </div>
+                        <div class = "form-group">
+                            <h5 style = "opacity:0.5">Franco</h5>
+                            <input type = "text" class = "form-control" value = "<?php echo $detail_request["franco"];?>" readonly>     
+                        </div>
                         <div class = "form-group">
                             <button class = "btn btn-primary btn-sm" data-toggle = "modal" type = "button" data-target="#shipperBaru">New Courier</button>
                             <h5 style = "opacity:0.5">Courier Name</h5>
@@ -365,6 +383,10 @@
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Phone Number PIC</h5>
                         <input type = "text" class = "form-control" name = "add_phone_pic">
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Company Address</h5>
+                        <input type = "text" class = "form-control" name = "add_address_pic">
                     </div>
                     <div class = "form-group">
                         <button type = "submit" class = "btn btn-primary btn-sm">SUBMIT</button>
