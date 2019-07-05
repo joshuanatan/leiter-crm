@@ -19,13 +19,14 @@
                     <form action = "<?php echo base_url();?>crm/quotation/insertquotation" method = "post">    
                         <div class="tab-content">
                             <div class="tab-pane active" id="primaryData" role="tabpanel">
+                                <input type = "hidden" value = "<?php echo $id_submit_quotation;?>" id = "id_submit_quotation">
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Price Request</h5>
                                     <select onchange = "detailPriceRequest()" id = "id_request" name = "id_request" class = "form-control" data-plugin ="select2">
                                         <option selected disabled>RFQ</option>
-                                        <?php foreach($request->result() as $a){ ?> 
-                                        <option value = "<?php echo $a->no_request;?>"><?php echo $a->no_request;?></option>
-                                        <?php } ?>
+                                        <?php for($a = 0; $a<count($request); $a++):?>
+                                        <option value = "<?php echo $request[$a]["id_submit_request"];?>"><?php echo $request[$a]["no_request"];?> - <?php echo $request[$a]["nama_perusahaan"]; ?></option>
+                                        <?php endfor;?>
                                     </select>
                                 </div>
                                 <div class = "form-group">
@@ -50,62 +51,66 @@
                             <div class="tab-pane" id="items" role="tabpanel">
                                 <div class = "row">
                                     <div class = "form-group col-lg-5">
-                                        <h5 style = "color:darkgrey; opacity:0.8">Items</h5>
+                                        <h5 style = "opacity:0.5">Items</h5>
                                         <select class = "form-control" id = "itemsOrdered" data-plugin = "select2" onchange = "loadVendors()">
                                             <option selected disabled>Choose Item</option>
                                         </select>
                                     </div>
                                     <div class = "form-group col-lg-2">
-                                        <h5 style = "color:darkgrey; opacity:0.8">Quantity</h5>
+                                        <h5 style = "opacity:0.5">Quantity</h5>
                                         <input name = "Abc" type ="text" class = "form-control" id = "itemamount" value = "">
                                     </div>
                                 </div>
                                 <div class = "row">
                                     <div class = "form-group col-lg-5">
-                                        <h5 style = "color:darkgrey; opacity:0.8">Supplier</h5>
-                                        <select class = "form-control" id = "products" onchange = "getVendorPrice()">
+                                        <h5 style = "opacity:0.5">Supplier</h5>
+                                        <select data-plugin = "select2" class = "form-control" id = "products" onchange = "getVendorPrice()">
                                             <option selected disabled>Choose Product Vendor</option>
                                         </select>
                                     </div>
                                     <div class = "form-group col-lg-5">
-                                        <h5 style = "color:darkgrey; opacity:0.8">Supplier Price</h5>
+                                        <h5 style = "opacity:0.5">Supplier Price</h5>
                                         <input name = "Abc" type ="text" id = "hargaProduk" class = "form-control" disabled placeholder = "Product Price">
                                     </div>
                                 </div>
                                 <div class = "row">
                                     <div class = "form-group col-lg-5">
-                                        <h5 style = "color:darkgrey; opacity:0.8">Shipping</h5>
-                                        <select class = "form-control" id="shippers" onchange = "getShippingPrice()">
+                                        <h5 style = "opacity:0.5">Shipping</h5>
+                                        <select data-plugin = "select2" class = "form-control" id="shippers" onchange = "getShippingPrice()">
                                             <option selected disabled>Choose Shipping Vendor</option>
                                         </select>
                                     </div>
                                     <div class = "form-group col-lg-5">
-                                        <h5 style = "color:darkgrey; opacity:0.8">Shipping Price</h5>
+                                        <h5 style = "opacity:0.5">Shipping Price</h5>
                                         <input name = "Abc" type ="text" id = "hargashipping" class = "form-control" disabled placeholder = "Shipping Price">
                                     </div>
                                 </div>
                                 <div class = "row">
                                     <div class = "form-group col-lg-5">
-                                        <h5 style = "color:darkgrey; opacity:0.8">Courier</h5>
-                                        <select class = "form-control" id = "courier" onchange = "getCourierPrice()">
+                                        <h5 style = "opacity:0.5">Courier</h5>
+                                        <select data-plugin = "select2" class = "form-control" id = "courier" onchange = "getCourierPrice()">
                                             <option selected disabled>Choose Courier</option>
                                         </select>
                                     </div>
                                     <div class = "form-group col-lg-5">
-                                        <h5 style = "color:darkgrey; opacity:0.8">Courier Price</h5>
+                                        <h5 style = "opacity:0.5">Courier Price</h5>
                                         <input name = "Abc" type ="text" id = "hargaCourier" class = "form-control" disabled placeholder = "Courier Price">
                                     </div>
                                 </div>
+                                <div class = "form-group">
+                                    <h5 style = "opacity:0.5">Nama Produk Leiter</h5>
+                                    <textarea class = "form-control" id = "nama_produk_leiter" name = "nama_produk_leiter"></textarea>
+                                </div>
                                 <div class = "form-group" onclick = "getTotal()">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Total Price</h5>
+                                    <h5 style = "opacity:0.5">Total Price</h5>
                                     <input name = "Abc"  type ="text" class = "form-control" id = "totalPrice" disabled placeholder = "Click to get Total Price">
                                 </div>
                                 <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Selling Price</h5>
+                                    <h5 style = "opacity:0.5">Selling Price</h5>
                                     <input name = "Abc" type ="text" class = "form-control" id = "inputNominal" oninput ="decimal()" placeholder = "Selling Price">
                                 </div>
                                 <div class = "form-group" onclick = "getMargin()">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Margin</h5>
+                                    <h5 style = "opacity:0.5">Margin</h5>
                                     <input name = "Abc"  type ="text" class = "form-control" id = "totalMargin" disabled placeholder = "Margin">
                                 </div>
                                 <div class = "form-group">
@@ -115,12 +120,13 @@
                                 <div class = "form-group col-lg-12">
                                     <table class = "table table-stripped col-lg-12" style = "width:100%" data-plugin = "dataTable">
                                         <thead>
+                                            <th>#</th>
                                             <th>Item Request ID</th>
                                             <th>Product Name</th>
                                             <th>Amount</th>
                                             <th>Selling Price</th>
                                             <th>Margin</th>
-                                            <th>Action</th>
+                                            <th>Gambar</th>
                                         </thead>
                                         <tbody id ="t1">
 
@@ -130,52 +136,52 @@
                             </div>
                             <div class="tab-pane" id="payment" role="tabpanel">
                                 <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Total Quotation Amount</h5>
+                                    <h5 style = "opacity:0.5">Total Quotation Amount</h5>
                                     <input type = "text" id = "totalQuotation" class = "form-control" readonly onclick = "countTotal()">
                                     <input type = "hidden" id = "totalQuotationClean" class = "form-control" readonly>
                                 </div>
                                 <div class = "row">
                                     <div class = "form-group col-lg-4 containerDp" style = ""> <!-- textarea klo DP % -->
-                                        <h5 style = "color:darkgrey; opacity:0.8">DP Percentage</h5>
+                                        <h5 style = "opacity:0.5">DP Percentage</h5>
                                         <input name = "persenDp" id = "persenDp" oninput = "paymentWithDP()" type ="text" class = "form-control">
                                     </div>
                                     <div class = "form-group col-lg-4">
-                                        <h5 style = "color:darkgrey; opacity:0.8">Payment Method</h5>
+                                        <h5 style = "opacity:0.5">Payment Method</h5>
                                         <select class = "form-control" id = "paymentMethod" name = "paymentMethod">
                                             <option value = "1">BEFORE DELIVERY</option>
                                             <option value = "2">AFTER DELIVERY</option>
                                         </select>
                                     </div>
                                     <div class = "form-group col-lg-4 containerDp" style = ""> <!-- Nominal DP -->
-                                        <h5 style = "color:darkgrey; opacity:0.8">DP Amount</h5>
+                                        <h5 style = "opacity:0.5">DP Amount</h5>
                                         <input name = "jumlahDp" id = "jumlahDp" type ="text" class = "form-control">
                                         <input name = "jumlahDpClean" id = "jumlahDpClean" type ="hidden" class = "form-control">
                                     </div>
                                 </div>
                                 <div class = "row">
                                     <div class = "form-group col-lg-4 containerSisa" style = ""> <!-- textarea klo DP% -->
-                                        <h5 style = "color:darkgrey; opacity:0.8">Rest Percentage</h5>
+                                        <h5 style = "opacity:0.5">Rest Percentage</h5>
                                         <input name = "persenSisa" id = "persenSisa" type ="text" class = "form-control">
                                     </div>
                                     <div class = "form-group col-lg-4">
-                                        <h5 style = "color:darkgrey; opacity:0.8">Payment Method</h5>
+                                        <h5 style = "opacity:0.5">Payment Method</h5>
                                         <select class = "form-control" id = "paymentMethod" name = "paymentMethod2">
                                             <option value = "1">BEFORE DELIVERY</option>
                                             <option value = "2">AFTER DELIVERY</option>
                                         </select>
                                     </div>  
                                     <div class = "form-group col-lg-4 containerSisa" style = ""> <!-- Nominal DP -->
-                                        <h5 style = "color:darkgrey; opacity:0.8">Rest Amount</h5>
+                                        <h5 style = "opacity:0.5">Rest Amount</h5>
                                         <input name = "" id = "jumlahSisa" type ="text" class = "form-control">
                                         <input name = "jumlahSisaClean" id = "jumlahSisaClean" type ="hidden" class = "form-control">
                                     </div>
                                 </div>
                                 <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Durasi Pembayaran (... minggu setelah invoice diterima)</h5>
+                                    <h5 style = "opacity:0.5">Durasi Pembayaran (... minggu setelah invoice diterima)</h5>
                                     <input name = "durasi_pembayaran" type ="text" class = "form-control">
                                 </div>
                                 <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Mata Uang Pembayaran</h5>
+                                    <h5 style = "opacity:0.5">Mata Uang Pembayaran</h5>
                                     <input name = "mata_uang_pembayaran" type ="text" value ="IDR" class = "form-control">
                                 </div>
                                 <!-- (1) invoice keluar triggernya abis keluarin OC -->

@@ -37,32 +37,28 @@ class Quotation extends CI_Controller{
         $this->req();
         $where = array(
             "quotation" => array(
-                //"status_quo" => 0  
+                "status_aktif_quotation" => 0
             ),
             "price_request" => array(
                 "price_request.status_request" => 3 /*ngambil yang sudah kasih harga vendor */
             )
         );
-        $result["quotation"] = $this->Mdquotation->select($where["quotation"]);
-        $counter = 0 ;
-        
         $data = array(
-            "quotation_id" => $this->Mdquotation->maxId(),
+            "quotation_id" => getMaxId("quotation","id_quotation",array("status_aktif_quotation" => 0,"bulan_quotation" => date("m"), "tahun_quotation" => date("Y"))),
             "request" => $this->Mdprice_request->select($where["price_request"])
         );
-        foreach($result["quotation"]->result() as $a){
-            $data["quotation"][$counter] = array(
-                "id_quotation" => $a->id_quo,
-                "version" => $a->versi_quo,
-                "nama_perusahaan" => get1Value("perusahaan","nama_perusahaan", array("id_perusahaan" => $a->id_perusahaan)),
-                "nama_cp" => get1Value("contact_person","nama_cp", array("id_cp" => $a->id_cp)),
-                "status_quotation" => $a->status_quo,
-                "sending_date" => $a->date_quo_add,
-                "no_quo" => $a->no_quo,
-                "bulan_quotation" => $a->bulan_quotation,
-                "tahun_quotation" => $a->tahun_quotation
-            );
-            $counter++;
+        $field["quotation"] = array(
+            "id_submit_quotation","versi_quotation","no_quotation","id_request","status_quotation","date_quotation_add"
+        );
+        $result["quotation"] = $this->Mdquotation->getListQuotation($where["quotation"]);
+        $data["quotation"] = foreachMultipleResult($result["quotation"],$field["quotation"],$field["quotation"]);
+        for($a = 0; $a<count($data["quotation"]); $a++){
+
+            $data["quotation"][$a]["id_perusahaan"] = get1Value("price_request","id_perusahaan", array("id_request" => $data["quotation"][$a]["id_request"]));
+            $data["quotation"][$a]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan", array("id_perusahaan" => $data["quotation"][$a]["id_perusahaan"]));
+
+            $data["quotation"][$a]["id_cp"] = get1Value("price_request","id_cp", array("id_request" => $data["quotation"][$a]["id_request"]));
+            $data["quotation"][$a]["nama_cp"] = get1Value("contact_person","nama_cp", array("id_cp" => $data["quotation"][$a]["id_cp"]));
         }
         $this->load->view("crm/content-open");
         $this->load->view("crm/quotation/category-header");
@@ -70,7 +66,37 @@ class Quotation extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
-    
+    public function create(){
+        $this->req();
+        $where = array(
+            "quotation" => array(
+                "status_quo" => 0  
+            ),
+            "price_request" => array(
+                "price_request.status_request" => 3,
+                "status_buat_quo" => 1,
+                "untuk_stock" => 1
+            ),
+            
+        );
+        $field = array(
+            "request" => array(
+                "id_submit_request","no_request","id_perusahaan"
+            )
+        );
+        $result["request"] = $this->Mdprice_request->getListPriceRequest($where["price_request"]);
+        $data["request"] = foreachMultipleResult($result["request"],$field["request"],$field["request"]);
+        for($a = 0; $a<count($data["request"]); $a++){
+            $data["request"][$a]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan", array("id_perusahaan" => $data["request"][$a]["id_perusahaan"]));
+        }
+        $data["quotation_id"] = getMaxId("quotation","id_quotation",array("bulan_quotation" => date("m"),"tahun_quotation" => date("Y"), "status_aktif_quotation" => 0));
+        $data["id_submit_quotation"] = getMaxId("quotation","id_submit_quotation",array());
+        $this->load->view("crm/content-open");
+        $this->load->view("crm/quotation/category-header");
+        $this->load->view("crm/quotation/add-quotation",$data);
+        $this->load->view("crm/content-close");
+        $this->close();
+    }
     public function revision($i,$ver){ /*bagian ini terjadi sebelum pengiriman ke customer*/
         $this->req();
         $where = array(
@@ -268,32 +294,6 @@ class Quotation extends CI_Controller{
         $this->load->view("crm/content-open");
         $this->load->view("crm/quotation/category-header");
         $this->load->view("crm/quotation/edit-quotation");
-        $this->load->view("crm/content-close");
-        $this->close();
-    }
-    public function create(){
-        $this->req();
-        $where = array(
-            "quotation" => array(
-                "status_quo" => 0  
-            ),
-            "price_request" => array(
-                "price_request.status_request" => 3,
-                "status_buat_quo" => 1,
-                "untuk_stock" => 1
-            ),
-            
-        );
-        $result["request"] = selectRow("price_request",$where["price_request"]);
-
-        $data = array(
-            "quotation_id" => getMaxId("quotation","id_quo",array("bulan_quotation" => date("m"),"tahun_quotation" => date("Y"))),
-            "quotation" => $this->Mdquotation->select($where["quotation"]),
-            "request" => $this->Mdprice_request->select($where["price_request"]),
-        );
-        $this->load->view("crm/content-open");
-        $this->load->view("crm/quotation/category-header");
-        $this->load->view("crm/quotation/add-quotation",$data);
         $this->load->view("crm/content-close");
         $this->close();
     }

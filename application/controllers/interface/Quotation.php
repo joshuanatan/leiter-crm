@@ -1,15 +1,18 @@
 <?php
 class Quotation extends CI_Controller{
     public function addItemToQuotation(){
-        $name = array("no_quotation","id_request_item","id_harga_shipping","id_harga_vendor","id_harga_courier","item_amount","selling_price","margin_price","versi_quotation");
+        $satuan = $this->input->post("satuan_produk");
+        $split = explode(",",$satuan);
         $data = array(
-            "no_quotation" => $this->input->post("no_quotation"),
-            "versi_quotation" => $this->input->post("versi_quo"),
+            "id_submit_quotation" => $this->input->post("id_submit_quotation"),
             "id_request_item" => $this->input->post("id_request_item"),
+            "nama_produk_leiter" => $this->input->post("nama_produk_leiter"),
+            "gambar_item" => $this->input->post("gambar_item"),
             "id_harga_shipping" => $this->input->post("id_harga_shipping"),
             "id_harga_vendor" => $this->input->post("id_harga_vendor"),
             "id_harga_courier" => $this->input->post("id_harga_courier"),
-            "item_amount" => $this->input->post("item_amount"),
+            "item_amount" => $split[0], /*nanti ini hasil split*/
+            "satuan_produk" => $split[1], /*nanti ini hasil split*/
             "selling_price" => $this->input->post("selling_price"),
             "margin_price" => $this->input->post("margin_price"),
         );

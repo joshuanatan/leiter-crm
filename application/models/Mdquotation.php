@@ -47,5 +47,10 @@ class Mdquotation extends CI_Model{
         $this->db->where("quotation.id_quotation not in (select id_quotation from order_confirmation");
         return $this->db->get_where("quotation",$data);
     }
+    /**************************************************************************** */
+    public function getListQuotation($where){
+        $this->db->order_by("date_quotation_add","DESC");
+        return $this->db->get_where("quotation",$where);
+    }
 }
 ?>
