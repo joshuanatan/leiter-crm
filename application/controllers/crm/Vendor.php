@@ -44,11 +44,17 @@ class Vendor extends CI_Controller{
         $field = array(
             "request" => array(
                 "no_request","id_perusahaan","id_cp","id_request","bulan_request","tahun_request","untuk_stock","id_submit_request"
+            ),
+            "request_item" => array(
+                "nama_produk","id_request_item"
             )
         );
         $print = array(
             "request" => array(
                 "no_request","id_perusahaan","id_cp","id_request","bulan_request","tahun_request","untuk_stock","id_submit_request"
+            ),
+            "request_item" => array(
+                "nama_produk","id_request_item"
             )
         );    
         $result["request"] = $this->Mdprice_request->getListPriceRequest($where["request"]);
@@ -57,6 +63,25 @@ class Vendor extends CI_Controller{
             $data["request"][$a]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $data["request"][$a]["id_perusahaan"]));
 
             $data["request"][$a]["nama_cp"] = get1Value("contact_person","nama_cp",array("id_cp" => $data["request"][$a]["id_cp"]));
+            
+            $where["request_item"] = array(
+                "id_submit_request" => $data["request"][$a]["id_submit_request"]
+            );
+            $result["request_item"] = selectRow("price_request_item",$where["request_item"]); /*ngambil request item dengan id_submit_request terkait*/
+            $data["request"][$a]["request_item"] = foreachMultipleResult($result["request_item"],$field["request_item"],$print["request_item"]); /*request item dalam 1 request*/
+
+            for($items = 0; $items<count($data["request"][$a]["request_item"]); $items++){ /*jalanin setiap request item*/
+                /*baru ngecek status tiap item*/
+
+                /*kodingan di bawah ini masih hampir bener, tolong di cek, mau ujian. targetnya itu buat nyari tau tiap item apakah sudah semua apa belum*/
+                $data["request"][$a]["request_item"][$items]["jumlahHargaVendor"] = $this->Mdharga_vendor->getListHargaVendor(array("price_request_item.id_request_item" => $data["request"][$a]["request_item"][$items]["id_request_item"]))->num_rows();
+
+                $data["request"][$a]["request_item"][$items]["jumlahHargaCourier"] = $this->Mdharga_vendor->getListHargaCourier(array("price_request_item.id_request_item" => $data["request"][$a]["request_item"][$items]["id_request_item"]))->num_rows();
+
+                $data["request"][$a]["request_item"][$items]["jumlahHargaShipping"] = $this->Mdharga_vendor->getListHargaShipping(array("price_request_item.id_request_item" => $data["request"][$a]["request_item"][$items]["id_request_item"]))->num_rows();
+                /*sampe sini*/
+            }
+            
         }
         $this->req();
         $this->load->view("crm/content-open");
@@ -184,7 +209,7 @@ class Vendor extends CI_Controller{
             "attachment" =>  $fileData["file_name"],
         );
         insertRow("harga_vendor",$data);
-        redirect("crm/vendor/supplier/".$this->session->link);
+        redirect("crm/vendor/produk/".$this->session->link);
     }
     public function insertHargaCourier(){
         $config = array(
@@ -210,7 +235,7 @@ class Vendor extends CI_Controller{
             "attachment" =>  $fileData["file_name"],
         );
         insertRow("harga_courier",$data);
-        redirect("crm/vendor/supplier/".$this->session->link);
+        redirect("crm/vendor/produk/".$this->session->link);
     }
     public function insertHargaShipping(){
         $config = array(
@@ -236,7 +261,7 @@ class Vendor extends CI_Controller{
             "attachment" =>  $fileData["file_name"],
         );
         insertRow("harga_shipping",$data);
-        redirect("crm/vendor/supplier/".$this->session->link);
+        redirect("crm/vendor/produk/".$this->session->link);
     }
     public function editHargaSupplier(){
         $config = array(
@@ -273,7 +298,7 @@ class Vendor extends CI_Controller{
             );
             updateRow("harga_vendor",$data,$where);
         }
-        redirect("crm/vendor/supplier/".$this->session->link);
+        redirect("crm/vendor/produk/".$this->session->link);
     }
     public function editHargaCourier(){
         $config = array(
@@ -310,7 +335,7 @@ class Vendor extends CI_Controller{
             );
             updateRow("harga_courier",$data,$where);
         }
-        redirect("crm/vendor/supplier/".$this->session->link);
+        redirect("crm/vendor/produk/".$this->session->link);
     }
     public function editHargaShipper(){
         $config = array(
@@ -347,28 +372,28 @@ class Vendor extends CI_Controller{
             );
             updateRow("harga_shipping",$data,$where);
         }
-        redirect("crm/vendor/supplier/".$this->session->link);
+        redirect("crm/vendor/produk/".$this->session->link);
     }
     public function deleteHargaVendor($id_harga_vendor){
         $where = array(
             "id_harga_vendor" => $id_harga_vendor
         );
         deleteRow("harga_vendor",$where);
-        redirect("crm/vendor/supplier/".$this->session->link);
+        redirect("crm/vendor/produk/".$this->session->link);
     }
     public function deleteHargaCourier($id_harga_courier){
         $where = array(
             "id_harga_courier" => $id_harga_courier
         );
         deleteRow("harga_courier",$where);
-        redirect("crm/vendor/supplier/".$this->session->link);
+        redirect("crm/vendor/produk/".$this->session->link);
     }
     public function deleteHargaShipping($id_harga_shipping){
         $where = array(
             "id_harga_shipping" => $id_harga_shipping
         );
         deleteRow("harga_shipping",$where);
-        redirect("crm/vendor/supplier/".$this->session->link);
+        redirect("crm/vendor/produk/".$this->session->link);
     }
     public function insertNewSupplier(){
         $data = array(
@@ -403,7 +428,7 @@ class Vendor extends CI_Controller{
             "id_perusahaan" => $id_perusahaan
         );
         insertRow("contact_person",$data);
-        redirect("crm/vendor/supplier/".$this->session->link);
+        redirect("crm/vendor/produk/".$this->session->link);
     }
     /*ajax*/
     public function getvendorprice(){

@@ -44,5 +44,20 @@ class Mdharga_vendor extends CI_Model{
         $this->db->select("(harga_produk*vendor_price_rate/satuan_harga_produk) as 'total'");
         return $this->db->get_where("harga_vendor",$where);
     }
+    
+    /* dari sini kebawah, itu yang kepake di sistem setelah review menjelang terakhir*/
+    public function getListHargaVendor($where){
+        $this->db->join("price_request_item","price_request_item.id_request_item = harga_vendor.id_request_item","inner");
+        return $this->db->get_where("harga_vendor",$where);
+    }
+    public function getListHargaCourier($where){
+        $this->db->join("price_request_item","price_request_item.id_request_item = harga_courier.id_request_item","inner");
+        return $this->db->get_where("harga_courier",$where);
+    }
+    public function getListHargaShipping($where){
+        $this->db->join("harga_vendor","harga_vendor.id_harga_vendor = harga_shipping.id_harga_vendor","inner");
+        $this->db->join("price_request_item","price_request_item.id_request_item = harga_vendor.id_request_item","inner");
+        return $this->db->get_where("harga_shipping",$where);
+    }
 }
 ?>

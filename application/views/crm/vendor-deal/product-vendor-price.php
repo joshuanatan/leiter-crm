@@ -56,8 +56,8 @@
                             
                             <h5 style = "opacity:0.5">Supplier Name</h5>
                             <select class = "form-control actual-select" onchange = "getCp('id_supplier','supplier_cp')" name = "id_perusahaan" id = "id_supplier" data-plugin="select2">
-                                <?php for($sup = 0; $sup<count($supplier);$sup++):?>
                                 <option>Select Supplier</option>
+                                <?php for($sup = 0; $sup<count($supplier);$sup++):?>
                                 <option value = "<?php echo $supplier[$sup]["id_perusahaan"];?>"><?php echo $supplier[$sup]["nama_perusahaan"];?></option>
                                 <?php endfor;?>
                             </select>
@@ -123,7 +123,7 @@
                         <div class = "form-group">
                             <button class = "btn btn-primary btn-sm" data-toggle = "modal" type = "button" data-target="#shipperBaru">New Shipper</button>
                             <h5 style = "opacity:0.5">Supplier Name</h5>
-                            <select class = "form-control actual-select listSupplier" onchange = "getCp('id_supplier_buat_shipping','supplier_cp');getAlamatPerusahaan('id_supplier_buat_shipping','alamat_supplier')" name = "id_perusahaan" id = "id_supplier_buat_shipping" data-plugin="select2">
+                            <select class = "form-control actual-select listSupplier" onchange = "getCp('id_supplier_buat_shipping','supplier_cp');getAlamatPerusahaan('id_supplier_buat_shipping','alamat_supplier')" id = "id_supplier_buat_shipping" name = "id_harga_vendor" data-plugin="select2">
                                 <option>Select Supplier</option>
                                 <?php for($sup = 0; $sup<0;$sup++):?>
                                 <option value = "<?php echo $supplier[$sup]["id_perusahaan"];?>"><?php echo $supplier[$sup]["nama_perusahaan"];?></option>
