@@ -5,6 +5,10 @@
         <input type = "text" readonly value = "<?php echo $detail_request["nama_perusahaan"];?>" class = "form-control">
     </div>
     <div class = "form-group">
+        <h5 style = "opacity:0.5">Alamat Pengiriman</h5>
+        <textarea readonly class = "form-control"><?php echo $detail_request["alamat_pengiriman"];?></textarea>
+    </div>
+    <div class = "form-group">
         <div class = "col-lg-6" style = "margin-left:0px; padding-left:0px" style = "z-index:1">
             <h5 style = "opacity:0.5">RFQ Item</h5>
             <select class = "form-control col-lg-6" id = "items" onchange = "getDetailPriceRequestItem()" data-plugin="select2" style="z-index: 1 !important;">
