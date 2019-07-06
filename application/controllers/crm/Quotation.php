@@ -133,6 +133,7 @@ class Quotation extends CI_Controller{
         $this->close();
     }
     public function revision($id_submit_quotation){ /*bagian ini terjadi sebelum pengiriman ke customer*/
+        updateRow("quotation",array("status_quotation" => 5), array("id_submit_quotation" => $id_submit_quotation));
         $this->req();
         $id_submit_request = get1Value("quotation","id_request",array("id_submit_quotation" => $id_submit_quotation));
         $where = array(
@@ -511,30 +512,36 @@ class Quotation extends CI_Controller{
         /*update status buat quotation di price request supaya gabisa dibuat ulang yang udah pernah dibuat*/
         redirect("crm/quotation/edit/".$this->input->post("id_submit_quotation"));
     }
-    public function loss($id,$ver){
+    public function loss($id_submit_quotation){
         $data = array(
-            "status_quo" => 1
+            "status_quotation" => 1
         );
         $where = array(
-            "versi_quo" => $ver,
-            "id_quo" => $id
+            "id_submit_quotation" => $id_submit_quotation
         );
-        $this->Mdquotation->update($data,$where);
+        updateRow("quotation",$data,$where);
         redirect("crm/quotation");
     }
-    public function accepted($id,$ver,$bulan,$tahun){
+    public function accepted($id_submit_quotation){
         $data = array(
-            "status_quo" => 2
+            "status_quotation" => 2
         );
         $where = array(
-            "versi_quo" => $ver,
-            "id_quo" => $id,
-            "bulan_quotation" => $bulan,
-            "tahun_quotation" => $tahun
+            "id_submit_quotation" => $id_submit_quotation
         );
-        $this->Mdquotation->update($data,$where);
+        updateRow("quotation",$data,$where);
         redirect("crm/quotation");
         
+    }
+    public function remove($id_submit_quotation){
+        $data = array(
+            "status_aktif_quotation" => 2
+        );
+        $where = array(
+            "id_submit_quotation" => $id_submit_quotation
+        );
+        updateRow("quotation",$data,$where);
+        redirect("crm/quotation");
     }
     /*ajax*/
 }
