@@ -15,113 +15,128 @@
                         
                         <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#tambahan" aria-controls="pengiriman" role="tab">S&K Quotation</a></li>
 
-                        
                     </ul>
-                    <form action = "<?php echo base_url();?>crm/quotation/editquotation" method = "post">    
+                    <form action = "<?php echo base_url();?>crm/quotation/insertquotation" method = "post" enctype = "multipart/form-data">    
                         <div class="tab-content">
                             <div class="tab-pane active" id="primaryData" role="tabpanel">
+                                <input type = "hidden" value = "<?php echo $quotation["id_submit_quotation"];?>" id = "id_submit_quotation">
                                 <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Price Request</h5>
-                                    <input name = "no_quo" type ="text" class = "form-control" readonly value = "REQ-<?php echo sprintf("%05d",$quotation["id_request"]);?>">
+                                    <h5 style = "color:darkgrey; opacity:0.8">RFQ</h5>
+                                    <input type = "text" readonly class = "form-control" value = "<?php echo $quotation["no_request"];?>">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Quotation No</h5> <!-- nanti ganti jadi select -->
-                                    <input name = "no_quo" type ="text" class = "form-control" readonly value = "<?php echo $quotation["no_quo"];?>">
-                                    <input name = "id_quo" id = "id_quo" type ="hidden" class = "form-control" readonly value = "<?php echo $quotation["id_quo"];?>"> <!-- quotation yang baru -->
-                                    <input name = "id_quotation" id = "id_quotation" type ="hidden" class = "form-control" readonly value = "<?php echo $quotation["id_quo"];?>"> <!-- quotation yang baru -->
+                                    <input id = "no_quotation" name = "no_quotation" type ="text" class = "form-control" readonly  value = "<?php echo $quotation["no_quotation"];?>">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Quotation Versi</h5>
-                                    <input name = "versi_quo" id= "versi_quo" value = "<?php echo $quotation["quo_versi"]?>" type ="text" class = "form-control" readonly> <!-- pertama yang dibuka dulu, pas insert baru masuk yang baru -->
-                                    <input name = "quo_version" id= "quo_version" value = "<?php echo $quotation["quo_versi"]?>" type ="hidden" class = "form-control" readonly> <!-- pertama yang dibuka dulu, pas insert baru masuk yang baru -->
+                                    <input name = "versi_quotation" id = "versi_quotation" value = "<?php echo $quotation["versi_quotation"];?>" readonly type ="text" class = "form-control">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
-                                    <input type ="text" class = "form-control" value = "<?php echo $quotation["nama_perusahaan"];?>" id ="perusahaanCust" readonly>
+                                    <input type ="text" class = "form-control perusahaanCust" value = "<?php echo $quotation["nama_perusahaan"];?>" readonly>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Nama Customer</h5>
-                                    <input name = "" type ="text" class = "form-control" value = "<?php echo $quotation["nama_cp"];?>" id ="namaCust" readonly>
+                                    <input name = "" type ="text" value = "<?php echo $quotation["nama_cp"];?>" class = "form-control namaCust" readonly>
                                 </div>
                             </div>
                             <!-- fungsi -->
                             <div class="tab-pane" id="items" role="tabpanel">
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Items</h5>
-                                    <select class = "form-control" id = "itemsOrdered" onchange = "loadVendors()">
-                                        <option selected disabled>Choose Item</option>
-                                        <?php for($a = 0 ; $a<count($items); $a++): ?>
-                                        <option value = "<?php echo $items[$a]["id_request_item"];?>"><?php echo $items[$a]["nama_produk"];?></option>
-                                        <?php endfor;?>
-                                    </select>
+                                <div class = "row">
+                                    <div class = "form-group col-lg-5">
+                                        <h5 style = "opacity:0.5">Items</h5>
+                                        <select class = "form-control" id = "itemsOrdered" data-plugin = "select2" onchange = "loadVendors()">
+                                            <option selected disabled>Choose Item</option>
+                                            <?php for($item = 0; $item<count($request_item); $item++):?>
+                                            <option value = "<?php echo $request_item[$item]["id_request_item"];?>"><?php echo $request_item[$item]["nama_produk"]; ?></option>
+                                            <?php endfor;?>
+                                        </select>
+                                    </div>
+                                    <div class = "form-group col-lg-2">
+                                        <h5 style = "opacity:0.5">Quantity</h5>
+                                        <input name = "Abc" type ="text" class = "form-control" id = "itemamount" value = "">
+                                    </div>
+                                </div>
+                                <div class = "row">
+                                    <div class = "form-group col-lg-5">
+                                        <h5 style = "opacity:0.5">Supplier</h5>
+                                        <select data-plugin = "select2" class = "form-control" id = "products" onchange = "getVendorPrice()">
+                                            <option selected disabled>Choose Product Vendor</option>
+                                        </select>
+                                    </div>
+                                    <div class = "form-group col-lg-5">
+                                        <h5 style = "opacity:0.5">Supplier Price</h5>
+                                        <input name = "Abc" type ="text" id = "hargaProduk" class = "form-control" disabled placeholder = "Product Price">
+                                    </div>
+                                </div>
+                                <div class = "row">
+                                    <div class = "form-group col-lg-5">
+                                        <h5 style = "opacity:0.5">Shipping</h5>
+                                        <select data-plugin = "select2" class = "form-control" id="shippers" onchange = "getShippingPrice()">
+                                            <option selected disabled>Choose Shipping Vendor</option>
+                                        </select>
+                                    </div>
+                                    <div class = "form-group col-lg-5">
+                                        <h5 style = "opacity:0.5">Shipping Price</h5>
+                                        <input name = "Abc" type ="text" id = "hargashipping" class = "form-control" disabled placeholder = "Shipping Price">
+                                    </div>
+                                </div>
+                                <div class = "row">
+                                    <div class = "form-group col-lg-5">
+                                        <h5 style = "opacity:0.5">Courier</h5>
+                                        <select data-plugin = "select2" class = "form-control" id = "courier" onchange = "getCourierPrice()">
+                                            <option selected disabled>Choose Courier</option>
+                                        </select>
+                                    </div>
+                                    <div class = "form-group col-lg-5">
+                                        <h5 style = "opacity:0.5">Courier Price</h5>
+                                        <input name = "Abc" type ="text" id = "hargaCourier" class = "form-control" disabled placeholder = "Courier Price">
+                                    </div>
                                 </div>
                                 <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Quantity</h5>
-                                    <input name = "Abc" type ="text" class = "form-control" id = "itemamount" value = "">
-                                </div>
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Supplier</h5>
-                                    <select class = "form-control" id = "products" onchange = "getVendorPrice()">
-                                        <option selected disabled>Choose Product Vendor</option>
-                                    </select>
-                                </div>
-                                <div class = "form-group">
-                                    <input name = "Abc" type ="text" id = "hargaProduk" class = "form-control" disabled placeholder = "Product Price">
-                                </div>
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Shipping</h5>
-                                    <select class = "form-control" id="shippers" onchange = "getShippingPrice()">
-                                        <option selected disabled>Choose Shipping Vendor</option>
-                                    </select>
-                                </div><div class = "form-group">
-                                    <input name = "Abc" type ="text" id = "hargashipping" class = "form-control" disabled placeholder = "Shipping Price">
-                                </div>
-                                
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Courier</h5>
-                                    <select class = "form-control" id = "courier" onchange = "getCourierPrice()">
-                                        <option selected disabled>Choose Courier</option>
-                                    </select>
-                                </div>
-                                <div class = "form-group">
-                                    <input name = "Abc" type ="text" id = "hargaCourier" class = "form-control" disabled placeholder = "Product Price">
+                                    <h5 style = "opacity:0.5">Nama Produk Leiter</h5>
+                                    <textarea class = "form-control" id = "nama_produk_leiter" name = "nama_produk_leiter"></textarea>
                                 </div>
                                 <div class = "form-group" onclick = "getTotal()">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Total Price</h5>
+                                    <h5 style = "opacity:0.5">Total Price</h5>
                                     <input name = "Abc"  type ="text" class = "form-control" id = "totalPrice" disabled placeholder = "Click to get Total Price">
                                 </div>
                                 <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Selling Price</h5>
+                                    <h5 style = "opacity:0.5">Selling Price</h5>
                                     <input name = "Abc" type ="text" class = "form-control" id = "inputNominal" oninput ="decimal()" placeholder = "Selling Price">
                                 </div>
                                 <div class = "form-group" onclick = "getMargin()">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Margin</h5>
+                                    <h5 style = "opacity:0.5">Margin</h5>
                                     <input name = "Abc"  type ="text" class = "form-control" id = "totalMargin" disabled placeholder = "Margin">
                                 </div>
                                 <div class = "form-group">
-                                    <button type = "button" onclick = "quotationItem()" class = "btn btn-primary btn-outline">ADD TO QUOTATION</button>
+                                    <button type = "button" onclick = "quotationItem()" class = "col-lg-2 btn btn-primary btn-outline btn-sm">ADD TO QUOTATION</button>
                                 </div>
                                 <div class = "form-group col-lg-12">
                                     <table class = "table table-stripped col-lg-12" style = "width:100%" data-plugin = "dataTable">
                                         <thead>
+                                            <th>#</th>
                                             <th>Item Request ID</th>
-                                            <th>Product Name</th>
+                                            <th style = "width:20%">Product Name</th>
                                             <th>Amount</th>
                                             <th>Selling Price</th>
-                                            <th>Margin</th>
-                                            <th>Action</th>
+                                            <th style = "width:10%">Margin</th>
+                                            <th style = "width:10%">Gambar Baru</th>
+                                            <th>Gambar</th>
                                         </thead>
                                         <tbody id ="t1">
-                                            <?php for($a= 0; $a<count($quotation_item); $a++):?>
+                                            <?php for($quo_item = 0; $quo_item<count($quotation_item); $quo_item++):?>
                                             <tr>
-                                                <td><?php echo $quotation_item[$a]["id_request_item"];?></td>
-                                                <td><?php echo $quotation_item[$a]["nama_produk"];?></td>
-                                                <td><?php echo $quotation_item[$a]["jumlah"];?></td>
-                                                <td><?php echo number_format($quotation_item[$a]["selling_price"]);?></td>
-                                                <td><?php echo $quotation_item[$a]["margin"];?></td>
-                                                <td><button type = 'button' class = 'btn btn-danger btn-outline btn-sm' onclick = 'removeQuotationItem("<?php echo $quotation_item[$a]["id_quotation_item"];?>")' >REMOVE</button></td>
+                                                <td><div class = "checkbox-custom checkbox-primary"><input type = "checkbox" checked id = "checks<?php echo ($quo_item+1);?>" value = ""><label></label></div></td>
+                                                <td><input type = "text" class = "form-control" value = "<?php echo $quotation_item[$quo_item]["id_request_item"];?>" readonly></td>
+                                                <td><textarea class = "form-control"><?php echo $quotation_item[$quo_item]["nama_produk_leiter"];?></textarea></td>
+                                                <td><input type = "text" class = "form-control" value = "<?php echo $quotation_item[$quo_item]["item_amount"];?> <?php echo $quotation_item[$quo_item]["satuan_produk"];?>"></td>
+                                                <td><input type = "text" class = "form-control" value = "<?php echo number_format($quotation_item[$quo_item]["selling_price"]);?>" id = "selling_price<?php echo ($quo_item+1);?>" ></td>
+                                                <td><input type = "text" class = "form-control" value = "<?php echo $quotation_item[$quo_item]["margin_price"];?>%"></td>
+                                                <td><input type = "file"></td>
+                                                <td><a href = "<?php echo base_url();?>assets/dokumen/quotation/<?php echo $quotation_item[$quo_item]["attachment"];?>" target = "_blank" class = "btn btn-primary btn-sm">DOCUMENT</a></td>
                                             </tr>
-
                                             <?php endfor;?>
                                         </tbody>
                                     </table>
@@ -129,59 +144,49 @@
                             </div>
                             <div class="tab-pane" id="payment" role="tabpanel">
                                 <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Payment Method</h5>
-                                    <select class = "form-control" id = "paymentMethod" name = "paymentMethod" onchange = "paymentMethodForm()">
-                                        <option value = "01" <?php if($metode_pembayaran[0]["trigger_pembayaran"].$metode_pembayaran[1]["trigger_pembayaran"] == '01') echo "selected";?>>Full Before Delivery</option>
-                                        <option value = "02" <?php if($metode_pembayaran[0]["trigger_pembayaran"].$metode_pembayaran[1]["trigger_pembayaran"] == '02') echo "selected";?>>Full After Delivery</option>
-                                        <option value = "11" <?php if($metode_pembayaran[0]["trigger_pembayaran"].$metode_pembayaran[1]["trigger_pembayaran"] == '11') echo "selected";?>>DP & Rest Before Delivery</option>
-                                        <option value = "12" <?php if($metode_pembayaran[0]["trigger_pembayaran"].$metode_pembayaran[1]["trigger_pembayaran"] == '12') echo "selected";?>>DP & Rest After Delivery</option>
-                                    </select>
+                                    <h5 style = "opacity:0.5">Total Quotation Amount</h5>
+                                    <input type = "text" id = "totalQuotation" class = "form-control" name = "total_quotation_price" readonly onclick = "countTotal()" value = "<?php echo number_format($quotation["total_quotation_price"]);?>">
                                 </div>
-                                <?php 
-                                if(count($metode_pembayaran) == 1){ 
-                                    if($metode_pembayaran["trigger_pembayaran"] == 1){ ?> <!--full sebelum pengiriman -->
-
-                                    <?php
-                                    }
-                                    else{ ?> <!-- full sesudah pengiriman -->
-                                    <div class = "form-group containerSisa"> <!-- textarea klo DP% -->
-                                        <h5 style = "color:darkgrey; opacity:0.8">Rest Percentage</h5>
-                                        <input name = "persen[]" type ="text" value = "<?php echo $metode_pembayaran[0]["persentase_pembayaran"];?>" class = "form-control">
+                                <div class = "row">
+                                    <div class = "form-group col-lg-4 containerDp" style = ""> <!-- textarea klo DP % -->
+                                        <h5 style = "opacity:0.5">DP (%)</h5>
+                                        <input name = "persentase_pembayaran" value = "<?php echo $quotation_metode_pembayaran["persentase_pembayaran"];?>" id = "persenDp" oninput = "paymentWithDP()" type ="text" class = "form-control">
                                     </div>
-                                    <div class = "form-group containerSisa"> <!-- Nominal DP -->
-                                        <h5 style = "color:darkgrey; opacity:0.8">Rest Amount</h5>
-                                        <input name = "jumlah[]" type ="text" value = "<?php echo $metode_pembayaran[0]["nominal_pembayaran"];?>" class = "form-control">
+                                    <div class = "form-group col-lg-4">
+                                        <h5 style = "opacity:0.5">Payment Method</h5>
+                                        <select class = "form-control" number_format(id = "paymentMethod" name = "trigger_pembayaran">
+                                            <option value = "1">BEFORE DELIVERY</option>
+                                        </select>
                                     </div>
-
-                                    <?php
-                                    }
-                                    ?> <!-- kalau tipe 1/2 -->
-                                <?php 
-                                } 
-                                else{ ?>
-                                    <div class = "form-group containerDp"> <!-- textarea klo DP % -->
-                                        <h5 style = "color:darkgrey; opacity:0.8">DP Percentage</h5>
-                                        <input oninput = "paymentWithDP()" id = "persenDp" name = "persen[]" type ="text" value = "<?php echo number_format($metode_pembayaran[0]["persentase_pembayaran"]);?>" class = "form-control">
+                                    <div class = "form-group col-lg-4 containerDp" style = ""> <!-- Nominal DP -->
+                                        <h5 style = "opacity:0.5">Jumlah DP</h5>
+                                        <input name = "nominal_pembayaran" value = "<?php echo number_format($quotation_metode_pembayaran["nominal_pembayaran"]);?>" id = "jumlahDp" type ="text" class = "form-control">
                                     </div>
-                                    <div class = "form-group containerDp"> <!-- Nominal DP -->
-                                        <h5 style = "color:darkgrey; opacity:0.8">DP Amount</h5>
-                                        <input name = "jumlah[]" id = "jumlahDp" type ="text" value = "<?php echo number_format($metode_pembayaran[0]["nominal_pembayaran"]);?>" class = "form-control" readonly>
+                                </div>
+                                <div class = "row">
+                                    <div class = "form-group col-lg-4 containerSisa" style = ""> <!-- textarea klo DP% -->
+                                        <h5 style = "opacity:0.5">Pelunasan (%)</h5>
+                                        <input name = "persentase_pembayaran2" value = "<?php echo $quotation_metode_pembayaran["persentase_pembayaran2"];?>" id = "persenSisa" type ="text" class = "form-control">
                                     </div>
-                                    <div class = "form-group containerSisa"> <!-- textarea klo DP% -->
-                                        <h5 style = "color:darkgrey; opacity:0.8">Rest Percentage</h5>
-                                        <input name = "persen[]" type ="text" value = "<?php echo number_format($metode_pembayaran[1]["persentase_pembayaran"]);?>" id = "persenSisa" class = "form-control" readonly>
+                                    <div class = "form-group col-lg-4">
+                                        <h5 style = "opacity:0.5">Payment Method</h5>
+                                        <select class = "form-control" id = "paymentMethod" name = "trigger_pembayaran2">
+                                            <option value = "1" <?php if($quotation_metode_pembayaran["trigger_pembayaran2"] == 1) echo "selected";?> >BEFORE DELIVERY</option>
+                                            <option value = "2" selected>AFTER DELIVERY</option>
+                                        </select>
+                                    </div>  
+                                    <div class = "form-group col-lg-4 containerSisa" style = ""> <!-- Nominal DP -->
+                                        <h5 style = "opacity:0.5">Jumlah Pelunasan</h5>
+                                        <input name = "nominal_pembayaran2" value = "<?php echo number_format($quotation_metode_pembayaran["nominal_pembayaran2"]);?>" id = "jumlahSisa" type ="text" class = "form-control">
                                     </div>
-                                    <div class = "form-group containerSisa"> <!-- Nominal DP -->
-                                        <h5 style = "color:darkgrey; opacity:0.8">Rest Amount</h5>
-                                        <input name = "jumlah[]" type ="text" value = "<?php echo number_format($metode_pembayaran[1]["nominal_pembayaran"]);?>" id = "jumlahSisa" class = "form-control" readonly>
-                                    </div>
-                                <?php 
-                                }
-                                ?>
-                                
+                                </div>
                                 <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Mata Uang Pembayaran</h5>
-                                    <input name = "mata_uang_pembayaran" type ="text" value = "<?php echo $metode_pembayaran[0]["mata_uang"];?>" class = "form-control">
+                                    <h5 style = "opacity:0.5">Durasi Pembayaran (... minggu setelah invoice diterima)</h5>
+                                    <input name = "durasi_pembayaran" type ="text" value = "<?php echo $quotation["durasi_pembayaran"];?>" class = "form-control">
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "opacity:0.5">Mata Uang Pembayaran</h5>
+                                    <input name = "mata_uang_pembayaran" type ="text" value = "<?php echo $quotation_metode_pembayaran["kurs"];?>" value ="IDR" class = "form-control">
                                 </div>
                                 <!-- (1) invoice keluar triggernya abis keluarin OC -->
                                 <!-- (2) invoice keluar triggernya abis keluarin OD -->
@@ -198,24 +203,23 @@
                             <div class="tab-pane" id="detail" role="tabpanel">
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">No Quotation</h5>
-                                    <input name = "no_quo" value = "<?php echo $quotation["no_quo"];?>" type ="text" class = "form-control" readonly>
+                                    <input value = "<?php echo $quotation["no_quotation"];?>" type ="text" class = "form-control" readonly>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Quotation Perihal</h5>
-                                    <input name = "hal_quo" value = "<?php echo $quotation["hal_quo"];?>" type ="text" class = "form-control">
+                                    <input name = "hal_quotation" type ="text" value = "<?php echo $quotation["hal_quotation"];?>" class = "form-control">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
-                                    <input type ="text" value = "<?php echo $quotation["nama_perusahaan"];?>" class = "form-control" id ="perusahaanCust" readonly>
+                                    <input type ="text" class = "form-control perusahaanCust" value = "<?php echo $quotation["nama_perusahaan"];?>" readonly>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Nama Customer</h5>
-                                    <input name = "" type ="text" class = "form-control" value = "<?php echo $quotation["nama_cp"];?>"  id ="namaCust" readonly>
-                                    <input name = "id_cp" type ="hidden" class = "form-control" id ="idCust" readonly>
+                                    <input name = "" type ="text" value = "<?php echo $quotation["nama_cp"];?>" class = "form-control namaCust" readonly>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Alamat Customer</h5>
-                                    <textarea class = "form-control" id ="alamatCust" name = "alamat_perusahaan"><?php echo $quotation["alamat_perusahaan"];?></textarea>
+                                    <textarea name = "alamat_perusahaan" class = "form-control" id ="alamatCust"><?php echo $quotation["alamat_perusahaan"];?></textarea>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Up Nama Customer</h5>
@@ -223,24 +227,25 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="tambahan" role="tabpanel">
+                                
                                 <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Durasi Pembayaran</h5>
-                                    <input name = "durasi_pembayaran" value = "<?php echo $quotation["durasi_pembayaran"];?>"  type ="text" class = "form-control">
-                                </div>
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Durasi Pengiriman</h5>
+                                    <h5 style = "color:darkgrey; opacity:0.8">Durasi Pengiriman (... Minggu setelah PO di konfirmasi)</h5>
                                     <input name = "durasi_pengiriman" value = "<?php echo $quotation["durasi_pengiriman"];?>" type ="text" class = "form-control"> Minggu
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Masa Berlaku Quotation</h5>
-                                    <input name = "dateline_quo" type ="date" value = "<?php echo $quotation["dateline_quo"];?>" class = "form-control">
+                                    <input name = "dateline_quotation" value = "<?php echo $quotation["dateline_quotation"];?>" type ="date" class = "form-control">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Franco</h5>
-                                    <input name = "franco" type ="text" value = "<?php echo $quotation["franco"];?>" class = "form-control"> 
+                                    <input name = "franco" id = "franco" type ="text" value = "<?php echo $quotation["franco"];?>" class = "form-control"> 
                                 </div>
+                                
                                 <button class = "btn btn-primary btn-outline btn-sm">SUBMIT</button>
                             </div>
+                        </div>
+                        <div class = "form-group">
+                            <a href = "<?php echo base_url();?>crm/quotation" class = "btn btn-outline btn-primary btn-sm">BACK</a>
                         </div>
                     </form>
                 </div>

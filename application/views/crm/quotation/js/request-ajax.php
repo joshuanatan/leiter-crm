@@ -159,8 +159,8 @@ function getMargin(){
     var input = $("#inputNominal").val();
     var totalfinal = splitter(total,",");
     var inputfinal = splitter(input,",");
-    var margin = parseInt(((parseInt(inputfinal) - parseInt(totalfinal))/parseInt(inputfinal)*100)*100); // 0.8748577 -> 87.4 (87)
-    var margin2 = parseFloat(margin/100)+0.01;
+    var margin = parseInt(((parseInt(inputfinal) - parseInt(totalfinal))/parseInt(inputfinal)*100)*1000); // 0.8748577 -> 87.4 (87)
+    var margin2 = parseFloat(margin/1000)+0.001;
 
     $("#totalMargin").val(margin2+"%");
 }
@@ -180,7 +180,7 @@ function quotationItem(){
         var selling_price = $("#inputNominal").val();
         var margin_price = $("#totalMargin").val();
         
-        var row = "<tr><td><div class = 'checkbox-custom checkbox-primary'><input type = 'checkbox' name = 'checks[]' checked value = '"+jumlah_baris+"'><label></label></div></td><td><input type = 'text' value = '"+id_request_item+"' readonly class = 'form-control' name = 'id_request_item"+(jumlah_baris+1)+"'></td><td><textarea readonly class = 'form-control' name = 'nama_produk_leiter"+(jumlah_baris+1)+"'>"+nama_produk_leiter+"</textarea></td><td><input type = 'text' value = '"+item_amount+"' readonly class = 'form-control' name = 'item_amount"+(jumlah_baris+1)+"'></td><td><input type = 'text' value = '"+selling_price+"' readonly class = 'form-control' name = 'selling_price"+(jumlah_baris+1)+"'></td><td><input type = 'text' value = '"+margin_price+"' readonly class = 'form-control' name = 'margin_price"+(jumlah_baris+1)+"'></td><td><input type = 'file' readonly class = 'form-control' name = 'attachment"+(jumlah_baris+1)+"'></td><input type = 'hidden' value = '"+id_harga_vendor+"' name = 'id_harga_vendor"+(jumlah_baris+1)+"'><input type = 'hidden' value = '"+id_harga_shipping+"' name = 'id_harga_shipping"+(jumlah_baris+1)+"'><input type = 'hidden' value = '"+id_harga_courier+"' name = 'id_harga_courier"+(jumlah_baris+1)+"'>tr>";
+        var row = "<tr><td><div class = 'checkbox-custom checkbox-primary'><input type = 'checkbox' name = 'checks[]' checked value = '"+(jumlah_baris+1)+"' id = 'checks"+(jumlah_baris+1)+"'><label></label></div></td><td><input type = 'text' value = '"+id_request_item+"' readonly class = 'form-control' name = 'id_request_item"+(jumlah_baris+1)+"'></td><td><textarea readonly class = 'form-control' name = 'nama_produk_leiter"+(jumlah_baris+1)+"'>"+nama_produk_leiter+"</textarea></td><td><input type = 'text' value = '"+item_amount+"' readonly class = 'form-control' name = 'item_amount"+(jumlah_baris+1)+"'></td><td><input type = 'text' value = '"+selling_price+"' readonly class = 'form-control' id = 'selling_price"+(jumlah_baris+1)+"'  name = 'selling_price"+(jumlah_baris+1)+"'></td><td><input type = 'text' value = '"+margin_price+"' readonly class = 'form-control' name = 'margin_price"+(jumlah_baris+1)+"'></td><td><input type = 'file' readonly class = 'form-control' name = 'attachment"+(jumlah_baris+1)+"'></td><input type = 'hidden' value = '"+id_harga_vendor+"' name = 'id_harga_vendor"+(jumlah_baris+1)+"'><input type = 'hidden' value = '"+id_harga_shipping+"' name = 'id_harga_shipping"+(jumlah_baris+1)+"'><input type = 'hidden' value = '"+id_harga_courier+"' name = 'id_harga_courier"+(jumlah_baris+1)+"'>tr>";
         $("#t1").append(row);
     });
 }

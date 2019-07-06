@@ -1,4 +1,4 @@
-    <div class="panel-body col-lg-12">
+<div class="panel-body col-lg-12">
     <div class="row row-lg">
         <div class="col-xl-12">
             <!-- Example Tabs Left -->
@@ -16,12 +16,12 @@
                         <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#tambahan" aria-controls="pengiriman" role="tab">S&K Quotation</a></li>
 
                     </ul>
-                    <form action = "<?php echo base_url();?>crm/quotation/insertquotation" method = "post">    
+                    <form action = "<?php echo base_url();?>crm/quotation/insertquotation" method = "post" enctype = "multipart/form-data">    
                         <div class="tab-content">
                             <div class="tab-pane active" id="primaryData" role="tabpanel">
                                 <input type = "hidden" value = "<?php echo $id_submit_quotation;?>" id = "id_submit_quotation">
                                 <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Price Request</h5>
+                                    <h5 style = "color:darkgrey; opacity:0.8">RFQ</h5>
                                     <select onchange = "detailPriceRequest()" id = "id_request" name = "id_request" class = "form-control" data-plugin ="select2">
                                         <option selected disabled>RFQ</option>
                                         <?php for($a = 0; $a<count($request); $a++):?>
@@ -31,12 +31,12 @@
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Quotation No</h5> <!-- nanti ganti jadi select -->
-                                    <input id = "no_quo" name = "no_quo" type ="text" class = "form-control" readonly  value = "LI-<?php echo sprintf("%03d",$quotation_id);?>/QUO/<?php echo bulanRomawi(date("m"));?>/2019">
-                                    <input name = "id_quo"  type ="hidden" value = "<?php echo $quotation_id;?>" id = "id_quo"/>
+                                    <input id = "no_quotation" name = "no_quotation" type ="text" class = "form-control" readonly  value = "LI-<?php echo sprintf("%03d",$quotation_id);?>/QUO/<?php echo bulanRomawi(date("m"));?>/2019">
+                                    <input name = "id_quotation"  type ="hidden" value = "<?php echo $quotation_id;?>" id = "id_quotation"/>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Quotation Versi</h5>
-                                    <input name = "versi_quo" id = "versi_quo" value = "1" readonly type ="text" class = "form-control">
+                                    <input name = "versi_quotation" id = "versi_quotation" value = "1" readonly type ="text" class = "form-control">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
@@ -137,43 +137,39 @@
                             <div class="tab-pane" id="payment" role="tabpanel">
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">Total Quotation Amount</h5>
-                                    <input type = "text" id = "totalQuotation" class = "form-control" readonly onclick = "countTotal()">
-                                    <input type = "hidden" id = "totalQuotationClean" class = "form-control" readonly>
+                                    <input type = "text" id = "totalQuotation" class = "form-control" name = "total_quotation_price" readonly onclick = "countTotal()">
                                 </div>
                                 <div class = "row">
                                     <div class = "form-group col-lg-4 containerDp" style = ""> <!-- textarea klo DP % -->
-                                        <h5 style = "opacity:0.5">DP Percentage</h5>
-                                        <input name = "persenDp" id = "persenDp" oninput = "paymentWithDP()" type ="text" class = "form-control">
+                                        <h5 style = "opacity:0.5">DP (%)</h5>
+                                        <input name = "persentase_pembayaran" id = "persenDp" oninput = "paymentWithDP()" type ="text" class = "form-control">
                                     </div>
                                     <div class = "form-group col-lg-4">
                                         <h5 style = "opacity:0.5">Payment Method</h5>
-                                        <select class = "form-control" id = "paymentMethod" name = "paymentMethod">
+                                        <select class = "form-control" id = "paymentMethod" name = "trigger_pembayaran">
                                             <option value = "1">BEFORE DELIVERY</option>
-                                            <option value = "2">AFTER DELIVERY</option>
                                         </select>
                                     </div>
                                     <div class = "form-group col-lg-4 containerDp" style = ""> <!-- Nominal DP -->
-                                        <h5 style = "opacity:0.5">DP Amount</h5>
-                                        <input name = "jumlahDp" id = "jumlahDp" type ="text" class = "form-control">
-                                        <input name = "jumlahDpClean" id = "jumlahDpClean" type ="hidden" class = "form-control">
+                                        <h5 style = "opacity:0.5">Jumlah DP</h5>
+                                        <input name = "nominal_pembayaran" id = "jumlahDp" type ="text" class = "form-control">
                                     </div>
                                 </div>
                                 <div class = "row">
                                     <div class = "form-group col-lg-4 containerSisa" style = ""> <!-- textarea klo DP% -->
-                                        <h5 style = "opacity:0.5">Rest Percentage</h5>
-                                        <input name = "persenSisa" id = "persenSisa" type ="text" class = "form-control">
+                                        <h5 style = "opacity:0.5">Pelunasan (%)</h5>
+                                        <input name = "persentase_pembayaran2" id = "persenSisa" type ="text" class = "form-control">
                                     </div>
                                     <div class = "form-group col-lg-4">
                                         <h5 style = "opacity:0.5">Payment Method</h5>
-                                        <select class = "form-control" id = "paymentMethod" name = "paymentMethod2">
+                                        <select class = "form-control" id = "paymentMethod" name = "trigger_pembayaran2">
                                             <option value = "1">BEFORE DELIVERY</option>
-                                            <option value = "2">AFTER DELIVERY</option>
+                                            <option value = "2" selected>AFTER DELIVERY</option>
                                         </select>
                                     </div>  
                                     <div class = "form-group col-lg-4 containerSisa" style = ""> <!-- Nominal DP -->
-                                        <h5 style = "opacity:0.5">Rest Amount</h5>
-                                        <input name = "" id = "jumlahSisa" type ="text" class = "form-control">
-                                        <input name = "jumlahSisaClean" id = "jumlahSisaClean" type ="hidden" class = "form-control">
+                                        <h5 style = "opacity:0.5">Jumlah Pelunasan</h5>
+                                        <input name = "nominal_pembayaran2" id = "jumlahSisa" type ="text" class = "form-control">
                                     </div>
                                 </div>
                                 <div class = "form-group">
@@ -203,17 +199,15 @@
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Quotation Perihal</h5>
-                                    <input name = "hal_quo" type ="text" class = "form-control">
+                                    <input name = "hal_quotation" type ="text" class = "form-control">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
                                     <input type ="text" class = "form-control perusahaanCust" readonly>
-                                    <input name = "id_perusahaan" type ="hidden" class = "form-control" id ="idPerusahaan" readonly>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Nama Customer</h5>
                                     <input name = "" type ="text" class = "form-control namaCust" readonly>
-                                    <input name = "id_cp" type ="hidden" class = "form-control" id ="idCust" readonly>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Alamat Customer</h5>
@@ -227,12 +221,12 @@
                             <div class="tab-pane" id="tambahan" role="tabpanel">
                                 
                                 <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Durasi Pengiriman</h5>
+                                    <h5 style = "color:darkgrey; opacity:0.8">Durasi Pengiriman (... Minggu setelah PO di konfirmasi)</h5>
                                     <input name = "durasi_pengiriman" type ="text" class = "form-control"> Minggu
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Masa Berlaku Quotation</h5>
-                                    <input name = "dateline_quo" type ="date" class = "form-control">
+                                    <input name = "dateline_quotation" type ="date" class = "form-control">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Franco</h5>
@@ -241,6 +235,9 @@
                                 
                                 <button class = "btn btn-primary btn-outline btn-sm">SUBMIT</button>
                             </div>
+                        </div>
+                        <div class = "form-group">
+                            <a href = "<?php echo base_url();?>crm/quotation" class = "btn btn-outline btn-primary btn-sm">BACK</a>
                         </div>
                     </form>
                 </div>

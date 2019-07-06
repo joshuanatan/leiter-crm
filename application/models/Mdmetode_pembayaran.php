@@ -13,5 +13,9 @@ class Mdmetode_pembayaran extends CI_Model{
     public function delete($where){
         $this->db->delete("metode_pembayaran",$where);
     }
+    /************************************************* */
+    public function getListQuotationMetodePembayaran($where){
+        return $this->db->get_where("quotation_metode_pembayaran",$where);
+    }
 }
 ?>

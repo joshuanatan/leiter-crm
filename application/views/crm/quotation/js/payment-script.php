@@ -1,23 +1,15 @@
 <script>
 function countTotal(){
-    var totalTagihan = "";
-    var no_quotation = $("#no_quo").val();
-    var versi_quotation = $("#versi_quo").val();
-    //alert(id_payment_method);
-    $(document).ready(function(){
-        $.ajax({
-            url:"<?php echo base_url();?>interface/quotation/countTotalQuotationPrice",
-            data:{no_quotation:no_quotation,versi_quotation:versi_quotation},
-            dataType:"JSON",
-            type:"POST",
-            success:function(respond){
-                totalTagihan = respond;
-                $("#totalQuotation").val(addCommas(respond));
-                $("#totalQuotationClean").val(respond);
-            }
-        });
-
-    });
+    var jumlah_row = $("#t1 tr").length;
+    console.log(jumlah_row);
+    var jumlah_tagihan = 0;
+    for(var a = 0; a<jumlah_row; a++){
+        if($('#checks'+(a+1)).is(":checked")){
+            jumlah_tagihan += parseInt(splitter($("#selling_price"+(a+1)).val(),","));
+            console.log("jumlah tagihan "+jumlah_tagihan);
+        }
+    }
+    $("#totalQuotation").val(addCommas(jumlah_tagihan));
     
 }
 </script>
@@ -25,7 +17,7 @@ function countTotal(){
 function paymentWithDP(){
     var persenDp = $("#persenDp").val();
     var persen = splitter(persenDp,"%");
-    var totalTagihan = $("#totalQuotationClean").val();
+    var totalTagihan = parseInt(splitter($("#totalQuotation").val(),","));
     $("#persenSisa").val(100-parseInt(persen)+"%"); /*persenSisa*/
     $("#jumlahSisa").val(addCommas((100-parseInt(persen))/100*totalTagihan));
     $("#jumlahDp").val(addCommas(parseInt(persen)/100*totalTagihan));
