@@ -73,12 +73,15 @@ class Oc extends CI_Controller{
     public function create(){
         $where = array(
             "oc" => array(
-                "status_quo" => 2,
+                "status_quotation" => 2,
                 
             )   
         );
         $result["oc"] = selectRow("quotation",$where["oc"]);
-        $data["oc"] = foreachMultipleResult($result["oc"],array("no_quo","versi_quo"),array("no_quo","versi_quo"));
+        $data["oc"] = foreachMultipleResult($result["oc"],array("no_quotation","versi_quotation"),array("no_quotation","versi_quotation"));
+        for($a = 0; $a<count($data["oc"]); $a++){
+            $data["oc"][$a]["id_perusahaan"] = "ASDf";
+        }
         $data["maxId"] = getMaxId("order_confirmation","id_oc",array("bulan_oc" => date("m"), "tahun_oc" => date("Y")));
         $this->req();
         $this->load->view("crm/content-open");

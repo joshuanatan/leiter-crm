@@ -24,7 +24,7 @@
                                     <select onchange = "quotationDetail()" id = "no_quotation" name = "no_quotation" class = "form-control" data-plugin ="select2">
                                         <option value = "0" disabled selected>Choose Quotation</option>
                                         <?php for($a = 0; $a<count($oc); $a++): ?>
-                                        <option value = "<?php echo $oc[$a]["no_quo"];?> , <?php echo $oc[$a]["versi_quo"]; ?>"><?php echo $oc[$a]["no_quo"];?> - Ver. <?php echo $oc[$a]["versi_quo"]; ?></option>
+                                        <option value = "<?php echo $oc[$a]["no_quotation"];?> , <?php echo $oc[$a]["versi_quotation"]; ?>"><?php echo $oc[$a]["no_quotation"];?> - </option>
                                         <?php endfor;?>
                                     </select>
                                 </div>

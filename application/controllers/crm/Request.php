@@ -242,7 +242,8 @@ class Request extends CI_Controller{
                 $data = array(
                     "id_submit_request" => get1Value("price_request","id_submit_request", array("no_request" => $this->input->post("no_request"))),
                     "nama_produk" => $this->input->post("item".$a),
-                    "jumlah_produk" => $this->input->post("jumlah_produk".$a),
+                    "jumlah_produk" => $split[0],
+                    "satuan_produk" => $split[1],
                     "notes_produk" => $this->input->post("notes".$a),
                     "file" =>"-",
                     "id_user_add" => $this->session->id_user

@@ -54,10 +54,10 @@ class Quotation extends CI_Controller{
         $data["quotation"] = foreachMultipleResult($result["quotation"],$field["quotation"],$field["quotation"]);
         for($a = 0; $a<count($data["quotation"]); $a++){
 
-            $data["quotation"][$a]["id_perusahaan"] = get1Value("price_request","id_perusahaan", array("id_request" => $data["quotation"][$a]["id_request"]));
+            $data["quotation"][$a]["id_perusahaan"] = get1Value("price_request","id_perusahaan", array("id_submit_request" => $data["quotation"][$a]["id_request"]));
             $data["quotation"][$a]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan", array("id_perusahaan" => $data["quotation"][$a]["id_perusahaan"]));
 
-            $data["quotation"][$a]["id_cp"] = get1Value("price_request","id_cp", array("id_request" => $data["quotation"][$a]["id_request"]));
+            $data["quotation"][$a]["id_cp"] = get1Value("price_request","id_cp", array("id_submit_request" => $data["quotation"][$a]["id_request"]));
             $data["quotation"][$a]["nama_cp"] = get1Value("contact_person","nama_cp", array("id_cp" => $data["quotation"][$a]["id_cp"]));
 
             $where["quotation_item"] = array(
