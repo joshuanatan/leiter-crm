@@ -16,9 +16,11 @@
                         <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#tambahan" aria-controls="pengiriman" role="tab">S&K Quotation</a></li>
 
                     </ul>
-                    <form action = "<?php echo base_url();?>crm/quotation/insertquotation" method = "post" enctype = "multipart/form-data">    
+                    <form action = "<?php echo base_url();?>crm/quotation/insertrevision" method = "post" enctype = "multipart/form-data">    
                         <div class="tab-content">
                             <div class="tab-pane active" id="primaryData" role="tabpanel">
+                            <input type = "hidden" name = "id_quotation" value = "<?php echo $quotation["id_quotation"];?>">
+                            <input type = "hidden" name = "id_request" value = "<?php echo $quotation["id_request"];?>">
                                 <input type = "hidden" value = "<?php echo $quotation["id_submit_quotation"];?>" id = "id_submit_quotation">
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">RFQ</h5>
@@ -26,7 +28,7 @@
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Quotation No</h5> <!-- nanti ganti jadi select -->
-                                    <input id = "no_quotation" name = "no_quotation" type ="text" class = "form-control" readonly  value = "<?php echo $quotation["no_quotation"];?>/RV<?php echo $last_version-1;?>">
+                                    <input id = "no_quotation" name = "no_quotation" type ="text" class = "form-control" readonly  value = "LI-<?php echo sprintf("%03d",$quotation["id_quotation"]);?>/QUO/<?php echo bulanRomawi(date("m"));?>/<?php echo date("Y");?>/RV<?php echo $last_version-1;?>">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Quotation Versi</h5>
@@ -128,14 +130,36 @@
                                         <tbody id ="t1">
                                             <?php for($quo_item = 0; $quo_item<count($quotation_item); $quo_item++):?>
                                             <tr>
-                                                <td><div class = "checkbox-custom checkbox-primary"><input type = "checkbox" checked id = "checks<?php echo ($quo_item+1);?>" value = ""><label></label></div></td>
-                                                <td><input type = "text" class = "form-control" value = "<?php echo $quotation_item[$quo_item]["id_request_item"];?>" readonly></td>
-                                                <td><textarea class = "form-control"><?php echo $quotation_item[$quo_item]["nama_produk_leiter"];?></textarea></td>
-                                                <td><input type = "text" class = "form-control" value = "<?php echo $quotation_item[$quo_item]["item_amount"];?> <?php echo $quotation_item[$quo_item]["satuan_produk"];?>"></td>
-                                                <td><input type = "text" class = "form-control" value = "<?php echo number_format($quotation_item[$quo_item]["selling_price"]);?>" id = "selling_price<?php echo ($quo_item+1);?>" ></td>
-                                                <td><input type = "text" class = "form-control" value = "<?php echo $quotation_item[$quo_item]["margin_price"];?>%"></td>
-                                                <td><input type = "file"></td>
-                                                <td><a href = "<?php echo base_url();?>assets/dokumen/quotation/<?php echo $quotation_item[$quo_item]["attachment"];?>" target = "_blank" class = "btn btn-primary btn-sm">DOCUMENT</a></td>
+                                                <td>
+                                                    <div class = "checkbox-custom checkbox-primary">
+                                                        <input type = "checkbox" checked name = "checks[]" id = "checks<?php echo ($quo_item+1);?>" value = "<?php echo $quo_item+1;?>">
+                                                        <label></label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type = "text" name = "id_request_item<?php echo ($quo_item+1);?>" class = "form-control" value = "<?php echo $quotation_item[$quo_item]["id_request_item"];?>" readonly>
+                                                </td>
+                                                <td>
+                                                    <textarea name = "nama_produk_leiter<?php echo ($quo_item+1);?>" class = "form-control"><?php echo $quotation_item[$quo_item]["nama_produk_leiter"];?></textarea>
+                                                </td>
+                                                <td>
+                                                    <input type = "text" name = "item_amount<?php echo ($quo_item+1);?>" class = "form-control" value = "<?php echo $quotation_item[$quo_item]["item_amount"];?> <?php echo $quotation_item[$quo_item]["satuan_produk"];?>">
+                                                </td>
+                                                <td>
+                                                    <input type = "text" name = "selling_price<?php echo ($quo_item+1);?>" class = "form-control" value = "<?php echo number_format($quotation_item[$quo_item]["selling_price"]);?>" id = "selling_price<?php echo ($quo_item+1);?>" >
+                                                </td>
+                                                <td>
+                                                    <input type = "text" name = "margin_price<?php echo ($quo_item+1);?>" class = "form-control" value = "<?php echo $quotation_item[$quo_item]["margin_price"];?>%">
+                                                </td>
+                                                <td>
+                                                    <input type = "file" name = "attachment<?php echo ($quo_item+1);?>">
+                                                </td>
+                                                <td>
+                                                    <a href = "<?php echo base_url();?>assets/dokumen/quotation/<?php echo $quotation_item[$quo_item]["attachment"];?>" target = "_blank" class = "btn btn-primary btn-sm">DOCUMENT</a>
+                                                </td>
+                                                <input type = "hidden" value = "<?php echo $quotation_item[$quo_item]["id_harga_vendor"];?>" name = "id_harga_vendor<?php echo ($quo_item+1);?>">
+                                                <input type = "hidden" value = "<?php echo $quotation_item[$quo_item]["id_harga_courier"];?>" name = "id_harga_courier<?php echo ($quo_item+1);?>">
+                                                <input type = "hidden" value = "<?php echo $quotation_item[$quo_item]["id_harga_shipping"];?>" name = "id_harga_shipping<?php echo ($quo_item+1);?>">
                                             </tr>
                                             <?php endfor;?>
                                         </tbody>

@@ -158,7 +158,7 @@
 					</div>
 					<div class = "form-group col-lg-4 col-sm-12">
 						<h5 style = "opacity:0.5">DP Amount</h5>
-						<input type = "text" class = "form-control" readonly value = "<?php echo $quotation[$a]["metode_pembayaran"]["nominal_pembayaran"];?>">
+						<input type = "text" class = "form-control" readonly value = "<?php echo number_format($quotation[$a]["metode_pembayaran"]["nominal_pembayaran"]);?>">
 					</div>
 					<div class = "form-group col-lg-4 col-sm-12">
 						<h5 style = "opacity:0.5">DP Trigger</h5>

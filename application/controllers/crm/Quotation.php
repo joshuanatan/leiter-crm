@@ -67,7 +67,7 @@ class Quotation extends CI_Controller{
             $field["quotation_item"] = array(
                 "nama_produk_leiter","attachment","harga_shipping","harga_shipping","harga_courier","vendor_price_rate","shipping_price_rate","courier_price_rate","item_amount","satuan_produk","selling_price","margin_price","id_shipper","id_vendor","id_courier","product_image"
             );
-            $data["quotation"][$a]["jumlah_quotation_item"] = $result["quotation"]->num_rows();
+            $data["quotation"][$a]["jumlah_quotation_item"] = $result["quotation_item"]->num_rows();
             $data["quotation"][$a]["quotation_item"] = foreachMultipleResult($result["quotation_item"],$field["quotation_item"],$field["quotation_item"]); /*list quotation item dalam 1 quotation*/
             for($b = 0; $b<count($data["quotation"][$a]["quotation_item"]); $b++){
                 $data["quotation"][$a]["quotation_item"][$b]["nama_supplier"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $data["quotation"][$a]["quotation_item"][$b]["id_vendor"]));
@@ -339,30 +339,177 @@ class Quotation extends CI_Controller{
         redirect("crm/quotation");
     }
     public function insertrevision(){
-        $name = array("id_quo","versi_quo","id_request","no_quo","hal_quo","id_perusahaan","id_cp","up_cp","durasi_pengiriman","franco","durasi_pembayaran","mata_uang_pembayaran","dateline_quo","alamat_perusahaan");
-        $data = array();
-        for($a=0; $a<count($name); $a++){
-            $data += [$name[$a] => $this->input->post($name[$a])];
-        }
-        $data += ["id_user_add" => $this->session->id_user];
-        $this->Mdquotation->insert($data);
-        
+        $data["quotation"] = array(
+            "id_quotation" => $this->input->post("id_quotation") ,
+            "versi_quotation" => $this->input->post("versi_quotation") ,
+            "no_quotation" => $this->input->post("no_quotation") ,
+            "id_request" => $this->input->post("id_request") ,
+            "total_quotation_price" => splitterMoney($this->input->post("total_quotation_price"),","),
+            "hal_quotation" => $this->input->post("hal_quotation") ,
+            "up_cp" => $this->input->post("up_cp") ,
+            "durasi_pengiriman" => $this->input->post("durasi_pengiriman") ,
+            "franco" => $this->input->post("franco") ,
+            "durasi_pembayaran" => $this->input->post("durasi_pembayaran") ,
+            "alamat_perusahaan" => $this->input->post("alamat_perusahaan") ,
+            "dateline_quotation" => $this->input->post("dateline_quotation") ,
+            "bulan_quotation" => date("m"),
+            "tahun_quotation" => date("Y"),
+            "id_user_add" => $this->session->id_user,
+        );
+        $id_submit_quotation = insertRow("quotation",$data["quotation"]);
         /*---- Metode Pembayaran ----*/
+        
+        /*insert quotation item*/
+        $config = array(
+            "upload_path" => "./assets/dokumen/quotation/",
+            "allowed_types" => "jpg|png|gif|jpeg"
+        );
+        $this->load->library("upload",$config);
+        $check = $this->input->post("checks");
+        foreach($check as $checked){ /*keambil value setiap yang di check, dalam hal ini nomor urut*/
+            if($this->upload->do_upload("attachment".$checked)){
+                $fileData = $this->upload->data();
+            }
+            else{
+                $fileData["file_name"] = "-";
+            }
+            $item_amount = $this->input->post("item_amount".$checked);
+            $item_amount_split = explode(" ",$item_amount);
+            $margin_price = $this->input->post("margin_price".$checked);
+            $margin_price_split = explode("%",$margin_price);
+            $data["quotation_item"] = array( /*siapin data per nomor urut*/
+                "id_submit_quotation" => $id_submit_quotation,
+                "id_request_item" => $this->input->post("id_request_item".$checked) ,
+                "nama_produk_leiter" => $this->input->post("nama_produk_leiter".$checked) ,
+                "attachment" => $fileData["file_name"], // abc.jpg / -
+                "id_harga_vendor" => $this->input->post("id_harga_vendor".$checked) ,
+                "id_harga_shipping" => $this->input->post("id_harga_shipping".$checked) ,
+                "id_harga_courier" => $this->input->post("id_harga_courier".$checked) ,
+                "item_amount" => $item_amount_split[0] , //23 Meter => 23
+                "satuan_produk" => $item_amount_split[1] , // 23 Meter => Meter
+                "selling_price" => splitterMoney($this->input->post("selling_price".$checked),","), //123.456.789 => 123456789
+                "margin_price" => $margin_price_split[0] // 3,78% => 3,78
+            );
+            insertRow("quotation_item",$data["quotation_item"]);
+        }
+        /*insert metode pembayaran beserta logicnya*/
+        /*kalau DPnya 0%, status paid langsung tidak ada transaksi (status_bayar = 2) sehingga tidak keluar di tempat bikin invoice dan tidak keluar di list invoice yang sudah di bayar*/
 
+        /*kalau DP 100%, maka pelunasan ga ada transaksi*/
+        /*kalau pelunasan 100% sebelum pengiriman, berarti DP tidak ada transaksi dan OD menunggu status_bayar2 = 0*/
+        /*kalua DP 50%, OD menunggu status_bayar = 0. Apabila pelunasan setelah OD, maka bisa kirim OD, kalau pelunasan sebelum OD, maka OD akan menunggu status_bayar2 = 0*/
+        $is_ada_transaksi = 0;
+        if($this->input->post("persentase_pembayaran") == 0){ //persentase DP 0
+            $is_ada_transaksi = 1;
+        }
+        $is_ada_transaksi2 = 0;
+        if($this->input->post("persentase_pembayaran2") == 0){ //persentase pelunasan 0
+            $is_ada_transaksi2 = 1;
+        }
         $pembayaran = array(
-            "persentase_pembayaran" => $this->input->post("persenDp"),
-            "nominal_pembayaran" => $this->input->post("jumlahDpClean"),
-            "trigger_pembayaran" => $this->input->post("paymentMethod"),
-            "persentase_pembayaran2" =>$this->input->post("persenSisa"),
-            "nominal_pembayaran2" => $this->input->post("jumlahSisaClean"),
-            "trigger_pembayaran2" =>$this->input->post("paymentMethod2"),
-            "no_quotation" =>$this->input->post("no_quo"),
-            "versi_quotation" =>$this->input->post("versi_quo"),
+            "id_submit_quotation" => $id_submit_quotation,
+            "persentase_pembayaran" => $this->input->post("persentase_pembayaran"), // 50
+            "nominal_pembayaran" => splitterMoney($this->input->post("nominal_pembayaran"),","), //123.456.789 => 123456789
+            "trigger_pembayaran" => $this->input->post("trigger_pembayaran"), // 1 / 2
+            "status_bayar" => 1, //karena pasti belum pembayaran
+            "is_ada_transaksi" => $is_ada_transaksi,
+            "persentase_pembayaran2" =>$this->input->post("persentase_pembayaran2"), //50%
+            "nominal_pembayaran2" => splitterMoney($this->input->post("nominal_pembayaran2"),","), //123.456.789 => 123456789
+            "trigger_pembayaran2" =>$this->input->post("trigger_pembayaran2"), // 1/2
+            "status_bayar2" => 1, //karena pasti belum pembayaran
+            "is_ada_transaksi2" => $is_ada_transaksi2,
             "kurs" => $this->input->post("mata_uang_pembayaran"),
         );
-        insertRow("metode_pembayaran",$pembayaran);
-        /*update status buat quotation di price request supaya gabisa dibuat ulang yang udah pernah dibuat*/
+        insertRow("quotation_metode_pembayaran",$pembayaran);
         redirect("crm/quotation");
+    }
+    public function editquotation(){
+        $where["id_submit_quotation"] = array(
+            "id_submit_quotation" => $this->input->post("id_submit_quotation")
+        );
+        $data["quotation"] = array(
+            "total_quotation_price" => splitterMoney($this->input->post("total_quotation_price"),","),
+            "hal_quotation" => $this->input->post("hal_quotation") ,
+            "alamat_perusahaan" => $this->input->post("alamat_perusahaan") ,
+            "up_cp" => $this->input->post("up_cp") ,
+            "durasi_pengiriman" => $this->input->post("durasi_pengiriman") ,
+            "dateline_quotation" => $this->input->post("dateline_quotation") ,
+            "franco" => $this->input->post("franco") ,
+            "durasi_pembayaran" => $this->input->post("durasi_pembayaran") ,
+        );
+        updateRow("quotation",$data["quotation"],$where["id_submit_quotation"]);
+        /*---- Metode Pembayaran ----*/
+        
+        /*insert quotation item*/
+        $config = array(
+            "upload_path" => "./assets/dokumen/quotation/",
+            "allowed_types" => "jpg|png|gif|jpeg"
+        );
+        $this->load->library("upload",$config);
+        $check = $this->input->post("checks");
+        deleteRow("quotation_item",$where["id_submit_quotation"]); //hapus semua item yang id submit quotation ini
+        
+        foreach($check as $checked){ /*keambil value setiap yang di check, dalam hal ini nomor urut*/
+            //sudah ada
+            if($this->upload->do_upload("attachment".$checked)){
+                $fileData = $this->upload->data();
+                
+            }
+            else{
+                $fileData["file_name"] = "-";
+            }
+            $item_amount = $this->input->post("item_amount".$checked); //ga kesubmit
+            $item_amount_split = explode(" ",$item_amount);
+            $margin_price = $this->input->post("margin_price".$checked);
+            $margin_price_split = explode("%",$margin_price);
+            $data["quotation_item"] = array( /*siapin data per nomor urut*/
+                "id_submit_quotation" => $this->input->post("id_submit_quotation"),
+                "id_request_item" => $this->input->post("id_request_item".$checked) ,
+                "nama_produk_leiter" => $this->input->post("nama_produk_leiter".$checked) ,
+                "attachment" => $fileData["file_name"], // abc.jpg / -
+                "id_harga_vendor" => $this->input->post("id_harga_vendor".$checked) ,
+                "id_harga_shipping" => $this->input->post("id_harga_shipping".$checked) ,
+                "id_harga_courier" => $this->input->post("id_harga_courier".$checked) ,
+                "item_amount" => $item_amount_split[0] , //23 Meter => 23
+                "satuan_produk" => $item_amount_split[1] , // 23 Meter => Meter
+                "selling_price" => splitterMoney($this->input->post("selling_price".$checked),","), //123.456.789 => 123456789
+                "margin_price" => $margin_price_split[0] // 3,78% => 3,78
+            );
+            print_r($data["quotation_item"]);
+            echo $item_amount;
+            insertRow("quotation_item",$data["quotation_item"]);
+        }
+        /*insert metode pembayaran beserta logicnya*/
+        /*kalau DPnya 0%, status paid langsung tidak ada transaksi (status_bayar = 2) sehingga tidak keluar di tempat bikin invoice dan tidak keluar di list invoice yang sudah di bayar*/
+
+        /*kalau DP 100%, maka pelunasan ga ada transaksi*/
+        /*kalau pelunasan 100% sebelum pengiriman, berarti DP tidak ada transaksi dan OD menunggu status_bayar2 = 0*/
+        /*kalua DP 50%, OD menunggu status_bayar = 0. Apabila pelunasan setelah OD, maka bisa kirim OD, kalau pelunasan sebelum OD, maka OD akan menunggu status_bayar2 = 0*/
+        $is_ada_transaksi = 0;
+        if($this->input->post("persentase_pembayaran") == 0){ //persentase DP 0
+            $is_ada_transaksi = 1;
+        }
+        $is_ada_transaksi2 = 0;
+        if($this->input->post("persentase_pembayaran2") == 0){ //persentase pelunasan 0
+            $is_ada_transaksi2 = 1;
+        }
+        $pembayaran = array(
+            "persentase_pembayaran" => $this->input->post("persentase_pembayaran"), // 50
+            "nominal_pembayaran" => splitterMoney($this->input->post("nominal_pembayaran"),","), //123.456.789 => 123456789
+            "trigger_pembayaran" => $this->input->post("trigger_pembayaran"), // 1 / 2
+            "status_bayar" => 1, //karena pasti belum pembayaran
+            "is_ada_transaksi" => $is_ada_transaksi,
+            "persentase_pembayaran2" =>$this->input->post("persentase_pembayaran2"), //50%
+            "nominal_pembayaran2" => splitterMoney($this->input->post("nominal_pembayaran2"),","), //123.456.789 => 123456789
+            "trigger_pembayaran2" =>$this->input->post("trigger_pembayaran2"), // 1/2
+            "status_bayar2" => 1, //karena pasti belum pembayaran
+            "is_ada_transaksi2" => $is_ada_transaksi2,
+            "kurs" => $this->input->post("mata_uang_pembayaran"),
+        );
+        updateRow("quotation_metode_pembayaran",$pembayaran,$where["id_submit_quotation"]);
+        
+        /*update status buat quotation di price request supaya gabisa dibuat ulang yang udah pernah dibuat*/
+        redirect("crm/quotation/edit/".$this->input->post("id_submit_quotation"));
     }
     public function loss($id,$ver){
         $data = array(
@@ -388,57 +535,6 @@ class Quotation extends CI_Controller{
         $this->Mdquotation->update($data,$where);
         redirect("crm/quotation");
         
-    }
-    public function editquotation(){
-        $where = array(
-            "id_quo" => $this->input->post("id_quo")
-        );
-        $name = array("hal_quo","up_cp","durasi_pengiriman","franco","durasi_pembayaran","mata_uang_pembayaran","dateline_quo","alamat_perusahaan");
-        $data = array();
-        for($a=0; $a<count($name); $a++){
-            $data += [$name[$a] => $this->input->post($name[$a])];
-        }
-        $data += ["id_user_edit" => $this->session->id_user];
-        $this->Mdquotation->update($data,$where);
-        $where = array(
-            "id_quotation" => $this->input->post("id_quo"),
-            "id_versi" => $this->input->post("versi_quo")
-        );
-        $this->Mdmetode_pembayaran->delete($where);
-        $method = $this->input->post("paymentMethod");
-        //$methodDetail = explode("",$method);
-
-        $persen = $this->input->post("persen");
-        $persenDetail = array();
-        $b=0;
-        foreach($persen as $a){
-            $persenDetail[$b] = $a;
-            $b++;
-        }
-
-        $jumlah = $this->input->post("jumlah");
-        $jumlahDetail = array();
-        $b = 0;
-        foreach($jumlah as $a){
-            $jumlahDetail[$b] = $a;
-            $b++;
-        }
-
-        $kurs = $this->input->post("mata_uang_pembayaran");
-
-        for($a = 0; $a<count($jumlahDetail);$a++){
-            $data = array(
-                "urutan_pembayaran" => $a+1,
-                "persentase_pembayaran" => $persenDetail[$a],
-                "nominal_pembayaran" => splitterMoney($jumlahDetail[$a],","),
-                "trigger_pembayaran" => $method[$a], //ini gara2 valuenya kurang
-                "id_quotation" => $this->input->post("id_quo"),
-                "id_versi" => $this->input->post("versi_quo"),
-                "kurs" => $kurs
-            );
-            $this->Mdmetode_pembayaran->insert($data);
-        }
-        redirect("crm/quotation/edit/".$this->input->post("id_quo"));
     }
     /*ajax*/
 }
