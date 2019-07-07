@@ -7,6 +7,8 @@ class Quotation extends CI_Controller{
         $this->load->model("Mdquotation_item");
         $this->load->model("Mdmetode_pembayaran");
         $this->load->model("Mdprice_request_item");
+
+        $this->load->library('Pdf_oc');
     }
     /*default function*/
     private function req(){
@@ -544,5 +546,13 @@ class Quotation extends CI_Controller{
         redirect("crm/quotation");
     }
     /*ajax*/
+
+    function quoPdf($id_submit_quotation){
+        $where = array(
+
+        );
+        $this->load->view('crm/quotation/pdf_quotation');
+    }
+
 }
 ?>

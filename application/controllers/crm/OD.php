@@ -7,6 +7,7 @@ class Od extends CI_Controller{
         $this->load->model("Mdod_core");
         $this->load->model("Mdod_item");
 
+        $this->load->library('Pdf_noHead');
     }
     private function req(){
         $this->load->view("req/head");
@@ -179,6 +180,9 @@ class Od extends CI_Controller{
             $count++;
         }
         echo json_encode($data);
+    }
+    function odPdf(){
+        $this->load->view('crm/od/pdf_od');
     }
 }
 ?>

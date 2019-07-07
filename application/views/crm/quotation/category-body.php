@@ -60,6 +60,9 @@
                 <td class="actions">
                     
                     <a href = "<?php echo base_url();?>crm/quotation/edit/<?php echo $quotation[$a]["id_submit_quotation"];?>" class="btn btn-outline btn-sm col-lg-12 btn-primary">EDIT</a>
+
+					<a href="<?php echo base_url()?>crm/quotation/quoPdf/<?php echo $quotation[$a]["id_submit_quotation"];?>" target="_blank" class="btn btn-primary btn-outline btn-sm col-lg-12">CETAK</a>
+						
                     <a href = "<?php echo base_url();?>crm/quotation/revision/<?php echo $quotation[$a]["id_submit_quotation"];?>" class="btn btn-outline btn-sm col-lg-12 btn-primary" data-content="Do Revision Here" data-trigger="hover" data-toggle="popover">REVISION</a>
 
                     <a href = "<?php echo base_url();?>crm/quotation/accepted/<?php echo $quotation[$a]["id_submit_quotation"];?>" class="btn btn-outline btn-sm col-lg-12 btn-success" data-content="Proceed to Order Confirmation" data-trigger="hover" data-toggle="popover">WIN</a>

@@ -1,7 +1,7 @@
 <?php 
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 require_once dirname(__FILE__) . '/tcpdf/tcpdf.php';
-class Pdf extends TCPDF
+class Pdf_oc extends TCPDF
 {
     function __construct()
     {
@@ -11,8 +11,10 @@ class Pdf extends TCPDF
     //Page header
     public function Header() {
         // Logo
-        $image_file = K_PATH_IMAGES.'logo.png';
-        $this->Image($image_file, 10, 8, 45, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+        $image_file = base_url().'assets/images/logo_oc.png';
+        $this->Image($image_file, 10, 8, 50, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+        //$this->Image('@' . $image_file, 10, 8, 45, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+        
         // Set font
         //$this->SetFont('helvetica', 'B', 20);
         // Title
@@ -21,7 +23,7 @@ class Pdf extends TCPDF
 
     // Page footer
     public function Footer() {
-         // Position at 15 mm from bottom
+         
     $this->SetY(-20);
     $html="
     <p>

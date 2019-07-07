@@ -9,6 +9,8 @@ class Oc extends CI_Controller{
         $this->load->model("Mdod_core");
         $this->load->model("Mdorder_confirmation_item");
         $this->load->model("Mdmetode_pembayaran");
+
+        $this->load->library('Pdf_oc');
     }
     /*defaul function*/
     private function req(){
@@ -403,6 +405,41 @@ class Oc extends CI_Controller{
         );
         updateRow("order_confirmation",$data,$where);
         redirect("crm/oc");
+    }
+    public function getOcItem(){
+        $where = array(
+            "item_oc" => array(
+                "id_oc" => $this->input->post("id_oc")
+            ),
+            "od" => array(
+                "id_oc" => $this->input->post("id_oc")
+            )
+        );
+        $result["item_oc"] = $this->Mdquotation_item->select($where["item_oc"]);
+        $counter = 0 ;
+        $result["od"] = $this->Mdod_core->select($where["od"]); /*ambil semua od yang ocnya terkair */
+        $result["jumlah"] = array();
+        foreach($result["od"]->result() as $idOd){
+            $result["jumlah"][$counter] = get1Value("od_item","item_qty",array("id_od" => $idOd->id_od));
+            $counter++;
+        }
+        $data = array();
+        $counter = 0;
+        foreach($result["item_oc"]->result() as $a){
+            $data[$counter] = array(
+                "id_quotation_item" => $a->id_quotation_item,
+                "nama_produk" => $a->nama_produk,
+                "jumlah_pesan" => $a->final_amount,
+                "terkirim" => array_sum($result["jumlah"]),
+                "uom" => $a->satuan_produk
+            );
+            $counter ++;
+        }
+        echo json_encode($data);
+    }
+
+    function ocPdf(){
+        $this->load->view('crm/oc/pdf_oc');
     }
 }
 ?>
