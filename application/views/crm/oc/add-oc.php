@@ -21,14 +21,17 @@
                             <div class="tab-pane active" id="primaryData" role="tabpanel">
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Quotation</h5>
-                                    <select onchange = "quotationDetail()" id = "no_quotation" name = "no_quotation" class = "form-control" data-plugin ="select2">
+                                    <select onchange = "quotationDetail()" id = "id_submit_quotation" name = "id_submit_quotation" class = "form-control" data-plugin ="select2">
                                         <option value = "0" disabled selected>Choose Quotation</option>
                                         <?php for($a = 0; $a<count($oc); $a++): ?>
-                                        <option value = "<?php echo $oc[$a]["no_quotation"];?> , <?php echo $oc[$a]["versi_quotation"]; ?>"><?php echo $oc[$a]["no_quotation"];?> - </option>
+                                        <option value = "<?php echo $oc[$a]["id_submit_quotation"];?>"><?php echo $oc[$a]["no_quotation"];?> - <?php echo $oc[$a]["nama_perusahaan"];?> </option>
                                         <?php endfor;?>
                                     </select>
                                 </div>
-                                
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">No OC</h5>
+                                    <input value = "LI<?php echo date("Y");?><?php echo sprintf("%04d",$maxId);?>" type ="text" class = "form-control" readonly> <!-- keisi sendiri dari db max(), bentuknya berformat -->
+                                </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
                                     <input type ="text" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
@@ -37,6 +40,10 @@
                                     <h5 style = "color:darkgrey; opacity:0.8">Nama Customer</h5>
                                     <input name = "" id = "namaCust" type ="text" class = "form-control namaCust" readonly>
                                     <input name = "id_cp" id ="idCust" value = "" type ="hidden" class = "form-control"  readonly>
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Total Quotation Price</h5>
+                                    <input name = "" id = "total_quotation_price" type ="text" class = "form-control" readonly>
                                 </div>
                             </div>
                             <!-- fungsi -->
@@ -59,33 +66,41 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="payment" role="tabpanel">
+                                <div class = "form-group">
+                                    <h5 style = "opacity:0.5">Total Quotation Amount</h5>
+                                    <input type = "text" id = "totalQuotation" class = "form-control" name = "total_oc_price" readonly onclick = "countTotal()">
+                                </div>
                                 <div class = "row">
-                                <!-- nanti ngeload sesuai kebutuhan klo ada dp atau kalau ada 2x pembayaran -->
-                                    <div class = "form-group col-lg-4 containerDp"> <!-- textarea klo DP % -->
-                                        <h5 style = "color:darkgrey; opacity:0.8">DP Percentage</h5>
-                                        <input name = "persen[]" readonly id = "persenDp" value = "%" type ="text" class = "form-control">
+                                    <div class = "form-group col-lg-4 containerDp" style = ""> <!-- textarea klo DP % -->
+                                        <h5 style = "opacity:0.5">DP (%)</h5>
+                                        <input name = "persentase_pembayaran" id = "persenDp" oninput = "paymentWithDP()" type ="text" class = "form-control">
                                     </div>
-                                    <div class = "form-group col-lg-4 containerDp"> <!-- Nominal DP -->
-                                        <h5 style = "color:darkgrey; opacity:0.8">Payment Trigger</h5>
-                                        <input name = "jumlah[]" readonly id = "triggerDp" type ="text" class = "form-control">
+                                    <div class = "form-group col-lg-4">
+                                        <h5 style = "opacity:0.5">Payment Method</h5>
+                                        <select class = "form-control" id = "paymentMethod" name = "trigger_pembayaran">
+                                            <option value = "1">BEFORE DELIVERY</option>
+                                        </select>
                                     </div>
-                                    <div class = "form-group col-lg-4 containerDp"> <!-- Nominal DP -->
-                                        <h5 style = "color:darkgrey; opacity:0.8">DP Amount</h5>
-                                        <input name = "jumlah[]" readonly id = "jumlahDp" type ="text" class = "form-control">
+                                    <div class = "form-group col-lg-4 containerDp" style = ""> <!-- Nominal DP -->
+                                        <h5 style = "opacity:0.5">Jumlah DP</h5>
+                                        <input name = "nominal_pembayaran" id = "jumlahDp" type ="text" class = "form-control">
                                     </div>
                                 </div>
                                 <div class = "row">
-                                    <div class = "form-group col-lg-4 containerSisa"> <!-- textarea klo DP% -->
-                                        <h5 style = "color:darkgrey; opacity:0.8">Rest Percentage</h5>
-                                        <input name = "persen[]" readonly id = "persenSisa" value = "%" type ="text" class = "form-control">
+                                    <div class = "form-group col-lg-4 containerSisa" style = ""> <!-- textarea klo DP% -->
+                                        <h5 style = "opacity:0.5">Pelunasan (%)</h5>
+                                        <input name = "persentase_pembayaran2" id = "persenSisa" type ="text" class = "form-control">
                                     </div>
-                                    <div class = "form-group col-lg-4 containerSisa"> <!-- Nominal DP -->
-                                        <h5 style = "color:darkgrey; opacity:0.8">Payment Trigger</h5>
-                                        <input name = "jumlah[]" readonly id = "triggerSisa" type ="text" class = "form-control">
-                                    </div>
-                                    <div class = "form-group col-lg-4 containerSisa"> <!-- Nominal DP -->
-                                        <h5 style = "color:darkgrey; opacity:0.8">Rest Amount</h5>
-                                        <input name = "jumlah[]" readonly id = "jumlahSisa" type ="text" class = "form-control">
+                                    <div class = "form-group col-lg-4">
+                                        <h5 style = "opacity:0.5">Payment Method</h5>
+                                        <select class = "form-control" id = "paymentMethod" name = "trigger_pembayaran2">
+                                            <option value = "1">BEFORE DELIVERY</option>
+                                            <option value = "2" selected>AFTER DELIVERY</option>
+                                        </select>
+                                    </div>  
+                                    <div class = "form-group col-lg-4 containerSisa" style = ""> <!-- Nominal DP -->
+                                        <h5 style = "opacity:0.5">Jumlah Pelunasan</h5>
+                                        <input name = "nominal_pembayaran2" id = "jumlahSisa" type ="text" class = "form-control">
                                     </div>
                                 </div>
                                 <!-- end ngeloadnya pembayaran -->
@@ -106,8 +121,12 @@
                                     <input value = "<?php echo $maxId;?>" type ="hidden" name = "id_oc" class = "form-control" readonly> <!-- buat isi dalam bentuk angka -->
                                 </div>
                                 <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">No PO</h5>
-                                    <input name = "no_po" type ="text" class = "form-control">
+                                    <h5 style = "color:darkgrey; opacity:0.8">No PO Customer</h5>
+                                    <input name = "no_po_customer" type ="text" class = "form-control">
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Tanggal PO Customer</h5>
+                                    <input name = "tgl_po_customer" type ="date" class = "form-control">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
@@ -128,7 +147,6 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="tambahan" role="tabpanel">
-                                
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Durasi Pengiriman</h5>
                                     <input name = "durasi_pengiriman" id = "durasi_pengiriman" type ="text" class = "form-control"> 
