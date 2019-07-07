@@ -8,6 +8,8 @@ class Oc extends CI_Controller{
         $this->load->model("Mdod_item");
         $this->load->model("Mdod_core");
         $this->load->model("Mdmetode_pembayaran");
+
+        $this->load->library('Pdf_oc');
     }
     /*defaul function*/
     private function req(){
@@ -219,6 +221,10 @@ class Oc extends CI_Controller{
             $counter ++;
         }
         echo json_encode($data);
+    }
+
+    function ocPdf(){
+        $this->load->view('crm/oc/pdf_oc');
     }
 }
 ?>

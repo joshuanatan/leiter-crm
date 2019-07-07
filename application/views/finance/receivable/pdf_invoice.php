@@ -1,0 +1,194 @@
+<?php
+    $pdf = new Pdf('P', 'mm', 'A4', true, 'UTF-8', false);
+    $pdf->SetTitle('INVOICE');
+    $pdf->SetTopMargin(30);
+    $pdf->setFooterMargin(20);
+    $pdf->SetAutoPageBreak(true,22);
+    $pdf->SetAuthor('Author');
+    $pdf->SetDisplayMode('real', 'default');
+    $pdf->setPrintHeader(true);
+      $pdf->setPrintFooter(true);
+    $pdf->AddPage('P','A4');
+
+    $fontname = TCPDF_FONTS::addTTFfont('../../../libraries/tcpdf/fonts/tahoma.ttf', 'TrueTypeUnicode', '', 96);
+    $pdf->SetFont('Tahoma','', 11); //untuk font, liat dokumentasui
+
+    $content='
+    <html>
+        <head>
+        
+        </head>
+        <body>
+            <table>
+            <tr>
+                <td colspan="2"></td>
+                <td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alamat Penagihan:</td>
+            </tr>
+            <tr>
+                <td style="width:100px">No. Invoice</td>
+                <td style="width:200px"> : 1231231212312</td>
+                <td colspan="2">PT. DASD ASF SDF</td>
+            </tr>
+            <tr>
+                <td>Surat Jalan</td>
+                <td> : 1231231212312</td>
+                <td colspan="2">Jl. asf sf</td>
+            </tr>
+            <tr>
+                <td style="width:100px">Tanggal</td>
+                <td> : 1231231212312</td>
+                <td colspan="2">Sidoarjo -Jatim</td>
+            </tr>
+            <tr>
+                <td style="width:100px">Nomor Pembelian</td>
+                <td> : 1231231212312</td>
+                <td colspan="2">Telp. 3242342355 /23423</td>
+            </tr>
+            <tr>
+                <td style="width:100px">Penyerahan</td>
+                <td> : 1231231212312</td>
+                <td colspan="2">att: Bpk. afsdffs</td>
+            </tr>
+            </table>
+<br><br>
+            <table>
+            <tr>
+                <th colspan="4" style="text-align:center; font-size:24pt;">INVOICE</th>
+            </tr>
+            </table>
+            <br><br>
+            <table  border="1" style="border-collapse:collapse">
+            <tr>
+                        <th style="text-align:center; font-weight:bold; width:26px; background-color:rgb(198, 224, 180)">No.</th>
+                        <th style="text-align:center; font-weight:bold; width:270px; background-color:rgb(198, 224, 180)">Jenis Barang</th>
+                        <th style="text-align:center; font-weight:bold; width:70px; background-color:rgb(198, 224, 180)">Jumlah</th>
+                        <th style="text-align:center; font-weight:bold; width:80px; background-color:rgb(198, 224, 180)">Harga (IDR)</th>
+                        <th style="text-align:center; font-weight:bold; width:83px; background-color:rgb(198, 224, 180)">Jumlah (IDR)</th>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td colspan="2">Total Sebelum PPN</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td colspan="2">DP 50%</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td colspan="2">PPN 10%</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td colspan="2" style="background-color: rgb(198, 224, 180); font-weight:bold">TOTAL</td>
+                        <td  style="background-color: rgb(198, 224, 180); font-weight:bold">ddd</td>
+                    </tr>
+            </table>
+            <br>
+            <br><br>
+            <table>
+                <tr>
+                    <td style="width: 150px">Pembayaran</td>
+                    <td>: 14 hari setelah sadhfsdjhg</td>
+                </tr>
+                <tr>
+                    <td>Jatuh Tempo</td>
+                    <td>: 23.12.2010</td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td>: IDR 234.234.234</td>
+                </tr>
+                <tr>
+                    <td>Rekening Pembayaran</td>
+                    <td style="width:300px">: PT. LEITER Indonesia, Bank Central Asia (BCA)<br>&nbsp;
+                    Rukan Grand Aries Niaga, Blok E1. No.2A-2B<br>&nbsp;
+                    Jl. Taman Aries Meruya Utara, Jakarta Barat 11620<br>&nbsp;
+                    No. Rekening: <b>4890-335-581</b>
+                    </td>
+                </tr>
+            </table>
+            <br><br>
+            <table style="width:500px;text-align:center">
+                <tr>
+                <td style="width:50px"></td>
+                    <td colspan="4">************************** PACKING LIST **************************</td>
+                </tr>
+                <tr>
+                <td></td>
+                    <td style="text-align:left">Box-No</td>
+                    <td>Berat Bersih</td>
+                    <td>Berat Kotor</td>
+                    <td>Dimensi (L/W/H)</td>
+                </tr>
+                <tr>
+                <td></td>
+                    <td style="text-align:left">01</td>
+                    <td>17.231 kg</td>
+                    <td>234 kg</td>
+                    <td>35 * 35 * 34</td>
+                </tr>
+                <tr>
+                <td></td>
+                    <td colspan="4">*****************************************************************</td>
+                </tr>
+                <tr>
+                <td></td>
+                    <td  style="text-align:left" colspan="4">Total</td>
+                </tr>
+                <tr>
+                <td></td>
+                    <td style="text-align:left">01</td>
+                    <td>17.231 kg</td>
+                    <td>234 kg</td>
+                    <td>35 * 35 * 34</td>
+                </tr>
+            </table>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <table>
+                <tr>
+                    <td></td>
+                    <td style="text-align:center">
+                        Jakarta, 13 Jun 2019
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="text-align:center">
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        asdasdassda
+                    </td>
+                </tr>`
+            </table>
+        </body>
+    </html>
+    ';
+
+    //$obj_pdf->SetFont(Courier','', 8); //untuk font, liat dokumentasui
+    $pdf->writeHTML($content); //yang keluarin html nya. Setfont nya harus diatas kontennya
+    //$pdf->Write(5, 'Contoh Laporan PDF dengan CodeIgniter + tcpdf');
+    $pdf->Output('contoh1.pdf', 'I');
+?>

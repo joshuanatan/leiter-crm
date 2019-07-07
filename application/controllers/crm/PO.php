@@ -11,6 +11,8 @@ class Po extends CI_Controller{
         $this->load->model("MdPo_core");
         $this->load->model("Mdorder_confirmation");
         $this->load->model("Mdquotation_item");
+
+        $this->load->library('Pdf_oc');
     }
     private function req(){
         $this->load->view("req/head");
@@ -428,6 +430,9 @@ class Po extends CI_Controller{
             }
         }
         redirect("crm/po");
+    }
+    function poPdf(){
+        $this->load->view('crm/po/pdf_po');
     }
 }
 ?>

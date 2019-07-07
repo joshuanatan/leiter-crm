@@ -7,6 +7,8 @@ class Receivable extends CI_Controller{
         $this->load->model("Mdmetode_pembayaran");
         $this->load->model("Mdinvoice_core");
         $this->load->model("Mdod_core");
+
+        $this->load->library('Pdf');
     }
     private function req(){
         $this->load->view("req/head");
@@ -252,6 +254,9 @@ class Receivable extends CI_Controller{
             insertRow("tax",$data);
         }
         redirect("finance/receivable");
+    }
+    function invoicePdf(){
+        $this->load->view('finance/receivable/pdf_invoice');
     }
 }
 ?>
