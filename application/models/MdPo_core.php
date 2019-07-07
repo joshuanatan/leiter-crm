@@ -1,5 +1,5 @@
 <?php
-class MdPo_core extends CI_Model{
+class Mdpo_core extends CI_Model{
     public function select($where){
         return $this->db->get_where("po_core",$where);
     }
@@ -21,6 +21,11 @@ class MdPo_core extends CI_Model{
             }
             else return 1;
         }
+    }
+    /**************************************************************** */
+    public function getListPo($where){
+        $this->db->order_by("date_po_core_add","DESC");
+        return $this->db->get_where("po_core",$where);
     }
 }
 ?>

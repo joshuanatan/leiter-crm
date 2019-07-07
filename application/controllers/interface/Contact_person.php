@@ -28,11 +28,8 @@ class Contact_person extends CI_Controller{
         $field = array(
             "id_cp","nama_cp","jk_cp"
         );
-        $print = array(
-            "id_cp","nama_cp","jk_cp"
-        );
         $result = selectRow("contact_person",$where);
-        echo json_encode(foreachMultipleResult($result,$field,$print));
+        echo json_encode(foreachMultipleResult($result,$field,$field));
     }
     /*
     fungsi: mendapatkan detail informasi terkait contact person

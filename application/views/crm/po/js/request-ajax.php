@@ -1,4 +1,108 @@
 <script>
+function getNoPo(){
+    /*cari id customer dlu*/    
+    var id_submit_oc = $("#po_info").val(); //dapet id_submit_oc - id_perusahaan - maxId
+    var split = id_submit_oc.split("-");
+    $.ajax({
+        url:"<?php echo base_url();?>interface/po/generateNoPO",
+        data:{id_perusahaan:split[1],max_id:split[2]},
+        type:"POST",
+        dataType:"JSON",
+        success:function(respond){
+            $("#no_po").val(respond);
+        }
+    });
+}
+</script>
+<script>
+function getOcItem(){
+    var id_submit_oc = $("#po_info").val(); //dapet id_submit_oc - id_perusahaan - maxId
+    var split = id_submit_oc.split("-");
+    $.ajax({
+        url:"<?php echo base_url();?>interface/oc/getOcItem",
+        type:"POST",
+        dataType:"JSON",
+        data:{id_submit_oc:id_submit_oc},
+        success:function(respond){ //item dari oc
+            for(var a = 0; a<respond.length; a++){
+                $("#nama_produk_leiter"+a).val(respond[a]["nama_oc_item"]);
+                $("#jumlah_produk"+a).val(respond[a]["final_amount"] + " " + respond[a]["satuan_produk"]);
+                $("#harga_jual_satuan_produk"+a).val(addCommas(respond[a]["final_selling_price"])+"/"+respond[a]["satuan_produk"]);
+            }
+        }
+    })
+}
+</script>
+<script>
+function getDetailPerusahaanCustomer(){
+    var id_submit_oc = $("#po_info").val(); //dapet id_submit_oc - id_perusahaan - maxId
+    var split = id_submit_oc.split("-");
+    var id_perusahaan = split[1];
+    $.ajax({
+        url:"<?php echo base_url();?>interface/perusahaan/getDetailPerusahaan/"+id_perusahaan,
+        dataType:"POST",
+        success:function(respond){
+            $("#nama_customer").val(respond["nama_perusahaan"]);
+        }
+
+    });
+}
+</script>
+<script>
+function getDetailSupplier(){
+    var id_supplier = $("#id_supplier").val(); //dapet id_submit_oc - id_perusahaan - maxId
+    console.log(id_supplier);
+    $.ajax({
+        url:"<?php echo base_url();?>interface/perusahaan/getDetailPerusahaan/"+id_supplier,
+        dataType:"JSON",
+        success:function(respond){
+            $("#phone_supplier").val(respond["notelp_perusahaan"]);
+            $("#fax_supplier").val(respond["nofax_perusahaan"]);
+            $("#alamat_supplier").val(respond["alamat_perusahaan"]);
+        }
+
+    });
+    $.ajax({
+        url:"<?php echo base_url();?>interface/contact_person/getContactPerson/"+id_supplier,
+        dataType:"JSON",
+        success:function(respond){
+            var html = "";
+            for(var a =0; a<respond.length; a++){
+                html += "<option value = '"+respond[a]["id_cp"]+"'>"+respond[a]["jk_cp"]+". "+respond[a]["nama_cp"]+"</option>";
+            }
+            $("#id_pic_supplier").html(html);
+        }
+    })
+}
+</script>
+<script>
+function getDetailShipper(){
+    var id_shipper = $("#id_shipper").val(); //dapet id_submit_oc - id_perusahaan - maxId
+    console.log(id_shipper);
+    $.ajax({
+        url:"<?php echo base_url();?>interface/perusahaan/getDetailPerusahaan/"+id_shipper,
+        dataType:"JSON",
+        success:function(respond){
+            $("#phone_shipper").val(respond["notelp_perusahaan"]);
+            $("#fax_shipper").val(respond["nofax_perusahaan"]);
+            $("#alamat_shipper").val(respond["alamat_perusahaan"]);
+        }
+
+    });
+    $.ajax({
+        url:"<?php echo base_url();?>interface/contact_person/getContactPerson/"+id_shipper,
+        dataType:"JSON",
+        success:function(respond){
+            var html = "";
+            for(var a =0; a<respond.length; a++){
+                html += "<option value = '"+respond[a]["id_cp"]+"'>"+respond[a]["jk_cp"]+". "+respond[a]["nama_cp"]+"</option>";
+            }
+            $("#id_pic_shipper").html(html);
+        }
+    })
+}
+</script>
+<script>
 function getVendorDetailPrice(counter){
     //alert(counter);
     $("#shipppingprice"+counter).val("");

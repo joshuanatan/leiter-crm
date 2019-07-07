@@ -13,8 +13,8 @@ function quotationDetail(){
                 $("#idCust").val(respond["id_cp"]);
                 $("#alamatCust").val(respond["alamat_perusahaan"]);
                 $("#up_cp").val(respond["up_cp"]);
-                $("#durasi_pengiriman").val(respond["durasi_pengiriman"]+" minggu");
-                $("#durasi_pembayaran").val(respond["durasi_pembayaran"]+" minggu");
+                $("#durasi_pengiriman").val(respond["durasi_pengiriman"]);
+                $("#durasi_pembayaran").val(respond["durasi_pembayaran"]);
                 $("#franco").val(respond["franco"]);
                 $("#total_quotation_price").val(addCommas(respond["total_quotation_price"]));
             }
@@ -49,7 +49,7 @@ function quotationDetail(){
 
                     $("#selling"+a).html('<input type = "text" class = "form-control" value = "'+respond[a]["selling_price"]+'" readonly>');
 
-                    $("#final"+a).html('<input type = "text" id = "selling_price'+a+'" name ="final_selling_price[]" class = "form-control" value = "'+respond[a]["selling_price"]+'">');
+                    $("#final"+a).html('<input type = "text" id = "selling_price'+a+'" oninput = "commas(\'selling_price'+a+'\')" name ="final_selling_price[]" class = "form-control" value = "'+respond[a]["selling_price"]+'">');
                     
                 }
             }

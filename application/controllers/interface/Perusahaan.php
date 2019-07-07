@@ -20,4 +20,15 @@ class Perusahaan extends CI_Controller{
         $alamat_perusahaan = get1Value("perusahaan","alamat_perusahaan",$where);
         echo json_encode($alamat_perusahaan);
     }
+    public function getDetailPerusahaan($id_perusahaan){
+        $where = array(
+            "id_perusahaan" => $id_perusahaan
+        );
+        $field = array(
+            "nama_perusahaan","nofax_perusahaan","alamat_perusahaan","notelp_perusahaan","peran_perusahaan","jenis_perusahaan"
+        );
+        $result = selectRow("perusahaan",$where);
+        $data = foreachResult($result,$field,$field);
+        echo json_encode($data);
+    }
 }

@@ -173,7 +173,7 @@ class Oc extends CI_Controller{
     /*function*/
     public function editoc(){
         /*insert ke oc tanpa total_oc_price*/
-        $where = array(
+        $where["main"] = array(
             "id_submit_oc" => $this->input->post("id_submit_oc")
         );
         $data = array(
@@ -186,7 +186,7 @@ class Oc extends CI_Controller{
             "durasi_pembayaran" => $this->input->post("durasi_pembayaran"),
             "total_oc_price" => splitterMoney($this->input->post("total_oc_price"),","),
         );
-        updateRow("order_confirmation",$data,$where);
+        updateRow("order_confirmation",$data,$where["main"]);
         /*insert ke item oc*/
 
         $checks = $this->input->post("checkbox");
@@ -255,7 +255,7 @@ class Oc extends CI_Controller{
         if($this->input->post("persentase_pembayaran2") == 0){ //persentase pelunasan 0
             $is_ada_transaksi2 = 1;
         }
-        $data = array(
+        $data["pembayaran"] = array(
             "persentase_pembayaran" => $this->input->post("persentase_pembayaran"),
             "nominal_pembayaran" => splitterMoney($this->input->post("nominal_pembayaran"),","),
             "trigger_pembayaran" => $this->input->post("trigger_pembayaran"),
@@ -268,7 +268,7 @@ class Oc extends CI_Controller{
             "is_ada_transaksi2" => $is_ada_transaksi2,
             "kurs" => $this->input->post("mata_uang_pembayaran")
         );
-        updateRow("order_confirmation_metode_pembayaran",$data,$where);
+        updateRow("order_confirmation_metode_pembayaran",$data["pembayaran"],$where["main"]);
         /*end metode pembayaran*/
         redirect("crm/oc");
     }   
@@ -378,7 +378,7 @@ class Oc extends CI_Controller{
             "id_submit_quotation" => $this->input->post("id_submit_quotation"),
         );
         $data = array(
-            "status_quo" => 3 /*yang udah create oc, ditandain*/
+            "status_quotation" => 3 /*yang udah create oc, ditandain*/
         );
 
         updateRow("quotation",$data,$where);

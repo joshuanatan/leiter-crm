@@ -13,23 +13,25 @@
                         
 
                     </ul>
-                    <form action = "<?php echo base_url();?>crm/po/insertPo" method = "post">    
+                    <form action = "<?php echo base_url();?>crm/po/editPo" method = "post">    
                         <div class="tab-content">
                             <div class="tab-pane active" id="primaryData" role="tabpanel">
                                <div class = "form-group">
                                     <h5 style = "opacity:0.5">No PO Customer</h5>
-                                    <select class = "form-control" name = "id_submit_oc" onchange = "getNoPo();getOcItem();getDetailPerusahaanCustomer()" id = "po_info" data-plugin = "select2">
-                                        <option>No PO Customer</option>
-                                        <?php for($a = 0; $a<count($list_oc); $a++):?>
-                                        <option value = "<?php echo $list_oc[$a]["id_submit_oc"];?>-<?php echo $list_oc[$a]["id_perusahaan"];?>-<?php echo $maxId;?>"><?php echo $list_oc[$a]["no_po_customer"];?> - <?php echo $list_oc[$a]["nama_perusahaan"];?></option>
-                                        <?php endfor;?>
-                                    </select>
-                                    <input type = "hidden" name = "id_po" value = "<?php echo $maxId;?>">
-
+                                    <input type = "text" class = "form-control" readonly>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">No PO</h5>
-                                    <input type = "text" class = "form-control" id = "no_po" name = "no_po" readonly>
+                                    <input type = "text" class = "form-control" id = "no_po" readonly>
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
+                                    <input type ="text" id = "nama_perusahaan" class = "form-control perusahaanCust" readonly>
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Nama Customer</h5>
+                                    <input name = "" id = "namaCust" type ="text" class = "form-control namaCust" readonly>
+                                    <input name = "id_cp" id ="idCust" value = "" type ="hidden" class = "form-control"  readonly>
                                 </div>
                             </div>
                             <!-- fungsi -->
@@ -37,34 +39,24 @@
                                 <div class = "row">
                                     <div class = "form-group col-lg-4">
                                         <h5 style = "opacity:0.5">Supplier</h5>
-                                        <select class = "form-control" name = "id_supplier" id = "id_supplier" data-plugin = "select2" onchange = "getDetailSupplier()">
-                                            <?php for($sup = 0; $sup<count($supplier);$sup++):?>
-                                            <option value = "<?php echo $supplier[$sup]["id_perusahaan"];?>"><?php echo $supplier[$sup]["nama_perusahaan"];?></option>
-                                            <?php endfor;?>
-                                        </select>
+                                        <input type = "text" readonly class = "form-control">
                                     </div>
                                     <div class = "form-group col-lg-4">
                                         <h5 style = "opacity:0.5">PIC Supplier</h5>
-                                        <select class = "form-control" name = "id_cp_supplier" id = "id_pic_supplier">
-                                        
-                                        </select>
+                                        <input type = "text" readonly class = "form-control">
                                     </div>
                                     <div class = "form-group col-lg-2">
                                         <h5 style = "opacity:0.5">Phone</h5>
-                                        <input type = "text" id = "phone_supplier" readonly class = "form-control">
+                                        <input type = "text" readonly class = "form-control">
                                     </div>
                                     <div class = "form-group col-lg-2">
                                         <h5 style = "opacity:0.5">Fax</h5>
-                                        <input type = "text" id = "fax_supplier" readonly class = "form-control">
+                                        <input type = "text" readonly class = "form-control">
                                     </div>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">Address</h5>
-                                    <textarea readonly class = "form-control" id = "alamat_supplier"></textarea>
-                                </div>
-                                <div class = "form-group">
-                                    <h5 style = "opacity:0.5">Currency</h5>
-                                    <input type = "text" id = "mata_uang_pembayaran" name = "mata_uang_pembayaran" class = "form-control">
+                                    <textarea readonly class = "form-control"></textarea>
                                 </div>
                                 <div class = "form-group">
                                     <table class = "table table-bordered table-stripped" style = "Width:100%" data-plugin = "dataTable">
@@ -81,15 +73,15 @@
                                             <tr>
                                                 <td>
                                                     <div class = "checkbox-custom checkbox-primary">
-                                                        <input type = "checkbox" name = "checks[]" value = "<?php echo $a;?>">
+                                                        <input type = "checkbox">
                                                         <label></label>
                                                     </div>
                                                 </td>
-                                                <td><textarea readonly rows = "4" id = "nama_produk_leiter<?php echo $a;?>" class = "form-control"></textarea></td>
-                                                <td><textarea rows = "4" id = "nama_produk_vendor<?php echo $a;?>" class = "form-control" name = "nama_produk_vendor<?php echo $a;?>" ></textarea></td>
-                                                <td><input type = "text" id = "jumlah_produk<?php echo $a;?>" class = "form-control" name = "jumlah_produk<?php echo $a;?>"></td>
+                                                <td><textarea readonly rows = "4" id = "nama_produk_leiter<?php echo $a;?>" class = "form-control" name = ""></textarea></td>
+                                                <td><textarea rows = "4" id = "nama_produk_vendor<?php echo $a;?>" class = "form-control" name = "" ></textarea></td>
+                                                <td><input type = "text" id = "jumlah_produk<?php echo $a;?>" class = "form-control" name = ""></td>
                                                 <td><input type = "text" readonly id = "harga_jual_satuan_produk<?php echo $a;?>" class = "form-control" name = ""></td>
-                                                <td><input type = "text" oninput = "commas('harga_satuan_produk<?php echo $a;?>')" id = "harga_satuan_produk<?php echo $a;?>" class = "form-control" name = "harga_satuan_produk<?php echo $a;?>"></td>
+                                                <td><input type = "text" oninput = "commas('harga_satuan_produk<?php echo $a;?>')" id = "harga_satuan_produk<?php echo $a;?>" class = "form-control" name = ""></td>
                                             </tr>
                                             <?php endfor;?>
                                         </tbody>
@@ -101,7 +93,7 @@
                                 <div class = "row">
                                     <div class = "form-group col-lg-4">
                                         <h5 style = "opacity:0.5">Shipper</h5>
-                                        <select class = "form-control" name = "id_shipper" data-plugin = "select2" onchange = "getDetailShipper()" id = "id_shipper">
+                                        <select class = "form-control" name = "id_shipper" data-plugin = "select2">
                                             <?php for($sup = 0; $sup<count($shipper);$sup++):?>
                                             <option value = "<?php echo $shipper[$sup]["id_perusahaan"];?>"><?php echo $shipper[$sup]["nama_perusahaan"];?></option>
                                             <?php endfor;?>
@@ -109,24 +101,24 @@
                                     </div>
                                     <div class = "form-group col-lg-4">
                                         <h5 style = "opacity:0.5">PIC Supplier</h5>
-                                        <select class = "form-control" name = "id_cp_shipper" id = "id_pic_shipper"></select>
+                                        <input type = "text" readonly class = "form-control">
                                     </div>
                                     <div class = "form-group col-lg-2">
                                         <h5 style = "opacity:0.5">Phone</h5>
-                                        <input type = "text" id = "phone_shipper" readonly class = "form-control">
+                                        <input type = "text" readonly class = "form-control">
                                     </div>
                                     <div class = "form-group col-lg-2">
                                         <h5 style = "opacity:0.5">Fax</h5>
-                                        <input type = "text" id = "fax_shipper" readonly class = "form-control">
+                                        <input type = "text" readonly class = "form-control">
                                     </div>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">Address</h5>
-                                    <textarea readonly id = "alamat_shipper" class = "form-control"></textarea>
+                                    <textarea readonly class = "form-control"></textarea>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">Shipping Method</h5>
-                                    <select class = "form-control" name = "shipping_method" data-plugin = "select2">
+                                    <select class = "form-control" name = "metode_pengiriman" data-plugin = "select2">
                                         <option value = "SEA">SEA</option>
                                         <option value = "AIR">AIR</option>
                                         <option value = "LAND">LAND</option>
@@ -134,23 +126,19 @@
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">Shipping Term</h5>
-                                    <input type = "text" class = "form-control" name = "shipping_term">
+                                    <input type = "text" class = "form-control">
                                 </div>
                                 <div class = "row">
                                     <div class = "form-group col-lg-4">
                                         <h5 style = "opacity:0.5">Requirement Date</h5>
-                                        <input type = "date" class = "form-control" name = "requirement_date">
+                                        <input type = "date" class = "form-control">
                                     </div>
                                     <div class = "form-group col-lg-4">
                                         <h5 style = "opacity:0.5">Destination</h5>
-                                        <input type = "text" class = "form-control" name = "destination">
+                                        <input type = "text" class = "form-control">
                                     </div>
                                 </div>
                                 <button class = "btn btn-primary btn-outline btn-sm">SUBMIT</button>
-                            </div>
-                            <br/>
-                            <div class = "form-group">
-                                <a href = "<?php echo base_url();?>crm/po" class = "btn btn-outline btn-sm btn-primary">BACK</a>
                             </div>
                         </div>
                     </form>

@@ -42,7 +42,7 @@
 
                     <a href = "<?php echo base_url();?>crm/oc/edit/<?php echo $oc[$a]["id_submit_oc"];?>" class = "btn btn-outline btn-sm btn-primary col-lg-12">EDIT</a>
 
-                    <a href = "<?php echo base_url();?>crm/oc/delete/<?php echo $oc[$a]["id_oc"];?>/<?php echo $oc[$a]["bulan_oc"];?>/<?php echo $oc[$a]["tahun_oc"];?>" class="btn btn-outline btn-danger btn-sm col-lg-12" data-content="Delete OC" data-trigger="hover" data-toggle="popover">DELETE</a> 
+                    <a href = "<?php echo base_url();?>crm/oc/delete/<?php echo $oc[$a]["id_submit_oc"];?>" class="btn btn-outline btn-danger btn-sm col-lg-12" data-content="Delete OC" data-trigger="hover" data-toggle="popover">DELETE</a> 
                     
                 </td>
             </tr>     
