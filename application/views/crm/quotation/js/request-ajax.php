@@ -15,7 +15,7 @@ function detailPriceRequest(){
                 $("#idPerusahaan").val(respond["price_request"]["id_perusahaan"]);
                 $("#alamatCust").val(respond["price_request"]["alamat_perusahaan"]);
                 $("#franco").val(respond["price_request"]["franco"]);
-                
+                $("#itemsOrdered").html("<option selected>RFQ Item</option>");
                 for(var a = 0; a<respond["price_request_item"].length; a++){
                     $("#itemsOrdered").append("<option value = '"+respond["price_request_item"][a]["id_request_item"]+"'>"+respond["price_request_item"][a]["nama_produk"]+"</option>detailPriceRequest");
                 }

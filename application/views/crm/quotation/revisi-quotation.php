@@ -195,8 +195,8 @@
                                     <div class = "form-group col-lg-4">
                                         <h5 style = "opacity:0.5">Payment Method</h5>
                                         <select class = "form-control" id = "paymentMethod" name = "trigger_pembayaran2">
-                                            <option value = "1" <?php if($quotation_metode_pembayaran["trigger_pembayaran2"] == 1) echo "selected";?> >BEFORE DELIVERY</option>
                                             <option value = "2" selected>AFTER DELIVERY</option>
+                                            <option value = "1" <?php if($quotation_metode_pembayaran["trigger_pembayaran2"] == 1) echo "selected";?> >BEFORE DELIVERY</option>
                                         </select>
                                     </div>  
                                     <div class = "form-group col-lg-4 containerSisa" style = ""> <!-- Nominal DP -->

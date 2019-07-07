@@ -46,73 +46,64 @@ class Quotation extends CI_Controller{
         //print_r($where);
         echo json_encode(getTotal("quotation_item","selling_price",$where));
     }
-    public function getQuotationDetail(){
+    /* di pake di OC*/
+    public function getQuotationDetail(){ 
         $where = array(
-            "no_quo" => $this->input->post("no_quo"),
-            "versi_quo" => $this->input->post("versi_quo")
+            "id_submit_quotation" => $this->input->post("id_submit_quotation")
         );
         $result = selectRow("quotation",$where);
         $field = array(
-            "id_perusahaan","id_cp","alamat_perusahaan","up_cp","durasi_pengiriman","durasi_pembayaran","franco"
+            "id_submit_quotation","id_request","up_cp","durasi_pengiriman","durasi_pembayaran","franco","total_quotation_price"
         );
-        $print = array(
-            "id_perusahaan","id_cp","alamat_perusahaan","up_cp","durasi_pengiriman","durasi_pembayaran","franco"
-        );
-        $data = foreachResult($result,$field,$print);
+        $data = foreachResult($result,$field,$field);
+        $data["id_submit_request"] = get1Value("quotation","id_request", array("id_submit_quotation" => $data["id_submit_quotation"]));
+        $data["id_perusahaan"] = get1Value("price_request","id_perusahaan",array("id_submit_request" => $data["id_submit_request"]));
+        $data["id_cp"] = get1Value("price_request","id_cp",array("id_submit_request" => $data["id_submit_request"]));
+
         $data["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $data["id_perusahaan"]));
-        $data["nama_cp"] = get1Value("contact_person","nama_cp",array("id_perusahaan" => $data["id_perusahaan"]));
+        $data["alamat_perusahaan"] = get1Value("perusahaan","alamat_perusahaan",array("id_perusahaan" => $data["id_perusahaan"]));
+        $data["nama_cp"] = get1Value("contact_person","nama_cp",array("id_cp" => $data["id_cp"]));
         echo json_encode($data);
     }
     public function getOrderedItem(){
-        //echo $this->input->post("no_quo");
-        //echo $this->input->post("versi_quo");
         $where = array(
-            "no_quotation" => $this->input->post("no_quo"),
-            "versi_quotation" => $this->input->post("versi_quo")
+            "id_submit_quotation" => $this->input->post("id_submit_quotation")
         );
         $result = selectRow("quotation_item",$where);
         $field = array(
-            "id_quotation_item","id_request_item","item_amount","selling_price","status_oc_item"
+            "id_quotation_item","id_request_item","item_amount","satuan_produk","selling_price","nama_produk_leiter"
         );
-        $print = array(
-            "id_quotation_item","id_request_item","item_amount","selling_price","status_oc_item"
-        );
-        $data = foreachMultipleResult($result,$field,$print);
+        $data = foreachMultipleResult($result,$field,$field);
         for($a = 0; $a<count($data);$a++){
-            $data[$a]["nama_produk"] = get1Value("price_request_item","nama_produk",array("id_request_item" => $data[$a]["id_request_item"]));
             $data[$a]["selling_price"] = number_format($data[$a]["selling_price"]);
         }
         echo json_encode($data);
     }
     public function getMetodePembayaran(){
         $where = array(
-            "no_quotation" => $this->input->post("no_quo"),
-            "versi_quotation" => $this->input->post("versi_quo")
+            "id_submit_quotation" => $this->input->post("id_submit_quotation")
         );
-        $result = selectRow("metode_pembayaran",$where);
+        $result = selectRow("quotation_metode_pembayaran",$where);
         $field = array(
-            "persentase_pembayaran","nominal_pembayaran","trigger_pembayaran","persentase_pembayaran2","nominal_pembayaran2","trigger_pembayaran2","kurs"
+            "persentase_pembayaran","nominal_pembayaran","trigger_pembayaran","is_ada_transaksi","persentase_pembayaran2","nominal_pembayaran2","trigger_pembayaran2","is_ada_transaksi2","kurs"
         );
-        $print = array(
-            "persentase_pembayaran","nominal_pembayaran","trigger_pembayaran","persentase_pembayaran2","nominal_pembayaran2","trigger_pembayaran2","kurs"
-        );
-        $data = foreachResult($result,$field,$print);
+        $data = foreachResult($result,$field,$field);
         if($data["trigger_pembayaran"] == 1 ){
-            $data["trigger_pembayaran"] = "SEBELUM PENGIRIMAN";
+            $data["trigger_pembayaran"] = "BEFORE DELIVERY";
         }
         else{
-            $data["trigger_pembayaran"] = "SESUDAH PENGIRIMAN";
+            $data["trigger_pembayaran"] = "AFTER DELIVERY";
         }
         if($data["trigger_pembayaran2"] == 1 ){
 
-            $data["trigger_pembayaran2"] = "SEBELUM PENGIRIMAN";
+            $data["trigger_pembayaran2"] = "BEFORE DELIVERY";
         }
         else{
-            $data["trigger_pembayaran2"] = "SESUDAH PENGIRIMAN";
+            $data["trigger_pembayaran2"] = "AFTER DELIVERY";
         }
         echo json_encode($data);
 
     }
-
+    /* di pake di OC*/
 }
 ?>

@@ -47,27 +47,8 @@ class Oc extends CI_Controller{
             if($data["item_oc"][$a]["terkirim"] == "") $data["item_oc"][$a]["terkirim"] = 0;
             $data["item_oc"][$a]["final_amount"] = get1Value("quotation_item","final_amount",array("id_quotation_item" => $data["item_oc"][$a]["id_quotation_item"]));
         }
-        /*
-        $counter = 0 ;
-        $result["od"] = $this->Mdod_core->select($where["od"]); /*ambil semua od yang ocnya terkair 
-        $result["jumlah"] = array();
-        foreach($result["od"]->result() as $idOd){
-            $result["jumlah"][$counter] = get1Value("od_item","item_qty",array("id_od" => $idOd->id_od));
-            $counter++;
-        }
-        $data = array();
-        $counter = 0;
-        foreach($result["item_oc"]->result() as $a){
-            $data[$counter] = array(
-                "id_quotation_item" => $a->id_quotation_item,
-                "nama_produk" => $a->nama_produk,
-                "jumlah_pesan" => $a->final_amount,
-                "terkirim" => array_sum($result["jumlah"]),
-                "uom" => $a->satuan_produk
-            );
-            $counter ++;
-        }*/
         echo json_encode($data);
     }
+    
 }
 ?>
