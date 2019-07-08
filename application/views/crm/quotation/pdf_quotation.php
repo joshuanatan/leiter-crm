@@ -101,16 +101,26 @@ foreach($quotation ->result() as $quo){
                     $no++;
 
                     $baris="$x->nama_produk_leiter";
-    
+                    if(($x->attachment)=="-"){
+                        $jarak=0;
+                    }else{
+                        $jarak=75;
+                    }
                     $split = explode("\n",$baris);
                     $jumlah_baris = count($split);
-                    $line_height = round(($jumlah_baris * 14) + (75));
+                    $line_height = round(($jumlah_baris * 14) + $jarak);
     
 
                     $content = $content . '<tr>
                     <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.$no.'</td>
                     <td>'.nl2br($baris).'
-                    <br><img src="'.base_url() . 'assets/dokumen/quotation/'. $x->attachment .'" class="producttt">
+                    ';
+                    if(($x->attachment)=="-"){
+                        $content=$content.'';
+                    }else{
+                        $content=$content.'<br><img src="'.base_url() . 'assets/dokumen/quotation/'. $x->attachment .'" class="producttt">';
+                    }
+                    $content=$content. '
                     </td>
                     <td  style="text-align:center;height:20px;line-height:'.$line_height.'px;">'. $x->item_amount .' '. $x->satuan_produk.'</td>
                     <td  style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.number_format($x->selling_price).'</td>
@@ -214,6 +224,6 @@ foreach($quotation ->result() as $quo){
     $content ='Sales Director (+62811837081)<br>PT LEITER INDONESIA';
 $pdf->writeHTML($content);
     //$pdf->Write(5, 'Contoh Laporan PDF dengan CodeIgniter + tcpdf');
-    $pdf->Output('contoh1.pdf', 'I');
+    $pdf->Output($quo->no_quotation, 'I');
 }
 ?>
