@@ -8,9 +8,8 @@ function loadPoDetail(){
         data:{id_submit_oc:id_submit_oc},
         success:function(respond){
             var html = "";
-            alert(respond.length);
             for(var a =0; a<respond.length; a++){
-                html += "<tr><td>"+respond[a]["nama_oc_item"]+"<input type = 'hidden' name = 'id_oc_item[]' value = '"+respond[a]["id_oc_item"]+"'></td><td>"+respond[a]["final_amount"]+" "+respond[a]["satuan_produk"]+"</td><td></td><td><input type ='text' class = 'form-control' name = 'jumlah_kirim[]'></td></tr>";
+                html += "<tr><td>"+respond[a]["nama_oc_item"]+"<input type = 'hidden' id = 'id_oc_item"+a+"' name = 'id_oc_item[]' value = '"+respond[a]["id_oc_item"]+"'></td><td>"+respond[a]["final_amount"]+" "+respond[a]["satuan_produk"]+"</td><td id = 'jumlah_terkirim"+a+"'></td><td><input type ='text' class = 'form-control' name = 'jumlah_kirim[]' value = '0'></td></tr>";
             }
             $("#t1").html(html);
         }
