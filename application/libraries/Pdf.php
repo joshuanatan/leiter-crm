@@ -21,7 +21,7 @@ class Pdf extends TCPDF
 
     // Page footer
     public function Footer() {
-         // Position at 15 mm from bottom
+         // Position at 15 mm from bottomm
     $this->SetY(-18);
     $html="
     <p>
