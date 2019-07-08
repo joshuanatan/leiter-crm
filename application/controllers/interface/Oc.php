@@ -28,7 +28,7 @@ class Oc extends CI_Controller{
         );
         $field = array(
             "item_oc" => array(
-                "nama_oc_item","final_amount","satuan_produk","final_selling_price"
+                "nama_oc_item","final_amount","satuan_produk","final_selling_price","id_oc_item"
             )
         );
         $result["item_oc"] = selectRow("order_confirmation_item",$where["item_oc"]); //ambil smua yang 1 oc dari quotation item

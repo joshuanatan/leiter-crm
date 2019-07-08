@@ -28,6 +28,7 @@ function getOcItem(){
                 $("#nama_produk_leiter"+a).val(respond[a]["nama_oc_item"]);
                 $("#jumlah_produk"+a).val(respond[a]["final_amount"] + " " + respond[a]["satuan_produk"]);
                 $("#harga_jual_satuan_produk"+a).val(addCommas(respond[a]["final_selling_price"])+"/"+respond[a]["satuan_produk"]);
+                $("#id_oc_item"+a).val(respond[a]["id_oc_item"]);
             }
         }
     })

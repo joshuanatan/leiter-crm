@@ -24,7 +24,7 @@ class Mdpo_core extends CI_Model{
     }
     /**************************************************************** */
     public function getListPo($where){
-        $this->db->order_by("date_po_core_add","DESC");
+        $this->db->order_by("id_submit_po","DESC");
         return $this->db->get_where("po_core",$where);
     }
 }

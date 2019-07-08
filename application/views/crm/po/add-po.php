@@ -85,10 +85,17 @@
                                                         <label></label>
                                                     </div>
                                                 </td>
-                                                <td><textarea readonly rows = "4" id = "nama_produk_leiter<?php echo $a;?>" class = "form-control"></textarea></td>
+
+                                                <td>
+                                                    <textarea readonly rows = "4" id = "nama_produk_leiter<?php echo $a;?>" class = "form-control"></textarea>
+                                                    <input type = "hidden" name = "id_oc_item<?php echo $a;?>" value = "" id = "id_oc_item<?php echo $a;?>">
+                                                </td>
                                                 <td><textarea rows = "4" id = "nama_produk_vendor<?php echo $a;?>" class = "form-control" name = "nama_produk_vendor<?php echo $a;?>" ></textarea></td>
+
                                                 <td><input type = "text" id = "jumlah_produk<?php echo $a;?>" class = "form-control" name = "jumlah_produk<?php echo $a;?>"></td>
+
                                                 <td><input type = "text" readonly id = "harga_jual_satuan_produk<?php echo $a;?>" class = "form-control" name = ""></td>
+
                                                 <td><input type = "text" oninput = "commas('harga_satuan_produk<?php echo $a;?>')" id = "harga_satuan_produk<?php echo $a;?>" class = "form-control" name = "harga_satuan_produk<?php echo $a;?>"></td>
                                             </tr>
                                             <?php endfor;?>
@@ -108,7 +115,7 @@
                                         </select>
                                     </div>
                                     <div class = "form-group col-lg-4">
-                                        <h5 style = "opacity:0.5">PIC Supplier</h5>
+                                        <h5 style = "opacity:0.5">PIC Shipper</h5>
                                         <select class = "form-control" name = "id_cp_shipper" id = "id_pic_shipper"></select>
                                     </div>
                                     <div class = "form-group col-lg-2">
