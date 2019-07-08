@@ -58,5 +58,14 @@ class Od extends CI_Controller{
         $this->session->totalinvoice = $total;
         echo json_encode($data);
     }
+    /*************************************************************** */
+    public function getSentItemAmount(){
+        $where = array(
+            "id_oc_item" => $this->input->post("id_oc_item")
+        );
+        $jumlah_terkirim = 0;
+        $jumlah_terkirim = getTotal("od_item","item_qty",$where);
+        echo json_encode(array("jumlah_terkirim" => $jumlah_terkirim));
+    }
 }
 ?>

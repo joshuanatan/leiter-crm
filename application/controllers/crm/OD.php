@@ -30,10 +30,10 @@ class Od extends CI_Controller{
             )
         );
         $field["od"] = array(
-            "no_od", "id_od","no_oc","id_courier","delivery_method","date_od_add"
+            "no_od", "id_od","id_submit_oc","id_courier","delivery_method","date_od_add"
         );
         $print["od"] = array(
-            "no_od", "id_od","no_oc","id_courier","delivery_method","date_od_add"
+            "no_od", "id_od","id_submit_oc","id_courier","delivery_method","date_od_add"
         );
         $field["od_item"] = array(
             "id_quotation_item","id_od_item","item_qty"
@@ -123,16 +123,16 @@ class Od extends CI_Controller{
     }
     public function createod(){
         $input = array(
-            "id_quotation_item" => $this->input->post("id_quotation_item"), 
+            "id_oc_item" => $this->input->post("id_oc_item"), 
             "jumlah_kirim" => $this->input->post("jumlah_kirim"), 
         );
         $array = array(
-            "id_quotation_item" => array(),
+            "id_oc_item" => array(),
             "jumlah_kirim" => array()
         );
         $counter = 0 ;
-        foreach($input["id_quotation_item"] as $a){
-            $array["id_quotation_item"][$counter] = $a;
+        foreach($input["id_oc_item"] as $a){
+            $array["id_oc_item"][$counter] = $a;
             $counter++;
         }
         $counter = 0 ;
@@ -140,27 +140,30 @@ class Od extends CI_Controller{
             $array["jumlah_kirim"][$counter] = $a;
             $counter++;
         }
-        for($a = 0; $a<count($array["jumlah_kirim"]); $a++){
-            $data = array(
-                "no_od" => $this->input->post("no_od"),
-                "id_quotation_item" => $array["id_quotation_item"][$a],
-                "item_qty" => $array["jumlah_kirim"][$a]
-            );
-            $this->Mdod_item->insert($data);
-        }
         /*end insert od item*/
         /*begin insert od core */
         $data = array(
+            "id_submit_oc" => $this->input->post("id_submit_oc"),
             "id_od" => $this->input->post("id_od"),
-            "no_od" => $this->input->post("no_od"),
-            "no_oc" => $this->input->post("no_oc"),
             "bulan_od" => date("m"),
             "tahun_od" => date("Y"),
+            "no_od" => $this->input->post("no_od"),
             "id_courier" => $this->input->post("courier"),
             "delivery_method" => $this->input->post("method"),
+            "alamat_pengiriman" => $this->input->post("alamat_pengiriman"),
+            "up_cp" => $this->input->post("up_cp"),
             "id_user_add" => $this->session->id_user
         );
-        $this->Mdod_core->insert($data);
+        $id_submit_od = insertRow("od_core",$data);
+        
+        for($a = 0; $a<count($array["jumlah_kirim"]); $a++){
+            $data = array(
+                "id_submit_od" => $id_submit_od,
+                "id_oc_item" => $array["id_oc_item"][$a],
+                "item_qty" => $array["jumlah_kirim"][$a]
+            );
+            insertRow("od_item",$data);
+        }
         redirect("crm/od");
     }
     public function print(){

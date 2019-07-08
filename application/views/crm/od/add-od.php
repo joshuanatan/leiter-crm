@@ -71,14 +71,14 @@
                                 <div class = "form-group col-lg-12">
                                     <div class = "form-group">
                                         <h5 style = "opacity:0.5">Up CP</h5>
-                                        <input type = "text" class = "form-control">
+                                        <input type = "text" class = "form-control" name = "up_cp">
                                     </div>
                                 </div>
                                 <div class = "form-group col-lg-12">
                                     <div class = "form-group">
                                         <h5 style = "opacity:0.5">Alamat Pengiriman</h5>
-                                        <textarea class = "form-control"></textarea>
-                                    </div>
+                                        <textarea class = "form-control" name = "alamat_pengiriman"></textarea>
+                                    </div> 
                                 </div>
                                 <div class = "form-group col-lg-12">
                                     <div class = "form-group">
