@@ -22,7 +22,7 @@ class Pdf extends TCPDF
     // Page footer
     public function Footer() {
          // Position at 15 mm from bottom
-    $this->SetY(-20);
+    $this->SetY(-18);
     $html="
     <p>
     <hr style='width:98%;'>
