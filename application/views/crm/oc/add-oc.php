@@ -55,8 +55,8 @@
                                             <th>#</th>
                                             <th>Product Name</th>
                                             <th>Amount</th>
-                                            <th>Selling Price</th>
-                                            <th>Final Price</th>
+                                            <th>Selling Price (Per item)</th>
+                                            <th>Final Price (Per item)</th>
                                         </thead>
                                         <tbody id ="t1">
                                             <!-- di load pake foreach abis onchange -->

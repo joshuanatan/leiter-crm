@@ -45,7 +45,7 @@ function quotationDetail(){
                     /*kalau ini tetep masuk semua ke db, aktif atau tidaknya tunggu dari id yang diatas*/
                     $("#product"+a).html('<textarea name = "nama_oc_item[]" class = "form-control" >'+respond[a]["nama_produk_leiter"]+'</textarea><input type = "hidden" name = "id_quotation_item[]" class = "form-control" value = "'+respond[a]["id_quotation_item"]+'">');
                     
-                    $("#amount"+a).html('<input type = "text" name = "final_amount[]" class = "form-control" value = "'+respond[a]["item_amount"]+' '+respond[a]["satuan_produk"]+'">');
+                    $("#amount"+a).html('<input type = "text" id = "jumlah_produk'+a+'" name = "final_amount[]" class = "form-control" value = "'+respond[a]["item_amount"]+' '+respond[a]["satuan_produk"]+'">');
 
                     $("#selling"+a).html('<input type = "text" class = "form-control" value = "'+respond[a]["selling_price"]+'" readonly>');
 
@@ -82,7 +82,10 @@ function countTotal(){
     var jumlah_tagihan = 0;
     for(var a = 0; a<jumlah_row; a++){
         if($('#checks'+(a)).is(":checked")){
-            jumlah_tagihan += parseInt(splitter($("#selling_price"+(a)).val(),","));
+            var jumlah = $("#jumlah_produk"+a).val();
+            var split = jumlah.split(" ");
+            console.log(split[0]);
+            jumlah_tagihan += parseInt(splitter($("#selling_price"+(a)).val(),","))*parseInt(split[0]);
             console.log("jumlah tagihan "+jumlah_tagihan);
         }
     }

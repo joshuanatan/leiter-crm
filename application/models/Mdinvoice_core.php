@@ -1,8 +1,6 @@
 <?php
 class Mdinvoice_core extends CI_Model{
-    public function select($data){
-        return $this->db->get_where("invoice_core",$data);
-    }
+    
     public function insert($data){
         $this->db->insert("invoice_core",$data);
         return $this->db->insert_id();
@@ -12,6 +10,11 @@ class Mdinvoice_core extends CI_Model{
     }
     public function delete($where){
         $this->db->delete("invoice_core",$where);
+    }
+    /********************************************** */
+    public function getListInvoice($where){
+        $this->db->order_by("id_submit_invoice","DESC");
+        return $this->db->get_where("invoice_core",$where);
     }
 }
 ?>

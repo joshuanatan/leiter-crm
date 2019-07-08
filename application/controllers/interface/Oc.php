@@ -14,7 +14,7 @@ class Oc extends CI_Controller{
         $data = foreachResult($result,$field,$print);
         echo json_encode($data);
     }  
-    public function getOcItem(){ /*dipake di PO*/
+    public function getOcItem(){ /*dipake di PO*/ /*dipake di invoice*/
         $this->load->model("Mdquotation_item");
         $this->load->model("Mdod_core");
         $where = array(
@@ -34,6 +34,17 @@ class Oc extends CI_Controller{
         $result["item_oc"] = selectRow("order_confirmation_item",$where["item_oc"]); //ambil smua yang 1 oc dari quotation item
         $data["item_oc"] = foreachMultipleResult($result["item_oc"],$field["item_oc"],$field["item_oc"]);
         echo json_encode($data["item_oc"]);
+    }
+    public function getOcPaymentMethod($id_submit_oc){
+        $where = array(
+            "id_submit_oc" => $id_submit_oc
+        );
+        $result = selectRow("order_confirmation_metode_pembayaran",$where);
+        $field = array(
+            "id_metode_pembayaran","persentase_pembayaran","nominal_pembayaran","trigger_pembayaran","status_bayar","is_ada_transaksi","persentase_pembayaran2","nominal_pembayaran2","trigger_pembayaran2","status_bayar2","is_ada_transaksi2"
+        );
+        $data = foreachResult($result,$field,$field);
+        echo json_encode($data);
     }
     
 }

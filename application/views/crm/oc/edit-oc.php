@@ -42,7 +42,7 @@
                                             <th>#</th>
                                             <th>Product Name</th>
                                             <th>Amount</th>
-                                            <th>Final Price</th>
+                                            <th>Final Price (Per satuan)</th>
                                         </thead>
                                         <tbody id ="t1">
                                             <?php for($item = 0; $item<count($items); $item++):?>
@@ -59,10 +59,10 @@
                                                     <input type = "hidden" name = "id_oc_item[]" class = "form-control" value = "<?php echo $items[$item]["id_oc_item"]?>">
                                                 </td>
                                                 <td>
-                                                    <input type = "text" name = "final_amount[]" class = "form-control" value = "<?php echo $items[$item]["final_amount"]?> <?php echo $items[$item]["satuan_produk"]?>">
+                                                    <input id = "jumlah_produk<?php echo $item;?>" type = "text" name = "final_amount[]" class = "form-control" value = "<?php echo $items[$item]["final_amount"]?> <?php echo $items[$item]["satuan_produk"]?>">
                                                 </td>
                                                 <td>
-                                                    <input id = "selling_price<?php echo $item;?>" type = "text" name = "final_selling_price[]" class = "form-control" value = "<?php echo number_format($items[$item]["final_selling_price"]);?>">
+                                                    <input id = "selling_price<?php echo $item;?>" oninput = "commas('selling_price<?php echo $item;?>')" type = "text" name = "final_selling_price[]" class = "form-control" value = "<?php echo number_format($items[$item]["final_selling_price"]);?>">
                                                 </td>
                                             </tr>
                                             <?php endfor;?>

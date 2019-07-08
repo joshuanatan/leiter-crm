@@ -66,7 +66,7 @@
                                         </select>
                                     </div>
                                     <div class = "form-group col-lg-5">
-                                        <h5 style = "opacity:0.5">Supplier Price</h5>
+                                        <h5 style = "opacity:0.5">Supplier Price (Per satuan)</h5>
                                         <input name = "Abc" type ="text" id = "hargaProduk" class = "form-control" disabled placeholder = "Product Price">
                                     </div>
                                 </div>
@@ -78,7 +78,7 @@
                                         </select>
                                     </div>
                                     <div class = "form-group col-lg-5">
-                                        <h5 style = "opacity:0.5">Shipping Price</h5>
+                                        <h5 style = "opacity:0.5">Shipping Price (Per satuan)</h5>
                                         <input name = "Abc" type ="text" id = "hargashipping" class = "form-control" disabled placeholder = "Shipping Price">
                                     </div>
                                 </div>
@@ -90,7 +90,7 @@
                                         </select>
                                     </div>
                                     <div class = "form-group col-lg-5">
-                                        <h5 style = "opacity:0.5">Courier Price</h5>
+                                        <h5 style = "opacity:0.5">Courier Price (Per satuan)</h5>
                                         <input name = "Abc" type ="text" id = "hargaCourier" class = "form-control" disabled placeholder = "Courier Price">
                                     </div>
                                 </div>
@@ -99,11 +99,11 @@
                                     <textarea class = "form-control" id = "nama_produk_leiter" name = "nama_produk_leiter"></textarea>
                                 </div>
                                 <div class = "form-group" onclick = "getTotal()">
-                                    <h5 style = "opacity:0.5">Total Price</h5>
+                                    <h5 style = "opacity:0.5">Total Price (All Qty)</h5>
                                     <input name = "Abc"  type ="text" class = "form-control" id = "totalPrice" disabled placeholder = "Click to get Total Price">
                                 </div>
                                 <div class = "form-group">
-                                    <h5 style = "opacity:0.5">Selling Price</h5>
+                                    <h5 style = "opacity:0.5">Selling Price (Per Satuan)</h5>
                                     <input name = "Abc" type ="text" class = "form-control" id = "inputNominal" oninput ="decimal()" placeholder = "Selling Price">
                                 </div>
                                 <div class = "form-group" onclick = "getMargin()">
@@ -141,10 +141,10 @@
                                                     <textarea name = "nama_produk_leiter<?php echo ($quo_item+1);?>" class = "form-control"><?php echo $quotation_item[$quo_item]["nama_produk_leiter"];?></textarea>
                                                 </td>
                                                 <td>
-                                                    <input type = "text" name = "item_amount<?php echo ($quo_item+1);?>" class = "form-control" value = "<?php echo $quotation_item[$quo_item]["item_amount"];?> <?php echo $quotation_item[$quo_item]["satuan_produk"];?>">
+                                                    <input type = "text" name = "item_amount<?php echo ($quo_item+1);?>" class = "form-control" id = "jumlah_produk<?php echo ($quo_item+1);?>" value = "<?php echo $quotation_item[$quo_item]["item_amount"];?> <?php echo $quotation_item[$quo_item]["satuan_produk"];?>">
                                                 </td>
                                                 <td>
-                                                    <input type = "text" name = "selling_price<?php echo ($quo_item+1);?>" class = "form-control" value = "<?php echo number_format($quotation_item[$quo_item]["selling_price"]);?>" id = "selling_price<?php echo ($quo_item+1);?>" >
+                                                    <input type = "text" name = "selling_price<?php echo ($quo_item+1);?>" class = "form-control" value = "<?php echo number_format($quotation_item[$quo_item]["selling_price"]);?>" oninput = "commas('selling_price<?php echo ($quo_item+1);?>')" id = "selling_price<?php echo ($quo_item+1);?>" >
                                                 </td>
                                                 <td>
                                                     <input type = "text" name = "margin_price<?php echo ($quo_item+1);?>" class = "form-control" value = "<?php echo $quotation_item[$quo_item]["margin_price"];?>%">

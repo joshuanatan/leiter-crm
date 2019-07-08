@@ -69,7 +69,7 @@
                                         </select>
                                     </div>
                                     <div class = "form-group col-lg-5">
-                                        <h5 style = "opacity:0.5">Supplier Price</h5>
+                                        <h5 style = "opacity:0.5">Supplier Price (Per satuan)</h5>
                                         <input name = "Abc" type ="text" id = "hargaProduk" class = "form-control" disabled placeholder = "Product Price">
                                     </div>
                                 </div>
@@ -81,7 +81,7 @@
                                         </select>
                                     </div>
                                     <div class = "form-group col-lg-5">
-                                        <h5 style = "opacity:0.5">Shipping Price</h5>
+                                        <h5 style = "opacity:0.5">Shipping Price (Per satuan)</h5>
                                         <input name = "Abc" type ="text" id = "hargashipping" class = "form-control" disabled placeholder = "Shipping Price">
                                     </div>
                                 </div>
@@ -93,7 +93,7 @@
                                         </select>
                                     </div>
                                     <div class = "form-group col-lg-5">
-                                        <h5 style = "opacity:0.5">Courier Price</h5>
+                                        <h5 style = "opacity:0.5">Courier Price (Per satuan)</h5>
                                         <input name = "Abc" type ="text" id = "hargaCourier" class = "form-control" disabled placeholder = "Courier Price">
                                     </div>
                                 </div>
@@ -102,11 +102,11 @@
                                     <textarea class = "form-control" id = "nama_produk_leiter" name = "nama_produk_leiter"></textarea>
                                 </div>
                                 <div class = "form-group" onclick = "getTotal()">
-                                    <h5 style = "opacity:0.5">Total Price</h5>
+                                    <h5 style = "opacity:0.5">Total Price (All Qty)</h5>
                                     <input name = "Abc"  type ="text" class = "form-control" id = "totalPrice" disabled placeholder = "Click to get Total Price">
                                 </div>
                                 <div class = "form-group">
-                                    <h5 style = "opacity:0.5">Selling Price</h5>
+                                    <h5 style = "opacity:0.5">Selling Price (Per Satuan)</h5>
                                     <input name = "Abc" type ="text" class = "form-control" id = "inputNominal" oninput ="decimal()" placeholder = "Selling Price">
                                 </div>
                                 <div class = "form-group" onclick = "getMargin()">

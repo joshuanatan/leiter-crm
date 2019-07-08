@@ -118,11 +118,6 @@
                                 <span class="site-menu-title">Order Delivery</span>
                                 </a>
                             </li>
-                            <li class="site-menu-item">
-                                <a class="animsition-link" href="<?php echo base_url();?>crm/invoice">
-                                <span class="site-menu-title">Invoice</span>
-                                </a>
-                            </li>
                         </ul>
                     </li>
                     <li class="site-menu-item has-sub">

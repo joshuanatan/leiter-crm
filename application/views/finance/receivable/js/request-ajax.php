@@ -1,56 +1,104 @@
 <script>
-function oc_detail(){
-    var id_oc = $("#idoc").val();
+function oc_detail(){ /*kepake di add invoice*/
+    var id_submit_oc = $("#id_submit_oc").val(); //id_submit_invoice
+    /*Cek Payment Type*/
+    /*Cek Detail Perusahaan Customer Type*/
     $.ajax({
-        url:"<?php echo base_url();?>interface/oc/getOcDetail/"+id_oc,
+        url:"<?php echo base_url();?>interface/oc/getOcPaymentMethod/"+id_submit_oc,
+        dataType:"JSON",
+        success:function(respond){
+            var html = "<option selected disabled>TIPE PEMBAYARAN</option>";
+            /*
+            kalau ada transaksi 1 = berdp - pelunasan (dp - lunas)
+            kalau ga ada transaksi 1 = tidak dp - langsung lunas (lunas)
+            */
+            if(respond["is_ada_transaksi"] == 0){ //kalau transaksi pertama ada, berarti persen dp gak 0, berarti ada dp
+                if(respond["status_bayar"] == 1){ //kalau DP belum dibayar
+                    html += "<option value = '2'>Down Payment (DP)</option>";
+                }
+                else{ //kalau DP sudah dibayar
+                    html += "<option disabled value = '2'>Down Payment (DP)</option>";
+                }
+                if(respond["status_bayar2"] == 1){ //keluarin kalau yang sudah bayar DP
+                    var status_pay = "";
+                    if(respond["status_bayar"] == 1){
+                        status_pay = "disabled";
+                    }
+                    html += "<option "+status_pay+" value = '3'>Pelunasan Tagihan (Ada DP)</option>";
+                }
+            }
+            else{ //kalau ga ada transaksi 1
+                if(respond["status_bayar2"] == 1){
+                    html += "<option value = '1'>Pelunasan Utuh</option>";
+                }
+            }
+            $("#payment_type").html(html);
+            $("#persen_dp").val(respond["persentase_pembayaran"]);
+            $("#persen_sisa").val(100-respond["persentase_pembayaran"]);
+        }
+    });
+    /*
+    $.ajax({
+        url:"<?php echo base_url();?>interface/oc/getOcPaymentMethod/"+id_submit_oc,
         dataType:"JSON",
         success:function(respond){
             $("#nopo").val(respond["no_po_customer"]);
         }
-    });
+    });*/
 }
 </script>
 <script>
 function changePayment(){
-    
-    var paymentType = $("#paymentType").val();
-    console.log(paymentType);
-    switch(parseInt(paymentType)){
-        case 0: $("#od").html(""); $("#paymentWithOdT1").html("");
-        break;
-        case 1: 
-            var oc = $("#idoc").val();
-            $("#od").html("<option value = '0'>DOWN PAYMENT</option>");
-            $("#paymentWithOdT1").html();
-            $.ajax({
-                url:"<?php echo base_url();?>interface/invoice/getDp",
-                data:{no_oc:oc},
-                type:"POST",
-                dataType:"JSON",
-                success:function(respond){
-                    var html = "<tr><td>1</td><td>Down Payment "+respond["persentase"]+"%<input type = 'hidden' name = 'persentase_pembayaran' value = '"+respond["persentase"]+"'></td><td>-</td><td>"+respond["total"]+"</td><td>"+respond["nominal"]+"<input type = 'hidden' name = 'nominal_pembayaran' value = '"+respond["clean_nominal"]+"'></td></tr>";
-                    
-                    $("#paymentWithOdT1").html(html); 
+    var id_submit_oc = $("#id_submit_oc").val(); //id_submit_invoice
+    var payment_type = $("#payment_type").val();
+
+    console.log(payment_type);
+    switch(parseInt(payment_type)){
+
+        case 1://pelunasan no dp
+        case 3: //pelunasan with dp
+            $.ajax({ 
+            url:"<?php echo base_url();?>interface/oc/getOcPaymentMethod/"+id_submit_oc,
+            dataType:"JSON",
+            success:function(respond){
+                if(respond["trigger_pembayaran2"] == "2"){ //nunggu OD
+                    $("#od").css("display","block");
+                    //nanti nembak ke OD, pake id_submit_oc
                 }
-            });
+                else{ //tidak tunggu OD
+                    $("#od").css("display","none");
+                    //ambil tagihan sisa
+                }
+            }
+        });    
         break;
-        case 2:
-            var no_oc = $("#idoc").val();
-            console.log(oc);
-            $.ajax({
-                data:{no_oc:no_oc},
-                url: "<?php echo base_url();?>interface/od/getOd",
+        case 2: //dp
+            $("#od").css("display","none");//hilangkan dropdown OD
+                $.ajax({ //dp
+                url:"<?php echo base_url();?>interface/oc/getOcItem",
+                data:{id_submit_oc:id_submit_oc},
                 type:"POST",
                 dataType:"JSON",
                 success:function(respond){
-                    var html = "<option>Choose Order Delivery no</option>"
-                    for( var a = 0 ; a<respond.length; a++){
-                        html += "<option value = '"+respond[a]["id_od"]+"'>"+respond[a]["no_od"]+"</option>";
+                    var html = "";
+                    var total_tagihan = 0;
+                    for(var a = 0; a<respond.length; a++){
+                        var final_selling = parseInt(respond[a]["final_selling_price"])*parseInt(respond[a]["final_amount"]);
+                        total_tagihan += final_selling;
+                        html += "<tr><td>"+(a+1)+"</td><td>"+respond[a]["nama_oc_item"]+"</td><td>"+respond[a]["final_amount"]+" "+respond[a]["satuan_produk"]+"</td><td>"+addCommas(respond[a]["final_selling_price"])+"</td><td>"+addCommas(final_selling)+"</td></tr>";
                     }
-                    $("#od").html(html);
+                    test = respond[0]["satuan_produk"];
+                    $("#list_item_oc").html(html); //masukin item Oc ke tabel di items
+                    $("#total_tagihan_po").val(addCommas(total_tagihan)); //masukin value tagihan semuanya di total tagihan
+
+                    $(".dp").css("display","block"); //munculin yang berkaitan dengan DP
+                    var persen_dp = $("#persen_dp").val(); //ngambil persen DP
+                    $("#total_dp").val(addCommas(total_tagihan*parseInt(persen_dp)/100)); //dapetin berapa DPnya
+                    $("#nominal_pembayaran").val(addCommas(total_tagihan*parseInt(persen_dp)/100)); //siap masuk DB
                 }
-            });
+            });    
         break;
+        
     }
 }
 </script>

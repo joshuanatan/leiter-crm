@@ -5,7 +5,9 @@ function countTotal(){
     var jumlah_tagihan = 0;
     for(var a = 0; a<jumlah_row; a++){
         if($('#checks'+(a+1)).is(":checked")){
-            jumlah_tagihan += parseInt(splitter($("#selling_price"+(a+1)).val(),","));
+            var jumlah = $("#jumlah_produk"+(a+1)).val();
+            var split = jumlah.split(" ");
+            jumlah_tagihan += parseInt(splitter($("#selling_price"+(a+1)).val(),","))*parseInt(split[0]);
             console.log("jumlah tagihan "+jumlah_tagihan);
         }
     }

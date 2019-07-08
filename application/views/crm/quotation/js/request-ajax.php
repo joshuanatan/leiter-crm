@@ -155,11 +155,13 @@ function getShippingPrice(){
 </script>
 <script>
 function getMargin(){
+    var jumlah_pesan = $("#itemamount").val(); //23 dus
+    var detail_pesanan = jumlah_pesan.split(" ");
     var total = $("#totalPrice").val();
     var input = $("#inputNominal").val();
     var totalfinal = splitter(total,",");
     var inputfinal = splitter(input,",");
-    var margin = parseInt(((parseInt(inputfinal) - parseInt(totalfinal))/parseInt(inputfinal)*100)*1000); // 0.8748577 -> 87.4 (87)
+    var margin = parseInt(((parseInt(inputfinal)*parseInt(detail_pesanan[0]) - parseInt(totalfinal))/(parseInt(inputfinal)*parseInt(detail_pesanan[0]))*100)*1000); // 0.8748577 -> 87.4 (87)
     var margin2 = parseFloat(margin/1000)+0.001;
 
     $("#totalMargin").val(margin2+"%");
@@ -186,42 +188,12 @@ function quotationItem(){
 }
 </script>
 <!------------------------------------------------------------------------------------->
-<script>
-var sudah = 0 ;
-function detailPriceRequestPageEdit(){
-    if(sudah == 0){
-    var id_request = $("#id_request").val();
-    var id_quo = $("#id_quo").val();
-    var versi_quo = $("#versi_quo").val();
-    $(document).ready(function(){
-        $.ajax({
-            data:{id_request:id_request},
-            url:"<?php echo base_url();?>crm/request/getRequestDetail",
-            type: "POST",
-            dataType: "JSON",
-            success:function(respond){
-                for(var a = 0; a<respond[respond.length-1].length; a++){
-                    $("#itemsOrdered").append("<option value = '"+respond[respond.length-2][a]+"'>"+respond[respond.length-1][a]+"</option>");
-                }
-            }
 
-        });
-        $.ajax({
-            data:{id_quotation:id_quo,quo_version:versi_quo},
-            url:"<?php echo base_url();?>crm/quotation/getQuotationItem",
-            dataType:"JSON",
-            type:"POST",
-            success:function(respond){
-                $("#t1").html(respond);
-            }
-        });
-    });
-    sudah = 1;
-    }
-}
-</script>
 <script>
-function getTotal(){
+function getTotal(){ 
+    /* awalnya hanya all qty langsung, skrg harga jadi per item*/
+    var jumlah_pesan = $("#itemamount").val(); //23 dus
+    var detail_pesanan = jumlah_pesan.split(" ");
     var shipper = $("#hargashipping").val();
     var produk = $("#hargaProduk").val();
     var courier = $("#hargaCourier").val();
@@ -231,53 +203,10 @@ function getTotal(){
     var produkfinal = splitter(produk,",");
     var courierfinal = splitter(courier,",");
     var inputfinal = splitter(input,",");
-    $("#totalPrice").val(addCommas(parseInt(shipperfinal)+parseInt(produkfinal)+parseInt(courierfinal)));
+    $("#totalPrice").val(addCommas((parseInt(shipperfinal)*parseInt(detail_pesanan[0]))+(parseInt(produkfinal)*parseInt(detail_pesanan[0]))+(parseInt(courierfinal)*parseInt(detail_pesanan[0]))));
 }
 </script>
-<script>
-function removeQuotationItem(i){
-    $(document).ready(function(){
-        var id_quotation_item = i;
-        var id_quotation = $("#id_quo").val();
-        var versi_quo = $("#versi_quo").val();
-        $.ajax({
-            url:"<?php echo base_url();?>crm/quotation/removeQuotationitem",
-            type:"POST",
-            data:{id_quotation_item:id_quotation_item},
-            success:function(respond){
-                $.ajax({
-                    data:{id_quotation:id_quotation,quo_version:versi_quo},
-                    url:"<?php echo base_url();?>crm/quotation/getQuotationItem",
-                    dataType:"JSON",
-                    type:"POST",
-                    success:function(respond){
-                        $("#t1").html(respond);
-                    }
-                });
-            }
-        });
-    });
-}
-</script>
-<script>
-function showItem(){
-    var no_quotation = $("#no_quo").val();
-    var versi_quo = $("#versi_quo").val();
-    //alert(id_quotation); alert(versi_quo);
-    $.ajax({
-        data:{no_quotation:no_quotation,quo_version:versi_quo},
-        url:"<?php echo base_url();?>interface/quotation/getQuotationItem",
-        dataType:"JSON",
-        type:"POST",
-        success:function(respond){
-            var html = "";
-            for(var a = 0; a<respond.length; a++){
-                html = "<tr><td>"+respond[a]["id_request_item"]+"</td><td>"+respond[a]["nama_produk"]+"</td><td>"+respond[a]["item_amount"]+"</td><td>"+respond[a]["selling_price"]+"</td><td>"+respond[a]["margin_price"]+"%</td><td><button type = 'button' class = 'btn btn-danger btn-outline btn-sm' onclick = 'removeQuotationItem("+respond[a]["id_quotation_item"]+")'>REMOVE</button></td></tr>";
-            }
-        }
-    });
-}
-</script>
+
 <script>
 function decimal(){
     var number = splitter($("#inputNominal").val(),",");

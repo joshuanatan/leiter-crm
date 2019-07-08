@@ -81,7 +81,7 @@
                             <textarea class = "form-control" name = "nama_produk_vendor"></textarea>
                         </div>
                         <div class = "form-group">
-                            <h5 style = "opacity:0.5">Price</h5>
+                            <h5 style = "opacity:0.5">Price (Per Satuan)</h5>
                             <input type = "text" class = "form-control" id = "price" name = "price" oninput = "commas('price')">
                         </div>
                         <div class = "form-group">
@@ -167,7 +167,7 @@
                             </select>
                         </div>
                         <div class = "form-group">
-                            <h5 style = "opacity:0.5">Price</h5>
+                            <h5 style = "opacity:0.5">Price (Per Satuan)</h5>
                             <input type = "text" class = "form-control" id = "priceShipping" name = "price" oninput = "commas('priceShipping')">
                         </div>
                         <div class = "form-group">
@@ -272,7 +272,7 @@
                             <input type = "text" class = "form-control" readonly id = "phone_pic_courier">
                         </div>
                         <div class = "form-group">
-                            <h5 style = "opacity:0.5">Price</h5>
+                            <h5 style = "opacity:0.5">Price (Per Satuan)</h5>
                             <input type = "text" class = "form-control" id = "priceCourier" name = "price" oninput = "commas('priceCourier')">
                         </div>
                         <div class = "form-group">
