@@ -24,7 +24,7 @@ class Pdf_oc extends TCPDF
     // Page footer
     public function Footer() {
          
-    $this->SetY(-20);
+    $this->SetY(-18);
     $html="
     <p>
     <hr style='width:98%;'>
