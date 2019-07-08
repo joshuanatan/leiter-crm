@@ -38,7 +38,7 @@ class Od extends CI_Controller{
         $print["od_item"] = array(
             "id_quotation_item","id_od_item","item_qty"
         );
-        $result["od"] = selectRow("od_core",$where["od"]);
+        $result["od"] = $this->Mdorder_confirmation->getListOcForOd();
         $data["od"] = foreachMultipleResult($result["od"],$field["od"],$print["od"]);
 
         for($a = 0; $a<count($data["od"]);$a++){

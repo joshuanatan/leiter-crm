@@ -27,20 +27,6 @@
                                         <?php endforeach;?>
                                     </select>
                                 </div>
-                                <!--
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Customer Firm</h5>
-                                    <input type ="text" id = "namaperusahaan" class = "form-control perusahaanCust" readonly>
-                                </div>
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Customer Name</h5>
-                                    <input name = "" id = "namacustomer" type ="text" class = "form-control namaCust" readonly>
-                                </div>
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Franco</h5>
-                                    <input name = "" id = "franco" type ="text" class = "form-control namaCust" readonly>
-                                </div>
--->
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Courier</h5>
                                     <select name = "courier" class = "form-control" data-plugin = "select2" id = "idcourier">

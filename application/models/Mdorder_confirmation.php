@@ -31,4 +31,7 @@ class Mdorder_confirmation extends CI_Model{
         $this->db->order_by("id_submit_oc","DESC");
         return $this->db->get_where("order_confirmation",$where);
     }
+    public function getListOcForOd(){
+        
+    }
 }

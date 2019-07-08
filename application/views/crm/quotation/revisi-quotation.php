@@ -143,7 +143,7 @@
                                                     <textarea name = "nama_produk_leiter<?php echo ($quo_item+1);?>" class = "form-control"><?php echo $quotation_item[$quo_item]["nama_produk_leiter"];?></textarea>
                                                 </td>
                                                 <td>
-                                                    <input type = "text" name = "item_amount<?php echo ($quo_item+1);?>" class = "form-control" value = "<?php echo $quotation_item[$quo_item]["item_amount"];?> <?php echo $quotation_item[$quo_item]["satuan_produk"];?>">
+                                                    <input type = "text" name = "item_amount<?php echo ($quo_item+1);?>" class = "form-control" id = "jumlah_produk<?php echo ($quo_item+1);?>" value = "<?php echo $quotation_item[$quo_item]["item_amount"];?> <?php echo $quotation_item[$quo_item]["satuan_produk"];?>">
                                                 </td>
                                                 <td>
                                                     <input type = "text" name = "selling_price<?php echo ($quo_item+1);?>" class = "form-control" value = "<?php echo number_format($quotation_item[$quo_item]["selling_price"]);?>" id = "selling_price<?php echo ($quo_item+1);?>" >
