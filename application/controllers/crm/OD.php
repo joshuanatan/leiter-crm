@@ -30,35 +30,31 @@ class Od extends CI_Controller{
             )
         );
         $field["od"] = array(
-            "no_od", "id_od","id_submit_oc","id_courier","delivery_method","date_od_add"
-        );
-        $print["od"] = array(
-            "no_od", "id_od","id_submit_oc","id_courier","delivery_method","date_od_add"
+            "id_submit_od","id_submit_oc","no_od","id_courier","delivery_method","alamat_pengiriman","up_cp","date_od_add"
         );
         $field["od_item"] = array(
-            "id_quotation_item","id_od_item","item_qty"
+            "id_od_item","id_oc_item","item_qty"
         );
-        $print["od_item"] = array(
-            "id_quotation_item","id_od_item","item_qty"
-        );
-        $result["od"] = $this->Mdorder_confirmation->getListOcForOd($where["oc"]);
-        $data["od"] = foreachMultipleResult($result["od"],$field["od"],$print["od"]);
+        $result["od"] = $this->Mdod_core->getListOd($where["od"]);
+        $data["od"] = foreachMultipleResult($result["od"],$field["od"],$field["od"]);
 
         for($a = 0; $a<count($data["od"]);$a++){
-            $data["od"][$a]["nama_courier"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $data["od"][$a]["id_courier"]));
-            $data["od"][$a]["no_quotation"] = get1Value("order_confirmation","no_quotation",array("no_oc" => $data["od"][$a]["no_oc"]));
-            $data["od"][$a]["id_perusahaan"] = get1Value("quotation","id_perusahaan",array("no_quo" => $data["od"][$a]["no_quotation"])); 
-            $data["od"][$a]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $data["od"][$a]["id_perusahaan"]));
-            $data["od"][$a]["no_po_customer"] = get1Value("order_confirmation","no_po_customer",array("no_oc" => $data["od"][$a]["no_oc"]));
-
-            $data["od"][$a]["franco"] = get1Value("quotation","franco",array("no_quo" => $data["od"][$a]["no_quotation"])); 
-            $data["od"][$a]["items"] = array();
-            $result["od_item"] = selectRow("od_item",array("no_od" => $data["od"][$a]["no_od"]));
-            $data["od"][$a]["items"] = foreachMultipleResult($result["od_item"],$field["od_item"],$print["od_item"]);
-            for($b = 0; $b<count($data["od"][$a]["items"]); $b++){
-                $data["od"][$a]["items"][$b]["id_request_item"] = get1Value("quotation_item","id_request_item",array("id_quotation_item" => $data["od"][$a]["items"][$b]["id_quotation_item"]));
-
-                $data["od"][$a]["items"][$b]["nama_produk"] = get1Value("price_request_item","nama_produk",array("id_request_item" => $data["od"][$a]["items"][$b]["id_request_item"]));
+            $id_submit_quotation = get1Value("order_confirmation","id_submit_quotation",array("id_submit_oc" => $data["od"][$a]["id_submit_oc"]));
+            $id_submit_request = get1Value("quotation","id_request", array("id_submit_quotation" => $id_submit_quotation));
+            $id_perusahaan = get1Value("price_request","id_perusahaan",array("id_submit_request"=>$id_submit_request));
+            $data["od"][$a]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan", array("id_perusahaan" => $id_perusahaan));
+            $id_cp = get1Value("price_request","id_cp",array("id_submit_request"=>$id_submit_request));
+            $data["od"][$a]["nama_cp"] = get1Value("contact_person","nama_cp", array("id_cp" => $id_cp));
+            $data["od"][$a]["nama_courier"] = get1Value("perusahaan","nama_perusahaan", array("id_perusahaan" => $data["od"][$a]["id_courier"]));
+            $data["od"][$a]["no_po_customer"] = get1Value("order_confirmation","no_po_customer",array("id_submit_oc" => $data["od"][$a]["id_submit_oc"]));
+            $where["od_item"] = array(
+                "id_submit_od" => $data["od"][$a]["id_submit_od"]
+            );
+            $od_item = selectRow("od_item",$where["od_item"]);
+            $data["od"][$a]["od_item"] = foreachMultipleResult($od_item,$field["od_item"],$field["od_item"]);
+            for($items = 0; $items<count($data["od"][$a]["od_item"]); $items++){
+                $data["od"][$a]["od_item"][$items]["nama_produk"] = get1Value("order_confirmation_item","nama_oc_item",array("id_oc_item" => $data["od"][$a]["od_item"][$items]["id_oc_item"]));
+                $data["od"][$a]["od_item"][$items]["satuan_produk"] = get1Value("order_confirmation_item","satuan_produk",array("id_oc_item" => $data["od"][$a]["od_item"][$items]["id_oc_item"]));
             }
         }
 
@@ -113,9 +109,9 @@ class Od extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
-    public function remove($id_od){
+    public function remove($id_submit_od){
         $where = array(
-            "id_od" => $id_od
+            "id_submit_od" => $id_submit_od
         );
         $this->Mdod_core->delete($where);
         $this->Mdod_item->delete($where);
@@ -165,6 +161,47 @@ class Od extends CI_Controller{
             insertRow("od_item",$data);
         }
         redirect("crm/od");
+    }
+    public function edit($id_submit_od){
+        $where["od"] = array(
+            "id_submit_od" => $id_submit_od
+        );
+        $field["od"] = array(
+            "id_submit_od","id_submit_oc","no_od","id_courier","delivery_method","alamat_pengiriman","up_cp","date_od_add"
+        );
+        $result["od"] = selectRow("od_core",$where["od"]);
+        $data["od"] = foreachResult($result["od"],$field["od"],$field["od"]);
+        $data["od"]["no_po_customer"] = get1Value("order_confirmation","no_po_customer",array("id_submit_oc" => $data["od"]["id_submit_oc"]));
+        $where["courier"] = array(
+            "status_perusahaan" => 0,
+            "peran_perusahaan" => "SHIPPING"
+        );
+        $result["courier"] = $this->Mdperusahaan->getListPerusahaan($where["courier"]);
+        $field["courier"] = array(
+            "nama_perusahaan","id_perusahaan"
+        );
+        $data["courier"] = foreachMultipleResult($result["courier"],$field["courier"],$field["courier"]); 
+
+
+        $this->req();
+        $this->load->view("crm/content-open");
+        $this->load->view("crm/od/category-header");
+        $this->load->view("crm/od/edit-od",$data);
+        $this->load->view("crm/content-close");
+        $this->close();
+    }
+    public function editOd(){
+        $where = array(
+            "id_submit_od" => $this->input->post("id_submit_od")
+        );
+        $data = array(
+            "id_courier" => $this->input->post("courier"),
+            "delivery_method" => $this->input->post("method"),
+            "up_cp" => $this->input->post("up_cp"),
+            "alamat_pengiriman" => $this->input->post("alamat_pengiriman"),
+        );
+        updateRow("od_core",$data,$where);
+        redirect("crm/od/edit/".$this->input->post("id_submit_od"));
     }
     public function print(){
         $this->load->view("crm/print/od");
