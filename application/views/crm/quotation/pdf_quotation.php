@@ -20,7 +20,7 @@ foreach($quotation ->result() as $quo){
         <head>
             <style>
                 .producttt{
-                    width: 100px;
+                    height: 75px;
                 }
             </style>
         </head>
@@ -100,15 +100,21 @@ foreach($quotation ->result() as $quo){
                 foreach($items -> result() as $x){
                     $no++;
 
+                    $baris="$x->nama_produk_leiter";
+    
+                    $split = explode("\n",$baris);
+                    $jumlah_baris = count($split);
+                    $line_height = round(($jumlah_baris * 14) + (75));
+    
+
                     $content = $content . '<tr>
-                    <td style="text-align:center">'.$no.'</td>
-                    <td>'.nl2br($x->nama_produk_leiter).'
-                    <br>
-                    <img src="'.base_url() . 'assets/dokumen/quotation/'. $x->attachment .'" class="producttt">
+                    <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.$no.'</td>
+                    <td>'.nl2br($baris).'
+                    <br><img src="'.base_url() . 'assets/dokumen/quotation/'. $x->attachment .'" class="producttt">
                     </td>
-                    <td  style="text-align:center">'. $x->item_amount .' '. $x->satuan_produk.'</td>
-                    <td  style="text-align:center">'.number_format($x->selling_price).'</td>
-                    <td  style="text-align:center">'.number_format($x->selling_price * $x->item_amount).'</td>
+                    <td  style="text-align:center;height:20px;line-height:'.$line_height.'px;">'. $x->item_amount .' '. $x->satuan_produk.'</td>
+                    <td  style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.number_format($x->selling_price).'</td>
+                    <td  style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.number_format($x->selling_price * $x->item_amount).'</td>
                     </tr>';
                     
                     $total = $total + ($x->selling_price * $x->item_amount);

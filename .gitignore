@@ -51,3 +51,5 @@ tests/
 testing-plan/
 queries/
 assets/dokumen/quotation/
+.htaccess
+application/config/config.php
