@@ -322,5 +322,15 @@ class Po extends CI_Controller{
     function poPdf(){
         $this->load->view('crm/po/pdf_po');
     }
+    public function delete($id_submit_po){
+        $where = array(
+            "id_submit_po" => $id_submit_po
+        );
+        $data = array(
+            "status_aktif_po" => 1
+        );
+        updateRow("po_core",$data,$where);
+        redirect("crm/po");
+    }
 }
 ?>

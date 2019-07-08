@@ -37,6 +37,7 @@
                 </td>
                 <td class="actions">
                     <a href = "<?php echo base_url();?>crm/po/edit/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-primary btn-sm col-lg-12">EDIT</a>
+                    <a href = "<?php echo base_url();?>crm/po/delete/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-danger btn-sm col-lg-12">DELETE</a>
                 </td>
             </tr>
             <?php endfor; ?>
