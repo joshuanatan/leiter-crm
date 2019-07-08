@@ -27,4 +27,25 @@ if(!function_exists("bulanRomawi")){
         }
     }
 }
+
+if(!function_exists("tanggalCantik")){
+    function tanggalCantik($tanggal){
+        $cantik = explode("/",$tanggal);
+        switch((int)$cantik){
+            case 1: return $cantik[2] . " Januari " .$cantik[0]; break;
+            case 2: return $cantik[2] . " Februari " .$cantik[0]; break;
+            case 3: return $cantik[2] . " Maret " .$cantik[0]; break;
+            case 4: return $cantik[2] . " April " .$cantik[0]; break;
+            case 5: return $cantik[2] . " Mei " .$cantik[0]; break;
+            case 6: return $cantik[2] . " Juni " .$cantik[0]; break;
+            case 7: return $cantik[2] . " Juli " .$cantik[0]; break;
+            case 8: return $cantik[2] . " Agustus " .$cantik[0]; break;
+            case 9: return $cantik[2] . " September " .$cantik[0]; break;
+            case 10: return $cantik[2] . " Oktober " .$cantik[0]; break;
+            case 11: return $cantik[2] . " November " .$cantik[0]; break;
+            case 12: return $cantik[2] . " Desember " .$cantik[0]; break;
+        }
+    }
+}
+
 ?>

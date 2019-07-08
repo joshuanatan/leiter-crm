@@ -1,4 +1,5 @@
 <?php
+foreach($quotation ->result() as $quo){    
     $pdf = new Pdf_oc('P', 'mm', 'A4', true, 'UTF-8', false);
     $pdf->SetTitle('QUOTATION');
     $pdf->SetTopMargin(30);
@@ -26,18 +27,18 @@
         <body>
             <table>
                 <tr>
-                    <td>Tangerang, 10 Juni 2019</td>
+                    <td>Tangerang, '. tanggalCantik(date("Y/m/j",strtotime($quo->date_quotation_add))) .'</td>
                 </tr>
                 <tr>
                     <td></td>
                 </tr>
                 <tr>
                     <td style="width:25px; font-weight:bold">No.</td>
-                    <td style="font-weight:bold">: LI-485/Quo/VI/2019</td>
+                    <td style="font-weight:bold">: '.$quo->no_quotation.'</td>
                 </tr>
                 <tr>
                     <td style="width:25px; font-weight:bold">Hal</td>
-                    <td style="font-weight:bold">: Penawaran LEITER Nytal</td>
+                    <td style="font-weight:bold">: '.$quo->hal_quotation.'</td>
                 </tr>
             </table>
         <br><br>
@@ -46,10 +47,17 @@
                     <td style="font-weight:bold">Kepada Yth.</td>
                 </tr>
                 <tr>
-                    <td>PT WILMAR NABATI INDONESIA</td>
+                    <td>';
+
+                     
+                    foreach($perusahaan -> result() as $per){
+                        $content = $content . $per->nama_perusahaan;
+                    };
+
+                    $content = $content .'</td>
                 </tr>
                 <tr>
-                    <td>Jl. Kapten Darmo Sugondo No.56<br>Gresik 61124
+                    <td>'.$quo->alamat_perusahaan.'
                     </td>
                 </tr>    
                 <tr>
@@ -57,7 +65,7 @@
                 </tr>
                 <tr>
                     <td style="width:25px; font-weight:bold">Up</td>
-                    <td style="font-weight:bold">: Ibu Devi Novita</td>
+                    <td style="font-weight:bold">: '.$quo->up_cp.'</td>
                 </tr>
             </table>
             <br><br>
@@ -69,7 +77,11 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td>Memenuhi kebutuhan Ibu, dengan ini kami ajukan penawaran harga sebagai berikut :</td>
+                    <td>Memenuhi kebutuhan ';
+                    
+                    $ibubapak = explode(" ",$quo->up_cp);
+                    
+                    $content = $content . $ibubapak[0]. ', dengan ini kami ajukan penawaran harga sebagai berikut :</td>
                 </tr>
                 
             </table>
@@ -81,44 +93,34 @@
                     <th style="text-align:center; font-weight:bold; width:60px;">Qty</th>
                     <th style="text-align:center; font-weight:bold; width:100px;">Price (IDR)</th>
                     <th style="text-align:center; font-weight:bold; width:100px;">Amount (IDR)</th>
-                </tr>
-                <tr>
-                    <td style="text-align:center">1</td>
-                    <td>LLEITER PA 10MF / 132, width 158cm
-                    <br>made of LI-0110-132b-158
+                </tr>';
+                
+                $no = 0;
+                $total=0;
+                foreach($items -> result() as $x){
+                    $no++;
+
+                    $content = $content . '<tr>
+                    <td style="text-align:center">'.$no.'</td>
+                    <td>'.nl2br($x->nama_produk_leiter).'
                     <br>
-                    <img src="'.base_url() .'assets/images/product.png" class="producttt">
+                    <img src="'.base_url() . 'assets/dokumen/quotation/'. $x->attachment .'" class="producttt">
                     </td>
-                    <td  style="text-align:center">200 m</td>
-                    <td  style="text-align:center">500,000</td>
-                    <td  style="text-align:center">100,000,000</td>
-                </tr>
-                <tr>
-                    <td style="text-align:center">2</td>
-                    <td>LLEITER PA 10MF / 132, width 158cm
-                    <br>made of LI-0110-132b-158
-                    <br>
-                    <img src="'.base_url() .'assets/images/product.png" class="producttt">
-                    </td>
-                    <td  style="text-align:center">200 m</td>
-                    <td  style="text-align:center">500,000</td>
-                    <td  style="text-align:center">100,000,000</td>
-                </tr>
-                <tr>
-                    <td style="text-align:center">3</td>
-                    <td>LLEITER PA 10MF / 132, width 158cm
-                    <br>made of LI-0110-132b-158
-                    <br>
-                    <img src="'.base_url() .'assets/images/product.png" class="producttt">
-                    </td>
-                    <td  style="text-align:center">200 m</td>
-                    <td  style="text-align:center">500,000</td>
-                    <td  style="text-align:center">100,000,000</td>
-                </tr>
+                    <td  style="text-align:center">'. $x->item_amount .' '. $x->satuan_produk.'</td>
+                    <td  style="text-align:center">'.number_format($x->selling_price).'</td>
+                    <td  style="text-align:center">'.number_format($x->selling_price * $x->item_amount).'</td>
+                    </tr>';
+                    
+                    $total = $total + ($x->selling_price * $x->item_amount);
+                }
+
+                
+                
+                $content = $content .'
                 <tr>
                     <td colspan="3"></td>
                     <td style="font-weight:bold; text-align:center">TOTAL</td>
-                    <td style="font-weight:bold; text-align:center">203,655,950</td>
+                    <td style="font-weight:bold; text-align:center">'.number_format($total).'</td>
                 </tr>
             </table>
             <br><br>
@@ -137,12 +139,12 @@
                 <tr>
                     <td style="width:15px"></td>
                     <td style="width:15px">•</td>
-                    <td>12 minggu setelah PO dikonfirmasi</td>
+                    <td>'.$quo->durasi_pengiriman.' minggu setelah PO dikonfirmasi</td>
                 </tr>
                 <tr>
                     <td style="width:15px"></td>
                     <td style="width:15px">•</td>
-                    <td>Franco : Gresik</td>
+                    <td>Franco : '.$quo->franco.'k</td>
                 </tr>
                 <tr>
                     <td style="width:15px"></td>
@@ -157,7 +159,7 @@
                 </tr>
                 <tr>
                     <td style="width:15px">2. </td>
-                    <td colspan="2"  style="width:500px">Pembayaran : 2 minggu setelah PO dikonfirmasi</td>
+                    <td colspan="2"  style="width:500px">Pembayaran : '.$quo->durasi_pembayaran.' minggu setelah PO dikonfirmasi</td>
                 </tr>
                 <tr>
                     <td style="width:15px">3. </td>
@@ -165,13 +167,13 @@
                 </tr>
                 <tr>
                     <td style="width:15px">4. </td>
-                    <td colspan="2" style="width:500px">Penawaran kami berlaku sampai dengan tanggal 24 Juni 2019</td>
+                    <td colspan="2" style="width:500px">Penawaran kami berlaku sampai dengan tanggal '.tanggalCantik(date("Y/m/d",strtotime("$quo->dateline_quotation"))).'</td>
                 </tr>
                 <tr>
                     <td></td>
                 </tr>
                 <tr>
-                    <td colspan="3">Demikianlah surat penawaran kami ini, sambil menunggu kabar baik berikutnya dari Ibu.<br>Terima kasih atas perhatiannya.
+                    <td colspan="3">Demikianlah surat penawaran kami ini, sambil menunggu kabar baik berikutnya dari '.$ibubapak[0].'.<br>Terima kasih atas perhatiannya.
                     </td>
                 </tr>
 
@@ -207,4 +209,5 @@
 $pdf->writeHTML($content);
     //$pdf->Write(5, 'Contoh Laporan PDF dengan CodeIgniter + tcpdf');
     $pdf->Output('contoh1.pdf', 'I');
+}
 ?>

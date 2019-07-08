@@ -549,9 +549,22 @@ class Quotation extends CI_Controller{
 
     function quoPdf($id_submit_quotation){
         $where = array(
-
+            "id_submit_quotation" => $id_submit_quotation
         );
-        $this->load->view('crm/quotation/pdf_quotation');
+        
+        $this->load->model('M_pdf_quotation');
+        $quotation = $this->M_pdf_quotation->selectQuotation($where);
+        
+        $perusahaan = $this->M_pdf_quotation->selectPerusahaan($where);
+
+        $itemnya = $this->M_pdf_quotation->selectBarang($where);
+
+        $data = array(
+            "quotation"=> $quotation,
+            "perusahaan" => $perusahaan,
+            "items" => $itemnya,
+        );
+        $this->load->view('crm/quotation/pdf_quotation',$data);
     }
 
 }
