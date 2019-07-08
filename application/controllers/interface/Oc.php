@@ -14,7 +14,7 @@ class Oc extends CI_Controller{
         $data = foreachResult($result,$field,$print);
         echo json_encode($data);
     }  
-    public function getOcItem(){ /*dipake di PO*/ /*dipake di invoice*/
+    public function getOcItem(){ /*dipake di PO*/ /*dipake di invoice*/ /*dipake di od*/
         $this->load->model("Mdquotation_item");
         $this->load->model("Mdod_core");
         $where = array(

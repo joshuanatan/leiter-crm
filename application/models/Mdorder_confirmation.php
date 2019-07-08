@@ -31,7 +31,10 @@ class Mdorder_confirmation extends CI_Model{
         $this->db->order_by("id_submit_oc","DESC");
         return $this->db->get_where("order_confirmation",$where);
     }
-    public function getListOcForOd(){
-        
+    public function getListOcForOd($where){
+        $this->db->join("order_confirmation_metode_pembayaran","order_confirmation_metode_pembayaran.id_submit_oc = order_confirmation.id_submit_oc","inner");
+        $this->db->where("is_ada_transaksi = 1 or (is_ada_transaksi = 0 and status_bayar = 0)",NULL,FALSE);
+        $this->db->where("(is_ada_transaksi2 = 0 and trigger_pembayaran2 = 1 and status_bayar2 = 0) or (is_ada_transaksi2 = 0 and trigger_pembayaran2 = 2 )",NULL,FALSE);
+        return $this->db->get_where("order_confirmation",$where);
     }
 }

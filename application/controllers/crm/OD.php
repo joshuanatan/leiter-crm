@@ -24,6 +24,9 @@ class Od extends CI_Controller{
         $where = array(
             "od" => array(
                 "status_od" => 0
+            ),
+            "oc" => array(
+                "status_aktif_oc" => 0
             )
         );
         $field["od"] = array(
@@ -38,7 +41,7 @@ class Od extends CI_Controller{
         $print["od_item"] = array(
             "id_quotation_item","id_od_item","item_qty"
         );
-        $result["od"] = $this->Mdorder_confirmation->getListOcForOd();
+        $result["od"] = $this->Mdorder_confirmation->getListOcForOd($where["oc"]);
         $data["od"] = foreachMultipleResult($result["od"],$field["od"],$print["od"]);
 
         for($a = 0; $a<count($data["od"]);$a++){
@@ -77,19 +80,32 @@ class Od extends CI_Controller{
     }
     public function create(){
         $where = array(
-            "order_confirmation" => array(
-                "status_oc" => 2,
+            "oc" => array(
+                "status_aktif_oc" => 0
             ),
             "courier" => array(
                 "status_perusahaan" => 0,
                 "peran_perusahaan" => "SHIPPING"
             )
         );
-        $result["order_confirmation"] = selectRow("order_confirmation",$where["order_confirmation"]);
-        $result["courier"] = $this->Mdperusahaan->select($where["courier"]);
-        $data["order_confirmation"] = $result["order_confirmation"]; 
-        $data["courier"] = $result["courier"]; 
-        $data["maxId"] = getMaxId("od_core","id_od",array("bulan_od" => date("m"),"tahun_od" => date("Y")));
+        $result["oc"] = $this->Mdorder_confirmation->getListOcForOd($where["oc"]);
+        $field["oc"] = array(
+            "id_submit_oc", "no_po_customer","id_submit_quotation"
+        );
+        $data["oc"] = foreachMultipleResult($result["oc"],$field["oc"],$field["oc"]);
+        for($a = 0; $a<count($data["oc"]); $a++){
+            $id_submit_request = get1Value("quotation","id_request",array("id_submit_quotation" => $data["oc"][$a]["id_submit_quotation"]));
+            $id_perusahaan = get1Value("price_request", "id_perusahaan",array("id_submit_request" => $id_submit_request));
+            $data["oc"][$a]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $id_perusahaan));
+            $data["oc"][$a]["id_perusahaan"] = $id_perusahaan;
+        }
+
+        $result["courier"] = $this->Mdperusahaan->getListPerusahaan($where["courier"]);
+        $field["courier"] = array(
+            "nama_perusahaan","id_perusahaan"
+        );
+        $data["courier"] = foreachMultipleResult($result["courier"],$field["courier"],$field["courier"]); 
+        $data["maxId"] = getMaxId("od_core","id_od",array("bulan_od" => date("m"),"tahun_od" => date("Y"),"status_aktif_od" => 0));
         $this->req();
         $this->load->view("crm/content-open");
         $this->load->view("crm/od/category-header");

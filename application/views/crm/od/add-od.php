@@ -19,26 +19,26 @@
                                     <input type ="hidden" value = "<?php echo $maxId;?>" name = "id_od" class = "form-control" readonly>
                                 </div>
                                 <div class = "form-group"> <!-- nanti bentuknya nomorquotation/versi -->
-                                    <h5 style = "color:darkgrey; opacity:0.8">Order Confirmation No</h5> 
-                                    <select name = "no_oc" class = "form-control" onchange = "loadPoDetail()" data-plugin = "select2" id = "idpo">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Customer PO No.</h5> 
+                                    <select name = "id_submit_oc" class = "form-control" onchange = "loadPoDetail()" data-plugin = "select2" id = "id_submit_oc">
                                         <option selected>Choose No PO Customer</option>
-                                        <?php foreach($order_confirmation->result() as $a): ?>
-                                        <option value = "<?php echo $a->no_oc;?>"><?php echo $a->no_po_customer;?></option>
-                                        <?php endforeach;?>
+                                        <?php for($a = 0; $a<count($oc); $a++): ?>
+                                        <option value = "<?php echo $oc[$a]["id_submit_oc"];?>"><?php echo $oc[$a]["no_po_customer"];?> - <?php echo $oc[$a]["nama_perusahaan"];?></option>
+                                        <?php endfor;?>
                                     </select>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Courier</h5>
                                     <select name = "courier" class = "form-control" data-plugin = "select2" id = "idcourier">
                                         <option selected>Choose Courier</option>
-                                        <?php foreach($courier->result() as $a): ?>
-                                        <option value = "<?php echo $a->id_perusahaan;?>"><?php echo $a->nama_perusahaan;?></option>
-                                        <?php endforeach;?>
+                                        <?php for($a = 0; $a<count($courier); $a++): ?>
+                                        <option value = "<?php echo $courier[$a]["id_perusahaan"];?>"><?php echo $courier[$a]["nama_perusahaan"];?></option>
+                                        <?php endfor;?>
                                     </select>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Delivery Method</h5>
-                                    <select name = "method" id = "method" class = "form-control namaCust">
+                                    <select data-plugin = "select2" name = "method" id = "method" class = "form-control namaCust">
                                         <option value = "SEA">SEA</option>
                                         <option value = "AIR">AIR</option>
                                         <option value = "LAND">LAND</option>
@@ -70,7 +70,19 @@
                                 
                                 <div class = "form-group col-lg-12">
                                     <div class = "form-group">
-                                        <button type = "submit" class = "col-lg-2 btn btn-outline btn-primary">SUBMIT</button>
+                                        <h5 style = "opacity:0.5">Up CP</h5>
+                                        <input type = "text" class = "form-control">
+                                    </div>
+                                </div>
+                                <div class = "form-group col-lg-12">
+                                    <div class = "form-group">
+                                        <h5 style = "opacity:0.5">Alamat Pengiriman</h5>
+                                        <textarea class = "form-control"></textarea>
+                                    </div>
+                                </div>
+                                <div class = "form-group col-lg-12">
+                                    <div class = "form-group">
+                                        <button type = "submit" class = "col-lg-2 btn btn-sm btn-outline btn-primary">SUBMIT</button>
                                     </div>
                                 </div>
                             </div>
