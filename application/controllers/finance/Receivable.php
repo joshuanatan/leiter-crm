@@ -36,11 +36,26 @@ class Receivable extends CI_Controller{
             )
         );
         $field["invoice"] = array(
-            "id_submit_invoice","no_invoice","id_oc","id_od","nominal_pembayaran","tipe_invoice","kurs_pembayaran","mata_uang","is_ppn","ppn","franco","att","alamat_penagihan","status_lunas","jatuh_tempo","no_rekening","jumlah_box","berat_bersih","berat_kotor","dimensi"
+            "id_submit_invoice","no_invoice","id_submit_oc","id_submit_od","nominal_pembayaran","tipe_invoice","kurs_pembayaran","mata_uang","is_ppn","ppn","franco","att","alamat_penagihan","status_lunas","jatuh_tempo","no_rekening","jumlah_box","berat_bersih","berat_kotor","dimensi"
         );
         $result["invoice"] = $this->Mdinvoice_core->getListInvoice($where["invoice"]);
         $data["invoice"] = foreachMultipleResult($result["invoice"],$field["invoice"],$field["invoice"]);
-
+        for($a = 0; $a<count($data["invoice"]); $a++){
+            switch($data["invoice"][$a]["tipe_invoice"]){
+                case 1:
+                $data["invoice"][$a]["purpose"] = "PELUNASAN UTUH";
+                break;
+                case 2:
+                $data["invoice"][$a]["purpose"] = "PEMBAYARAN DP";
+                break;
+                case 3:
+                $data["invoice"][$a]["purpose"] = "PELUNASAN (BER-DP)";
+                break;
+            }
+            $data["invoice"][$a]["no_oc"] = get1Value("order_confirmation","no_oc",array("id_submit_oc" => $data["invoice"][$a]["id_submit_oc"]));
+            $data["invoice"][$a]["no_po_customer"] = get1Value("order_confirmation","no_po_customer",array("id_submit_oc" => $data["invoice"][$a]["id_submit_oc"]));
+            
+        }
         $this->req();
         $this->load->view("finance/content-open");
         $this->load->view("finance/receivable/category-header");
@@ -58,14 +73,17 @@ class Receivable extends CI_Controller{
         $field["oc"] = array(
             "id_submit_oc","no_po_customer","id_submit_quotation",
         );
-        $result["oc"] = selectRow("order_confirmation",$where["oc"]);
+        $result["oc"] = $this->Mdorder_confirmation->getListOc($where["oc"]);
         $data["oc"] = foreachMultipleResult($result["oc"],$field["oc"],$field["oc"]);
         for($a = 0; $a<count($data["oc"]);$a++){
             $id_submit_request = get1Value("quotation","id_request",array("id_submit_quotation" => $data["oc"][$a]["id_submit_quotation"]));
             $id_cp = get1Value("price_request","id_cp",array("id_submit_request" => $id_submit_request));
             $id_perusahaan = get1Value("price_request","id_perusahaan",array("id_submit_request" => $id_submit_request));
+            $data["oc"][$a]["id_perusahaan"] = $id_perusahaan;
             $data["oc"][$a]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan", array("id_perusahaan" => $id_perusahaan));
             $data["oc"][$a]["nama_cp"] = get1Value("contact_person","nama_cp", array("id_cp" => $id_cp));
+            
+            $data["oc"][$a]["not_new"] = isExistsInTable("invoice_core",array("id_submit_oc" => $data["oc"][$a]["id_submit_oc"],"status_aktif_invoice" => 0));
         }
         $data["maxId"] = getMaxId("invoice_core","id_invoice",array("bulan_invoice" => date("m"),"tahun_invoice" => date("Y"),"status_aktif_invoice" => 0));
 
@@ -102,7 +120,7 @@ class Receivable extends CI_Controller{
             "alamat_penagihan" =>  $this->input->post("alamat_penagihan"),
             "durasi_pembayaran" =>  $this->input->post("durasi_pembayaran"),
             "jatuh_tempo" =>  $this->input->post("jatuh_tempo"),
-            "nominal_pembayaran" =>  splitterMoney($this->input->post("nominal_pembayaran"),","),
+            "nominal_pembayaran" =>  splitterMoney($this->input->post("nominal_pembayaran"),",")+$jumlah_ppn,
             "no_rekening" => $this->input->post("no_rekening"), 
             "jumlah_box" => 0,
             "berat_bersih" => 0,
@@ -129,7 +147,8 @@ class Receivable extends CI_Controller{
             insertRow("invoice_packaging_box",$data);
             $beratBersih += $this->input->post("berat_bersih".$checked);
             $beratKotor += $this->input->post("berat_kotor".$checked);
-            $split_box = explode("*",$this->input->post("dimensi_box".$checked));
+            $split_satuan = explode(" ",$this->input->post("dimensi_box".$checked)); // 8*9*10 m => [8*9*10] [m]
+            $split_box = explode("*",$split_satuan[0]); //8*9*10 => [8][9][10]
             $volumeBox = 1;
             for($a = 0; $a<count($split_box); $a++){
                 $volumeBox *= $split_box[$a];
@@ -156,99 +175,16 @@ class Receivable extends CI_Controller{
     public function edit($i){
 
     }
-    public function word(){
-        header("Content-type:application/vnd.ms-word");
-        header("Content-Disposition:attachment;Filename=invoice.doc");
-        header("Pragma: no-cache");
-        header("Expires:0");
-        $this->load->view("finance/print/invoice");
-    }
-    public function pdf(){
-        $this->load->view("finance/pdf/invoice");
-    }
-    public function getMetodePembayaran(){
+    public function pay($id_submit_invoice){
         $where = array(
-            "id_oc" => $this->input->post("id_oc")
-        );
-        $result = $this->Mdmetode_pembayaran->select($where);
-        $count = 0;
-        foreach($result->result() as $a){
-            $array[$count] = array(
-                "id_metode_pembayaran" => $a->id_metode_pembayaran,
-                "persentase" => $a->persentase_pembayaran,
-                "nominal" => $a->nominal_pembayaran,
-                "trigger_pembayaran" => $a->trigger_pembayaran
-            );
-            $count++;
-        }
-        echo json_encode($array);
-    }
-    public function getDetailMetodePembayaran(){
-        $where = array(
-            "id_metode_pembayaran" => $this->input->post("id_metode_pembayaran")
-        );
-        $result = $this->Mdmetode_pembayaran->select($where);
-        $data = array();
-        foreach($result->result() as $a){
-            $data = array(
-                "persentase" => $a->persentase_pembayaran,
-                "nominal" => $a->nominal_pembayaran,
-                "trigger_pembayaran" => $a->trigger_pembayaran
-            );
-        }
-        echo json_encode($data);
-    }
-    public function getPaymentWithOd(){
-        $where = array(
-            "invoice_core.id_oc" => $this->input->post("id_oc"),
-            "invoice_core.use_od" => $this->input->post("use_od")
-        );
-        $data = array(
-            "historyOd" => array(),
-        );
-        $result = $this->Mdinvoice_core->select($where);
-        $count = 0;
-        $data = array();
-        foreach($result->result() as $a){
-            $data["historyOd"][$count] = array(
-                "no_invoice" => $a->no_invoice,
-                "id_invoice" => $a->id_invoice,
-                "no_od" => get1Value("od_core","no_od",array("id_od" => $a->id_od)),
-                "persentase" => $a->persen_pembayaran,
-                "nominal" => $a->nominal_pembayaran,
-                "mata_uang" => $a->mata_uang,
-                "tanggal_keluar" => $a->tgl_invoice_add
-            );
-            $count++;
-        }
-        
-        echo json_encode($data);
-    }
-    public function getDp(){
-        $where = array(
-            "id_oc" => $this->input->post("id_oc"),
-            "status_invoice" => 1,
-            "trigger_pembayaran" => 1
-        );
-        $result = $this->Mdmetode_pembayaran->select($where);
-        $data = array();
-        foreach($result->result() as $a){
-            $data["persentase"] = $a->persentase_pembayaran;
-            $data["nominal"] = number_format($a->nominal_pembayaran);
-            $data["total"] = number_format(100*splitterMoney($data["nominal"],",")/$data["persentase"]);
-            $data["clean_nominal"] = splitterMoney($data["nominal"],",");
-        }
-        echo json_encode($data);
-
-    }
-    public function pay($id_tagihan){
-        $where = array(
-            "id_tagihan" => $id_tagihan
+            "id_submit_invoice" => $id_submit_invoice
         );
         $data = array(
             "status_lunas" => 0
         );
-        updateRow("tagihan",$data,$where);
+        updateRow("invoice_core",$data,$where);
+
+
         /*masukin ke pembayaran*/
         $config["upload_path"] = "./assets/dokumen/buktibayar/";
         $config["allowed_types"] = "gif|jpg|jpeg|pdf|png";
@@ -272,16 +208,34 @@ class Receivable extends CI_Controller{
             "total_pembayaran" => splitterMoney($this->input->post("nominal_pembayaran"),","),
             "metode_pembayaran" => $this->input->post("metode_pembayaran"),
             "jenis_pembayaran" => "MASUK",
-            "kategori_pembayaran" => 3
+            "kategori_pembayaran" => "PELUNASAN CUSTOMER"
         );
         insertRow("pembayaran",$data);
-    
+
+        /*sekarang yang di metode pembayaran*/
+        $tipe_invoice = get1Value("invoice_core","tipe_invoice",array("id_submit_invoice" => $id_submit_invoice));
+        switch($tipe_invoice){
+            case 1: //invoice tipe 1 dan 3 adalah pelunasan
+            case 3: //invoice tipe 1 dan 3 adalah pelunasan
+            $data["status_bayar"] = array(
+                "status_bayar2" => 0
+            );
+            break;
+            case 2: //invoice tipe 2 adalah DP
+            $data["status_bayar"] = array(
+                "status_bayar" => 0
+            );
+        }
+        $id_submit_oc =  get1Value("invoice_core","id_submit_oc",array("id_submit_invoice" => $id_submit_invoice)); //cari id_submit_oc dari tabel invoice
+
+        updateRow("order_confirmation_metode_pembayaran",$data["status_bayar"],array("id_submit_oc" => $id_submit_oc)); //update oc_metode_pembayaran menggunakan id_submit_oc
+
         /*masukin ke tax */
         /*pajak pasti masukan karena ini kita bayar ke supplier*/
         $tagihan = splitterMoney($this->input->post("nominal_pembayaran"),",");
 
 
-        if(get1Value("tagihan","is_ppn",array("id_tagihan" => $id_tagihan)) == 0){
+        if(get1Value("invoice_core","is_ppn",array("id_submit_invoice" => $id_submit_invoice)) == 0){ //kalau ada PPn
             $data = array(
                 "bulan_pajak" => date("m"),
                 "tahun_pajak" => date("Y"),
@@ -293,6 +247,16 @@ class Receivable extends CI_Controller{
             );
             insertRow("tax",$data);
         }
+        redirect("finance/receivable");
+    }
+    public function delete($id_submit_invoice){
+        $where = array(
+            "id_submit_invoice" => $id_submit_invoice
+        );
+        $data = array(
+            "status_aktif_invoice" => 1
+        );
+        updateRow("invoice_core",$data,$where);
         redirect("finance/receivable");
     }
     function invoicePdf(){

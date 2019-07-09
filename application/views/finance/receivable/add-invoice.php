@@ -27,7 +27,7 @@
                                     <select onchange = "oc_detail()" id = "id_submit_oc" name = "id_submit_oc" class = "form-control" data-plugin ="select2">
                                         <option value = "0" disabled selected>Choose Customer PO</option>
                                         <?php for($a = 0;  $a<count($oc); $a++): ?>
-                                        <option value = "<?php echo $oc[$a]["id_submit_oc"];?>"><?php echo $oc[$a]["no_po_customer"];?> - <?php echo $oc[$a]["nama_perusahaan"];?></option>
+                                        <option value = "<?php echo $oc[$a]["id_submit_oc"];?>-<?php echo $oc[$a]["id_perusahaan"];?>"><?php echo $oc[$a]["no_po_customer"];?> - <?php echo $oc[$a]["nama_perusahaan"];?> <?php if($oc[$a]["not_new"] == 1):?><span>[ NEW ]</span><?php endif;?></option>
                                         <?php endfor;?>
                                     </select>
                                 </div>
@@ -38,10 +38,7 @@
                                     </select>
                                 </div>
                                 
-                                <div class = "form-group "> <!-- nanti bentuknya nomorquotation/versi -->
-                                    <h5 style = "color:darkgrey; opacity:0.8">Total Tagihan PO</h5> <!-- ngejax di item --> 
-                                    <input type = "text" class = "form-control" id = "total_tagihan_po" readonly>
-                                </div>
+                                
 
                                 <div class = "form-group dp" style = "display:none"> <!-- nanti bentuknya nomorquotation/versi -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Dp (%)</h5> <!-- ngejax di item --> 
@@ -52,12 +49,12 @@
                                     <input type = "text" class = "form-control" id = "persen_sisa" readonly>
                                 </div>
                                 
-                                <div class = "form-group dp pelunasan" style = "display:none"> <!-- nanti bentuknya nomorquotation/versi -->
+                                <div class = "form-group dp" style = "display:none"> <!-- nanti bentuknya nomorquotation/versi -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Total Dp</h5> <!-- ngejax di item --> 
                                     <input type = "text" class = "form-control" id = "total_dp" readonly>
                                 </div>
-                                <div class = "form-group dp pelunasan" style = "display:none"> <!-- nanti bentuknya nomorquotation/versi -->
-                                    <h5 style = "color:darkgrey; opacity:0.8">Total Dp</h5> <!-- ngejax di item --> 
+                                <div class = "form-group pelunasan" style = "display:none"> <!-- nanti bentuknya nomorquotation/versi -->
+                                    <h5 style = "color:darkgrey; opacity:0.8">Total Sisa</h5> <!-- ngejax di item --> 
                                     <input type = "text" class = "form-control" id = "total_sisa" readonly>
                                 </div>
                                 
@@ -67,9 +64,9 @@
                             </div>
                             <!-- fungsi -->
                             <div class="tab-pane" id="items" role="tabpanel">
-                                <div class = "form-group"> <!-- nanti bentuknya nomorquotation/versi -->
+                                <div class = "form-group" id = "od_container"> <!-- nanti bentuknya nomorquotation/versi -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Order Delivery No</h5> <!-- ngejax di item --> 
-                                    <select class = "form-control" name = "id_od" id = "od" onchange = "loadOdItem()">
+                                    <select data-plugin = "select2" class = "form-control" name = "id_od" id = "od" onchange = "loadOdItem()">
                                         <option>Choose Order Delivery No</option>
                                     </select>
                                 </div>
@@ -91,7 +88,7 @@
                                 </div>
                                 <div class = "form-group">
                                     <div class="checkbox-custom checkbox-primary">
-                                        <input type="checkbox" id="inputUnchecked" name = "ppn[]">
+                                        <input type="checkbox" id="inputUnchecked" checked name = "ppn[]">
                                         <label for="inputUnchecked">PPN</label>
                                     </div>
                                 </div>
@@ -99,7 +96,15 @@
                                     <a href = "<?php echo base_url();?>finance/receivable" class = "btn btn-sm btn-primary btn-outline col-lg-2">BACK</a>
                                 </div>
                             </div>
-                            <div class="tab-pane" id="document" role="tabpanel">    
+                            <div class="tab-pane" id="document" role="tabpanel">   
+                                <div class = "form-group"> <!-- nanti bentuknya nomorquotation/versi -->
+                                    <h5 style = "color:darkgrey; opacity:0.8">Harga Total PO</h5> <!-- ngejax di item --> 
+                                    <input type = "text" class = "form-control" id = "total_tagihan_po" readonly>
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Sub Total</h5>
+                                    <input name = "nominal_pembayaran" id = "nominal_pembayaran" readonly type ="text" class = "form-control namaCust">
+                                </div> 
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Franco Penyerahan</h5>
                                     <input name = "franco" id = "franco" type ="text" class = "form-control namaCust">
@@ -121,10 +126,6 @@
                                     <input name = "jatuh_tempo" id = "jatuh_tempo" type ="date" class = "form-control namaCust">
                                 </div>
                                 <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Total Pembayaran</h5>
-                                    <input name = "nominal_pembayaran" id = "nominal_pembayaran" type ="text" class = "form-control namaCust">
-                                </div>
-                                <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Rekening Pembayaran</h5>
                                     <input name = "no_rekening" id = "no_rekening" type ="text" value = "489O-335-581" class = "form-control namaCust">
                                 </div>
@@ -133,8 +134,8 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="box" role="tabpanel">
-                                <div class = "form-group col-lg-12 method2">
-                                    <table data-plugin = "dataTable" class = "table table-stripped col-lg-12" id="paymentWithOd" style = "width:100%;">
+                                <div class = "form-group col-lg-12 method2" id="boxes">
+                                    <table data-plugin = "dataTable" class = "table table-stripped col-lg-12" style = "width:100%;">
                                         <thead>
                                             <th>#</th>
                                             <th>Berat Bersih</th>

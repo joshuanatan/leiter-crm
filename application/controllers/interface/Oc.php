@@ -1,17 +1,14 @@
 <?php
 class Oc extends CI_Controller{ 
-    public function loadPoDetail($no_po_customer){
+    public function getOcDetail($id_submit_oc){
         $where = array(
-            "no_po_customer" => $no_po_customer
+            "id_submit_oc" => $id_submit_oc
         );
         $field = array(
-            "no_po_customer","no_quotation","versi_quotation"
-        );
-        $print = array(
-            "no_po_customer","no_quotation","versi_quotation"
+            "no_oc","id_submit_oc","no_po_customer","tgl_po_customer","total_oc_price","up_cp","durasi_pengiriman","durasi_pembayaran","metode_pengiriman","franco"
         );
         $result = selectRow("order_confirmation",$where);
-        $data = foreachResult($result,$field,$print);
+        $data = foreachResult($result,$field,$field);
         echo json_encode($data);
     }  
     public function getOcItem(){ /*dipake di PO*/ /*dipake di invoice*/ /*dipake di od*/

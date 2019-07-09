@@ -22,40 +22,33 @@ class Od extends CI_Controller{
         
         echo json_encode($data);
     }
-    public function getOdItemPayment(){
+    public function getOdItemPayment(){ //kepake di invoice
         $total = 0;
         $where = array(
-            "id_od" => $this->input->post("id_od") /*1 od bisa banyak item*/
+            "id_submit_od" => $this->input->post("id_submit_od") /*1 od bisa banyak item*/
         );
         //echo $this->input->post("id_od");
         $field = array(
-            "id_od_item","id_od","id_quotation_item","item_qty"
-        );
-        $print = array(
-            "id_od_item","id_od","id_quotation_item","item_qty"
+            "id_od_item","id_submit_od","id_oc_item","item_qty"
         );
         $result = selectRow("od_item",$where);
-        $data = foreachMultipleResult($result,$field,$print); /*1 od bisa banyak item*/
-        $no_oc = get1Value("od_core","no_oc",$where);
-        for($a = 0; $a<count($data);$a++){ /*puter setiap item*/
+        $data["items"] = foreachMultipleResult($result,$field,$field); /*1 od bisa banyak item*/
+
+        for($a = 0; $a<count($data["items"]);$a++){ /*puter setiap item*/
             /*ambil harga, item, dan nama produk tiap item*/
-            $sellingPrice = get1Value("quotation_item","final_selling_price",array("id_quotation_item" => $data[$a]["id_quotation_item"]));
-            $finalAmount = get1Value("quotation_item","final_amount",array("id_quotation_item" => $data[$a]["id_quotation_item"]));
-            $persenSisa = get1Value("metode_pembayaran","persentase_pembayaran2",array("no_oc" => $no_oc));
-
-            $id_produk = get1Value("quotation_item","id_request_item",array("id_quotation_item" => $data[$a]["id_quotation_item"]));
-            $nama_produk = get1Value("price_request_item","nama_produk",array("id_request_item" => $id_produk));
-            /*untuk nama produk*/
-
-            /*butuh yang barang yang dianter*/
-            $item_qty = get1Value("od_item","item_qty",array("id_od" => $this->input->post("id_od"))); /* cari OD based on id_quotation dan id_od */
-            $data[$a]["nama_produk"] = $nama_produk;
-            $data[$a]["item_qty"] = $item_qty."/".$finalAmount;
-            $data[$a]["selling_price"] = number_format($sellingPrice);
-            $data[$a]["final_price"] = number_format((($item_qty*$sellingPrice)/$finalAmount)*($persenSisa/100));
-            $total += (($item_qty*$sellingPrice)/$finalAmount)*($persenSisa/100);
+            $data["items"][$a]["nama_produk"] = nl2br(get1Value("order_confirmation_item","nama_oc_item",array("id_oc_item" => $data["items"][$a]["id_oc_item"])));
+            $data["items"][$a]["final_amount"] = get1Value("order_confirmation_item","final_amount",array("id_oc_item" => $data["items"][$a]["id_oc_item"]));
+            $data["items"][$a]["satuan_produk"] = get1Value("order_confirmation_item","satuan_produk",array("id_oc_item" => $data["items"][$a]["id_oc_item"]));
+            $data["items"][$a]["final_selling_price"] = get1Value("order_confirmation_item","final_selling_price",array("id_oc_item" => $data["items"][$a]["id_oc_item"])); //ini satuan, hati2
+            $data["items"][$a]["final_price"] = $data["items"][$a]["final_selling_price"]*$data["items"][$a]["item_qty"]; //yang dikirim * harga satuan
+            $total += $data["items"][$a]["final_price"]; //belom di potong DP
         }
-        $this->session->totalinvoice = $total;
+        $id_submit_oc = get1Value("od_core","id_submit_oc",$where);
+        $persentase_pembayaran2 = get1Value("order_confirmation_metode_pembayaran","persentase_pembayaran2",array("id_submit_oc" => $id_submit_oc)); //mencari persen sisa
+        $data["harga_po"] = $total;
+        $total = $total * $persentase_pembayaran2 / 100; //dikali persen sisa
+
+        $data["subtotal"] = $total;
         echo json_encode($data);
     }
     /*************************************************************** */
@@ -66,6 +59,21 @@ class Od extends CI_Controller{
         $jumlah_terkirim = 0;
         $jumlah_terkirim = getTotal("od_item","item_qty",$where);
         echo json_encode(array("jumlah_terkirim" => $jumlah_terkirim));
+    }
+    public function getListOdForPelunasan(){
+        $where = array(
+            "id_submit_oc" => $this->input->post("id_submit_oc")
+        );
+        $field = array(
+            "no_od","id_submit_od","date_od_add"
+        );
+        $result = selectRow("od_core",$where);
+        $data = foreachMultipleResult($result,$field,$field);
+        for($a = 0; $a<count($data);$a++){
+            $date = date_create($data[$a]["date_od_add"]);
+            $data[$a]["date_od_add"] = date_format($date,"d-m-Y");
+        }
+        echo json_encode($data);
     }
 }
 ?>

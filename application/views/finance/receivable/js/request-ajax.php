@@ -1,6 +1,10 @@
 <script>
 function oc_detail(){ /*kepake di add invoice*/
     var id_submit_oc = $("#id_submit_oc").val(); //id_submit_invoice
+    var split = id_submit_oc.split("-");
+    var id_submit_oc = split[0];
+    var id_perusahaan = split[1];
+    console.log(id_perusahaan);
     /*Cek Payment Type*/
     /*Cek Detail Perusahaan Customer Type*/
     $.ajax({
@@ -37,14 +41,22 @@ function oc_detail(){ /*kepake di add invoice*/
             $("#persen_sisa").val(100-respond["persentase_pembayaran"]);
         }
     });
-    /*
     $.ajax({
-        url:"<?php echo base_url();?>interface/oc/getOcPaymentMethod/"+id_submit_oc,
+        url:"<?php echo base_url();?>interface/perusahaan/getDetailPerusahaan/"+id_perusahaan,
         dataType:"JSON",
         success:function(respond){
-            $("#nopo").val(respond["no_po_customer"]);
+            $("#alamat_penagihan").val(respond["alamat_perusahaan"]);
         }
-    });*/
+    });
+    $.ajax({
+        url:"<?php echo base_url();?>interface/oc/getOcDetail/"+id_submit_oc,
+        dataType:"JSON",
+        success:function(respond){
+            $("#franco").val(respond["franco"]);
+            $("#durasi_pembayaran").val(respond["durasi_pembayaran"]);
+            $("#att").val(respond["up_cp"]);
+        }
+    })
 }
 </script>
 <script>
@@ -57,16 +69,57 @@ function changePayment(){
 
         case 1://pelunasan no dp
         case 3: //pelunasan with dp
+        
+            $(".dp").css("display","none"); //munculin yang berkaitan dengan DP
             $.ajax({ 
             url:"<?php echo base_url();?>interface/oc/getOcPaymentMethod/"+id_submit_oc,
             dataType:"JSON",
             success:function(respond){
                 if(respond["trigger_pembayaran2"] == "2"){ //nunggu OD
                     $("#od").css("display","block");
+                    $("#boxes").css("display","block");
+                    $.ajax({
+                        url:"<?php echo base_url();?>interface/od/getListOdForPelunasan",
+                        data:{id_submit_oc:id_submit_oc},
+                        type:"POST",
+                        dataType:"JSON",
+                        success:function(respondOd){
+                            var html = "<option>Choose OD</option>";
+                            for(var od = 0; od < respondOd.length; od++){
+                                html += "<option value = '"+respondOd[od]["id_submit_od"]+"'>"+respondOd[od]["no_od"]+"</option>";
+                            }
+                            $("#od").html(html);
+                        }
+                    });
                     //nanti nembak ke OD, pake id_submit_oc
                 }
-                else{ //tidak tunggu OD
-                    $("#od").css("display","none");
+                else{ //tidak tunggu OD4
+                    $("#od").css("display","none");//hilangkan dropdown OD
+                    $("#od_container").css("display","none");
+                    $("#boxes").css("display","none");
+                    $.ajax({ //dp
+                        url:"<?php echo base_url();?>interface/oc/getOcItem",
+                        data:{id_submit_oc:id_submit_oc},
+                        type:"POST",
+                        dataType:"JSON",
+                        success:function(respond){
+                            var html = "";
+                            var total_tagihan = 0;
+                            for(var a = 0; a<respond.length; a++){
+                                var final_selling = parseInt(respond[a]["final_selling_price"])*parseInt(respond[a]["final_amount"]);
+                                total_tagihan += final_selling;
+                                html += "<tr><td>"+(a+1)+"</td><td>"+respond[a]["nama_oc_item"]+"</td><td>"+respond[a]["final_amount"]+" "+respond[a]["satuan_produk"]+"</td><td>"+addCommas(respond[a]["final_selling_price"])+"</td><td>"+addCommas(final_selling)+"</td></tr>";
+                            }
+                            $("#list_item_oc").html(html); //masukin item Oc ke tabel di items
+                            $("#total_tagihan_po").val(addCommas(total_tagihan)); //masukin value tagihan semuanya di total tagihan
+
+                            $(".pelunasan").css("display","block"); //munculin yang berkaitan dengan DP
+                            
+                            var persen_sisa = $("#persen_sisa").val(); //ngambil persen DP
+                            $("#total_sisa").val(addCommas(total_tagihan*parseInt(persen_sisa)/100)); //dapetin berapa DPnya
+                            $("#nominal_pembayaran").val(addCommas(total_tagihan*parseInt(persen_sisa)/100)); //siap masuk DB
+                        }
+                    });    
                     //ambil tagihan sisa
                 }
             }
@@ -74,7 +127,9 @@ function changePayment(){
         break;
         case 2: //dp
             $("#od").css("display","none");//hilangkan dropdown OD
-                $.ajax({ //dp
+            $("#od_container").css("display","none");
+            $("#boxes").css("display","none");
+            $.ajax({ //dp
                 url:"<?php echo base_url();?>interface/oc/getOcItem",
                 data:{id_submit_oc:id_submit_oc},
                 type:"POST",
@@ -92,6 +147,7 @@ function changePayment(){
                     $("#total_tagihan_po").val(addCommas(total_tagihan)); //masukin value tagihan semuanya di total tagihan
 
                     $(".dp").css("display","block"); //munculin yang berkaitan dengan DP
+                    
                     var persen_dp = $("#persen_dp").val(); //ngambil persen DP
                     $("#total_dp").val(addCommas(total_tagihan*parseInt(persen_dp)/100)); //dapetin berapa DPnya
                     $("#nominal_pembayaran").val(addCommas(total_tagihan*parseInt(persen_dp)/100)); //siap masuk DB
@@ -100,6 +156,27 @@ function changePayment(){
         break;
         
     }
+}
+</script>
+<script>
+
+function loadOdItem(){
+    var id_submit_od = $("#od").val();
+    $.ajax({
+        data:{id_submit_od:id_submit_od},
+        type:"POST",
+        dataType:"JSON",
+        url:"<?php echo base_url();?>interface/od/getOdItemPayment",
+        success:function(respond){
+            var html = "";
+            for(var a = 0; a<respond["items"].length; a++){
+                html += "<tr><td>"+(a+1)+"</td><td>"+respond["items"][a]["nama_produk"]+"</td><td>"+respond["items"][a]["item_qty"]+" / "+respond["items"][a]["final_amount"]+" "+respond["items"][a]["satuan_produk"]+"</td><td>"+addCommas(respond["items"][a]["final_selling_price"])+"</td><td>"+addCommas(respond["items"][a]["final_price"])+"</td></tr>";
+            }
+            $("#list_item_oc").html(html); 
+            $("#nominal_pembayaran").val(addCommas(respond["subtotal"]));
+            $("#total_tagihan_po").val(addCommas(respond["harga_po"]));
+        }
+    })
 }
 </script>
 <script>
@@ -179,20 +256,3 @@ function detailOd(){
 }
 </script>
 <script>
-function loadOdItem(){
-    var id_od = $("#od").val();
-    $.ajax({
-        data:{id_od:id_od},
-        type:"POST",
-        dataType:"JSON",
-        url:"<?php echo base_url();?>interface/od/getOdItemPayment",
-        success:function(respond){
-            var html = "";
-            for(var a = 0; a<respond.length; a++){
-                html += "<tr><td>"+(a+1)+"</td><td>"+respond[a]["nama_produk"]+"</td><td>"+respond[a]["item_qty"]+"</td><td>"+respond[a]["selling_price"]+"</td><td>"+respond[a]["final_price"]+"</td></tr>";
-            }
-            $("#paymentWithOdT1").html(html); 
-        }
-    })
-}
-</script>
