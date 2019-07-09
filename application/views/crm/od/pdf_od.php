@@ -66,13 +66,19 @@
 
                     $baris="$y->nama_oc_item";
                     $split = explode("\n",$baris);
+
+                    $kata='';
+                    for($k=0; $k<count($split) ; $k++){
+                        $kata = $kata .'<br> '.$split[$k];
+                    }
+
                     $jumlah_baris = count($split);
                     $line_height = round($jumlah_baris * 14);
 
                     $content=$content.'<tr>
                     <td style="text-align:center; line-height:'.$line_height.'px;">'.$y->item_qty.'</td>
                     <td style="text-align:center; line-height:'.$line_height.'px;">'.$y->satuan_produk.'</td>
-                    <td>'.nl2br($baris).'
+                    <td>'.$kata.'
                     </td>
                 </tr>';
                 }

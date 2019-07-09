@@ -1,3 +1,4 @@
+<?php foreach($order_confirmation->result() as $occ):?>
 <?php
     $pdf = new Pdf_oc('P', 'mm', 'A4', true, 'UTF-8', false);
     $pdf->SetTitle('ORDER CONFIRMATION');
@@ -21,27 +22,32 @@
         <body>
             <table>
                 <tr>
-                    <td style="width:300">PT INDONESIA CHEMICAL ALUMINA</td>
-                    <td style="text-align:right; width:200">Kamis, 23 Juni 2019</td>
+                    <td style="width:300">';
+                    
+                    foreach($perusahaan->result() as $peru){
+                        $content=$content. $peru->nama_perusahaan;
+
+                        $content =$content.'</td>
+                    <td style="text-align:right; width:200">'.hariCantik(date("N",strtotime($occ->date_oc_add))) . ", " . tanggalCantik(date("Y/m/d",strtotime($occ->date_oc_add))).'</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td>Jl. Trans Kalimantan, Dusun Piasak</td>
+                    <td>'.nl2br($peru->alamat_perusahaan).'
+                    
+                    </td>
                 </tr>
-                <tr>
-                    <td>Desa Pedalaman Kecamatan Tayan Hilir</td>
-                </tr>
-                <tr>
-                    <td>Kabupaten Sanggau, Kalimantan Barat 78564</td>
-                </tr>
-            </table>
+            </table>';
+        }
+            $content=$content.'
+                    
+                    
 <br><br>
             <table>
                 <tr>
                     <th style="text-align:center; font-size:22pt; font-weight:bold;text-decoration:underline"><b>Order Konfirmasi</b></th>
                 </tr>
                 <tr>
-                    <th style="text-align:center; font-size:16pt;">LI20190613</th>
+                    <th style="text-align:center; font-size:16pt;">'.$occ->no_oc.'</th>
                 </tr>
             </table>
             <br><br><br>
@@ -52,7 +58,7 @@
                 </tr>
                 <tr>
                     <td>Nomor PO</td>
-                    <td>: 5000005898</td>
+                    <td>: '.$occ->no_po_customer.'</td>
                 </tr>
             </table>
             <br>
@@ -65,7 +71,7 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td>Kami mengucapkan terima kasih untuk order yang telah kami terima pada tanggal 31 Mei 2019.
+                    <td>Kami mengucapkan terima kasih untuk order yang telah kami terima pada tanggal '.tanggalCantik(date("Y/m/d",strtotime($occ->tgl_po_customer))).'.
                     </td>
                 </tr>    
                 <tr>
@@ -82,56 +88,69 @@
                     <th style="text-align:center; font-weight:bold; width:100px;">Harga (IDR)</th>
                     <th style="text-align:center; font-weight:bold; width:100px;">Jumlah (IDR)</th>
                 </tr>';
+                $jum = 0;
+                foreach($barang->result() as $brnya){
+                    $baris="$brnya->nama_oc_item";
 
-                
-                $baris="LEITER FILTER CLOTH
-                GRADE : LI-01-PP520-KS
-                MATERIAL : POLYPROPYLENE
-                TYPE OF FIBERS : MONO
-                WITH (cm) : 218/234
-                WEIGHT (g/m2) : 280
-                AIR PERMEABILITY (L/dm2/mnt) ; 6.6-25
-                BUBBLE POINT (um) ; 25c";
+                    $split = explode("\n",$baris);
+                    $jumlah_baris = count($split);
+                    $line_height = round($jumlah_baris * 12.5);
 
-                $split = explode("\n",$baris);
-                $jumlah_baris = count($split);
-                $line_height = round($jumlah_baris * 12.5);
+                    $content= $content.'
+                    <tr>
+                        <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">1</td>
+                        <td>'. nl2br($baris).'
+                        </td>
+                        <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'. $brnya->final_amount. ' '.$brnya->satuan_produk .'</td>
+                        <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.number_format($brnya->final_selling_price).'</td>
+                        <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.number_format($brnya->final_selling_price*$brnya->final_amount).'</td>
+                    </tr>';
+                    $jum=$jum+ ($brnya->final_selling_price * $brnya->final_amount);
+                }
 
-                $content= $content.'
+                $content=$content.'
                 <tr>
-                    <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">1</td>
-                    <td>'. nl2br($baris).'
-                    </td>
-                    <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">320pcs</td>
-                    <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">3,500,000</td>
-                    <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">1,120,000,000</td>
+                    <td colspan="4" style="text-align:right"><b>TOTAL</b></td>
+                    <td style="text-align:center"><b>'.number_format($jum).'</b></td>
                 </tr>
+                ';
+                
+                
+
+                $content=$content.'
             </table>
             <br><br><br>
             <table>
                 <tr>
                     <td style="width: 190px">Penyerahan Barang</td>
                     <td style="width:6px;">: </td>
-                    <td style="width:340px;">Franco Tayan</td>
+                    <td style="width:340px;">Franco '.$occ->franco.'</td>
                 </tr>
                 <tr>
                     <td>Metode Pengiriman</td>
                     <td style="width:6px;">: </td>
-                    <td>BY SEA</td>
+                    <td>BY '.$occ->metode_pengiriman.'</td>
                 </tr>
                 <tr>
                     <td>Tanggal Penyerahan Barang</td>
                     <td style="width:6px;">: </td>
-                    <td>12 minggu, setelah PO dikonfirmasi</td>
-                </tr>
-                <tr>
-                    <td>Pembayaran</td>
-                    <td style="width:6px;">: </td>
-                    <td>50% DP diawal
-                    <br>50% pelunasan dalam 2 minggu setelah barang & invoice diterima
-                    </td>
-                </tr>
-            </table>
+                    <td>'.$occ->durasi_pengiriman.' minggu, setelah PO dikonfirmasi</td>
+                </tr>';
+
+                foreach($metodebayar->result() as $cc){
+                    $content=$content.'
+                    <tr>
+                        <td>Pembayaran</td>
+                        <td style="width:6px;">: </td>
+                        <td>'.$cc->persentase_pembayaran.'% DP diawal
+                        <br>'.$cc->persentase_pembayaran2.'% pelunasan dalam '.$occ->durasi_pembayaran.' minggu setelah barang & invoice diterima
+                        </td>
+                    </tr>
+                </table>';
+                }
+               
+
+            $content=$content.'
             <br>
             <br>
             <br>
@@ -146,7 +165,7 @@
 $pdf->writeHTML($content);
 
 $pdf->SetFont('MonotypeCorsivai','', 24);
-$content = 'Darus';
+$content = $this->session->nama_user;
 $pdf->writeHTML($content); //yang keluarin html nya. Setfont nya harus diatas kontennya
 
 $pdf->SetFont('Tahoma','', 10.5);
@@ -157,3 +176,4 @@ $pdf->writeHTML($content);
     //$pdf->Write(5, 'Contoh Laporan PDF dengan CodeIgniter + tcpdf');
     $pdf->Output('contoh1.pdf', 'I');
 ?>
+<?php endforeach;?>

@@ -438,8 +438,24 @@ class Oc extends CI_Controller{
         echo json_encode($data);
     }
 
-    function ocPdf(){
-        $this->load->view('crm/oc/pdf_oc');
+    function ocPdf($id_submit_oc){
+        $where=array(
+            "id_submit_oc"=>$id_submit_oc,
+        );
+
+        $this->load->model('M_pdf_oc');
+        $oc = $this->M_pdf_oc->selectOC($where);
+        $perusahaan =$this->M_pdf_oc->selectPerusahaan($where);
+        $barang = $this->M_pdf_oc->selectBarang($where);
+        $metodebayar = $this->M_pdf_oc->selectMetodeBayar($where);
+
+        $data=array(
+            "order_confirmation"=>$oc,
+            "perusahaan"=>$perusahaan,
+            "barang"=>$barang,
+            "metodebayar"=>$metodebayar,
+        );
+        $this->load->view('crm/oc/pdf_oc',$data);
     }
 }
 ?>
