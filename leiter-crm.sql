@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 06, 2019 at 02:48 PM
+-- Generation Time: Jul 09, 2019 at 04:26 AM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.10
 
@@ -117,7 +117,7 @@ CREATE TABLE `harga_courier` (
   `id_request_item` int(11) NOT NULL COMMENT 'butuh tau barangnya apa trus anter ke customer',
   `id_perusahaan` varchar(200) DEFAULT NULL,
   `id_cp` varchar(200) DEFAULT NULL,
-  `harga_produk` int(11) DEFAULT NULL COMMENT 'harga courier',
+  `harga_produk` decimal(10,2) DEFAULT NULL COMMENT 'harga courier',
   `vendor_price_rate` int(11) DEFAULT NULL,
   `mata_uang` varchar(10) DEFAULT NULL,
   `notes` text,
@@ -133,11 +133,19 @@ CREATE TABLE `harga_courier` (
 --
 
 INSERT INTO `harga_courier` (`id_harga_courier`, `id_request_item`, `id_perusahaan`, `id_cp`, `harga_produk`, `vendor_price_rate`, `mata_uang`, `notes`, `attachment`, `metode_pengiriman`, `status_aktif_harga_shipping`, `id_user_add`, `date_harga_shipping_add`) VALUES
-(2, 88, '21', '35', 3300000, 1, 'IDR', '', '-', 'AIR', NULL, NULL, '2019-07-04 20:33:49'),
-(3, 89, '21', '35', 3500000, 1, 'IDR', 'pake tiki', 'tempat11.jpeg', 'LAND', NULL, NULL, '2019-07-04 20:44:53'),
-(4, 87, '21', '35', 3240, 14500, 'USD', 'testnotes\r\nnotes\r\nnotes lagi', 'tempat13.jpeg', 'LAND', NULL, NULL, '2019-07-04 23:41:04'),
-(5, 99, '44', '54', 3400, 4500, 'USD', '', '-', 'AIR', NULL, NULL, '2019-07-05 09:06:56'),
-(6, 100, '44', '54', 5400, 14500, 'USD', '', '-', 'SEA', NULL, NULL, '2019-07-05 10:52:10');
+(2, 88, '21', '35', '33000.00', 1, 'IDR', '', '-', 'AIR', NULL, NULL, '2019-07-04 20:33:49'),
+(3, 89, '21', '35', '35000.00', 1, 'IDR', 'pake tiki', 'tempat11.jpeg', 'LAND', NULL, NULL, '2019-07-04 20:44:53'),
+(4, 87, '21', '35', '32.00', 14500, 'USD', 'testnotes\r\nnotes\r\nnotes lagi', 'tempat13.jpeg', 'LAND', NULL, NULL, '2019-07-04 23:41:04'),
+(5, 99, '44', '54', '34.00', 4500, 'USD', '', '-', 'AIR', NULL, NULL, '2019-07-05 09:06:56'),
+(6, 100, '44', '54', '54.00', 14500, 'USD', '', '-', 'SEA', NULL, NULL, '2019-07-05 10:52:10'),
+(7, 101, '44', '54', '54600.00', 1, 'IDR', '', '-', 'LAND', NULL, NULL, '2019-07-06 20:05:40'),
+(8, 102, '44', '54', '567900.00', 1, 'IDR', '', '-', 'AIR', NULL, NULL, '2019-07-06 20:06:32'),
+(9, 103, '21', '35', '45.00', 14500, 'USD', '', '-', 'SEA', NULL, NULL, '2019-07-06 20:22:02'),
+(10, 104, '21', '35', '145.00', 14500, 'USD', '', '-', 'SEA', NULL, NULL, '2019-07-07 14:59:20'),
+(11, 105, '44', '54', '55.00', 14500, 'USD', '', '-', 'SEA', NULL, NULL, '2019-07-07 15:01:31'),
+(12, 108, '21', '35', '1780000.00', 1, 'IDR', '', '-', 'LAND', NULL, NULL, '2019-07-08 21:09:07'),
+(13, 109, '43', '53', '5600000.00', 1, 'IDR', '', '-', 'LAND', NULL, NULL, '2019-07-08 21:14:23'),
+(14, 110, '44', '54', '6500000.00', 1, 'IDR', '', '-', 'LAND', NULL, NULL, '2019-07-08 21:15:38');
 
 -- --------------------------------------------------------
 
@@ -150,7 +158,7 @@ CREATE TABLE `harga_shipping` (
   `id_harga_vendor` int(11) NOT NULL COMMENT 'butuh tau dari vendor apa ',
   `id_perusahaan` varchar(200) DEFAULT NULL,
   `id_cp` varchar(200) DEFAULT NULL,
-  `harga_produk` int(11) DEFAULT NULL COMMENT 'harga shipper',
+  `harga_produk` decimal(10,2) DEFAULT NULL COMMENT 'harga shipping per satuan',
   `vendor_price_rate` int(11) DEFAULT NULL,
   `mata_uang` varchar(10) DEFAULT NULL,
   `notes` text,
@@ -166,11 +174,21 @@ CREATE TABLE `harga_shipping` (
 --
 
 INSERT INTO `harga_shipping` (`id_harga_shipping`, `id_harga_vendor`, `id_perusahaan`, `id_cp`, `harga_produk`, `vendor_price_rate`, `mata_uang`, `notes`, `attachment`, `metode_pengiriman`, `status_aktif_harga_shipping`, `id_user_add`, `date_harga_shipping_add`) VALUES
-(1, 1, '21', '35', 4400, 14500, 'USD', 'ship\r\nAPA SAYA BILANG', 'tempat14.jpeg', 'LAND', NULL, NULL, '2019-07-04 20:11:17'),
-(2, 4, '21', '35', 4300, 14500, 'USD', '', '-', 'AIR', NULL, NULL, '2019-07-04 20:33:18'),
-(3, 5, '21', '35', 4500, 14500, 'USD', '', '-', 'AIR', NULL, NULL, '2019-07-04 20:42:29'),
-(4, 7, '21', '35', 4300, 1300, 'USD', '', '-', 'SEA', NULL, NULL, '2019-07-05 09:10:52'),
-(5, 8, '21', '35', 4500, 1400, 'USD', 'hehe', '-', 'LAND', NULL, NULL, '2019-07-05 10:51:45');
+(1, 1, '21', '35', '44.00', 14500, 'USD', 'ship\r\nAPA SAYA BILANG', 'tempat14.jpeg', 'LAND', NULL, NULL, '2019-07-04 20:11:17'),
+(2, 4, '21', '35', '43.00', 14500, 'USD', '', '-', 'AIR', NULL, NULL, '2019-07-04 20:33:18'),
+(3, 5, '21', '35', '45.00', 14500, 'USD', '', '-', 'AIR', NULL, NULL, '2019-07-04 20:42:29'),
+(4, 7, '21', '35', '43.00', 1300, 'USD', '', '-', 'SEA', NULL, NULL, '2019-07-05 09:10:52'),
+(5, 8, '21', '35', '45.00', 1400, 'USD', 'hehe', '-', 'LAND', NULL, NULL, '2019-07-05 10:51:45'),
+(6, 9, '44', '54', '23.00', 14500, 'USD', '', '-', 'LAND', NULL, NULL, '2019-07-06 20:02:38'),
+(7, 10, '21', '35', '45.00', 14500, 'USD', '', '-', 'LAND', NULL, NULL, '2019-07-06 20:04:52'),
+(8, 10, '21', '35', '56.00', 14500, 'USD', '', '-', 'AIR', NULL, NULL, '2019-07-06 20:05:14'),
+(9, 11, '43', '53', '456000.00', 1, 'IDR', '', '-', 'AIR', NULL, NULL, '2019-07-06 20:06:16'),
+(10, 12, '44', '54', '13.00', 14500, 'USD', '', '-', 'LAND', NULL, NULL, '2019-07-06 20:21:46'),
+(11, 13, '21', '35', '45.00', 14500, 'USD', '', '-', 'AIR', NULL, NULL, '2019-07-07 15:00:20'),
+(12, 14, '21', '35', '56.00', 14500, 'USD', '', '-', 'SEA', NULL, NULL, '2019-07-07 15:01:07'),
+(13, 16, '21', '35', '340.00', 14500, 'USD', '', '-', 'AIR', NULL, NULL, '2019-07-08 21:08:42'),
+(14, 17, '44', '54', '3400.00', 14500, 'USD', '', '-', 'AIR', NULL, NULL, '2019-07-08 21:14:03'),
+(15, 18, '21', '35', '5400.00', 14500, 'USD', '', '-', 'LAND', NULL, NULL, '2019-07-08 21:15:06');
 
 -- --------------------------------------------------------
 
@@ -183,7 +201,7 @@ CREATE TABLE `harga_vendor` (
   `id_request_item` int(11) DEFAULT NULL,
   `id_perusahaan` varchar(200) DEFAULT NULL COMMENT 'nahan value harganya pake ini aja karena 1 item 1 perusahaan sama',
   `id_cp` varchar(200) DEFAULT NULL COMMENT 'merujuk pada vendor mana yang ditanya terkait barang tersebut',
-  `harga_produk` int(11) DEFAULT NULL,
+  `harga_produk` decimal(10,2) DEFAULT NULL,
   `vendor_price_rate` int(11) DEFAULT '1',
   `mata_uang` varchar(100) DEFAULT 'USD',
   `nama_produk_vendor` text,
@@ -203,13 +221,22 @@ CREATE TABLE `harga_vendor` (
 --
 
 INSERT INTO `harga_vendor` (`id_harga_vendor`, `id_request_item`, `id_perusahaan`, `id_cp`, `harga_produk`, `vendor_price_rate`, `mata_uang`, `nama_produk_vendor`, `notes`, `attachment`, `status_harga_vendor`, `id_user_add`, `date_harga_vendor_add`, `id_user_edit`, `date_harga_vendor_edit`, `id_user_delete`, `date_harga_vendor_delete`) VALUES
-(1, 87, '23', '39', 2700, 14300, 'USD', 'test vendor name\r\nke enter', 'testnotes\r\nyehe', 'tempat2.jpeg', 1, NULL, '2019-07-04 19:29:25', 0, NULL, 0, NULL),
-(2, 87, '20', '33', 2700, 14500, 'USD', NULL, 'kriim bisanya utuh', 'tempat1.jpeg', 1, NULL, '2019-07-04 20:04:42', 0, NULL, 0, NULL),
-(4, 88, '23', '39', 3400, 14500, 'USD', NULL, '', '-', 1, NULL, '2019-07-04 20:32:57', 0, NULL, 0, NULL),
-(5, 89, '23', '39', 4000, 16800, 'EUR', NULL, 'barangnya gede', 'tempat33.jpeg', 1, NULL, '2019-07-04 20:42:05', 0, NULL, 0, NULL),
-(6, NULL, '41', '52', 12000, 4500, 'USD', 'ITEM2\r\nnestle aqua', 'ini untuk 1000 lusin', '-', 1, NULL, '2019-07-05 09:01:11', 0, NULL, 0, NULL),
-(8, 100, '41', '52', 4300, 1200, 'USD', 'INi item 2\r\nngomongnya abc', 'hehe', '-', 1, NULL, '2019-07-05 10:51:11', 0, NULL, 0, NULL),
-(9, 99, '23', '39', 1200, 14500, 'USD', 'test barang yang \r\nsudah di hapus', 'notes1', 'tempat27.jpeg', 1, NULL, '2019-07-05 11:15:03', 0, NULL, 0, NULL);
+(1, 87, '23', '39', '27.00', 14300, 'USD', 'test vendor name\r\nke enter', 'testnotes\r\nyehe', 'tempat2.jpeg', 1, NULL, '2019-07-04 19:29:25', 0, NULL, 0, NULL),
+(2, 87, '20', '33', '27.00', 14500, 'USD', NULL, 'kriim bisanya utuh', 'tempat1.jpeg', 1, NULL, '2019-07-04 20:04:42', 0, NULL, 0, NULL),
+(4, 88, '23', '39', '34.00', 14500, 'USD', NULL, '', '-', 1, NULL, '2019-07-04 20:32:57', 0, NULL, 0, NULL),
+(5, 89, '23', '39', '40.00', 16800, 'EUR', NULL, 'barangnya gede', 'tempat33.jpeg', 1, NULL, '2019-07-04 20:42:05', 0, NULL, 0, NULL),
+(6, NULL, '41', '52', '120.00', 4500, 'USD', 'ITEM2\r\nnestle aqua', 'ini untuk 1000 lusin', '-', 1, NULL, '2019-07-05 09:01:11', 0, NULL, 0, NULL),
+(8, 100, '41', '52', '43.00', 1200, 'USD', 'INi item 2\r\nngomongnya abc', 'hehe', '-', 1, NULL, '2019-07-05 10:51:11', 0, NULL, 0, NULL),
+(9, 99, '23', '39', '12.00', 14500, 'USD', 'test barang yang \r\nsudah di hapus', 'notes1', 'tempat27.jpeg', 1, NULL, '2019-07-05 11:15:03', 0, NULL, 0, NULL),
+(10, 101, '41', '52', '123.40', 1234, 'USD', 'item1\r\ndesc1\r\nsupplier name', '', '-', 1, NULL, '2019-07-06 20:04:32', 0, NULL, 0, NULL),
+(11, 102, '23', '39', '324234.34', 1, 'IDR', 'asdf', '', '-', 1, NULL, '2019-07-06 20:05:56', 0, NULL, 0, NULL),
+(12, 103, '23', '39', '123.40', 14500, 'USD', 'Item Produk\r\nproduct vendor', '', '-', 1, NULL, '2019-07-06 20:21:31', 0, NULL, 0, NULL),
+(13, 104, '41', '52', '123450.00', 1, 'IDR', 'Nestle 600 Ml', '', '-', 1, NULL, '2019-07-07 14:58:27', 0, NULL, 0, NULL),
+(14, 105, '23', '39', '54.00', 14500, 'USD', 'Aqua 600 Ml', '', '-', 1, NULL, '2019-07-07 15:00:49', 0, NULL, 0, NULL),
+(15, NULL, '41', '52', '100.00', 14500, 'USD', 'Test 1\r\nDesc 1\r\nbarang vendor 1', '', '-', 1, NULL, '2019-07-08 21:05:15', 0, NULL, 0, NULL),
+(16, 108, '41', '52', '100.00', 14500, 'USD', 'test1\r\ndesc1\r\nvendor 1', '', '-', 1, NULL, '2019-07-08 21:08:05', 0, NULL, 0, NULL),
+(17, 109, '41', '52', '300.00', 14500, 'USD', 'test2\r\ndesc2\r\nbarang vendor2', '', '-', 1, NULL, '2019-07-08 21:13:39', 0, NULL, 0, NULL),
+(18, 110, '23', '39', '5460.00', 14500, 'USD', 'test3\r\ndesc3\r\ninsert3\r\nvendor3', '', '-', 1, NULL, '2019-07-08 21:14:48', 0, NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -218,21 +245,31 @@ INSERT INTO `harga_vendor` (`id_harga_vendor`, `id_request_item`, `id_perusahaan
 --
 
 CREATE TABLE `invoice_core` (
+  `id_submit_invoice` int(11) NOT NULL,
   `id_invoice` int(11) NOT NULL,
-  `no_invoice` varchar(100) NOT NULL,
-  `id_oc` int(11) NOT NULL,
-  `id_od` int(11) DEFAULT '0' COMMENT '0 kalau ga pake od',
   `bulan_invoice` varchar(10) NOT NULL,
   `tahun_invoice` int(11) NOT NULL,
+  `no_invoice` varchar(100) NOT NULL,
+  `id_submit_oc` int(11) NOT NULL,
+  `id_submit_od` int(11) DEFAULT '0' COMMENT '0 kalau ga pake od',
   `nominal_pembayaran` bigint(20) NOT NULL,
   `kurs_pembayaran` int(11) NOT NULL DEFAULT '1',
   `mata_uang` varchar(10) NOT NULL DEFAULT 'IDR',
   `is_ppn` int(11) NOT NULL,
-  `ppn` int(11) NOT NULL,
+  `ppn` bigint(20) NOT NULL,
   `franco` varchar(200) NOT NULL,
-  `up` varchar(200) NOT NULL,
+  `att` varchar(200) NOT NULL,
+  `alamat_penagihan` text NOT NULL,
+  `tipe_invoice` int(11) NOT NULL COMMENT '1 = pelunasan total tanpa dp. 2:invoice dp, 3 transaksi pelunasan yang sudah dp',
   `status_lunas` int(11) NOT NULL DEFAULT '1' COMMENT '1: blum lunas, 0 lunas',
   `status_aktif_invoice` int(11) NOT NULL DEFAULT '1' COMMENT '1: blum aktif, 0 aktif',
+  `jatuh_tempo` date NOT NULL,
+  `durasi_pembayaran` varchar(200) NOT NULL COMMENT 'xx minggu',
+  `no_rekening` int(11) NOT NULL COMMENT 'langsung keisi didepan',
+  `jumlah_box` int(11) NOT NULL,
+  `berat_bersih` decimal(10,5) NOT NULL,
+  `berat_kotor` decimal(10,5) NOT NULL,
+  `dimensi` varchar(200) NOT NULL,
   `id_user_add` int(11) DEFAULT '0',
   `tgl_invoice_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_user_edit` int(11) NOT NULL DEFAULT '0',
@@ -245,10 +282,22 @@ CREATE TABLE `invoice_core` (
 -- Dumping data for table `invoice_core`
 --
 
-INSERT INTO `invoice_core` (`id_invoice`, `no_invoice`, `id_oc`, `id_od`, `bulan_invoice`, `tahun_invoice`, `nominal_pembayaran`, `kurs_pembayaran`, `mata_uang`, `is_ppn`, `ppn`, `franco`, `up`, `status_lunas`, `status_aktif_invoice`, `id_user_add`, `tgl_invoice_add`, `id_user_edit`, `tgl_invoice_edit`, `id_user_delete`, `tgl_user_delete`) VALUES
-(1, '190601/LI/06/19', 3, 2, '06', 2019, 124667, 1, 'IDR', 0, 11333, '', '', 1, 0, 11, '2019-06-27 14:40:31', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(2, '190602/LI/06/19', 3, 0, '06', 2019, 187000, 1, 'IDR', 0, 17000, 'jakarta', 'finance department', 1, 0, 11, '2019-06-27 14:40:56', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(3, '190603/LI/06/19', 3, 0, '06', 2019, 187000, 1, 'IDR', 0, 17000, '', '', 1, 0, 11, '2019-06-27 16:30:18', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+INSERT INTO `invoice_core` (`id_submit_invoice`, `id_invoice`, `bulan_invoice`, `tahun_invoice`, `no_invoice`, `id_submit_oc`, `id_submit_od`, `nominal_pembayaran`, `kurs_pembayaran`, `mata_uang`, `is_ppn`, `ppn`, `franco`, `att`, `alamat_penagihan`, `tipe_invoice`, `status_lunas`, `status_aktif_invoice`, `jatuh_tempo`, `durasi_pembayaran`, `no_rekening`, `jumlah_box`, `berat_bersih`, `berat_kotor`, `dimensi`, `id_user_add`, `tgl_invoice_add`, `id_user_edit`, `tgl_invoice_edit`, `id_user_delete`, `tgl_user_delete`) VALUES
+(4, 1, '07', 2019, '190701/LI/07/19', 5, 0, 18, 1, 'IDR', 0, 1818000000, 'Surabaya', 'Bapak Johny', 'Kembang Molek IX\r\nKembangan Puri Indah', 2, 1, 1, '2019-07-29', '8 Minggu', 489, 0, '0.00000', '0.00000', '-', 11, '2019-07-08 14:50:08', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `invoice_packaging_box`
+--
+
+CREATE TABLE `invoice_packaging_box` (
+  `id_packaging` int(11) NOT NULL,
+  `id_submit_invoice` int(11) NOT NULL,
+  `berat_bersih` int(11) NOT NULL,
+  `berat_kotor` int(11) NOT NULL,
+  `dimensi_box` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -868,14 +917,25 @@ CREATE TABLE `od_core` (
   `no_od` varchar(100) NOT NULL,
   `id_courier` int(11) NOT NULL,
   `delivery_method` varchar(100) NOT NULL,
+  `alamat_pengiriman` text NOT NULL,
+  `up_cp` varchar(200) NOT NULL,
   `status_od` int(11) NOT NULL DEFAULT '0',
-  `id_user_add` int(11) NOT NULL,
+  `status_aktif_od` int(11) NOT NULL DEFAULT '0',
+  `id_user_add` int(11) DEFAULT NULL,
   `date_od_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_user_edit` int(11) NOT NULL DEFAULT '0',
   `date_od_edit` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `id_user_delete` int(11) NOT NULL DEFAULT '0',
   `date_od_delete` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `od_core`
+--
+
+INSERT INTO `od_core` (`id_submit_od`, `id_submit_oc`, `id_od`, `bulan_od`, `tahun_od`, `no_od`, `id_courier`, `delivery_method`, `alamat_pengiriman`, `up_cp`, `status_od`, `status_aktif_od`, `id_user_add`, `date_od_add`, `id_user_edit`, `date_od_edit`, `id_user_delete`, `date_od_delete`) VALUES
+(2, '5', 2, '07', 2019, '1907002/LI/SJ/19', 21, 'SEA', 'Kembang Molek IX', 'Bapak Johny', 0, 0, NULL, '2019-07-09 01:09:14', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(3, '8', 3, '07', 2019, '1907003/LI/SJ/19', 21, 'AIR', 'Kembangan Permata Buana', 'Bapak Johny', 0, 0, NULL, '2019-07-09 07:36:42', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -886,9 +946,20 @@ CREATE TABLE `od_core` (
 CREATE TABLE `od_item` (
   `id_od_item` int(11) NOT NULL,
   `id_submit_od` varchar(200) NOT NULL,
-  `id_quotation_item` int(11) NOT NULL COMMENT 'butuh ambil nama barang leiter',
+  `id_oc_item` int(11) NOT NULL COMMENT 'butuh ambil nama barang leiter',
   `item_qty` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `od_item`
+--
+
+INSERT INTO `od_item` (`id_od_item`, `id_submit_od`, `id_oc_item`, `item_qty`) VALUES
+(4, '2', 9, 12),
+(5, '2', 10, 100),
+(6, '3', 13, 23),
+(7, '3', 14, 45),
+(8, '3', 15, 34);
 
 -- --------------------------------------------------------
 
@@ -905,7 +976,13 @@ CREATE TABLE `order_confirmation` (
   `no_oc` varchar(100) NOT NULL,
   `no_po_customer` varchar(200) NOT NULL,
   `tgl_po_customer` date NOT NULL,
-  `status_oc` int(11) NOT NULL DEFAULT '0' COMMENT 'kalau 0, masih oc, 1: delete, 2 sudah po, 3 udah oc',
+  `total_oc_price` bigint(20) NOT NULL,
+  `up_cp` varchar(200) NOT NULL,
+  `durasi_pengiriman` varchar(200) NOT NULL,
+  `durasi_pembayaran` varchar(200) NOT NULL,
+  `metode_pengiriman` varchar(200) NOT NULL,
+  `franco` varchar(200) NOT NULL,
+  `status_oc` int(11) NOT NULL DEFAULT '0' COMMENT '0 setelah submit',
   `status_aktif_oc` int(11) NOT NULL DEFAULT '0' COMMENT '0 aktif, 1, tidak aktof',
   `id_user_add` int(11) DEFAULT NULL,
   `date_oc_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -914,6 +991,15 @@ CREATE TABLE `order_confirmation` (
   `id_user_delete` int(11) NOT NULL DEFAULT '0',
   `date_oc_delete` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `order_confirmation`
+--
+
+INSERT INTO `order_confirmation` (`id_submit_oc`, `id_submit_quotation`, `id_oc`, `bulan_oc`, `tahun_oc`, `no_oc`, `no_po_customer`, `tgl_po_customer`, `total_oc_price`, `up_cp`, `durasi_pengiriman`, `durasi_pembayaran`, `metode_pengiriman`, `franco`, `status_oc`, `status_aktif_oc`, `id_user_add`, `date_oc_add`, `id_user_edit`, `date_oc_edit`, `id_user_delete`, `date_oc_delete`) VALUES
+(5, '24', 1, '07', 2019, 'LI20190001', 'PO/CUST/002/2019', '2019-07-16', 4860000, 'Bapak Johny Gunawan', '12', '8', 'AIR', 'Medan', 0, 0, 11, '2019-07-07 08:58:39', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(7, '27', 2, '07', 2019, 'LI20190002', 'PO/CUST/002/123', '2019-07-23', 1000000000, 'Bapak Johny', '8-12 minggu', '8-12 ', 'SEA', 'Surabaya', 0, 0, 11, '2019-07-07 15:12:11', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(8, '30', 3, '07', 2019, 'LI20190003', 'PO/2019/VII/CUST', '2019-07-09', 12750000000, 'Bapak Johny', '9-12', '9-12', 'SEA', 'Surabaya', 0, 0, NULL, '2019-07-08 21:57:24', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -925,26 +1011,56 @@ CREATE TABLE `order_confirmation_item` (
   `id_oc_item` int(11) NOT NULL,
   `id_submit_oc` int(11) NOT NULL,
   `id_quotation_item` int(11) NOT NULL COMMENT 'butuh data nama barang leiter',
-  `final_amount` int(11) NOT NULL COMMENT 'pake split untuk dapetin jumlah item',
-  `satuan_produk` int(11) NOT NULL COMMENT 'pake split untuk dapetin satuan item',
-  `final_selling_price` int(11) NOT NULL
+  `nama_oc_item` text NOT NULL,
+  `final_amount` bigint(20) NOT NULL COMMENT 'pake split untuk dapetin jumlah item',
+  `satuan_produk` varchar(200) NOT NULL COMMENT 'pake split untuk dapetin satuan item',
+  `final_selling_price` int(11) NOT NULL COMMENT 'harga peritem',
+  `status_oc_item` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `order_confirmation_item`
+--
+
+INSERT INTO `order_confirmation_item` (`id_oc_item`, `id_submit_oc`, `id_quotation_item`, `nama_oc_item`, `final_amount`, `satuan_produk`, `final_selling_price`, `status_oc_item`) VALUES
+(9, 5, 34, 'item1\r\ndesc1\r\nproduk oc edit 1', 123, 'Kg', 20000, 0),
+(10, 5, 35, 'item2\r\ndesc2\r\nproduk oc edit 2', 120, 'Meter', 20000, 0),
+(12, 7, 39, 'Air Mineral Aqua\r\n600Ml\r\nproduk leiter 2', 120, 'Lusin', 1000000000, 0),
+(13, 8, 52, 'Test 1\r\ndesc1\r\nedit 1\r\noc item 1', 50, 'Pcs', 15000000, 0),
+(14, 8, 53, 'test2\r\ndesc2\r\nedit 2\r\nleiter 2\r\noc item 2', 50, 'Meter', 60000000, 0),
+(15, 8, 54, 'test3\r\ndesc3\r\ninsert3\r\nleiter 3\r\noc item 3', 50, 'Pcs', 180000000, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `packaging_box`
+-- Table structure for table `order_confirmation_metode_pembayaran`
 --
 
-CREATE TABLE `packaging_box` (
-  `id_packaging` int(11) NOT NULL,
-  `id_submit_invoice` int(11) NOT NULL,
-  `berat_bersih` int(11) NOT NULL,
-  `berat_kotor` int(11) NOT NULL,
-  `dimensi_p` int(11) NOT NULL,
-  `dimensi_l` int(11) NOT NULL,
-  `dimensi_t` int(11) NOT NULL
+CREATE TABLE `order_confirmation_metode_pembayaran` (
+  `id_metode_pembayaran` int(11) NOT NULL,
+  `id_submit_oc` varchar(200) NOT NULL,
+  `persentase_pembayaran` int(11) NOT NULL,
+  `nominal_pembayaran` bigint(20) NOT NULL COMMENT 'udah total semua tagihan',
+  `trigger_pembayaran` int(11) NOT NULL COMMENT '0: gakpake, kalau persennya 0;1: sesudah OC; 2: setelah OD;',
+  `status_bayar` int(11) NOT NULL DEFAULT '1' COMMENT '0: sudah dibayar, 1 belum dibayar,',
+  `is_ada_transaksi` int(11) NOT NULL COMMENT '0, ada transaksi; 1 tidak ada transaksi',
+  `persentase_pembayaran2` int(11) DEFAULT NULL,
+  `nominal_pembayaran2` bigint(20) DEFAULT NULL COMMENT 'udah total semua tagihan',
+  `trigger_pembayaran2` int(11) NOT NULL COMMENT '0: gakpake, kalau persennya 0;1: sesudah OC; 2: setelah OD;',
+  `status_bayar2` int(11) NOT NULL DEFAULT '1' COMMENT '0: sudah dibayar, 1 belum dibayar',
+  `is_ada_transaksi2` int(11) NOT NULL COMMENT '0, ada transaksi; 1 tidak ada transaksi',
+  `kurs` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `order_confirmation_metode_pembayaran`
+--
+
+INSERT INTO `order_confirmation_metode_pembayaran` (`id_metode_pembayaran`, `id_submit_oc`, `persentase_pembayaran`, `nominal_pembayaran`, `trigger_pembayaran`, `status_bayar`, `is_ada_transaksi`, `persentase_pembayaran2`, `nominal_pembayaran2`, `trigger_pembayaran2`, `status_bayar2`, `is_ada_transaksi2`, `kurs`) VALUES
+(13, '5', 50, 2430000, 1, 1, 0, 50, 2430000, 2, 1, 0, 'IDR'),
+(14, '6', 50, 500000000, 1, 1, 0, 50, 500000000, 2, 1, 0, 'IDR'),
+(15, '7', 50, 500000000, 1, 1, 0, 50, 500000000, 2, 1, 0, 'IDR'),
+(16, '8', 0, 0, 1, 1, 1, 100, 12750000000, 2, 1, 0, 'IDR');
 
 -- --------------------------------------------------------
 
@@ -1018,7 +1134,7 @@ INSERT INTO `perusahaan` (`id_perusahaan`, `nama_perusahaan`, `nofax_perusahaan`
 (18, 'PT Adil Makmur Fajar', '12345678', 'Jl. Industri Raya No. 1 Km. 21, \r\nDesa Budimulya, Kec. Cikupa, \r\nTangerang 15710', 'Jl. Industri Raya No. 1 Km. 21, \r\nDesa Budimulya, Kec. Cikupa, \r\nTangerang 15710', '5963470-71', 'CUSTOMER', 'Food', 0, 0, 11, '2019-06-11 23:33:10', 11, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
 (19, 'PT Agarindo Bogatama', '12345678', 'Jelambar Selatan II No. 4, \r\nGedung Agar-agar', 'Jelambar Selatan II No. 4, \r\nGedung Agar-agar', '569 66930', 'CUSTOMER', 'Food', 0, 0, 11, '2019-06-11 23:56:55', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (20, 'SEFAR SINGAPORE PTE LTD', '12345678', '8 Kallang Avenue #04-03 Aperia Tower 1 \r\nSINGAPORE 339509 ', '-', '+65 6299 9092 ', 'PRODUK', '-', 0, 0, 11, '2019-06-12 09:41:26', 11, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
-(21, 'Cargo-partner Logistics Pte. Ltd.', '12345678', '300 Tampines Avenue 5 #07-04 Income @ Tampines Junction SG-529653 Singapore Singapore', '300 Tampines Avenue 5 #07-04 Income @ Tampines Junction SG-529653 Singapore Singapore', '+65 6578 5094', 'SHIPPING', 'Glass Expert Shipper', 0, 0, 11, '2019-06-12 13:56:46', 11, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
+(21, 'Cargo-partner Logistics Pte. Ltd.', '12345678', '300 Tampines Avenue 5 #07-04 Income \r\n@ Tampines Junction SG-529653 \r\nSingapore Singapore', '300 Tampines Avenue 5 #07-04 Income \r\n@ Tampines Junction SG-529653 \r\nSingapore Singapore', '+65 6578 5094', 'SHIPPING', 'Glass Expert Shipper', 0, 0, 11, '2019-06-12 13:56:46', 11, '0000-00-00 00:00:00', 11, '0000-00-00 00:00:00'),
 (22, 'PT Example', '12345678', 'Kembang Molek IX\r\nKembangan Selatan\r\n11610', 'Kembang Molek IX\r\nKembangan Selatan\r\n11610', '54808080', 'CUSTOMER', 'Sugar ', 0, 0, 11, '2019-06-14 15:18:37', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (23, 'PT Product Vendor', '12345678', 'Alamat 1\r\nalamt 2', 'Alamat 1\r\nalamt 2', '08980980', 'PRODUK', 'Machine', 0, 0, 11, '2019-06-14 15:21:16', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (39, 'Perusahaan Baru', '-', 'alamat perusahaan baru\r\ndekat perusahaan\r\nsebelah indomaret', 'alamat perusahaan baru\r\ndekat perusahaan2\r\nsebelah alfamart', '-', 'CUSTOMER', 'food', 0, 1, 0, '2019-07-04 09:24:10', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
@@ -1090,22 +1206,38 @@ INSERT INTO `pib` (`id_pib`, `no_pib`, `tgl_pib_masuk`, `ppn_impor`, `pph_impor`
 
 CREATE TABLE `po_core` (
   `id_submit_po` int(11) NOT NULL,
+  `id_submit_oc` int(11) NOT NULL,
   `id_po` int(11) NOT NULL COMMENT 'untuk versi setiap bulan',
   `bulan_po` varchar(20) NOT NULL,
   `tahun_po` int(11) NOT NULL,
   `no_po` varchar(100) NOT NULL,
   `id_supplier` varchar(100) NOT NULL,
+  `id_cp_supplier` int(11) NOT NULL,
   `id_shipper` int(11) NOT NULL,
+  `id_cp_shipper` int(11) NOT NULL,
   `shipping_method` varchar(100) NOT NULL,
+  `shipping_term` text NOT NULL,
+  `requirement_date` date NOT NULL,
+  `destination` varchar(200) NOT NULL,
   `total_supplier_payment` int(11) NOT NULL COMMENT 'sebelum di submit, dijumlahin dulu supaya ga repot ngitung2 lagi',
-  `status_po` int(11) NOT NULL DEFAULT '0',
-  `id_user_add` int(11) NOT NULL,
+  `mata_uang_pembayaran` varchar(200) NOT NULL,
+  `status_aktif_po` int(11) NOT NULL DEFAULT '0',
+  `id_user_add` int(11) DEFAULT NULL,
   `date_po_core_add` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_user_edit` int(11) NOT NULL DEFAULT '0',
   `date_po_core_edit` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `id_user_delete` int(11) NOT NULL DEFAULT '0',
   `date_po_core_delete` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `po_core`
+--
+
+INSERT INTO `po_core` (`id_submit_po`, `id_submit_oc`, `id_po`, `bulan_po`, `tahun_po`, `no_po`, `id_supplier`, `id_cp_supplier`, `id_shipper`, `id_cp_shipper`, `shipping_method`, `shipping_term`, `requirement_date`, `destination`, `total_supplier_payment`, `mata_uang_pembayaran`, `status_aktif_po`, `id_user_add`, `date_po_core_add`, `id_user_edit`, `date_po_core_edit`, `id_user_delete`, `date_po_core_delete`) VALUES
+(1, 7, 1, '07', 2019, 'LI-001/PO/VII/2019/018', '20', 33, 21, 35, 'SEA', 'Use Plastic Packaging and Box Packaging', '2019-07-31', 'Japan', 0, 'USD', 1, 11, '2019-07-08 06:53:18', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(2, 5, 2, '07', 2019, 'LI-002/PO/VII/2019/018', '23', 39, 21, 35, 'AIR', 'Tolong jangan dilipat', '2019-08-03', 'JAKARTA', 0, 'IDR', 0, 11, '2019-07-08 09:54:39', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(3, 8, 3, '07', 2019, 'LI-003/PO/VII/2019/022', '23', 39, 44, 54, 'LAND', 'Pake Packaging Kain dan Bubble', '2019-08-02', 'Japan', 0, 'IDR', 0, NULL, '2019-07-08 22:04:19', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1116,11 +1248,24 @@ CREATE TABLE `po_core` (
 CREATE TABLE `po_item` (
   `id_po_item` int(11) NOT NULL,
   `id_submit_po` int(11) NOT NULL,
-  `id_request_item` int(11) NOT NULL COMMENT 'dijoin ke harga_vendor untuk dapet namanya',
+  `id_oc_item` int(11) NOT NULL,
+  `nama_produk_vendor` text NOT NULL COMMENT 'dijoin ke harga_vendor untuk dapet namanya',
   `harga_item` int(11) NOT NULL,
   `jumlah_item` int(11) NOT NULL COMMENT 'pake split untuk dapetin jumlah item',
   `satuan_item` varchar(200) NOT NULL COMMENT 'pake split untuk dapetin satuan item'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `po_item`
+--
+
+INSERT INTO `po_item` (`id_po_item`, `id_submit_po`, `id_oc_item`, `nama_produk_vendor`, `harga_item`, `jumlah_item`, `satuan_item`) VALUES
+(2, 1, 12, 'Aqua Botol\r\n600 Ml', 450000, 150, 'Lusin'),
+(5, 2, 9, 'Pasir bangunan\r\nTiga roda', 435000000, 150, 'Kg'),
+(6, 2, 10, 'Plastik kresek hitam\r\nuntuk sampah biasanya', 200000000, 180, 'Meter'),
+(12, 3, 13, 'test1\r\ndesc1\r\nedit1\r\nvendor item 1', 10000000, 70, 'Pcs'),
+(13, 3, 14, 'test2\r\ndesc2\r\nedit2\r\nvendor item 2', 30000000, 80, 'Meter'),
+(14, 3, 15, 'test3\r\ndesc3\r\nedit3\r\nvendor item 3', 100000000, 70, 'Pcs');
 
 -- --------------------------------------------------------
 
@@ -1157,7 +1302,12 @@ CREATE TABLE `price_request` (
 INSERT INTO `price_request` (`id_submit_request`, `id_request`, `bulan_request`, `tahun_request`, `no_request`, `id_perusahaan`, `id_cp`, `franco`, `untuk_stock`, `tgl_dateline_request`, `status_buat_quo`, `status_aktif_request`, `status_request`, `id_user_add`, `date_request_add`, `id_user_edit`, `date_request_edit`, `id_user_delete`, `date_request_delete`) VALUES
 (1, 1, '07', '2019', 'LI-001/RFQ/VII/2019', 39, 51, 'Surabaya', 1, '2019-07-19', 0, 0, 3, 11, '2019-07-04 09:36:00', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
 (15, 2, '07', '2019', 'LI-002/RFQ/VII/2019', 19, 31, 'Surabaya', 1, '2020-12-23', 1, 1, 0, 11, '2019-07-04 10:36:02', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
-(16, 3, '07', '2019', 'LI-003/RFQ/VII/2019', 19, 31, 'Surabaya', 1, '2019-07-31', 1, 0, 1, 11, '2019-07-05 08:58:31', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
+(16, 3, '07', '2019', 'LI-003/RFQ/VII/2019', 19, 31, 'Surabaya', 1, '2019-07-31', 1, 0, 3, 11, '2019-07-05 08:58:31', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(17, 4, '07', '2019', 'LI-004/RFQ/VII/2019', 18, 30, 'Surabaya', 1, '2019-07-19', 1, 0, 3, 11, '2019-07-06 20:01:30', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(18, 5, '07', '2019', 'LI-005/RFQ/VII/2019', 18, 32, 'Surabaya', 1, '2019-07-09', 1, 0, 3, 11, '2019-07-06 20:20:43', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(19, 6, '07', '2019', 'LI-006/RFQ/VII/2019', 39, 51, 'Surabaya', 1, '2019-07-31', 1, 1, 0, NULL, '2019-07-07 14:55:50', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(20, 7, '07', '2019', 'LI-007/RFQ/VII/2019', 18, 30, 'Surabaya', 1, '2019-07-18', 1, 0, 3, 11, '2019-07-07 14:57:23', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00'),
+(21, 8, '07', '2019', 'LI-008/RFQ/VII/2019', 22, 37, 'Surabaya', 1, '2019-07-31', 1, 0, 3, 11, '2019-07-08 21:00:02', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1196,7 +1346,15 @@ INSERT INTO `price_request_item` (`id_request_item`, `id_submit_request`, `nama_
 (97, '15', 'item3\r\ndesc3', 45, 'Roll', 'notes 34', '-', 0, 11, '2019-07-04 10:37:15', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
 (98, '15', 'item4\r\ndesc4', 44, 'Roll', '', 'tempat33.jpeg', 0, 11, '2019-07-04 10:37:15', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
 (99, '16', 'Item 1\r\nDesc1', 120, '', 'notes1', '-', 0, 11, '2019-07-05 08:58:32', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
-(100, '16', 'item2', 23, '', 'notes2', '-', 0, 11, '2019-07-05 08:58:32', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1);
+(100, '16', 'item2', 23, '', 'notes2', '-', 0, 11, '2019-07-05 08:58:32', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
+(101, '17', 'item1\r\ndesc1', 123, '', '', '-', 0, 11, '2019-07-06 20:01:30', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
+(102, '17', 'item2\r\ndesc2', 12, '', '', '-', 0, 11, '2019-07-06 20:01:30', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
+(103, '18', 'item1\r\ndesc1', 23, 'Meter', '', '-', 0, 11, '2019-07-06 20:20:43', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
+(104, '20', 'Air Mineral Nestle\r\n600 Ml', 1, 'Dus', 'Saingan berani 50ribu', 'logo-ex-72.png', 0, 11, '2019-07-07 14:57:23', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
+(105, '20', 'Air Mineral Aqua\r\n600Ml', 12, 'Lusin', 'ga ada saingan, new market', 'beats.png', 0, 11, '2019-07-07 14:57:23', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
+(108, '21', 'Test 1\r\ndesc1\r\nedit 1', 20, 'Pcs', '1 Meter ada yang berani 30 ribu ', 'logo-ex-74.png', 0, 11, '2019-07-08 21:01:46', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
+(109, '21', 'test2\r\ndesc2\r\nedit 2', 40, 'Meter', '1 pcs 30 ribu', 'beats2.png', 0, 11, '2019-07-08 21:01:46', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1),
+(110, '21', 'test3\r\ndesc3\r\ninsert3', 30, 'Pcs', '30pcs setengah lusin', '246x0w1.jpg', 0, 11, '2019-07-08 21:01:46', 0, '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -1493,7 +1651,7 @@ CREATE TABLE `quotation` (
   `versi_quotation` int(11) NOT NULL,
   `no_quotation` varchar(200) NOT NULL DEFAULT '-',
   `id_request` varchar(200) NOT NULL DEFAULT '0',
-  `total_quotation_price` int(11) NOT NULL,
+  `total_quotation_price` bigint(20) NOT NULL,
   `hal_quotation` text,
   `up_cp` varchar(200) NOT NULL DEFAULT '-',
   `durasi_pengiriman` varchar(20) NOT NULL DEFAULT '8',
@@ -1517,10 +1675,18 @@ CREATE TABLE `quotation` (
 
 INSERT INTO `quotation` (`id_submit_quotation`, `id_quotation`, `bulan_quotation`, `tahun_quotation`, `versi_quotation`, `no_quotation`, `id_request`, `total_quotation_price`, `hal_quotation`, `up_cp`, `durasi_pengiriman`, `franco`, `durasi_pembayaran`, `alamat_perusahaan`, `dateline_quotation`, `status_quotation`, `status_aktif_quotation`, `id_user_add`, `date_quotation_add`, `id_user_edit`, `date_quotation_edit`, `id_user_delete`, `date_quotation_delete`) VALUES
 (18, 2, '07', 2019, 1, 'LI-002/QUO/VII/2019', '1', 156000000, 'asdf', 'asdf', '8', 'Surabaya', '8', 'alamat perusahaan baru\r\ndekat perusahaan\r\nsebelah indomaret', '0000-00-00', 0, 2, 11, '2019-07-06 08:53:32', 0, NULL, 0, NULL),
-(19, 2, '07', 2019, 2, 'LI-002/QUO/VII/2019/RV1', '1', 406956700, 'qwer', 'tyi', '10', 'Medan', '9', 'alamat perusahaan baru\r\ndekat perusahaan\r\nsebelah indomaret dan hypermart', '2019-07-24', 5, 0, 11, '2019-07-06 17:19:24', 0, NULL, 0, NULL),
+(19, 2, '07', 2019, 2, 'LI-002/QUO/VII/2019/RV1', '1', 88000000, 'qwer', 'tyi', '10', 'Medan', '9', 'alamat perusahaan baru\r\ndekat perusahaan\r\nsebelah indomaret dan hypermart', '2019-07-24', 2, 0, 11, '2019-07-06 17:19:24', 0, NULL, 0, NULL),
 (20, 2, '07', 2019, 3, 'LI-002/QUO/VII/2019/RV2', '1', 310367000, 'asdfeee', 'asdfggg', '8', 'Surabaya', '8', 'alamat perusahaan baru\r\ndekat perusahaan\r\nsebelah indomaret', '2019-07-31', 1, 2, 11, '2019-07-06 18:13:27', 0, NULL, 0, NULL),
-(21, 2, '07', 2019, 4, 'LI-002/QUO/VII/2019/RV3', '1', 407850000, 'qwer', 'tyi', '10', 'Medan', '9', 'alamat perusahaan baru\r\ndekat perusahaan\r\nsebelah indomaret dan hypermart', '2019-07-24', 5, 0, 11, '2019-07-06 19:36:01', 0, NULL, 0, NULL),
-(22, 2, '07', 2019, 5, 'LI-002/QUO/VII/2019/RV4', '1', 407850000, 'qwer', 'tyi', '10', 'Medan', '9', 'alamat perusahaan baru\r\ndekat perusahaan\r\nsebelah indomaret dan hypermart', '2019-07-24', 2, 0, 11, '2019-07-06 19:36:25', 0, NULL, 0, NULL);
+(21, 2, '07', 2019, 4, 'LI-002/QUO/VII/2019/RV3', '1', 407850000, 'qwer', 'tyi', '10', 'Medan', '9', 'alamat perusahaan baru\r\ndekat perusahaan\r\nsebelah indomaret dan hypermart', '2019-07-24', 5, 2, 11, '2019-07-06 19:36:01', 0, NULL, 0, NULL),
+(22, 2, '07', 2019, 5, 'LI-002/QUO/VII/2019/RV4', '1', 407850000, 'qwer', 'tyi', '10', 'Medan', '9', 'alamat perusahaan baru\r\ndekat perusahaan\r\nsebelah indomaret dan hypermart', '2019-07-24', 1, 2, 11, '2019-07-06 19:36:25', 0, NULL, 0, NULL),
+(23, 3, '07', 2019, 1, 'LI-003/QUO/VII/2019', '16', 156900000, 'Penawaran Nytal', 'Bapak Jhony', '8-12', 'Surabaya', '8-12', 'Jelambar Selatan II No. 4, \r\nGedung Agar-agar', '0000-00-00', 0, 2, NULL, '2019-07-06 20:03:50', 0, NULL, 0, NULL),
+(24, 3, '07', 2019, 1, 'LI-003/QUO/VII/2019', '17', 235000000, 'Penawaran Produk', 'Bapak Johny', '8-12', 'Surabaya', '8-12', 'Jl. Industri Raya No. 1 Km. 21, \r\nDesa Budimulya, Kec. Cikupa, \r\nTangerang 15710 Dekat indomaret', '2019-07-24', 2, 0, 11, '2019-07-06 20:12:46', 0, NULL, 0, NULL),
+(25, 4, '07', 2019, 1, 'LI-004/QUO/VII/2019', '18', 278000000, 'Penawaran 1 Produk', 'Johny', '8-12', 'Surabaya', '8-12', 'Jl. Industri Raya No. 1 Km. 21, \r\nDesa Budimulya, Kec. Cikupa, \r\nTangerang 15710', '2019-08-01', 2, 0, 11, '2019-07-06 20:23:35', 0, NULL, 0, NULL),
+(26, 5, '07', 2019, 1, 'LI-005/QUO/VII/2019', '20', 550000000, 'Penawaran 1', 'Bapak Johny', '8-12', 'Surabaya', '8-12', 'Jl. Industri Raya No. 1 Km. 21, \r\nDesa Budimulya, Kec. Cikupa, \r\nTangerang 15710', '2019-07-16', 5, 0, 11, '2019-07-07 15:05:21', 0, NULL, 0, NULL),
+(27, 5, '07', 2019, 2, 'LI-005/QUO/VII/2019/RV1', '20', 250000000, 'Penawaran 1', 'Bapak Johny', '8-12', 'Surabaya', '8-12', 'Jl. Industri Raya No. 1 Km. 21, \r\nDesa Budimulya, Kec. Cikupa, \r\nTangerang 15710', '2019-07-16', 3, 0, 11, '2019-07-07 15:07:31', 0, NULL, 0, NULL),
+(28, 6, '07', 2019, 1, 'LI-006/QUO/VII/2019', '21', 2147483647, 'Penawaran Nytal', 'Bapak Johny', '9-12', 'Surabaya', '9-12', 'Kembang Molek IX\r\nKembangan Selatan\r\n11610', '0000-00-00', 5, 2, NULL, '2019-07-08 21:31:43', 0, NULL, 0, NULL),
+(29, 6, '07', 2019, 2, 'LI-006/QUO/VII/2019/RV1', '21', 8290000000, 'Penawaran Nytal', 'Bapak Johny', '9-12', 'Surabaya', '9-12', 'Kembang Molek IX\r\nKembangan Selatan\r\n11610', '2019-07-27', 5, 2, NULL, '2019-07-08 21:43:16', 0, NULL, 0, NULL),
+(30, 6, '07', 2019, 3, 'LI-006/QUO/VII/2019/RV2', '21', 8290000000, 'Penawaran Nytal', 'Bapak Johny', '9-12', 'Surabaya', '9-12', 'Kembang Molek IX\r\nKembangan Selatan\r\n11610', '2019-07-27', 3, 0, NULL, '2019-07-08 21:46:13', 0, NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1539,7 +1705,7 @@ CREATE TABLE `quotation_item` (
   `id_harga_courier` int(11) DEFAULT NULL COMMENT 'untuk tau, di quotation item ini kasih harga berdasaran harga apa',
   `item_amount` int(11) DEFAULT NULL COMMENT 'pake split untuk dapetin jumlah item',
   `satuan_produk` varchar(200) NOT NULL COMMENT 'pake split untuk dapetin satuan item',
-  `selling_price` bigint(20) DEFAULT NULL,
+  `selling_price` bigint(20) DEFAULT NULL COMMENT 'harga per item',
   `margin_price` decimal(10,3) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -1551,12 +1717,29 @@ INSERT INTO `quotation_item` (`id_quotation_item`, `id_submit_quotation`, `id_re
 (8, '18', 87, 'Item 1\r\nDescription 1\r\nproduk leiter', 'tempat2.jpeg', 1, 1, 4, 20, 'Meter', 156000000, '4.240'),
 (10, '20', 87, 'Item 1\r\nDescription 1\r\nproduk leiter', 'tempat1.jpeg', 1, 1, 4, 20, 'Meter', 156000000, '4.240'),
 (11, '20', 88, 'item2\r\ndescription 2\r\nproduk leiter', 'tempat22.jpeg', 4, 2, 2, 45, 'Meter', 154367000, '25.535'),
-(25, '19', 88, 'item2\r\ndescription 2\r\nleiter 233', '-', 4, 2, 2, 34, 'Meter', 253500000, '6.924'),
-(26, '19', 89, 'item3\r\ndescription 3\r\nleiter 3333', '-', 5, 3, 3, 34, 'Pcs', 153456700, '11.409'),
-(27, '19', 87, 'Item 1\r\nDescription 1\r\nleiter 233', 'tempat15.jpeg', 1, 1, 4, 20, 'Meter', 154350000, '3.214'),
 (28, '21', 88, 'item2\r\ndescription 2\r\nleiter 233', '-', 4, 2, 2, 34, 'Meter', 253500000, '6.924'),
 (29, '21', 87, 'Item 1\r\nDescription 1\r\nleiter 233', '-', 1, 1, 4, 20, 'Meter', 154350000, '3.214'),
-(31, '22', 87, 'Item 1\r\nDescription 1\r\nleiter 233', 'tempat16.jpeg', 1, 1, 4, 20, 'Meter', 154350000, '3.214');
+(31, '22', 87, 'Item 1\r\nDescription 1\r\nleiter 233', 'tempat16.jpeg', 1, 1, 4, 20, 'Meter', 154350000, '3.214'),
+(32, '23', 99, 'Item 1\r\nDesc1', '-', 9, 6, 5, 120, 'Meter', 78000000, '14.577'),
+(33, '23', 100, 'Item 1\r\nDesc1\r\nproduk leiter 2', '-', 8, 5, 5, 23, 'Meter', 78900000, '15.552'),
+(34, '24', 101, 'item1\r\ndesc1', 'tempat17.jpeg', 10, 7, 7, 123, 'Meter', 90000000, '4.514'),
+(35, '24', 102, 'item2\r\ndesc2\r\nproduk leiter', 'tempat18.jpeg', 11, 9, 8, 12, 'Meter', 145000000, '7.026'),
+(36, '25', 103, 'item1\r\ndesc1\r\nproduk leiter 1', 'tempat19.jpeg', 12, 10, 9, 23, 'Meter', 278000000, '5.177'),
+(37, '26', 104, 'Air Mineral Nestle\r\n600 Ml\r\nProduk Leiter 1', 'beats.png', 13, 11, 10, 1, 'Dus', 300000000, '4.052'),
+(38, '26', 105, 'Air Mineral Aqua\r\n600Ml\r\nproduk leiter', 'logo-ex-7.png', 14, 12, 11, 12, 'Lusin', 250000000, '4.533'),
+(39, '27', 105, 'Air Mineral Aqua\r\n600Ml\r\nproduk leiter 2', '-', 14, 12, 11, 12, 'Lusin', 250000000, '4.533'),
+(40, '19', 88, 'item2\r\ndescription 2\r\nleiter 233', '-', 4, 2, 2, 34, 'Meter', 1000000, '6.924'),
+(41, '19', 89, 'item3\r\ndescription 3\r\nleiter 3333', '-', 5, 3, 3, 34, 'Pcs', 1000000, '11.409'),
+(42, '19', 87, 'Item 1\r\nDescription 1\r\nleiter 233', '-', 1, 1, 4, 20, 'Meter', 1000000, '3.214'),
+(43, '28', 108, 'Test 1\r\ndesc1\r\nedit 1', 'beats1.png', 16, 13, 12, 20, 'Pcs', 9000000, '9.334'),
+(44, '28', 109, 'test2\r\ndesc2\r\nedit 2\r\nleiter 2', 'beats2.png', 17, 14, 13, 40, 'Meter', 65000000, '8.847'),
+(45, '28', 110, 'test3\r\ndesc3\r\ninsert3\r\nleiter 3', 'beats3.png', 18, 15, 14, 30, 'Pcs', 180000000, '8.906'),
+(49, '29', 108, 'Test 1\r\ndesc1\r\nedit 1', '600px-Ski_trail_rating_symbol-blue_square_svg.png', 16, 13, 12, 20, 'Pcs', 11000000, '9.334'),
+(50, '29', 109, 'test2\r\ndesc2\r\nedit 2\r\nleiter 2', '600px-Ski_trail_rating_symbol-blue_square_svg1.png', 17, 14, 13, 40, 'Meter', 66000000, '8.847'),
+(51, '29', 110, 'test3\r\ndesc3\r\ninsert3\r\nleiter 3', '600px-Ski_trail_rating_symbol-blue_square_svg2.png', 18, 15, 14, 30, 'Pcs', 181000000, '8.906'),
+(52, '30', 108, 'Test 1\r\ndesc1\r\nedit 1', '600px-Ski_trail_rating_symbol-blue_square_svg3.png', 16, 13, 12, 20, 'Pcs', 11000000, '9.334'),
+(53, '30', 109, 'test2\r\ndesc2\r\nedit 2\r\nleiter 2', '600px-Ski_trail_rating_symbol-blue_square_svg4.png', 17, 14, 13, 40, 'Meter', 66000000, '8.847'),
+(54, '30', 110, 'test3\r\ndesc3\r\ninsert3\r\nleiter 3', '600px-Ski_trail_rating_symbol-blue_square_svg5.png', 18, 15, 14, 30, 'Pcs', 181000000, '8.906');
 
 -- --------------------------------------------------------
 
@@ -1573,7 +1756,7 @@ CREATE TABLE `quotation_metode_pembayaran` (
   `status_bayar` int(11) NOT NULL DEFAULT '1' COMMENT '0: sudah dibayar, 1 belum dibayar,',
   `is_ada_transaksi` int(11) NOT NULL COMMENT '0, ada transaksi; 1 tidak ada transaksi',
   `persentase_pembayaran2` int(11) DEFAULT NULL,
-  `nominal_pembayaran2` int(11) DEFAULT NULL,
+  `nominal_pembayaran2` bigint(20) DEFAULT NULL,
   `trigger_pembayaran2` int(11) NOT NULL COMMENT '0: gakpake, kalau persennya 0;1: sesudah OC; 2: setelah OD;',
   `status_bayar2` int(11) NOT NULL DEFAULT '1' COMMENT '0: sudah dibayar, 1 belum dibayar',
   `is_ada_transaksi2` int(11) NOT NULL COMMENT '0, ada transaksi; 1 tidak ada transaksi',
@@ -1587,10 +1770,18 @@ CREATE TABLE `quotation_metode_pembayaran` (
 INSERT INTO `quotation_metode_pembayaran` (`id_metode_pembayaran`, `id_submit_quotation`, `persentase_pembayaran`, `nominal_pembayaran`, `trigger_pembayaran`, `status_bayar`, `is_ada_transaksi`, `persentase_pembayaran2`, `nominal_pembayaran2`, `trigger_pembayaran2`, `status_bayar2`, `is_ada_transaksi2`, `kurs`) VALUES
 (3, '3', 0, 0, 1, 1, 1, 100, 309200000, 2, 1, 0, 'IDR'),
 (4, '18', 0, 0, 1, 1, 1, 100, 156000000, 2, 1, 0, 'IDR'),
-(5, '19', 35, 142434845, 1, 1, 0, 65, 264521855, 2, 1, 0, 'USD'),
+(5, '19', 50, 44000, 1, 1, 0, 50, 44000, 2, 1, 0, 'USD'),
 (6, '20', 40, 124146800, 1, 1, 0, 60, 186220200, 2, 1, 0, 'IDR'),
 (7, '21', 25, 101962500, 1, 1, 0, 75, 305887500, 2, 1, 0, 'USD'),
-(8, '22', 25, 101962500, 1, 1, 0, 75, 305887500, 2, 1, 0, 'USD');
+(8, '22', 25, 101962500, 1, 1, 0, 75, 305887500, 2, 1, 0, 'USD'),
+(9, '23', 60, 94140000, 1, 1, 0, 40, 62760000, 2, 1, 0, 'IDR'),
+(10, '24', 40, 94000000, 1, 1, 0, 60, 141000000, 2, 1, 0, 'IDR'),
+(11, '25', 50, 139000000, 1, 1, 0, 50, 139000000, 2, 1, 0, 'IDR'),
+(12, '26', 30, 165000000, 1, 1, 0, 70, 385000000, 1, 1, 0, 'IDR'),
+(13, '27', 40, 100000000, 1, 1, 0, 60, 150000000, 1, 1, 0, 'IDR'),
+(14, '28', 0, 0, 1, 1, 1, 100, 2147483647, 2, 1, 0, 'IDR'),
+(15, '29', 0, 0, 1, 1, 1, 100, 8290000000, 2, 1, 0, 'IDR'),
+(16, '30', 0, 0, 1, 1, 1, 100, 8290000000, 2, 1, 0, 'IDR');
 
 -- --------------------------------------------------------
 
@@ -1893,7 +2084,13 @@ ALTER TABLE `harga_vendor`
 -- Indexes for table `invoice_core`
 --
 ALTER TABLE `invoice_core`
-  ADD PRIMARY KEY (`id_invoice`);
+  ADD PRIMARY KEY (`id_submit_invoice`);
+
+--
+-- Indexes for table `invoice_packaging_box`
+--
+ALTER TABLE `invoice_packaging_box`
+  ADD PRIMARY KEY (`id_packaging`);
 
 --
 -- Indexes for table `item_margin`
@@ -1962,10 +2159,10 @@ ALTER TABLE `order_confirmation_item`
   ADD PRIMARY KEY (`id_oc_item`);
 
 --
--- Indexes for table `packaging_box`
+-- Indexes for table `order_confirmation_metode_pembayaran`
 --
-ALTER TABLE `packaging_box`
-  ADD PRIMARY KEY (`id_packaging`);
+ALTER TABLE `order_confirmation_metode_pembayaran`
+  ADD PRIMARY KEY (`id_metode_pembayaran`);
 
 --
 -- Indexes for table `pembayaran`
@@ -2107,25 +2304,31 @@ ALTER TABLE `finance_usage_type`
 -- AUTO_INCREMENT for table `harga_courier`
 --
 ALTER TABLE `harga_courier`
-  MODIFY `id_harga_courier` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_harga_courier` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `harga_shipping`
 --
 ALTER TABLE `harga_shipping`
-  MODIFY `id_harga_shipping` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_harga_shipping` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `harga_vendor`
 --
 ALTER TABLE `harga_vendor`
-  MODIFY `id_harga_vendor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_harga_vendor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `invoice_core`
 --
 ALTER TABLE `invoice_core`
-  MODIFY `id_invoice` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_submit_invoice` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `invoice_packaging_box`
+--
+ALTER TABLE `invoice_packaging_box`
+  MODIFY `id_packaging` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `kpi_user`
@@ -2161,31 +2364,31 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT for table `od_core`
 --
 ALTER TABLE `od_core`
-  MODIFY `id_submit_od` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_submit_od` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `od_item`
 --
 ALTER TABLE `od_item`
-  MODIFY `id_od_item` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_od_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `order_confirmation`
 --
 ALTER TABLE `order_confirmation`
-  MODIFY `id_submit_oc` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_submit_oc` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `order_confirmation_item`
 --
 ALTER TABLE `order_confirmation_item`
-  MODIFY `id_oc_item` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_oc_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT for table `packaging_box`
+-- AUTO_INCREMENT for table `order_confirmation_metode_pembayaran`
 --
-ALTER TABLE `packaging_box`
-  MODIFY `id_packaging` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `order_confirmation_metode_pembayaran`
+  MODIFY `id_metode_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `pembayaran`
@@ -2215,25 +2418,25 @@ ALTER TABLE `pib`
 -- AUTO_INCREMENT for table `po_core`
 --
 ALTER TABLE `po_core`
-  MODIFY `id_submit_po` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_submit_po` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `po_item`
 --
 ALTER TABLE `po_item`
-  MODIFY `id_po_item` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_po_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `price_request`
 --
 ALTER TABLE `price_request`
-  MODIFY `id_submit_request` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_submit_request` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `price_request_item`
 --
 ALTER TABLE `price_request_item`
-  MODIFY `id_request_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `id_request_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
 
 --
 -- AUTO_INCREMENT for table `privilage`
@@ -2251,19 +2454,19 @@ ALTER TABLE `produk`
 -- AUTO_INCREMENT for table `quotation`
 --
 ALTER TABLE `quotation`
-  MODIFY `id_submit_quotation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_submit_quotation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `quotation_item`
 --
 ALTER TABLE `quotation_item`
-  MODIFY `id_quotation_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id_quotation_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `quotation_metode_pembayaran`
 --
 ALTER TABLE `quotation_metode_pembayaran`
-  MODIFY `id_metode_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_metode_pembayaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `reimburse`
