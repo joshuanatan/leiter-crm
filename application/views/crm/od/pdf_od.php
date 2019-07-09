@@ -1,3 +1,4 @@
+<?php foreach($od->result() as $odx):?>
 <?php
     $pdf = new Pdf_noHead('P', 'mm', 'A5', true, 'UTF-8', false);
     $pdf->SetTitle('ORDER DELIVERY');
@@ -22,7 +23,7 @@
             <table>
                 <tr>
                     <td style="width:310; font-weight:bold;"><i>PT LEITER INDONESIA</i></td>
-                    <td>Kamis, 23 Juni 2019</td>
+                    <td>'.hariCantik(date("N",strtotime($odx->date_od_add))) . ", " . tanggalCantik(date("Y/m/d",strtotime($odx->date_od_add))).'</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -32,54 +33,60 @@
                     <br>Banten INDONESIA
                     </td>
                     <td><br><br>Kepada Yth.
-                    <br>PT. SRIBOGA FLOUR MILL
-                    <br>Jl. Deli No. 10 & 23  
-                    <br>Pelabuhan Tanjung Emas                            
-                    <br>Semarang 50174</td>
+                    <br>';
+
+                    foreach($perusahaan->result() as $x){
+                        $content=$content.$x->nama_perusahaan;
+                        $content = $content . '
+                        <br>'.$x->alamat_perusahaan.'</td>';
+
+                    }
+                    
+                    $content=$content.'
                 </tr>
             </table>
 <br><br>
             <table>
                 <tr>
                     <td style="width:120px">Surat Jalan No.</td>
-                    <td>: 190697/LI/SJ/19
+                    <td>: '.$x->no_od.'
                     </td>
                 </tr>
             </table>
             <br>
             <br>
-            <table border="1" align="center">
+            <table border="0.5">
                 <tr>
-                    <th style="width:80px; font-weight:bold">Jumlah</th>
-                    <th style="width:80px; font-weight:bold">Unit</th>
-                    <th style="width:350px; font-weight:bold">Nama Barang</th>
-                </tr>
-                <tr>
-                    <td>50</td>
-                    <td>m</td>
-                    <td style="text-align:left">
-                    PA 11MF / 118 , width 158cm
+                    <th style="width:65px; font-weight:bold; text-align:center">Jumlah</th>
+                    <th style="width:65px; font-weight:bold; text-align:center">Unit</th>
+                    <th style="width:390px; font-weight:bold; text-align:center">Nama Barang</th>
+                </tr>';
+                
+                foreach($barang->result() as $y){
+
+                    $baris="$y->nama_oc_item";
+                    $split = explode("\n",$baris);
+                    $jumlah_baris = count($split);
+                    $line_height = round($jumlah_baris * 14);
+
+                    $content=$content.'<tr>
+                    <td style="text-align:center; line-height:'.$line_height.'px;">'.$y->item_qty.'</td>
+                    <td style="text-align:center; line-height:'.$line_height.'px;">'.$y->satuan_produk.'</td>
+                    <td>'.nl2br($baris).'
                     </td>
-                </tr>
+                </tr>';
+                }
+                $content=$content.'
                 <tr>
                     <td></td>
                     <td></td>
                     <td style="text-align:left">
+                    <b>PO No : ';
                     
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td style="text-align:left">
-                    
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td style="text-align:left">
-                    <b>PO No : 1905.07014</b>
+                    foreach($nopo->result() as $po){
+                        $content=$content.$po->no_po_customer;
+                    }
+                    $content=$content.'</b>
                     </td>
                 </tr>
             </table>
@@ -103,7 +110,7 @@
                 <tr>
                     <td></td>
                     <td></td>
-                    <td>Elisa</td>
+                    <td>'.$this->session->nama_user.'</td>
                 </tr>
             </table>
         </body>
@@ -115,3 +122,4 @@
     //$pdf->Write(5, 'Contoh Laporan PDF dengan CodeIgniter + tcpdf');
     $pdf->Output('contoh1.pdf', 'I');
 ?>
+<?php endforeach;?>

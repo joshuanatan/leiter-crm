@@ -237,8 +237,26 @@ class Od extends CI_Controller{
         }
         echo json_encode($data);
     }
-    function odPdf(){
-        $this->load->view('crm/od/pdf_od');
+
+    function odPdf($id_submit_od){
+        $where = array(
+            "id_submit_od" => $id_submit_od,
+        );
+        $this->load->model('M_pdf_od');
+        $od = $this->M_pdf_od->selectOd($where);
+
+        $perusahaan = $this->M_pdf_od->selectPerusahaan($where);
+
+        $barang = $this->M_pdf_od->selectBarang($where);
+
+        $nopo = $this->M_pdf_od->selectNoPoCus($where);
+        $data=array(
+            "od" => $od,
+            "perusahaan" => $perusahaan,
+            "barang" =>$barang,
+            "nopo" =>$nopo,
+        );
+        $this->load->view('crm/od/pdf_od',$data);
     }
 }
 ?>
