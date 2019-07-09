@@ -66,194 +66,55 @@
                 <div class="modal-body">
                     <div class="tab-content">
                         <div class="tab-pane active" id="primaryData" role="tabpanel">
-                            <?php
-                            $form_data = array(
-                                "input0" => array(
-                                    "input" => "input",
-                                    "type" => "text",
-                                    "name" => "nama_perusahaan",
-                                    "title" => "Company Name",
-                                    "placeholder" => "",
-                                    "value" => "",
-                                    "help" => "Use all capital letter. ex: PT EXAMPLE COMPANY NAME"
-                                ),
-                                "input1" => array(
-                                    "input" => "input",
-                                    "type" => "text",
-                                    "name" => "jenis_perusahaan",
-                                    "title" => "Segment",
-                                    "placeholder" => "",
-                                    "value" => "",
-                                    "help" => "Customer's main product/services"
-                                ),
-                                "input2" => array(
-                                    "input" => "textarea",
-                                    "title" => "Company Address",
-                                    "name" => "alamat_perusahaan",
-                                    "placeholder" => "",
-                                    "value" => "",
-                                    "help" => "",
-                                    "rows" => 5,
-                                    "cols" => 0
-                                ),
-                                "input3" => array(
-                                    "input" => "input",
-                                    "type" => "text",
-                                    "name" => "notelp_perusahaan",
-                                    "title" => "Company Line",
-                                    "placeholder" => "",
-                                    "value" => "",
-                                    "help" => "The easiest number to contact customer"
-                                ),
-                                
-                            );
-                            ?>
-                            <?php for($a = 0; $a<count($form_data); $a++){ 
-                                
-                                switch($form_data["input".$a]["input"]){
-                                    case "input": ?>
-                                    <div class = "form-group">
-                                        <div class="col-md-12 col-lg-12">
-                                            <!-- Example With Help -->
-                                            <h4 class="example-title"><?php echo $form_data["input".$a]["title"];?></h4>
-                                            <input type="<?php echo $form_data["input".$a]["type"];?>" name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" placeholder = "<?php echo $form_data["input".$a]["placeholder"];?>" value = "<?php echo $form_data["input".$a]["value"];?>">
-                                            <span class="text-help"><?php echo $form_data["input".$a]["help"];?></span>
-                                        </div>
-                                    </div>
-                                    <?php
-                                    break;
-                                    case "select": ?>
-                                    <div class = "form-group">
-                                        <div class="col-md-12 col-lg-12">
-                                            <!-- Example With Help -->
-                                            <h4 class="example-title"><?php echo $form_data["input".$a]["title"];?></h4>
-                                            <select name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" >
-                                            <?php 
-                                            foreach($form_data["input".$a]["options"]->result() as $option){ ?>
-                                                <option value = ""><?php echo $option->id_produk;?></option>
-                                            <?php 
-                                            } 
-                                            ?>
-                                            </select>
-                                            <span class="text-help"><?php echo $form_data["input".$a]["help"];?></span>
-                                        </div>
-                                    </div>
-                                    <?php
-                                    break;
-                                    case "textarea": ?>
-                                    <div class = "form-group">
-                                        <div class="col-md-12 col-lg-12">
-                                            <!-- Example With Help -->
-                                            <h4 class="example-title"><?php echo $form_data["input".$a]["title"];?></h4>
-                                            <textarea name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" <?php if($form_data["input".$a]["rows"] != 0) echo "rows = ".$form_data["input".$a]["rows"];?> <?php if($form_data["input".$a]["cols"] != 0) echo "cols = ".$form_data["input".$a]["cols"];?> ><?php echo $form_data["input".$a]["value"];?></textarea>
-                                            <span class="text-help"><?php echo $form_data["input".$a]["help"];?></span>
-                                        </div>
-                                    </div>
-                                    <?php
-                                    break;
-                                }
-                                ?>
-                                <?php
-                            }
-                            ?>
+                            <div class = "form-group">
+                                <h5 style = "opacity:0.5">Nama Customer</h5>
+                                <input type = "text" class = "form-control" name = "nama_perusahaan">
+                            </div>
+                            <div class = "form-group">
+                                <h5 style = "opacity:0.5">Segment</h5>
+                                <input type = "text" class = "form-control" name = "jenis_perusahaan">
+                            </div>
+                            <div class = "form-group">
+                                <h5 style = "opacity:0.5">No Fax Customer</h5>
+                                <input type = "text" class = "form-control" name = "nofax_perusahaan">
+                            </div>
+                            <div class = "form-group">
+                                <h5 style = "opacity:0.5">No Telp Customer</h5>
+                                <input type = "text" class = "form-control" name = "notelp_perusahaan">
+                            </div>
+                            <div class = "form-group">
+                                <h5 style = "opacity:0.5">Alamat Perusahaan</h5>
+                                <textarea class = "form-control" name = "alamat_perusahaan" rows = "5"></textarea>
+                            </div>
+                            <div class = "form-group">
+                                <h5 style = "opacity:0.5">Alamat Pengiriman</h5>
+                                <textarea class = "form-control" name = "alamat_pengiriman" rows = "5"></textarea>
+                            </div>
                         </div>
                         <div class="tab-pane" id="privilage" role="tabpanel">
-                            <?php
-                                $form_data = array(
-                                    "input0" => array(
-                                        "input" => "input",
-                                        "type" => "text",
-                                        "name" => "nama_cp",
-                                        "title" => "Contact Person",
-                                        "placeholder" => "",
-                                        "value" => "",
-                                        "help" => "Capital each first alphabet. ex: Firstname Lastname"
-                                    ),
-                                    "input1" => array(
-                                        "input" => "select",
-                                        "title" => "CP Gender",
-                                        "name" => "jk_cp",
-                                        "options" => array("Mr","Ms"),
-                                        "help" => ""
-                                    ),
-                                    "input2" => array(
-                                        "input" => "input",
-                                        "type" => "email",
-                                        "name" => "email_cp",
-                                        "title" => "Email",
-                                        "placeholder" => "",
-                                        "value" => "",
-                                        "help" => "ex: username@example.com"
-                                    ),
-                                    "input3" => array(
-                                        "input" => "input",
-                                        "type" => "text",
-                                        "name" => "nohp_cp",
-                                        "title" => "Contact Person Mobile Phone",
-                                        "placeholder" => "",
-                                        "value" => "",
-                                        "help" => "089612345678"
-                                    ),
-                                    "input4" => array(
-                                        "input" => "input",
-                                        "type" => "text",
-                                        "name" => "jabatan_cp",
-                                        "title" => "Contact Person Position",
-                                        "placeholder" => "",
-                                        "value" => "",
-                                        "help" => "Sales/Marketing/CEO"
-                                    ),
-                                    
-                                );
-                                ?>
-                                <?php for($a = 0; $a<count($form_data); $a++){ 
-                                    
-                                    switch($form_data["input".$a]["input"]){
-                                        case "input": ?>
-                                        <div class = "form-group">
-                                            <div class="col-md-12 col-lg-12">
-                                                <!-- Example With Help -->
-                                                <h4 class="example-title"><?php echo $form_data["input".$a]["title"];?></h4>
-                                                <input type="<?php echo $form_data["input".$a]["type"];?>" name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" placeholder = "<?php echo $form_data["input".$a]["placeholder"];?>" value = "<?php echo $form_data["input".$a]["value"];?>">
-                                                <span class="text-help"><?php echo $form_data["input".$a]["help"];?></span>
-                                            </div>
-                                        </div>
-                                        <?php
-                                        break;
-                                        case "select": ?>
-                                        <div class = "form-group">
-                                            <div class="col-md-12 col-lg-12">
-                                                <!-- Example With Help -->
-                                                <h4 class="example-title"><?php echo $form_data["input".$a]["title"];?></h4>
-                                                <select name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" >
-                                                <?php 
-                                                for($c = 0 ; $c<count($form_data["input".$a]["options"]); $c++){ ?>
-                                                    <option value = "<?php echo $form_data["input".$a]["options"][$c];?>"><?php echo $form_data["input".$a]["options"][$c];?></option>
-                                                <?php 
-                                                } 
-                                                ?>
-                                                </select>
-                                                <span class="text-help"><?php echo $form_data["input".$a]["help"];?></span>
-                                            </div>
-                                        </div>
-                                        <?php
-                                        break;
-                                        case "textarea": ?>
-                                        <div class = "form-group">
-                                            <div class="col-md-12 col-lg-12">
-                                                <!-- Example With Help -->
-                                                <h4 class="example-title"><?php echo $form_data["input".$a]["title"];?></h4>
-                                                <textarea name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" <?php if($form_data["input".$a]["rows"] != 0) echo "rows = ".$form_data["input".$a]["rows"];?> <?php if($form_data["input".$a]["cols"] != 0) echo "cols = ".$form_data["input".$a]["cols"];?> ><?php echo $form_data["input".$a]["value"];?></textarea>
-                                                <span class="text-help"><?php echo $form_data["input".$a]["help"];?></span>
-                                            </div>
-                                        </div>
-                                        <?php
-                                        break;
-                                    }
-                                    ?>
-                                    <?php
-                                }
-                                ?>
+                            <div class = "form-group">
+                                <h5 style = "opacity:0.5">Nama PIC</h5>
+                                <input type = "text" class = "form-control" name = "nama_cp">
+                            </div>
+                            <div class = "form-group">
+                                <h5 style = "opacity:0.5">Gender PIC</h5>
+                                <select class = "form-control" name = "jk_cp" data-plugin = "select2">
+                                    <option value = "Mr">Mr</option>
+                                    <option value = "Ms">Ms</option>
+                                </select>
+                            </div>
+                            <div class = "form-group">
+                                <h5 style = "opacity:0.5">Email PIC</h5>
+                                <input type = "text" class = "form-control" name = "email_cp">
+                            </div>
+                            <div class = "form-group">
+                                <h5 style = "opacity:0.5">No HP PIC</h5>
+                                <input type = "text" class = "form-control" name = "nohp_cp">
+                            </div>
+                            <div class = "form-group">
+                                <h5 style = "opacity:0.5">Jabatan PIC</h5>
+                                <input type = "text" class = "form-control" name = "jabatan_cp">
+                            </div>
                             <button class = "btn btn-primary btn-outline btn-sm">SUBMIT</button>
                         </div>
                     </div>

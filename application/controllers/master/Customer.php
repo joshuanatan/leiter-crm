@@ -7,38 +7,6 @@ class Customer extends CI_Controller{
 
     }
     /*page*/
-    public function contact($i){
-        $this->load->view("req/head");
-        $this->load->view("plugin/datatable/datatable-css");
-        $this->load->view("plugin/breadcrumb/breadcrumb-css");
-        $this->load->view("plugin/modal/modal-css");
-        $this->load->view("plugin/form/form-css");
-        $this->load->view("plugin/contact/contact-css");
-        $this->load->view("req/head-close");
-        $this->load->view("master/master-open");
-        $this->load->view("req/top-navbar");
-        $this->load->view("req/navbar");
-        /*--------------------------------------------------------*/
-        $this->load->view("master/content-open");
-        $this->load->view("master/Customer/category-header");
-        $where = array(
-            "contact_person.id_perusahaan" => $i,
-            "contact_person.status_cp" => 0
-        );
-        $data = array(
-            "cp" => $this->Mdcontact_person->select($where),
-            "id_perusahaan" => $i
-        );
-        $this->load->view("master/Customer/contact-customer",$data);
-        $this->load->view("master/content-close");
-        /*--------------------------------------------------------*/
-        $this->load->view("req/script");
-        $this->load->view("plugin/datatable/page-datatable-js");
-        $this->load->view("plugin/form/form-js");
-        $this->load->view("plugin/tabs/tabs-js");
-        $this->load->view("master/master-close");
-        $this->load->view("req/html-close");
-    }
     public function index(){
         $this->load->view("req/head");
         $this->load->view("plugin/datatable/datatable-css");
@@ -98,7 +66,7 @@ class Customer extends CI_Controller{
         $this->load->view("master/master-close");
         $this->load->view("req/html-close");
     }
-    public function edit($i){
+    public function edit($id_perusahaan){ //sudah di cek
         
         $this->load->view("req/head");
         $this->load->view("plugin/datatable/datatable-css");
@@ -112,11 +80,9 @@ class Customer extends CI_Controller{
         $this->load->view("req/navbar");
         /*--------------------------------------------------------*/
         $where = array(
-            "perusahaan.id_perusahaan" => $i
+            "perusahaan.id_perusahaan" => $id_perusahaan
         );
-        $data = array(
-            "perusahaan" => $this->Mdperusahaan->select($where)
-        );  
+        $data["perusahaan"] = selectRow("perusahaan",$where);  
         $this->load->view("master/content-open");
         $this->load->view("master/Customer/category-header");
         $this->load->view("master/Customer/edit-customer",$data);
@@ -124,6 +90,80 @@ class Customer extends CI_Controller{
         /*--------------------------------------------------------*/
         $this->load->view("req/script");
         $this->load->view("plugin/jqtabledit/jqtabledit-js");
+        $this->load->view("plugin/datatable/page-datatable-js");
+        $this->load->view("plugin/form/form-js");
+        $this->load->view("plugin/tabs/tabs-js");
+        $this->load->view("master/master-close");
+        $this->load->view("req/html-close");
+    }
+    public function register(){ //sudah di cek
+        $data = array(
+            "nama_perusahaan" => $this->input->post("nama_perusahaan"),
+            "nofax_perusahaan" => $this->input->post("nofax_perusahaan"),
+            "alamat_perusahaan" => $this->input->post("alamat_perusahaan"),
+            "alamat_pengiriman" => $this->input->post("alamat_pengiriman"),
+            "notelp_perusahaan" => $this->input->post("notelp_perusahaan"),
+            "peran_perusahaan" => "CUSTOMER",
+            "jenis_perusahaan" => $this->input->post("jenis_perusahaan"),
+            "permanent" => 0,
+            "id_user_add" => $this->session->id_user
+        );
+        $id_perusahaan = insertRow("perusahaan",$data);
+        $data = array(
+            "nama_cp" => $this->input->post("nama_cp"),
+            "jk_cp" => $this->input->post("jk_cp"),
+            "email_cp" => $this->input->post("email_cp"),
+            "nohp_cp" => $this->input->post("nohp_cp"),
+            "jabatan_cp" => $this->input->post("jabatan_cp"),
+            "id_perusahaan" => $id_perusahaan,
+            "id_user_add" => $this->session->id_user
+        );
+        insertRow("contact_person",$data);
+        redirect("master/customer");
+    }
+    public function editcustomer(){ //sudah di cek
+        $where = array(
+            "perusahaan.id_perusahaan" => $this->input->post("id_perusahaan")
+        );
+        $data = array(
+            "nama_perusahaan" => $this->input->post("nama_perusahaan"),
+            "nofax_perusahaan" => $this->input->post("nofax_perusahaan"),
+            "jenis_perusahaan" => $this->input->post("jenis_perusahaan"),
+            "alamat_perusahaan" => $this->input->post("alamat_perusahaan"),
+            "alamat_pengiriman" => $this->input->post("alamat_pengiriman"),
+            "notelp_perusahaan" => $this->input->post("notelp_perusahaan"),
+            "id_user_edit" => $this->session->id_user
+        );
+        updateRow("perusahaan",$data,$where);
+        redirect("master/customer/edit/".$this->input->post("id_perusahaan"));
+    }
+    
+    public function contact($id_perusahaan){
+        $this->load->view("req/head");
+        $this->load->view("plugin/datatable/datatable-css");
+        $this->load->view("plugin/breadcrumb/breadcrumb-css");
+        $this->load->view("plugin/modal/modal-css");
+        $this->load->view("plugin/form/form-css");
+        $this->load->view("plugin/contact/contact-css");
+        $this->load->view("req/head-close");
+        $this->load->view("master/master-open");
+        $this->load->view("req/top-navbar");
+        $this->load->view("req/navbar");
+        /*--------------------------------------------------------*/
+        $this->load->view("master/content-open");
+        $this->load->view("master/Customer/category-header");
+        $where = array(
+            "contact_person.id_perusahaan" => $id_perusahaan,
+            "contact_person.status_cp" => 0
+        );
+        $data = array(
+            "cp" => $this->Mdcontact_person->select($where),
+            "id_perusahaan" => $id_perusahaan
+        );
+        $this->load->view("master/Customer/contact-customer",$data);
+        $this->load->view("master/content-close");
+        /*--------------------------------------------------------*/
+        $this->load->view("req/script");
         $this->load->view("plugin/datatable/page-datatable-js");
         $this->load->view("plugin/form/form-js");
         $this->load->view("plugin/tabs/tabs-js");
@@ -172,44 +212,7 @@ class Customer extends CI_Controller{
         $this->Mdcontact_person->insert($data);
         redirect("master/customer/contact/".$this->input->post($nameCp[5]));
     }
-    public function register(){
-        $name = array("nama_perusahaan","jenis_perusahaan","alamat_perusahaan","notelp_perusahaan");
-        $nameCp = array("nama_cp","jk_cp","email_cp","nohp_cp","jabatan_cp");
-        $data = array(
-            $name[0] => $this->input->post($name[0]),
-            $name[1] => $this->input->post($name[1]),
-            $name[2] => $this->input->post($name[2]),
-            $name[3] => $this->input->post($name[3]),
-            "peran_perusahaan" => "CUSTOMER",
-            "id_user_add" => $this->session->id_user
-        );
-        $result = $this->Mdperusahaan->insert($data);
-        $data = array(
-            $nameCp[0] => $this->input->post($nameCp[0]),
-            $nameCp[1] => $this->input->post($nameCp[1]),
-            $nameCp[2] => $this->input->post($nameCp[2]),
-            $nameCp[3] => $this->input->post($nameCp[3]),
-            $nameCp[4] => $this->input->post($nameCp[4]),
-            "id_perusahaan" => $result,
-            "id_user_add" => $this->session->id_user
-        );
-        $this->Mdcontact_person->insert($data);
-        redirect("master/customer");
-    }
-    public function editcustomer(){
-        $where = array(
-            "perusahaan.id_perusahaan" => $this->input->post("id_perusahaan")
-        );
-        $data = array(
-            "nama_perusahaan" => $this->input->post("nama_perusahaan"),
-            "jenis_perusahaan" => $this->input->post("jenis_perusahaan"),
-            "alamat_perusahaan" => $this->input->post("alamat_perusahaan"),
-            "notelp_perusahaan" => $this->input->post("notelp_perusahaan"),
-            "id_user_edit" => $this->session->id_user
-        );
-        $this->Mdperusahaan->update($data,$where);
-        redirect("master/customer/edit/".$this->input->post("id_perusahaan"));
-    }
+    
     public function delete($i){
         $where = array(
             "perusahaan.id_perusahaan" => $i
