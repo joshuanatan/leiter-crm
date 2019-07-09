@@ -1,3 +1,4 @@
+
 <div class="panel-body col-lg-12">
     <div class="row">
         <div class="col-md-6">
@@ -30,6 +31,7 @@
                 <td><button class = "btn btn-primary btn-outline" type = "button" data-target = "#detail<?php echo $a;?>" data-toggle = "modal">Detail Items</button></td>
                 <td><?php echo $od[$a]["date_od_add"];?></td>
                 <td class="actions">
+                    <a href="<?php echo base_url();?>crm/od/odPdf/<?php echo $od[$a]["id_submit_od"];?>" target="_blank" class="btn btn-primary btn-outline btn-sm">CETAK</a>
                     <a href = "<?php echo base_url();?>crm/od/edit/<?php echo $od[$a]["id_submit_od"];?>" class = "btn btn-primary btn-sm btn-outline">EDIT</a>
                     <a href = "<?php echo base_url();?>crm/od/remove/<?php echo $od[$a]["id_submit_od"];?>" class = "btn btn-danger btn-sm btn-outline">REMOVE</a>
                 </td>

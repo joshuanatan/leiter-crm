@@ -48,4 +48,19 @@ if(!function_exists("tanggalCantik")){
     }
 }
 
+if(!function_exists("hariCantik")){
+    function hariCantik($harii){
+        $cantikk = explode(",",$harii);
+        switch((int)$cantikk){
+            case 1: return "Senin"; break;
+            case 2: return "Selasa"; break;
+            case 3: return "Rabu"; break;
+            case 4: return "Kamis"; break;
+            case 5: return "Jumat"; break;
+            case 6: return "Sabtu"; break;
+            case 7: return "Minggu"; break;
+        }
+    }
+}
+
 ?>
