@@ -123,10 +123,8 @@
                 }
                 
                 $content=$content.'
-                                      <br>&nbsp;&nbsp;&nbsp;&nbsp;Notify Party:
-                <br>Trinity Worldwide Services
-                <br>54 Chai Chee Street #04-851
-                <br>Tel: +65 65466484
+                                      <br>&nbsp;&nbsp;&nbsp;&nbsp;Notify Party:<br/>
+                '.nl2br($notify_party).'
 
                 </td>
             </tr>
@@ -152,8 +150,8 @@
             <th style="text-align:center; font-weight:bold; width:26px;background-color:#dcdcdc; font-size:10pt">No.</th>
             <th style="text-align:center; font-weight:bold; width:240px;background-color:#dcdcdc; font-size:10pt">Description</th>
             <th style="text-align:center; font-weight:bold; width:70px;background-color:#dcdcdc">Qty</th>
-            <th style="text-align:center; font-weight:bold; width:100px;background-color:#dcdcdc; font-size:10pt">Price (EUR)</th>
-            <th style="text-align:center; font-weight:bold; width:100px;background-color:#dcdcdc; font-size:10pt">Amount (EUR)</th>
+            <th style="text-align:center; font-weight:bold; width:100px;background-color:#dcdcdc; font-size:10pt">Price ('.strtoupper($mata_uang).')</th>
+            <th style="text-align:center; font-weight:bold; width:100px;background-color:#dcdcdc; font-size:10pt">Amount ('.strtoupper($mata_uang).')</th>
             </tr>';
 
             $baris="Filter Belt made of Tetex DLW 05-8000-K030
@@ -168,7 +166,7 @@ $total=0;
                     $no++;
                     $content = $content .'<tr>
                 <td style="text-align:center; font-size:9pt;line-height:'.$line_height.'px;">'.$no.'</td>
-                <td style="font-size:9pt">'.nl2br($baris).'</td>
+                <td style="font-size:9pt">'.nl2br($brg->nama_produk_vendor).'</td>
                 <td style="text-align:center; font-size:9pt;line-height:'.$line_height.'px;">'.$brg->jumlah_item.' '.$brg->satuan_item .'</td>
                 <td style="text-align:center; font-size:9pt;line-height:'.$line_height.'px;">'.number_format($brg->harga_item).'</td>
                 <td style="text-align:center; font-size:9pt;line-height:'.$line_height.'px;">'.number_format($brg->jumlah_item*$brg->harga_item).'</td>

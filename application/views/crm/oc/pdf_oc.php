@@ -138,12 +138,32 @@
                 </tr>';
 
                 foreach($metodebayar->result() as $cc){
+                    $content_dp = "";
+                    if($cc->persentase_pembayaran != 0){ //kalau ada persen dp (ada transaksi dp)
+                        $content_dp = $cc->persentase_pembayaran.'% DP diawal
+                        <br>';
+                        if($cc->persentase_pembayaran2 != 0){
+                            if($cc->trigger_pembayaran2 == 1){ //sebelum od
+                                $content_dp .= $cc->persentase_pembayaran2.'% pelunasan dalam '.$occ->durasi_pembayaran.' minggu setelah invoice diterima';
+                            }
+                            else{
+                                $content_dp .= $cc->persentase_pembayaran2.'% pelunasan dalam '.$occ->durasi_pembayaran.' minggu setelah barang & invoice diterima';
+                            }
+                        }
+                    }
+                    else{ //tidak ber DP
+                        if($cc->trigger_pembayaran2 == 1){ //sebelum od
+                            $content_dp = '100% pelunasan dalam '.$occ->durasi_pembayaran.' minggu setelah invoice diterima';
+                        }
+                        else{
+                            $content_dp = '100% pelunasan dalam '.$occ->durasi_pembayaran.' minggu setelah barang & invoice diterima';
+                        }
+                    }
                     $content=$content.'
                     <tr>
                         <td>Pembayaran</td>
                         <td style="width:6px;">: </td>
-                        <td>'.$cc->persentase_pembayaran.'% DP diawal
-                        <br>'.$cc->persentase_pembayaran2.'% pelunasan dalam '.$occ->durasi_pembayaran.' minggu setelah barang & invoice diterima
+                        <td>'.$content_dp.'
                         </td>
                     </tr>
                 </table>';

@@ -35,7 +35,7 @@ class Quotation extends CI_Controller{
         $this->load->view("req/html-close");
     }
     /*page*/
-    public function index(){
+    public function index(){ //sudah di cek
         $this->req();
         $where = array(
             "quotation" => array(
@@ -103,7 +103,7 @@ class Quotation extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
-    public function create(){
+    public function create(){ //sudah di cek
         $this->req();
         $where = array(
             "quotation" => array(
@@ -134,7 +134,7 @@ class Quotation extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
-    public function revision($id_submit_quotation){ /*bagian ini terjadi sebelum pengiriman ke customer*/
+    public function revision($id_submit_quotation){//sudah di cek /*bagian ini terjadi sebelum pengiriman ke customer*/
         updateRow("quotation",array("status_quotation" => 5), array("id_submit_quotation" => $id_submit_quotation));
         $this->req();
         $id_submit_request = get1Value("quotation","id_request",array("id_submit_quotation" => $id_submit_quotation));
@@ -191,7 +191,7 @@ class Quotation extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
-    public function edit($id_submit_quotation){ /*bagian ini terjadi sebelum pengiriman ke customer*/
+    public function edit($id_submit_quotation){ //sudah di cek /*bagian ini terjadi sebelum pengiriman ke customer*/
         $this->req();
         $id_submit_request = get1Value("quotation","id_request",array("id_submit_quotation" => $id_submit_quotation));
         $where = array(
@@ -246,7 +246,7 @@ class Quotation extends CI_Controller{
         $this->close();
     }
     /*function*/
-    public function insertquotation(){
+    public function insertquotation(){ //sudah di cek
         /*insert data quotation*/
         $data["quotation"] = array(
             "id_quotation" => $this->input->post("id_quotation") ,
@@ -341,7 +341,7 @@ class Quotation extends CI_Controller{
         updateRow("price_request",$data["price_request"],$where["price_request"]);
         redirect("crm/quotation");
     }
-    public function insertrevision(){
+    public function insertrevision(){ //sudah di cek
         $data["quotation"] = array(
             "id_quotation" => $this->input->post("id_quotation") ,
             "versi_quotation" => $this->input->post("versi_quotation") ,
@@ -426,7 +426,7 @@ class Quotation extends CI_Controller{
         insertRow("quotation_metode_pembayaran",$pembayaran);
         redirect("crm/quotation");
     }
-    public function editquotation(){
+    public function editquotation(){ //sudah di cek
         $where["id_submit_quotation"] = array(
             "id_submit_quotation" => $this->input->post("id_submit_quotation")
         );
@@ -514,7 +514,7 @@ class Quotation extends CI_Controller{
         /*update status buat quotation di price request supaya gabisa dibuat ulang yang udah pernah dibuat*/
         redirect("crm/quotation/edit/".$this->input->post("id_submit_quotation"));
     }
-    public function loss($id_submit_quotation){
+    public function loss($id_submit_quotation){ //sudah di cek
         $data = array(
             "status_quotation" => 1
         );
@@ -524,7 +524,7 @@ class Quotation extends CI_Controller{
         updateRow("quotation",$data,$where);
         redirect("crm/quotation");
     }
-    public function accepted($id_submit_quotation){
+    public function accepted($id_submit_quotation){ //sudah di cek
         $data = array(
             "status_quotation" => 2
         );
@@ -535,7 +535,7 @@ class Quotation extends CI_Controller{
         redirect("crm/quotation");
         
     }
-    public function remove($id_submit_quotation){
+    public function remove($id_submit_quotation){ //sudah di cek
         $data = array(
             "status_aktif_quotation" => 2
         );
@@ -547,7 +547,7 @@ class Quotation extends CI_Controller{
     }
     /*ajax*/
 
-    function quoPdf($id_submit_quotation){
+    function quoPdf($id_submit_quotation){ //sudah di cek
         $where = array(
             "id_submit_quotation" => $id_submit_quotation
         );

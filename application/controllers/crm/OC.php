@@ -24,12 +24,6 @@ class Oc extends CI_Controller{
         $this->load->view("req/top-navbar");
         $this->load->view("req/navbar");
     }
-    public function print(){
-        $this->load->view("crm/print/oc");
-    }
-    public function pdf(){
-        $this->load->view("crm/pdf/oc");
-    }
     public function close(){
         $this->load->view("req/script");
         $this->load->view("plugin/datatable/page-datatable-js");
@@ -107,7 +101,7 @@ class Oc extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
-    public function create(){
+    public function create(){ //sudah di cek
         $where = array(
             "oc" => array(
                 "status_quotation" => 2,
@@ -118,7 +112,7 @@ class Oc extends CI_Controller{
                 "id_submit_quotation","no_quotation"
             )
         );
-        $result["oc"] = selectRow("quotation",$where["oc"]);
+        $result["oc"] = $this->Mdquotation->getListQuotation($where["oc"]);
         $data["oc"] = foreachMultipleResult($result["oc"],$field["oc"],$field["oc"]);
         for($a = 0; $a<count($data["oc"]); $a++){
             $data["oc"][$a]["id_submit_request"] = get1Value("quotation","id_request",array("id_submit_quotation" => $data["oc"][$a]["id_submit_quotation"]));
@@ -133,7 +127,7 @@ class Oc extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
-    public function edit($id_submit_oc){
+    public function edit($id_submit_oc){ //sudah di cek
         $where = array(
             "id_submit_oc" => $id_submit_oc
         );
@@ -173,7 +167,7 @@ class Oc extends CI_Controller{
 
     }
     /*function*/
-    public function editoc(){
+    public function editoc(){ //sudah di cek
         /*insert ke oc tanpa total_oc_price*/
         $where["main"] = array(
             "id_submit_oc" => $this->input->post("id_submit_oc")
@@ -274,7 +268,7 @@ class Oc extends CI_Controller{
         /*end metode pembayaran*/
         redirect("crm/oc");
     }   
-    public function insertoc(){
+    public function insertoc(){ //sudah di cek
         /*insert ke oc tanpa total_oc_price*/
         $data = array(
             "id_submit_quotation" => $this->input->post("id_submit_quotation"),
@@ -386,7 +380,7 @@ class Oc extends CI_Controller{
         updateRow("quotation",$data,$where);
         redirect("crm/oc");
     }   
-    public function delete($id_submit_oc){
+    public function delete($id_submit_oc){ //sudah di cek
         $where = array(
             "id_submit_oc" => $id_submit_oc
         );
@@ -406,39 +400,8 @@ class Oc extends CI_Controller{
         updateRow("order_confirmation",$data,$where);
         redirect("crm/oc");
     }
-    public function getOcItem(){
-        $where = array(
-            "item_oc" => array(
-                "id_oc" => $this->input->post("id_oc")
-            ),
-            "od" => array(
-                "id_oc" => $this->input->post("id_oc")
-            )
-        );
-        $result["item_oc"] = $this->Mdquotation_item->select($where["item_oc"]);
-        $counter = 0 ;
-        $result["od"] = $this->Mdod_core->select($where["od"]); /*ambil semua od yang ocnya terkair */
-        $result["jumlah"] = array();
-        foreach($result["od"]->result() as $idOd){
-            $result["jumlah"][$counter] = get1Value("od_item","item_qty",array("id_od" => $idOd->id_od));
-            $counter++;
-        }
-        $data = array();
-        $counter = 0;
-        foreach($result["item_oc"]->result() as $a){
-            $data[$counter] = array(
-                "id_quotation_item" => $a->id_quotation_item,
-                "nama_produk" => $a->nama_produk,
-                "jumlah_pesan" => $a->final_amount,
-                "terkirim" => array_sum($result["jumlah"]),
-                "uom" => $a->satuan_produk
-            );
-            $counter ++;
-        }
-        echo json_encode($data);
-    }
 
-    function ocPdf($id_submit_oc){
+    function ocPdf($id_submit_oc){ //sudah di cek   
         $where=array(
             "id_submit_oc"=>$id_submit_oc,
         );

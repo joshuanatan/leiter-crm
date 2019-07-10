@@ -16,6 +16,22 @@ function loadPoDetail(){
 
         }
     });
+    $.ajax({
+        url:"<?php echo base_url();?>interface/perusahaan/getPerusahaanFromOc",
+        type:"POST",
+        dataType:"JSON",
+        data:{id_submit_oc:id_submit_oc},
+        success:function(respond){
+            $("#alamat_pengiriman").val(respond["alamat_perusahaan"])
+        }
+    });
+    $.ajax({
+        url:"<?php echo base_url();?>interface/oc/getOcDetail/"+id_submit_oc,
+        dataType:"JSON",
+        success:function(respond){
+            $("#up_cp").val(respond["up_cp"]);
+        }
+    });
 }
 </script>
 <script>

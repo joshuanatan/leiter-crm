@@ -150,6 +150,10 @@
                                     <textarea readonly id = "alamat_shipper" class = "form-control"><?php echo $detail_shipper["alamat_perusahaan"];?></textarea>
                                 </div>
                                 <div class = "form-group">
+                                    <h5 style = "opacity:0.5">Notify Party</h5>
+                                    <textarea id = "notify_party" class = "form-control" name = "notify_party"><?php echo $po_core["notify_party"];?></textarea>
+                                </div>
+                                <div class = "form-group">
                                     <h5 style = "opacity:0.5">Shipping Method</h5>
                                     <select class = "form-control" name = "shipping_method" data-plugin = "select2">
                                         <option value = "SEA">SEA</option>

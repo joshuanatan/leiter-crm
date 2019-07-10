@@ -49,7 +49,7 @@ class Mdquotation extends CI_Model{
     }
     /**************************************************************************** */
     public function getListQuotation($where){
-        $this->db->order_by("date_quotation_add","DESC");
+        $this->db->order_by("id_submit_quotation","DESC");
         return $this->db->get_where("quotation",$where);
     }
 }

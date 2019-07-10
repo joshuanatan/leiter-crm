@@ -35,7 +35,7 @@ class Vendor extends CI_Controller{
         $this->load->view("req/html-close");
     }
     /*page*/
-    public function index(){
+    public function index(){ //sudah di cek
         $where = array(
             "request" => array(
                 "price_request.status_request" => 1
@@ -90,7 +90,7 @@ class Vendor extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
-    public function produk($id_submit_request){
+    public function produk($id_submit_request){ //sudah di cek
         /*harusnya ini tampilin dulu semua barangnya apa aja*/
         //$this->session->id_request = $id_request;
         $this->session->link = $id_submit_request;
@@ -165,12 +165,12 @@ class Vendor extends CI_Controller{
         $this->load->view("crm/vendor-deal/js/request-ajax");
     }
     /*function*/
-    public function delete($i){
+    public function delete($i){ //sudah di cek
         $where = array(
             "price_request.id_request" => $i
         );
         $data = array(
-            "price_request.status_request" => 1
+            "price_request.status_aktif_request" => 1
         );
         $this->Mdprice_request->update($data,$where);
         redirect("crm/vendor");
@@ -185,7 +185,7 @@ class Vendor extends CI_Controller{
         $this->Mdprice_request->update($data,$where);
         redirect("crm/vendor");
     }
-    public function insertHargaSupplier(){
+    public function insertHargaSupplier(){ //sudah di cek
         $config = array(
             "upload_path" => "./assets/dokumen/hargasupplier/",
             "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
@@ -211,7 +211,7 @@ class Vendor extends CI_Controller{
         insertRow("harga_vendor",$data);
         redirect("crm/vendor/produk/".$this->session->link);
     }
-    public function insertHargaCourier(){
+    public function insertHargaCourier(){ //sudah di cek
         $config = array(
             "upload_path" => "./assets/dokumen/hargasupplier/",
             "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
@@ -237,7 +237,7 @@ class Vendor extends CI_Controller{
         insertRow("harga_courier",$data);
         redirect("crm/vendor/produk/".$this->session->link);
     }
-    public function insertHargaShipping(){
+    public function insertHargaShipping(){ //sudah di cek
         $config = array(
             "upload_path" => "./assets/dokumen/hargasupplier/",
             "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
@@ -263,7 +263,7 @@ class Vendor extends CI_Controller{
         insertRow("harga_shipping",$data);
         redirect("crm/vendor/produk/".$this->session->link);
     }
-    public function editHargaSupplier(){
+    public function editHargaSupplier(){//sudah di cek
         $config = array(
             "upload_path" => "./assets/dokumen/hargasupplier/",
             "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
@@ -300,7 +300,7 @@ class Vendor extends CI_Controller{
         }
         redirect("crm/vendor/produk/".$this->session->link);
     }
-    public function editHargaCourier(){
+    public function editHargaCourier(){//sudah di cek
         $config = array(
             "upload_path" => "./assets/dokumen/hargasupplier/",
             "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
@@ -337,7 +337,7 @@ class Vendor extends CI_Controller{
         }
         redirect("crm/vendor/produk/".$this->session->link);
     }
-    public function editHargaShipper(){
+    public function editHargaShipper(){ //sudah di cek
         $config = array(
             "upload_path" => "./assets/dokumen/hargasupplier/",
             "allowed_types" => "xls|xlsx|doc|docx|pdf|zip|jpg|jpeg|png|gif"
@@ -374,28 +374,29 @@ class Vendor extends CI_Controller{
         }
         redirect("crm/vendor/produk/".$this->session->link);
     }
-    public function deleteHargaVendor($id_harga_vendor){
+    public function deleteHargaVendor($id_harga_vendor){ //sudah di cek 
+
         $where = array(
             "id_harga_vendor" => $id_harga_vendor
         );
         deleteRow("harga_vendor",$where);
         redirect("crm/vendor/produk/".$this->session->link);
     }
-    public function deleteHargaCourier($id_harga_courier){
+    public function deleteHargaCourier($id_harga_courier){ //sudah di cek
         $where = array(
             "id_harga_courier" => $id_harga_courier
         );
         deleteRow("harga_courier",$where);
         redirect("crm/vendor/produk/".$this->session->link);
     }
-    public function deleteHargaShipping($id_harga_shipping){
+    public function deleteHargaShipping($id_harga_shipping){ //sudah di cek
         $where = array(
             "id_harga_shipping" => $id_harga_shipping
         );
         deleteRow("harga_shipping",$where);
         redirect("crm/vendor/produk/".$this->session->link);
     }
-    public function insertNewSupplier(){
+    public function insertNewSupplier(){ //sudah di cek
         $data = array(
             "nama_perusahaan" => $this->input->post("add_nama_supplier"),
             "alamat_perusahaan" => $this->input->post("add_address_pic"),
@@ -411,9 +412,9 @@ class Vendor extends CI_Controller{
             "id_perusahaan" => $id_perusahaan
         );
         insertRow("contact_person",$data);
-        redirect("crm/vendor/supplier/".$this->session->link);
+        redirect("crm/vendor/produk/".$this->session->link);
     }
-    public function insertNewShipper(){
+    public function insertNewShipper(){ //sudah di cek
         $data = array(
             "nama_perusahaan" => $this->input->post("add_nama_supplier"),
             "permanent" => 1,

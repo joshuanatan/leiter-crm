@@ -74,7 +74,7 @@ class Od extends CI_Controller{
         $this->load->view("crm/crm-close");
         $this->load->view("req/html-close");
     }
-    public function create(){
+    public function create(){ //sudah di tes
         $where = array(
             "oc" => array(
                 "status_aktif_oc" => 0
@@ -109,7 +109,7 @@ class Od extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
-    public function remove($id_submit_od){
+    public function remove($id_submit_od){ //sudah di tes
         $where = array(
             "id_submit_od" => $id_submit_od
         );
@@ -117,7 +117,7 @@ class Od extends CI_Controller{
         $this->Mdod_item->delete($where);
         redirect("crm/od");
     }
-    public function createod(){
+    public function createod(){ //sudah di tes
         $input = array(
             "id_oc_item" => $this->input->post("id_oc_item"), 
             "jumlah_kirim" => $this->input->post("jumlah_kirim"), 
@@ -162,7 +162,7 @@ class Od extends CI_Controller{
         }
         redirect("crm/od");
     }
-    public function edit($id_submit_od){
+    public function edit($id_submit_od){ //sudah di tes
         $where["od"] = array(
             "id_submit_od" => $id_submit_od
         );
@@ -190,7 +190,7 @@ class Od extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
-    public function editOd(){
+    public function editOd(){ //sudah di tes
         $where = array(
             "id_submit_od" => $this->input->post("id_submit_od")
         );
@@ -203,42 +203,7 @@ class Od extends CI_Controller{
         updateRow("od_core",$data,$where);
         redirect("crm/od/edit/".$this->input->post("id_submit_od"));
     }
-    public function print(){
-        $this->load->view("crm/print/od");
-    }
-    public function getOD(){
-        
-    }
-    public function getOdItemPayment(){
-        $where = array(
-            "id_od" => $this->input->post("id_od")
-        );
-        //echo $this->input->post("id_od");
-        $result = $this->Mdod_item->select($where);
-        $count = 0;
-        $data = array();
-        $total = 0;
-        foreach($result->result() as $a){
-            $sellingPrice = get1Value("quotation_item","final_selling_price",array("id_quotation_item" => $a->id_quotation_item));
-            $finalAmount = get1Value("quotation_item","final_amount",array("id_quotation_item" => $a->id_quotation_item));
-            $id_produk = get1Value("price_request_item","id_produk",array("id_request_item" => get1Value("quotation_item","id_request_item",array("id_quotation_item" => $a->id_quotation_item))));
-            
-            $dp = get1Value("metode_pembayaran","nominal_pembayaran", array("id_oc" => get1Value("od_core","id_oc",array("id_od" => $this->input->post("id_od"))),"urutan_pembayaran" => 1));
-            $amount = ($a->item_qty*($sellingPrice-$dp))/$finalAmount;
-            $total += $amount;
-            $data[$count] = array(
-                "nama_produk" => get1Value("produk","nama_produk",array("id_produk" => $id_produk)),
-                "item_qty" => $a->item_qty."/".$finalAmount." ITEMS SENT",
-                "selling_price" => number_format($sellingPrice-$dp),
-                "paymentAmount" => number_format($amount),
-                "clean_nominal" => $total
-            );
-            $count++;
-        }
-        echo json_encode($data);
-    }
-
-    function odPdf($id_submit_od){
+    function odPdf($id_submit_od){ //sudah di tes
         $where = array(
             "id_submit_od" => $id_submit_od,
         );

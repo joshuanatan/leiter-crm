@@ -31,4 +31,13 @@ class Perusahaan extends CI_Controller{
         $data = foreachResult($result,$field,$field);
         echo json_encode($data);
     }
+    public function getPerusahaanFromOc(){
+        $where = array(
+            "id_submit_oc" => $this->input->post("id_submit_oc")
+        );
+        $id_submit_quotation = get1Value("order_confirmation","id_submit_quotation",$where);
+        $id_submit_request = get1Value("quotation","id_request",array("id_submit_quotation" => $id_submit_quotation));
+        $id_perusahaan = get1Value("price_request","id_perusahaan",array("id_submit_request" => $id_submit_request));
+        $this->getDetailPerusahaan($id_perusahaan);
+    }
 }

@@ -25,9 +25,6 @@ class Po extends CI_Controller{
         $this->load->view("req/top-navbar");
         $this->load->view("req/navbar");
     }
-    public function print(){
-        $this->load->view("crm/print/po");
-    }
     public function index(){
         $where["purchase_order"] = array(
             "status_aktif_po" => 0
@@ -80,7 +77,7 @@ class Po extends CI_Controller{
         $this->load->view("req/html-close");
     }
     
-    public function create(){
+    public function create(){ //sudah di tes
         $data["maxId"] = getMaxId("po_core","id_po",array("bulan_po" => date("m"), "tahun_po" => date("Y"),"status_aktif_po" => 0));
 
         $where["list_oc"] = array(
@@ -120,7 +117,7 @@ class Po extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
-    public function insertPo(){
+    public function insertPo(){ //sudah dites
         $data = array(
             "id_submit_oc" => $this->input->post("id_submit_oc"),
             "id_po" => $this->input->post("id_po"),
@@ -135,6 +132,7 @@ class Po extends CI_Controller{
             "shipping_term" => $this->input->post("shipping_term"),
             "requirement_date" => $this->input->post("requirement_date"),
             "destination" => $this->input->post("destination"),
+            "notify_party" => $this->input->post("notify_party"),
             "total_supplier_payment" => 0,
             "mata_uang_pembayaran" => $this->input->post("mata_uang_pembayaran"),
             "id_user_add" => $this->session->id_user
@@ -156,12 +154,12 @@ class Po extends CI_Controller{
         }
         redirect("crm/po");
     }
-    public function edit($id_submit_po){
+    public function edit($id_submit_po){ //sudah di cek
         $where["main"] = array(
             "id_submit_po" => $id_submit_po
         );
         $field["po_core"] = array(
-            "id_submit_oc","id_submit_po","no_po","id_supplier","id_cp_supplier","id_shipper","id_cp_shipper","shipping_method","shipping_term","requirement_date","destination","mata_uang_pembayaran"
+            "id_submit_oc","id_submit_po","no_po","id_supplier","id_cp_supplier","id_shipper","id_cp_shipper","shipping_method","shipping_term","requirement_date","destination","mata_uang_pembayaran","notify_party"
         );
         $result["po_core"] = selectRow("po_core", $where["main"]);
         $data["po_core"] = foreachResult($result["po_core"],$field["po_core"],$field["po_core"]);
@@ -280,7 +278,7 @@ class Po extends CI_Controller{
         $this->load->view("crm/content-close");
         $this->close();
     }
-    public function editPo(){
+    public function editPo(){ //sudah di cek
         $where["main"] = array(
             "id_submit_po" => $this->input->post("id_submit_po")
         );
@@ -291,7 +289,8 @@ class Po extends CI_Controller{
             "id_cp_shipper" => $this->input->post("id_cp_shipper"),
             "shipping_method" => $this->input->post("shipping_method"),
             "shipping_term" => $this->input->post("shipping_term"),
-            "requirement_date" => $this->input->post("requirement_date"),
+            "requirement_date" => $this->input->post("requirement_date"), 
+            "notify_party" => $this->input->post("notify_party"), 
             "destination" => $this->input->post("destination"),
             "mata_uang_pembayaran" => $this->input->post("mata_uang_pembayaran"),
         );
@@ -319,7 +318,7 @@ class Po extends CI_Controller{
         }   
         redirect("crm/po");
     }
-    function poPdf($id_submit_po){
+    function poPdf($id_submit_po){ //sudah di cek
         $where = array(
             "id_submit_po" => $id_submit_po,
         );
@@ -333,10 +332,12 @@ class Po extends CI_Controller{
             "vendor"=>$vendorr,
             "customer"=>$custt,
             "barang"=>$barangg,
+            "mata_uang" => get1Value("po_core","mata_uang_pembayaran",array("id_submit_po" => $id_submit_po)),
+            "notify_party" => get1Value("po_core","notify_party",array("id_submit_po" => $id_submit_po))
         );
         $this->load->view('crm/po/pdf_po',$data);
     }
-    public function delete($id_submit_po){
+    public function delete($id_submit_po){ //sudah di cek
         $where = array(
             "id_submit_po" => $id_submit_po
         );
