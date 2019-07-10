@@ -23,7 +23,7 @@
         <tbody>
             <?php for($a = 0; $a<count($perusahaan); $a++): ?> 
             <tr class="gradeA">
-                <td><?php echo $perusahaan[$a]["id_perusahaan"];?></td>
+                <td><?php echo $perusahaan[$a]["no_urut"];?></td>
                 <td><?php echo $perusahaan[$a]["nama_perusahaan"];?></td>
                 <td><?php echo nl2br($perusahaan[$a]["alamat_perusahaan"]);?></td>
                 <td><?php echo $perusahaan[$a]["notelp_perusahaan"];?></td>
@@ -64,6 +64,7 @@
                 <div class="modal-body">
                     <div class="tab-content">
                         <div class="tab-pane active" id="primaryData" role="tabpanel">
+                            <input type = "hidden" name = "no_urut" value = "<?php echo $maxId;?>">
                             <div class = "form-group">
                                 <h5 style = "opacity:0.5">Nama Supplier</h5>
                                 <input type = "text" class = "form-control" name = "nama_perusahaan">

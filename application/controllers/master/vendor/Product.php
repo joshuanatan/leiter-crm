@@ -27,14 +27,19 @@ class Product extends CI_Controller{
                 "perusahaan.status_perusahaan" => 0,
                 "contact_person.status_cp" => 0
             ),
+            "no_urut" => array(
+                "peran_perusahaan" => "PRODUK",
+                "status_perusahaan" => 0
+            )
         );
         $result = array(
             "perusahaan" => $this->Mdperusahaan->select($where["perusahaan"]),
         );
         $field["perusahaan"] = array(
-            "id_perusahaan","nama_perusahaan","alamat_perusahaan","notelp_perusahaan","nama_cp","email_cp","nohp_cp"
+            "id_perusahaan","nama_perusahaan","alamat_perusahaan","notelp_perusahaan","nama_cp","email_cp","nohp_cp","no_urut"
         );
         $data["perusahaan"] = foreachMultipleResult($result["perusahaan"],$field["perusahaan"],$field["perusahaan"]);
+        $data["maxId"] = getMaxId("perusahaan","no_urut",$where["no_urut"]);
         $this->load->view("master/content-open");
         $this->load->view("master/vendor-product/category-header");
         $this->load->view("master/vendor-product/category-body",$data);
@@ -92,11 +97,12 @@ class Product extends CI_Controller{
         /* ------------------------------------------------ */
         $where = array(
             "contact_person.id_perusahaan" => $i,
-            "contact_person.status_cp" => 0
+            "contact_person.status_cp" => 0,
+            
         );
         $data = array(
             "cp" => $this->Mdcontact_person->select($where),
-            "id_perusahaan" => $i
+            "id_perusahaan" => $i,
         );
         if($data["cp"]->num_rows() == 1){
             $data["is_last"] = 0;
@@ -104,6 +110,7 @@ class Product extends CI_Controller{
         else{
             $data["is_last"] = 1;
         }
+        
         $this->load->view("master/content-open");
         $this->load->view("master/vendor-product/category-header",$data);
         $this->load->view("master/vendor-product/contact-vendor-product",$data);
@@ -122,6 +129,7 @@ class Product extends CI_Controller{
     public function register(){ //sudah di cek
         $data = array(
             "nama_perusahaan" => $this->input->post("nama_perusahaan"),
+            "no_urut" => $this->input->post("no_urut"),
             "nofax_perusahaan" => $this->input->post("nofax_perusahaan"),
             "alamat_perusahaan" => $this->input->post("alamat_perusahaan"),
             "notelp_perusahaan" =>$this->input->post("notelp_perusahaan"),

@@ -26,16 +26,21 @@ class Customer extends CI_Controller{
                 "peran_perusahaan" => "CUSTOMER",
                 "perusahaan.status_perusahaan" => 0,
                 "contact_person.status_cp" => 0
+            ),
+            "no_urut" => array(
+                "peran_perusahaan" => "CUSTOMER",
+                "status_perusahaan" => 0
             )
         );
         $result = array(
-            "perusahaan" => $this->Mdperusahaan->select($where["perusahaan"])
+            "perusahaan" => $this->Mdperusahaan->select($where["perusahaan"]),
         );
         $data["perusahaan"] = array();
         $counter = 0;
         foreach($result["perusahaan"]->result() as $a){
             $data["perusahaan"][$counter] = array(
                 "id_perusahaan" => $a->id_perusahaan,
+                "no_urut" => $a->no_urut,
                 "nama_perusahaan" => $a->nama_perusahaan,
                 "jenis_perusahaan" => $a->jenis_perusahaan,
                 "alamat_perusahaan" => $a->alamat_perusahaan,
@@ -59,6 +64,7 @@ class Customer extends CI_Controller{
             
             $counter++;
         }
+        $data["maxId"] = getMaxId("perusahaan","no_urut",$where["no_urut"]);
         $this->load->view("master/customer/category-body",$data);
         $this->load->view("master/content-close");
         /*--------------------------------------------------------*/
@@ -102,6 +108,7 @@ class Customer extends CI_Controller{
     }
     public function register(){ //sudah di cek
         $data = array(
+            "no_urut" => $this->input->post("no_urut"),
             "nama_perusahaan" => $this->input->post("nama_perusahaan"),
             "nofax_perusahaan" => $this->input->post("nofax_perusahaan"),
             "alamat_perusahaan" => $this->input->post("alamat_perusahaan"),

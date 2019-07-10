@@ -24,14 +24,19 @@ class Shipping extends CI_Controller{
                 "perusahaan.status_perusahaan" => 0,
                 "contact_person.status_cp" => 0
             ),
+            "no_urut" => array(
+                "peran_perusahaan" => "PRODUK",
+                "status_perusahaan" => 0
+            )
         );
         $result = array(
             "perusahaan" => $this->Mdperusahaan->select($where["perusahaan"]),
         );
         $field["perusahaan"] = array(
-            "id_perusahaan","nama_perusahaan","alamat_perusahaan","notelp_perusahaan","nama_cp","email_cp","nohp_cp"
+            "id_perusahaan","nama_perusahaan","alamat_perusahaan","notelp_perusahaan","nama_cp","email_cp","nohp_cp","no_urut"
         );
         $data["perusahaan"] = foreachMultipleResult($result["perusahaan"],$field["perusahaan"],$field["perusahaan"]);
+        $data["maxId"] = getMaxId("perusahaan","no_urut",$where["no_urut"]);
         $this->load->view("master/content-open");
         $this->load->view("master/vendor-shipping/category-header");
         $this->load->view("master/vendor-shipping/category-body",$data);
@@ -149,6 +154,7 @@ class Shipping extends CI_Controller{
         $nameCp = array("nama_cp","jk_cp","email_cp","nohp_cp","jabatan_cp");
         $data = array(
             $name[0] => $this->input->post($name[0]),
+            "no_urut" => $this->input->post("no_urut"),
             $name[1] => $this->input->post($name[1]),
             $name[2] => $this->input->post($name[2]),
             $name[3] => $this->input->post($name[3]),
