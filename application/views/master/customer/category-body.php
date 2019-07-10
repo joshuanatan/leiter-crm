@@ -71,7 +71,6 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="primaryData" role="tabpanel">
                             <div class = "form-group">
-                                <h5 style = "opacity:0.5">ID Customer</h5>
                                 <input type = "hidden" value = "<?php echo $maxId;?>" class = "form-control" readonly name = "no_urut">
                             </div>
                             <div class = "form-group">
