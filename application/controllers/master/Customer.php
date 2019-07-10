@@ -31,6 +31,7 @@ class Customer extends CI_Controller{
         $result = array(
             "perusahaan" => $this->Mdperusahaan->select($where["perusahaan"])
         );
+        $data["perusahaan"] = array();
         $counter = 0;
         foreach($result["perusahaan"]->result() as $a){
             $data["perusahaan"][$counter] = array(
