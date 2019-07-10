@@ -135,42 +135,6 @@
                     </td>
                 </tr>
             </table>
-            <br><br>
-            <table style="width:500px;text-align:center">
-                <tr>
-                <td style="width:50px"></td>
-                    <td colspan="4">************************** PACKING LIST **************************</td>
-                </tr>
-                <tr>
-                <td></td>
-                    <td style="text-align:left">Box-No</td>
-                    <td>Berat Bersih</td>
-                    <td>Berat Kotor</td>
-                    <td>Dimensi (L/W/H)</td>
-                </tr>
-                <tr>
-                <td></td>
-                    <td style="text-align:left">01</td>
-                    <td>17.231 kg</td>
-                    <td>234 kg</td>
-                    <td>35 * 35 * 34</td>
-                </tr>
-                <tr>
-                <td></td>
-                    <td colspan="4">*****************************************************************</td>
-                </tr>
-                <tr>
-                <td></td>
-                    <td  style="text-align:left" colspan="4">Total</td>
-                </tr>
-                <tr>
-                <td></td>
-                    <td style="text-align:left">01</td>
-                    <td>17.231 kg</td>
-                    <td>234 kg</td>
-                    <td>35 * 35 * 34</td>
-                </tr>
-            </table>
             <br>
             <br>
             <br>
@@ -181,7 +145,7 @@
                 <tr>
                     <td></td>
                     <td style="text-align:center">
-                        Jakarta, 13 Jun 2019
+                        Jakarta, '.tanggalCantik(date("Y/m/d"),strtotime($inv->tgl_invoice_add)).'
                     </td>
                 </tr>
                 <tr>
@@ -194,7 +158,7 @@
                         <br>
                         <br>
                         <br>
-                        asdasdassda
+                        '.$this->session->nama_user.'
                     </td>
                 </tr>`
             </table>

@@ -27,7 +27,7 @@
                 <td><?php echo number_format($invoice[$a]["nominal_pembayaran"]);?></td>
                 <td><?php echo $invoice[$a]["purpose"];?></td>
                 <td class="actions">
-                    
+                <a href = "<?php echo base_url();?>finance/receivable/invoicePdf/<?php echo $invoice[$a]["id_submit_invoice"];?>" class = "btn btn-sm btn-primary btn-outline" target="_blank">CETAK</a>
                     <?php if($invoice[$a]["status_lunas"] == 1):?>
                     <a href = "<?php echo base_url();?>finance/receivable/delete/<?php echo $invoice[$a]["id_submit_invoice"];?>" class="btn btn-outline btn-danger btn-sm"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
@@ -37,6 +37,7 @@
                     <?php else:?>
                     <button class = "btn btn-success btn-outline btn-sm">PAID</button>
                     <?php endif;?>
+                    <a href = "<?php echo base_url();?>finance/receivable/invoicePdf/<?php echo $invoice[$a]["id_submit_invoice"];?>" class = "btn btn-sm btn-primary btn-outline">EDIT</a>
                 </td>
             </tr>
             <?php endfor;?>
