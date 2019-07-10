@@ -259,8 +259,31 @@ class Receivable extends CI_Controller{
         updateRow("invoice_core",$data,$where);
         redirect("finance/receivable");
     }
-    function invoicePdf(){
-        $this->load->view('finance/receivable/pdf_invoice');
+    function invoicePdf($id_submit_invoice){
+        $where=array(
+            "id_submit_invoice"=>$id_submit_invoice,
+        );
+
+        $this->load->model('M_pdf_invoice');
+        $invoice = $this->M_pdf_invoice->selectInvoice($where);
+        $perusahaan = $this->M_pdf_invoice->selectPerusahaan($where);
+        $barang = $this->M_pdf_invoice->selectBarang($where);
+
+        $data=array(
+            "invoice"=>$invoice,
+            "perusahaan"=>$perusahaan,
+            "barang"=>$barang,
+        );
+
+        $tipe_invoice = get1Value("invoice_core","tipe_invoice",array("id_submit_invoice"=>$id_submit_invoice));
+
+        if($tipe_invoice=="1"){
+            $this->load->view('finance/receivable/pdf_invoice',$data);
+        }else if($tipe_invoice="2"){
+            $this->load->view('finance/receivable/pdf_invoice2',$data);
+        }else{
+            $this->load->view('finance/receivable/pdf_invoice3',$data);
+        }
     }
 }
 ?>
