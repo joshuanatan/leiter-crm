@@ -20,7 +20,7 @@ class Customer extends CI_Controller{
         $this->load->view("req/navbar");
         /*--------------------------------------------------------*/
         $this->load->view("master/content-open");
-        $this->load->view("master/Customer/category-header");
+        $this->load->view("master/customer/category-header");
         $where = array(
             "perusahaan" => array(
                 "peran_perusahaan" => "CUSTOMER",
@@ -87,8 +87,8 @@ class Customer extends CI_Controller{
         );
         $data["perusahaan"] = selectRow("perusahaan",$where);  
         $this->load->view("master/content-open");
-        $this->load->view("master/Customer/category-header");
-        $this->load->view("master/Customer/edit-customer",$data);
+        $this->load->view("master/customer/category-header");
+        $this->load->view("master/customer/edit-customer",$data);
         $this->load->view("master/content-close");
         /*--------------------------------------------------------*/
         $this->load->view("req/script");
@@ -153,7 +153,7 @@ class Customer extends CI_Controller{
         $this->load->view("req/navbar");
         /*--------------------------------------------------------*/
         $this->load->view("master/content-open");
-        $this->load->view("master/Customer/category-header");
+        $this->load->view("master/customer/category-header");
         $where = array(
             "contact_person.id_perusahaan" => $id_perusahaan,
             "contact_person.status_cp" => 0
@@ -168,7 +168,7 @@ class Customer extends CI_Controller{
         else{
             $data["is_last"] = 1;
         }
-        $this->load->view("master/Customer/contact-customer",$data);
+        $this->load->view("master/customer/contact-customer",$data);
         $this->load->view("master/content-close");
         /*--------------------------------------------------------*/
         $this->load->view("req/script");
