@@ -33,15 +33,7 @@
                         <span class="sr-only">Toggle fullscreen</span>
                     </a>
                 </li>
-                <li class="nav-item hidden-float">
-                    <a class="nav-link icon wb-search" data-toggle="collapse" href="#" data-target="#site-navbar-search" role="button">
-                        <span class="sr-only">Toggle Search</span>
-                    </a>
-                </li>
-                <li class="nav-item dropdown dropdown-fw dropdown-mega">
-                    <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false" data-animation="fade" role="button">Mega <i class="icon wb-chevron-down-mini" aria-hidden="true"></i></a>
                 
-                </li>
             </ul>
           <!-- End Navbar Toolbar -->
     
