@@ -63,24 +63,26 @@ function oc_detail(){ /*kepake di add invoice*/
 function changePayment(){
     var id_submit_oc = $("#id_submit_oc").val(); //id_submit_invoice
     var payment_type = $("#payment_type").val();
-
+    var split_oc = id_submit_oc.split("-");
     console.log(payment_type);
     switch(parseInt(payment_type)){
 
         case 1://pelunasan no dp
         case 3: //pelunasan with dp
         
-            $(".dp").css("display","none"); //munculin yang berkaitan dengan DP
+            $(".dp").css("display","none"); //hilangkan yang berkaitan dengan DP
             $.ajax({ 
-            url:"<?php echo base_url();?>interface/oc/getOcPaymentMethod/"+id_submit_oc,
+            url:"<?php echo base_url();?>interface/oc/getOcPaymentMethod/"+split_oc[0],
             dataType:"JSON",
             success:function(respond){
+                console.log(respond["trigger_pembayaran2"]);
                 if(respond["trigger_pembayaran2"] == "2"){ //nunggu OD
+                
                     $("#od").css("display","block");
                     $("#boxes").css("display","block");
                     $.ajax({
                         url:"<?php echo base_url();?>interface/od/getListOdForPelunasan",
-                        data:{id_submit_oc:id_submit_oc},
+                        data:{id_submit_oc:split_oc[0]},
                         type:"POST",
                         dataType:"JSON",
                         success:function(respondOd){
