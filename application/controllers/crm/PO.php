@@ -319,8 +319,22 @@ class Po extends CI_Controller{
         }   
         redirect("crm/po");
     }
-    function poPdf(){
-        $this->load->view('crm/po/pdf_po');
+    function poPdf($id_submit_po){
+        $where = array(
+            "id_submit_po" => $id_submit_po,
+        );
+        $this->load->model('M_pdf_po');
+        $purchaseorder = $this->M_pdf_po->selectPo($where);
+        $vendorr= $this->M_pdf_po->selectVendor($where);
+        $custt= $this->M_pdf_po->selectCust($where);
+        $barangg= $this->M_pdf_po->selectBarang($where);
+        $data = array(
+            "purchaseorder"=>$purchaseorder,
+            "vendor"=>$vendorr,
+            "customer"=>$custt,
+            "barang"=>$barangg,
+        );
+        $this->load->view('crm/po/pdf_po',$data);
     }
     public function delete($id_submit_po){
         $where = array(

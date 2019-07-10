@@ -1,3 +1,4 @@
+<?php foreach($purchaseorder->result() as $po): ?>
 <?php
     $pdf = new Pdf_oc('P', 'mm', 'A4', true, 'UTF-8', false);
     $pdf->SetTitle('PURCHASE ORDER');
@@ -29,11 +30,11 @@
         <table>
             <tr>
                 <td style="width:30px; font-weight:bold; font-size:10pt">Date.</td>
-                <td style="font-weight:bold; font-size:9pt">: June 10<sup>th</sup>, 2019</td>
+                <td style="font-weight:bold; font-size:9pt">: '.date("F j, Y",strtotime($po->date_po_core_add)).'</td>
             </tr>
             <tr>
                 <td style="width:30px; font-weight:bold; font-size:10pt">Ref</td>
-                <td style="font-weight:bold; font-size:9pt">: LI-337/PO/VI/2019/182</td>
+                <td style="font-weight:bold; font-size:9pt">: '.$po->no_po.'</td>
             </tr>
         </table>
         <br><br>
@@ -41,9 +42,21 @@
             <tr>
                 <td style="font-weight:bold; font-size:10pt; width:165px">PT Leiter Indonesia</td>
                 <td style="font-size:9pt; width:45px">VENDOR:</td>
-                <td style="font-weight:bold; font-size:10pt; width:150px">SEFAR SINGAPORE PTE LTD</td>
+                <td style="font-weight:bold; font-size:10pt; width:150px">';
+                
+                foreach($vendor->result() as $x){
+                    $content=$content.$x->nama_perusahaan;
+                }
+                
+                $content=$content.'</td>
                 <td style="font-size:9pt; width:40px">SHIP TO:</td>
-                <td style="font-weight:bold; font-size:10pt; width:165px">Trinity Worldwide Services</td>
+                <td style="font-weight:bold; font-size:10pt; width:165px">';
+                
+                foreach($customer->result() as $y){
+                    $content=$content.$y->nama_perusahaan;
+                }
+                
+                $content=$content.'</td>
             </tr>
             <tr>
                 <td style="font-size:9pt; width:165px">Ruko Prominence Alam Sutera F38/53-55
@@ -57,21 +70,59 @@
 
                 <td></td>
 
-                <td style="font-size:9pt; width:150px">8 Kallang Avenue
-                <br>#04-03 Aperia Tower 1
-                <br>SINGAPORE 339509
-                <br>Attn : Mrs. Celine Kow
-                <br>Phone : +65 6299 9092
-                <br>Fax : +65 6299 6359
+                <td style="font-size:9pt; width:150px">';
+                
+                foreach($vendor->result() as $x){
+                    $content=$content.nl2br($x->alamat_perusahaan);
+                }
+                
+                $content=$content.'
+                <br>Attn : ';
+                
+                foreach($vendor->result() as $x){
+                    $content=$content.$x->nama_cp;
+                }
+                
+                $content=$content.'
+                <br>';
+                
+                foreach($vendor->result() as $x){
+                    $content=$content.$x->notelp_perusahaan;
+                }
+                
+                $content=$content.'
+                <br>';
+                
+                foreach($vendor->result() as $x){
+                    $content=$content.$x->nofax_perusahaan;
+                }
+                
+                $content=$content.'
                 </td>
 
                 <td style="font-size:9pt"></td>
 
-                <td style="font-size:9pt;width:165px">C/O G.S Intl Forwarders Pte Ltd
-                <br>7 Airline Road #03-13
-                <br>Singapore 819834
-                <br>Tel: +65 67474431
-                <br>Attn: Irene Tjan
+                <td style="font-size:9pt;width:165px">';
+                
+                foreach($customer->result() as $y){
+                    $content=$content.$y->alamat_perusahaan;
+                }
+                
+                $content=$content.'
+                <br>Tel: ';
+                
+                foreach($customer->result() as $y){
+                    $content=$content.$y->notelp_perusahaan;
+                }
+                
+                $content=$content.'
+                <br>Attn: ';
+                
+                foreach($customer->result() as $y){
+                    $content=$content.$y->up_cp;
+                }
+                
+                $content=$content.'
                                       <br>&nbsp;&nbsp;&nbsp;&nbsp;Notify Party:
                 <br>Trinity Worldwide Services
                 <br>54 Chai Chee Street #04-851
@@ -88,9 +139,11 @@
                 <th style="font-size:10pt; text-align:center; font-weight:bold; background-color:#dcdcdc">REQUIREMENT DATE</th>
             </tr>
             <tr>
-                <td style="font-size:9pt">By AIR</td>
-                <td></td>
-                <td style="font-size:9pt; height:18px;"><span style="background-color:yellow;">June 28<sup>th</sup>, 2019 in Singapore</span></td>
+                <td style="font-size:9pt; height:20px;line-height:20px;">By '.$po->shipping_method.'</td>
+                <td>'.$po->shipping_term.'</td>
+                <td style="font-size:9pt; height:20px;line-height:20px;background-color:yellow;">';
+                
+                $content=$content. date("F j, Y",strtotime($po->requirement_date)) .' in '.$po->destination.'</td>
             </tr>
         </table>
         <br><br>
@@ -109,18 +162,27 @@
                 $split = explode("\n",$baris);
                 $jumlah_baris = count($split);
                 $line_height = round($jumlah_baris * 12);
-
-            $content = $content .'<tr>
-                <td style="text-align:center; font-size:9pt;line-height:'.$line_height.'px;">1</td>
+$no=0;
+$total=0;
+                foreach($barang->result() as $brg){
+                    $no++;
+                    $content = $content .'<tr>
+                <td style="text-align:center; font-size:9pt;line-height:'.$line_height.'px;">'.$no.'</td>
                 <td style="font-size:9pt">'.nl2br($baris).'</td>
-                <td style="text-align:center; font-size:9pt;line-height:'.$line_height.'px;">3 pcs</td>
-                <td style="text-align:center; font-size:9pt;line-height:'.$line_height.'px;">1,090.00</td>
-                <td style="text-align:center; font-size:9pt;line-height:'.$line_height.'px;">3,270.00</td>
-            </tr>
+                <td style="text-align:center; font-size:9pt;line-height:'.$line_height.'px;">'.$brg->jumlah_item.' '.$brg->satuan_item .'</td>
+                <td style="text-align:center; font-size:9pt;line-height:'.$line_height.'px;">'.number_format($brg->harga_item).'</td>
+                <td style="text-align:center; font-size:9pt;line-height:'.$line_height.'px;">'.number_format($brg->jumlah_item*$brg->harga_item).'</td>
+            </tr>';
+
+            $total=$total+ ($brg->jumlah_item*$brg->harga_item);
+                }
+            
+
+            $content=$content.'
             <tr>
                 <td colspan="3"></td>
                 <td style="text-align:center;background-color:#dcdcdc; font-size:9pt">Total</td>
-                <td style="text-align:center;background-color:#dcdcdc; font-size:9pt">3,270.00</td>
+                <td style="text-align:center;background-color:#dcdcdc; font-size:9pt">'.number_format($total).'</td>
             </tr>
         </table>
         <br>
@@ -133,7 +195,7 @@
             </tr>
             <tr>
                 <td style="width:15px">1. </td>
-                <td>Requirement Date: <span style="background-color:yellow">June 28<sup>th</sup>, 2019 in Singapore</span></td>
+                <td>Requirement Date: <span style="background-color:yellow">'. date("F j, Y",strtotime($po->requirement_date)) .' in '.$po->destination.'</span></td>
             </tr>
             <tr>
                 <td style="width:15px">2. </td>
@@ -186,3 +248,4 @@ $pdf->writeHTML($content);
     //$pdf->Write(5, 'Contoh Laporan PDF dengan CodeIgniter + tcpdf');
     $pdf->Output('contoh1.pdf', 'I');
 ?>
+<?php endforeach;?>
