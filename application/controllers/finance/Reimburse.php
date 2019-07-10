@@ -23,39 +23,26 @@ class Reimburse extends CI_Controller{
         $this->load->view("finance/finance-close");
         $this->load->view("req/html-close");
     }
-    public function index(){
+    public function index(){ //sudah di cek //untuk yang di finance
         $where = array(
-            "expanses_type" => array(
-                "status_type" => 0
-            ),
             "reimburse" => array(
-                "status_aktif_reimburse" => 0
+                "status_aktif_reimburse" => 0,
             )
         );
         $field = array(
-            "expanses_type" => array(
-                "id_type","name_type"
-            ),
             "reimburse" => array(
-                "id_reimburse","subject_reimburse","nominal_reimburse","attachment","notes","id_user_add","tgl_reimburse_add","expanses_type","status_paid",
+                "id_reimburse","subject_reimburse","nominal_reimburse","attachment","notes","id_user_add","tgl_reimburse_add","status_paid",
             )
         );
         $print = array(
-            "expanses_type" => array(
-                "id_type","name_type"
-            ),
             "reimburse" => array(
-                "id_reimburse","subject_reimburse","nominal_reimburse","attachment","notes","id_user_add","tgl_reimburse_add","expanses_type","status_paid",
+                "id_reimburse","subject_reimburse","nominal_reimburse","attachment","notes","id_user_add","tgl_reimburse_add","status_paid",
             )
         );
-        $result["expanses_type"] = selectRow("finance_usage_type",$where["expanses_type"]);
-        $data["expanses_type"] = foreachMultipleResult($result["expanses_type"],$field["expanses_type"],$print["expanses_type"]);
-
         $result["reimburse"] = selectRow("reimburse",$where["reimburse"]);
         $data["reimburse"] = foreachMultipleResult($result["reimburse"],$field["reimburse"],$print["reimburse"]);
         for($a = 0; $a<count($data["reimburse"]);$a++){
             $data["reimburse"][$a]["nama_user"] = get1Value("user","nama_user",array("id_user" => $data["reimburse"][$a]["id_user_add"]));
-            $data["reimburse"][$a]["nama_expanses"] = get1Value("finance_usage_type","name_type",array("id_type" => $data["reimburse"][$a]["expanses_type"]));
 
             if($data["reimburse"][$a]["status_paid"] == 0){
                 /*kalau sudah dibayar*/
@@ -81,7 +68,53 @@ class Reimburse extends CI_Controller{
         $this->load->view("finance/content-close");
         $this->close();
     }
-    public function insert(){
+    public function request(){ //sudah di cek //untuk disetiap orang
+        $where = array(
+            "reimburse" => array(
+                "id_user_add" => $this->session->id_user,
+                "status_aktif_reimburse" => 0
+            )
+        );
+        $field = array(
+            "reimburse" => array(
+                "id_reimburse","subject_reimburse","nominal_reimburse","attachment","notes","id_user_add","tgl_reimburse_add","status_paid",
+            )
+        );
+        $print = array(
+            "reimburse" => array(
+                "id_reimburse","subject_reimburse","nominal_reimburse","attachment","notes","id_user_add","tgl_reimburse_add","status_paid",
+            )
+        );
+        $result["reimburse"] = selectRow("reimburse",$where["reimburse"]);
+        $data["reimburse"] = foreachMultipleResult($result["reimburse"],$field["reimburse"],$print["reimburse"]);
+        for($a = 0; $a<count($data["reimburse"]);$a++){
+            $data["reimburse"][$a]["nama_user"] = get1Value("user","nama_user",array("id_user" => $data["reimburse"][$a]["id_user_add"]));
+
+            if($data["reimburse"][$a]["status_paid"] == 0){
+                /*kalau sudah dibayar*/
+                /*load data dari pembayaran untuk reimburse ini */
+                $result["payment_data"] = selectRow("pembayaran",array("id_refrensi" => "RMBS-".$data["reimburse"][$a]["id_reimburse"]));
+                
+                $field["payment_data"] = array(
+                    "id_pembayaran","subject_pembayaran","tgl_bayar","attachment","notes_pembayaran","nominal_pembayaran","metode_pembayaran"
+                );
+                $print["payment_data"] = array(
+                    "id_pembayaran","subject_pembayaran","tgl_bayar","attachment","notes_pembayaran","nominal_pembayaran","metode_pembayaran"
+                );
+                /*end data pembayaran*/
+                /*masukin ke variable payment data*/
+                $data["reimburse"][$a]["payment_data"] = foreachResult($result["payment_data"],$field["payment_data"],$print["payment_data"]);
+            }
+
+        }
+        $this->req();
+        $this->load->view("finance/content-open");
+        $this->load->view("finance/reimburse/category-header");
+        $this->load->view("finance/reimburse/reimburse-request",$data);
+        $this->load->view("finance/content-close");
+        $this->close();
+    }
+    public function insert(){ //sudah di cek
         $config["upload_path"] = "./assets/dokumen/reimburse/";
         $config["allowed_types"] = "jpg|png|jpeg|gif|pdf";
         $this->load->library("upload",$config);
@@ -96,14 +129,13 @@ class Reimburse extends CI_Controller{
             "nominal_reimburse" =>splitterMoney($this->input->post("amount"),","),
             "attachment" =>$dataFile["file_name"],
             "notes" => $this->input->post("notes"),
-            "expanses_type" => $this->input->post("expanses"),
             "id_user_add" => $this->session->id_user,
             "tgl_reimburse_add" => date("Y-m-d"),
         );
         insertRow("reimburse",$data);
-        redirect("finance/reimburse");
+        redirect("finance/reimburse/request");
     }
-    public function edit($id_reimburse){
+    public function edit($id_reimburse){ //sudah di cek
         /*kalau ngedit yang bentuknya menunggu pelunasan, gaperlu ganti yang di cashflow & pembayaran*/
         $where = array(
             "id_reimburse" => $id_reimburse
@@ -118,7 +150,6 @@ class Reimburse extends CI_Controller{
                 "nominal_reimburse" =>splitterMoney($this->input->post("amount_edit"),","),
                 "attachment" =>$dataFile["file_name"],
                 "notes" => $this->input->post("notes_edit"),
-                "expanses_type" => $this->input->post("expanses_edit"),
                 "id_user_add" => $this->session->id_user,
                 "tgl_reimburse_add" => date("Y-m-d"),
             );
@@ -129,15 +160,24 @@ class Reimburse extends CI_Controller{
                 "subject_reimburse" =>$this->input->post("subject_edit"),
                 "nominal_reimburse" =>splitterMoney($this->input->post("amount_edit"),","),
                 "notes" => $this->input->post("notes_edit"),
-                "expanses_type" => $this->input->post("expanses_edit"),
                 "id_user_add" => $this->session->id_user,
                 "tgl_reimburse_add" => date("Y-m-d"),
             );
             updateRow("reimburse",$data,$where);
         }
+        redirect("finance/reimburse/request");
+    }
+    public function reject($id_reimburse){ //sudah di cek
+        $where = array(
+            "id_reimburse" => $id_reimburse
+        );
+        $data = array(
+            "status_paid" => 2
+        );
+        updateRow("reimburse",$data,$where);
         redirect("finance/reimburse");
     }
-    public function remove($id_reimburse){
+    public function remove($id_reimburse){ //sudah di cek
         $where = array(
             "id_reimburse" => $id_reimburse
         );
@@ -145,9 +185,9 @@ class Reimburse extends CI_Controller{
             "status_aktif_reimburse" => 1
         );
         updateRow("reimburse",$data,$where);
-        redirect("finance/reimburse");
+        redirect("finance/reimburse/request");
     }
-    public function pay($id_reimburse){
+    public function pay($id_reimburse){ //sudah di cek
         $where = array(
             "id_reimburse" => $id_reimburse
         );

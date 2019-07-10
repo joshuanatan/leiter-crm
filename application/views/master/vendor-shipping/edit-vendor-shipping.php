@@ -12,133 +12,30 @@
                         <div class="tab-content">
                             <?php foreach($perusahaan->result() as $a):?>
                             <div class="tab-pane active" id="primaryData" role="tabpanel">
-                            <?php
-                            $form_data = array(
-                                "input0" => array(
-                                    "input" => "input",
-                                    "type" => "text",
-                                    "name" => "nama_perusahaan",
-                                    "title" => "Company Name",
-                                    "placeholder" => "",
-                                    "value" => $a->nama_perusahaan,
-                                    "help" => "before: ". $a->nama_perusahaan
-                                ),
-                                "input1" => array(
-                                    "input" => "input",
-                                    "type" => "text",
-                                    "name" => "jenis_perusahaan",
-                                    "title" => "Company Field",
-                                    "placeholder" => "",
-                                    "value" => $a->jenis_perusahaan,
-                                    "help" => "before: ". $a->jenis_perusahaan
-                                ),
-                                "input2" => array(
-                                    "input" => "textarea",
-                                    "title" => "Company Address",
-                                    "name" => "alamat_perusahaan",
-                                    "placeholder" => "",
-                                    "value" => $a->alamat_perusahaan,
-                                    "help" => "before: ". $a->alamat_perusahaan,
-                                    "rows" => 5,
-                                    "cols" => 0
-                                ),
-                                "input3" => array(
-                                    "input" => "input",
-                                    "type" => "text",
-                                    "name" => "notelp_perusahaan",
-                                    "title" => "Company Line",
-                                    "placeholder" => "",
-                                    "value" => $a->notelp_perusahaan,
-                                    "help" => "before: ". $a->notelp_perusahaan
-                                ),
-                                "input4" => array(
-                                    "input" => "input",
-                                    "type" => "hidden",
-                                    "name" => "id_perusahaan",
-                                    "title" => "",
-                                    "placeholder" => "",
-                                    "value" => $a->id_perusahaan,
-                                    "help" => ""
-                                ),
-                                
-                            );
-                            ?>
-                            <?php for($a = 0; $a<count($form_data); $a++){ 
-                                
-                                switch($form_data["input".$a]["input"]){
-                                    case "input": ?>
-                                    <div class = "form-group">
-                                        <div class="col-md-12 col-lg-12">
-                                            <!-- Example With Help -->
-                                            <h4 class="example-title"><?php echo $form_data["input".$a]["title"];?></h4>
-                                            <input type="<?php echo $form_data["input".$a]["type"];?>" name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" placeholder = "<?php echo $form_data["input".$a]["placeholder"];?>" required value = "<?php echo $form_data["input".$a]["value"];?>">
-                                            <span class="text-help"><?php echo $form_data["input".$a]["help"];?></span>
-                                        </div>
-                                    </div>
-                                    <?php
-                                    break;
-                                    case "select": ?>
-                                    <div class = "form-group">
-                                        <div class="col-md-12 col-lg-12">
-                                            <!-- Example With Help -->
-                                            <h4 class="example-title"><?php echo $form_data["input".$a]["title"];?></h4>
-                                            <select name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" required >
-                                            <?php 
-                                            foreach($form_data["input".$a]["options"]->result() as $option){ ?>
-                                                <option value = ""><?php echo $option->id_produk;?></option>
-                                            <?php 
-                                            } 
-                                            ?>
-                                            </select>
-                                            <span class="text-help"><?php echo $form_data["input".$a]["help"];?></span>
-                                        </div>
-                                    </div>
-                                    <?php
-                                    break;
-                                    case "textarea": ?>
-                                    <div class = "form-group">
-                                        <div class="col-md-12 col-lg-12">
-                                            <!-- Example With Help -->
-                                            <h4 class="example-title"><?php echo $form_data["input".$a]["title"];?></h4>
-                                            <textarea name = "<?php echo $form_data["input".$a]["name"];?>" class="form-control" id="inputHelpText" required <?php if($form_data["input".$a]["rows"] != 0) echo "rows = ".$form_data["input".$a]["rows"];?> <?php if($form_data["input".$a]["cols"] != 0) echo "cols = ".$form_data["input".$a]["cols"];?> ><?php echo $form_data["input".$a]["value"];?></textarea>
-                                            <span class="text-help"><?php echo $form_data["input".$a]["help"];?></span>
-                                        </div>
-                                    </div>
-                                    <?php
-                                    break;
-                                }
-                                ?>
-                                <?php
-                            }
-                            ?>
-                            
-                            <?php endforeach;?>
-                            <div class = "form-group">
-                                <div class="col-md-12 col-lg-12">
-                                    <!-- Example With Help -->
-                                    <h4 class="example-title">SHIPPING METHOD</h4>
-                            <?php foreach($method->result() as $a): ?>
-                            <?php if($a->status_metode_pengiriman == 0) $jenis = "inputChecked"; else $jenis = "inputUnchecked";?>
-                            <?php if($a->status_metode_pengiriman == 0) $check = "checked"; else $check = "";?>
-                            
-                                    <div class="col-md-12 col-xl-12">
-                                        <div class="checkbox-custom checkbox-primary">
-                                            <input type="checkbox" value = "<?php echo $a->metode_pengiriman;?>" id="<?php echo $jenis.$a->metode_pengiriman;?>" name = "delivery[]"; <?php echo $check;?>/>
-                                            <label for="<?php echo $jenis.$a->metode_pengiriman;?>"><?php echo $a->metode_pengiriman;?></label>
-                                        </div>
-                                    </div>
-                                   
-                            <?php endforeach;?>
-                                    <span class="text-help"></span>
+                                <input type = "hidden" name = "id_perusahaan" value = "<?php echo $a->id_perusahaan;?>">
+                                <div class = "form-group">
+                                    <h5 style = "opacity:0.5">Nama Shipper</h5>
+                                    <input type = "text" class = "form-control" value = "<?php echo $a->nama_perusahaan ?>" name = "nama_perusahaan">
                                 </div>
-                            </div>   
-                            <div class = "form-group">
-                                <div class="col-md-12 col-lg-12">
-                                    <button type = "submit" class = "btn btn-primary btn-outline col-lg-2 col-md-12">SUBMIT</button>
-                                    <a href = "<?php echo base_url();?>master/vendor/shipping" class = "btn btn-primary btn-outline col-lg-2 col-md-12">BACK</a>
+                                <div class = "form-group">
+                                    <h5 style = "opacity:0.5">No Fax Shipper</h5>
+                                    <input type = "text" class = "form-control" value = "<?php echo $a->nofax_perusahaan ?>" name = "nofax_perusahaan">
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "opacity:0.5">No Telp Shipper</h5>
+                                    <input type = "text" class = "form-control" value = "<?php echo $a->notelp_perusahaan ?>" name = "notelp_perusahaan">
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "opacity:0.5">Alamat Perusahaan</h5>
+                                    <textarea class = "form-control" name = "alamat_perusahaan" rows = "5"><?php echo $a->alamat_perusahaan ?></textarea>
+                                </div>
+                                <div class = "form-group">
+                                    <button type = "submit" class = "btn btn-primary btn-sm btn-outline col-lg-2 col-md-12">SUBMIT</button>
+
+                                    <a href = "<?php echo base_url();?>master/vendor/shipping" class = "btn btn-primary btn-sm btn-outline col-lg-2 col-md-12">BACK</a>
                                 </div>
                             </div>
-                            <!--</div>-->
+                            <?php endforeach;?>
                         </div>
                         
                     </form>

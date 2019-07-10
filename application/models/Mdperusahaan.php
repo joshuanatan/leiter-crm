@@ -3,6 +3,7 @@ class Mdperusahaan extends CI_Model{
     public function select($data){
         $this->db->join("contact_person","contact_person.id_perusahaan = perusahaan.id_perusahaan","inner");
         $this->db->group_by("perusahaan.id_perusahaan");
+        $this->db->order_by("nama_perusahaan","ASC");
         return $this->db->get_where("perusahaan",$data);
     }
     public function insert($data){

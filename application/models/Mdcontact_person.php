@@ -1,7 +1,7 @@
 <?php
 class Mdcontact_person extends CI_Model{
     public function select($data){
-        $this->db->order_by("date_cp_add","DESC");
+        $this->db->order_by("id_cp","DESC");
         return $this->db->get_where("contact_person",$data);
     }
     public function insert($data){

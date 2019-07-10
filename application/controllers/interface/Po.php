@@ -1,8 +1,8 @@
 <?php
 class Po extends CI_Controller{
-    public function isExists($no_po){
+    public function isExists(){
         $where = array(
-            "no_po" => $no_po
+            "no_po" => $this->input->post("no_refrence")
         );
         echo json_encode(isExistsInTable("po_core",$where));
 

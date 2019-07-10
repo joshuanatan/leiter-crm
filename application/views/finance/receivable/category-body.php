@@ -58,7 +58,7 @@
                     </div>
                     <div class = "form-group">
                         <h5 class = "opacity:0.5">No Refrence</h5>
-                        <input type = "text" class = "form-control" value = "<?php echo $invoice[$a]["no_invoice"];?>" readonly>
+                        <input type = "text" class = "form-control" name = "no_refrence" value = "<?php echo $invoice[$a]["no_invoice"];?>" readonly>
                     </div>
                     <div class = "form-group">
                         <h5 class = "opacity:0.5">Payment Subject</h5>
