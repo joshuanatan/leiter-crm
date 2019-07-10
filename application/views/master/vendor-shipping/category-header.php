@@ -1,5 +1,5 @@
 <div class="page-header">
-    <h1 class="page-title">MASTER SHIPPING VENDOR DATA</h1>
+    <h1 class="page-title">MASTER SHIPPER/COURIER DATA</h1>
     <br/>
     <ol class="breadcrumb breadcrumb-arrow">
         <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>

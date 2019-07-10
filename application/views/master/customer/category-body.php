@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-            <button data-target="#AddCustomer" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button">
+            <button data-target="#AddCustomer" data-toggle="modal" type="button" class="btn btn-sm btn-outline btn-primary" type="button">
                 <i class="icon wb-plus" aria-hidden="true"></i> Add Customer
             </button>
             </div>
@@ -15,7 +15,9 @@
                 <th>Company Name</th>
                 <th>Segment</th>
                 <th>Company Address</th>
-                <th>Company Line</th>
+                <th>Delivery Address</th>
+                <th>Company Phone</th>
+                <th>Company Fax</th>
                 <th>Main Contact Person</th>
                 <th>CP Email / Phone</th>
                 <th>Actions</th>
@@ -27,19 +29,21 @@
                 <td><?php echo $perusahaan[$a]["id_perusahaan"];?></td>
                 <td><?php echo $perusahaan[$a]["nama_perusahaan"];?></td>
                 <td><?php echo $perusahaan[$a]["jenis_perusahaan"];?></td>
-                <td><?php echo $perusahaan[$a]["alamat_perusahaan"];?></td>
+                <td><?php echo nl2br($perusahaan[$a]["alamat_perusahaan"]);?></td>
+                <td><?php echo nl2br($perusahaan[$a]["alamat_pengiriman"]);?></td>
                 <td><?php echo $perusahaan[$a]["notelp_perusahaan"];?></td>
+                <td><?php echo $perusahaan[$a]["nofax_perusahaan"];?></td>
                 <td><?php echo $cp[$a]["nama_cp"];?></td>
                 <td><?php echo $cp[$a]["email_cp"]."<br/>".$cp[$a]["nohp_cp"];?></td>
                 <td class="actions">
+                    <a href = "<?php echo base_url();?>master/customer/contact/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-sm col-lg-12 btn-outline btn-success"
+                    data-toggle="tooltip">PIC</a>
                     
-                    <a href = "<?php echo base_url();?>master/customer/edit/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-outline btn-primary" ><i class="icon wb-edit"></i></a>
+                    <a href = "<?php echo base_url();?>master/customer/edit/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-sm col-lg-12 btn-outline btn-primary" >EDIT</a>
 
-                    <a href = "<?php echo base_url();?>master/customer/delete/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
+                    <a href = "<?php echo base_url();?>master/customer/delete/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-sm col-lg-12 btn-outline btn-danger"
+                    data-toggle="tooltip">REMOVE</a>
                     
-                    <a href = "<?php echo base_url();?>master/customer/contact/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-outline btn-success"
-                    data-toggle="tooltip"><i class="icon wb-eye" aria-hidden="true"></i></a>
                 </td>
             </tr>
             <?php endfor; ?>

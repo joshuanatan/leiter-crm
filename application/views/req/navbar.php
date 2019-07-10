@@ -55,7 +55,7 @@
                                 <ul class="site-menu-sub">
                                     <li class="site-menu-item">
                                             <a class="animsition-link" href="<?php echo base_url();?>master/vendor/product">
-                                            <span class="site-menu-title">Product</span>
+                                            <span class="site-menu-title">Supplier</span>
                                         </a>
                                     </li>
                                     <li class="site-menu-item">
