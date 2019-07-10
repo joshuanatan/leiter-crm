@@ -174,7 +174,7 @@ class Payable extends CI_Controller{
             $fileData["file_name"] = "-";
         }
         $data = array(
-            "id_refrensi" => $this->input->post("id_refrensi"),
+            "no_refrence" => $this->input->post("no_refrence"),
             "subject_pembayaran" => $this->input->post("subject_pembayaran"),
             "tgl_bayar" => $this->input->post("tgl_bayar"),
             "attachment" =>  $fileData["file_name"],
@@ -185,7 +185,7 @@ class Payable extends CI_Controller{
             "total_pembayaran" => splitterMoney($this->input->post("nominal_pembayaran"),",")*splitterMoney($this->input->post("kurs_pembayaran"),","),
             "metode_pembayaran" => $this->input->post("metode_pembayaran"),
             "jenis_pembayaran" => "KELUAR",
-            "kategori_pembayaran" => 3
+            "kategori_pembayaran" => "PEMBAYARAN VENDOR"
         );
         insertRow("pembayaran",$data);
     
@@ -203,7 +203,7 @@ class Payable extends CI_Controller{
                 "tipe_pajak" => "MASUKAN",
                 "jenis_pajak" => "PPN",
                 "status_aktif_pajak" => 0,
-                "id_refrensi" => $this->input->post("id_refrensi")
+                "id_refrensi" => $this->input->post("no_refrence")
             );
             insertRow("tax",$data);
         }

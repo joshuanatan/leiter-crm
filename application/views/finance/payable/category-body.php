@@ -99,7 +99,7 @@
                                         </div>
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">No Refrence</h5>
-                                            <input type = "text" class = "form-control" value = "<?php echo $tagihan[$a]["no_refrence"];?>" readonly>
+                                            <input type = "text" class = "form-control" value = "<?php echo $tagihan[$a]["no_refrence"];?>" name = "no_refrence" readonly>
                                         </div>
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">Payment Subject</h5>

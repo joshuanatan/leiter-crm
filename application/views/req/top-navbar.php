@@ -50,8 +50,7 @@
                     </a>
                     <div class="dropdown-menu" role="menu">
                         <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-user" aria-hidden="true"></i> Profile</a>
-                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-payment" aria-hidden="true"></i> Billing</a>
-                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-settings" aria-hidden="true"></i> Settings</a>
+                        <a class="dropdown-item" href="<?php echo base_url();?>finance/reimburse/request" role="menuitem"><i class="icon wb-payment" aria-hidden="true"></i> Reimburse</a>
                         <div class="dropdown-divider" role="presentation"></div>
                         <a class="dropdown-item" href="<?php echo base_url();?>login/welcome/logout" role="menuitem"><i class="icon wb-power" aria-hidden="true"></i> Logout</a>
                     </div>
