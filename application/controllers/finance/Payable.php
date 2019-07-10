@@ -23,7 +23,7 @@ class Payable extends CI_Controller{
         $this->load->view("finance/finance-close");
         $this->load->view("req/html-close"); 
     }
-    public function index(){
+    public function index(){ //sudah di cek
         $where = array(
             "tagihan" => array(
                 "status_aktif_invoice" => 0
@@ -78,7 +78,7 @@ class Payable extends CI_Controller{
         $this->load->view("finance/content-close");
         $this->close();
     }
-    public function insert(){
+    public function insert(){ //sudah di cek
         $this->req();
         $this->load->view("finance/content-open");
         $this->load->view("finance/payable/category-header");
@@ -86,7 +86,7 @@ class Payable extends CI_Controller{
         $this->load->view("finance/content-close");
         $this->close();
     }
-    public function edit($id_tagihan){
+    public function edit($id_tagihan){ //sudah di cek
         
         $where = array(
             "tagihan" => array(
@@ -113,7 +113,7 @@ class Payable extends CI_Controller{
         $this->load->view("finance/content-close");
         $this->close();
     }
-    public function insertinvoice(){
+    public function insertinvoice(){ //sudah di cek
         /*sudah jalan */
         /*masukin data primarynya*/
         $check_ppn = $this->input->post("is_ppn");
@@ -150,7 +150,11 @@ class Payable extends CI_Controller{
         insertRow("tagihan",$data);
         redirect("finance/payable");
     }
-    public function pay($id_tagihan){
+    public function pay($id_tagihan){ //sudah di cek
+        //membuat status jadi lunas
+        //masukin ke pembayaran
+        //masukin ke tax (bila ada)
+        
         $where = array(
             "id_tagihan" => $id_tagihan
         );
@@ -176,7 +180,7 @@ class Payable extends CI_Controller{
             "attachment" =>  $fileData["file_name"],
             "notes_pembayaran" =>  $this->input->post("notes_pembayaran"),
             "nominal_pembayaran" =>  splitterMoney($this->input->post("nominal_pembayaran"),","),
-            "kurs_pembayaran" =>  $this->input->post("kurs_pembayaran"),
+            "kurs_pembayaran" =>  splitterMoney($this->input->post("kurs_pembayaran"),","),
             "mata_uang_pembayaran" => $this->input->post("mata_uang_pembayaran"),
             "total_pembayaran" => splitterMoney($this->input->post("nominal_pembayaran"),",")*splitterMoney($this->input->post("kurs_pembayaran"),","),
             "metode_pembayaran" => $this->input->post("metode_pembayaran"),
@@ -219,7 +223,7 @@ class Payable extends CI_Controller{
         redirect("finance/payable");
         /*selain ubah jadi paid, insert tax juga disini kalau emang dicentang di settingnya, cek is_ppn dan is_pph di db*/
     }
-    public function remove($id_tagihan){
+    public function remove($id_tagihan){ //sudah di cek
         $where = array(
             "id_tagihan" => $id_tagihan
         );
@@ -229,7 +233,7 @@ class Payable extends CI_Controller{
         updateRow("tagihan",$data,$where);
         redirect("finance/payable");
     }
-    public function editinvoice(){
+    public function editinvoice(){ //sudah di cek
         $where = array(
             "id_tagihan" => $this->input->post("id_tagihan")
         );

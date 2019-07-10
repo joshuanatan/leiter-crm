@@ -6,7 +6,9 @@ function isExistsInRefrence(){
         case "SUPPLIER":
         case "SHIPPER":
             $.ajax({
-                url:"<?php echo base_url();?>interface/po/isExists/"+no_refrence,
+                url:"<?php echo base_url();?>interface/po/isExists/",
+                data:{no_refrence:no_refrence},
+                type:"POST",
                 dataType:"JSON",
                 success:function(respond){
                     if(respond == 0){
@@ -23,6 +25,8 @@ function isExistsInRefrence(){
         case "COURIER":
             $.ajax({
                 url:"<?php echo base_url();?>interface/od/isExists/"+no_refrence,
+                data:{no_refrence:no_refrence},
+                type:"POST",
                 dataType:"JSON",
                 success:function(respond){
                     if(respond == 0){

@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-            <a href = "<?php echo base_url();?>finance/payable/insert" class="btn btn-outline btn-primary">
+            <a href = "<?php echo base_url();?>finance/payable/insert" class="btn btn-sm btn-outline btn-primary">
                 <i class="icon wb-plus" aria-hidden="true"></i> Insert Invoice
             </a>
             </div>
@@ -17,7 +17,8 @@
                 <th style = "width:10%">Amount</th>
                 <th style = "width:5%">Currency</th> <!-- ini yang harus di bayarkan --> 
                 <th style = "width:5%">Attachment</th> <!-- catetan aja seperti nomor rekening, dsb -->
-                <th style = "width:10%">Dateline Invoice</th>
+                <th style = "width:10%">Due date Invoice</th>
+                <th style = "width:10%">Bank Account</th>
                 <th style = "width:5%">Notes</th> <!-- catetan aja seperti nomor rekening, dsb -->
                 <th style = "width:10%">Status</th>
                 <th style = "width:10%">Action</th>
@@ -32,9 +33,14 @@
                 <td><?php echo number_format($tagihan[$a]["total"]);?></td>
                 <td><?php echo $tagihan[$a]["mata_uang"];?></td>
                 <td>
+                    <?php if($tagihan[$a]["attachment"] == "-"):?>
+                    <button class = "btn btn-danger btn-sm btn-outline">NO DOCUMENT</button>
+                    <?php else:?>
                     <a target = "_blank" class = "btn btn-primary btn-sm btn-outline " href = "<?php echo base_url();?>assets/dokumen/invoice/<?php echo $tagihan[$a]["attachment"];?>">DOCUMENT</a>
+                    <?php endif;?>
                 </td>
                 <td><?php $date = date_create($tagihan[$a]["dateline_invoice"]); echo date_format($date,"D, d-m-Y");?></td>
+                <td><?php echo $tagihan[$a]["rekening"];?></td>
                 <td>
                     <button type = "button" class = "btn btn-outline btn-sm btn-primary " data-target ="#notes<?php echo $a;?>" data-toggle = "modal">NOTES</button>
                     <div class = "modal fade" id ="notes<?php echo $a;?>">
@@ -74,9 +80,9 @@
                 </td>
                 <td>
                     <?php if($tagihan[$a]["status_lunas"] == 1):?>
-                    <a style = "width:100%" href = "<?php echo base_url();?>finance/payable/edit/<?php echo $tagihan[$a]["id_tagihan"];?>" class = "btn btn-sm btn-primary col-lg-12 btn-outline">EDIT</a>
-                    <a style = "width:100%" href = "<?php echo base_url();?>finance/payable/remove/<?php echo $tagihan[$a]["id_tagihan"];?>" class = "btn btn-sm btn-primary col-lg-12 btn-outline">REMOVE</a>
                     <button style = "width:100%" class = "btn btn-primary col-lg-12 btn-sm btn-outline" type="button" data-toggle = "modal" data-target="#pay<?php echo $tagihan[$a]["id_tagihan"];?>">PAY</button>
+                    <a style = "width:100%" href = "<?php echo base_url();?>finance/payable/edit/<?php echo $tagihan[$a]["id_tagihan"];?>" class = "btn btn-sm btn-primary col-lg-12 btn-outline">EDIT</a>
+                    <a style = "width:100%" href = "<?php echo base_url();?>finance/payable/remove/<?php echo $tagihan[$a]["id_tagihan"];?>" class = "btn btn-sm btn-danger col-lg-12 btn-outline">REMOVE</a>
                     
                     <?php endif;?>
                     <div class = "modal fade" id = "pay<?php echo $tagihan[$a]["id_tagihan"];?>">
@@ -179,7 +185,7 @@
                                         </div>
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">Attachment</h5>
-                                            <a href = "<?php echo base_url();?>assets/dokumen/buktibayar/<?php echo $tagihan[$a]["pembayaran"]["attachment"];?>" class = "btn btn-outline btn-primary btn-sm">DOCUMENT</a>
+                                            <a href = "<?php echo base_url();?>assets/dokumen/buktibayar/<?php echo $tagihan[$a]["pembayaran"]["attachment"];?>" target = "_blank" class = "btn btn-outline btn-primary btn-sm">DOCUMENT</a>
                                         </div>
                                     </div>
                                     <div class = "modal-footer">

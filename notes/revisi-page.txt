@@ -8,12 +8,12 @@ receivable
 
 payable
 >category body
- >dateline ganti due date
- >no refrencenya salah, harusnya no invoice
- >rate di detail kurang splitter
+ >dateline ganti due date {done}
+ >no refrencenya salah, harusnya no invoice {?}
+ >rate di detail kurang splitter {done}
  >kalau ga ada dokumen di disable aja
 >add invoice
- >help di transfer to bank/norekning/an
+ >help di transfer to bank/norekning/an {done}
 
 tax
 >detail

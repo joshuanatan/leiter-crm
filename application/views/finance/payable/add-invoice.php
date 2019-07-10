@@ -18,7 +18,7 @@
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Payment For</h5>
-                                    <select class = "form-control" name = "peruntukan_tagihan" id ="peruntukan">
+                                    <select class = "form-control" name = "peruntukan_tagihan" id ="peruntukan" data-plugin = "select2">
                                         <option value = "SUPPLIER">SUPPLIER</option>
                                         <option value = "SHIPPER">SHIPPER</option>
                                         <option value = "COURIER">COURIER</option>
@@ -30,8 +30,8 @@
                                     <h5 class = "color:red" id = "resultMessage"></h5>
                                 </div>
                                 <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Transfer To</h5>
-                                    <input type = "text" class = "form-control" name = "rekening" placeholder = "Rekening Bank untuk Pembayaran">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Transfer To <Small>Format: bank/norekning/an</Small></h5>
+                                    <input type = "text" class = "form-control" name = "rekening" placeholder = "Rekening Bank untuk Pembayaran format:bank/norekning/an">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Dateline</h5>
@@ -82,8 +82,8 @@
                                     <input type = "file" class = "form-control" name = "attachment" placeholder = "File Tagihan">
                                 </div>
                                 <div class = "form-group">
-                                    <button class = "col-lg-2 btn btn-primary btn-outline">SUBMIT</button>
-                                    <a href = "<?php echo base_url();?>finance/payable/index" class = "col-lg-2 btn btn-outline btn-primary">BACK</a>
+                                    <button class = "col-lg-2 btn btn-sm btn-primary btn-outline">SUBMIT</button>
+                                    <a href = "<?php echo base_url();?>finance/payable/index" class = "col-lg-2 btn btn-sm btn-outline btn-primary">BACK</a>
                                 </div>
                             </div>
                         </div>
