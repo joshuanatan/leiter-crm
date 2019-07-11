@@ -41,7 +41,17 @@
                 
                 $content=$content.'<tr>
                 <td>Surat Jalan</td>
-                <td> : -</td>
+                <td> : ';
+
+                if($inv->id_submit_od=="0"){
+                    $content=$content."-";
+                }else{
+                    foreach($jalan->result() as $jl){
+                        $content=$content. $jl->no_od;
+                    }
+                }
+                
+                $content=$content.'</td>
                 <td colspan="2"></td>
             </tr>
             <tr>
@@ -79,14 +89,26 @@
                 $total=0;
                     foreach($barang->result() as $ss){
                         $no++;
+                        if($cekOd=="0"){
+                            $baris="$ss->nama_oc_item";
+                        }else{
+                            $baris="$ss->nama_oc_item";
+                        }
+                        
+
+                        $split = explode("\n",$baris);
+                        $jumlah_baris = count($split);
+                        $line_height = round($jumlah_baris * 12.5);
+
                         $content=$content.'
                         <tr>
                             <td>'.$no.'</td>
-                            <td>'.$ss->nama_oc_item.'</td>
-                            <td style="text-align:center">'.number_format($ss->final_amount).'</td>
-                            <td style="text-align:right">'.number_format($ss->final_selling_price).'</td>
-                            <td style="text-align:right">'.number_format($ss->final_amount *$ss->final_selling_price).'</td>
+                            <td>'.nl2br($baris).'</td>
+                            <td style="text-align:center;line-height:'.$line_height.'px">'.number_format($ss->final_amount).' '.$ss->satuan_produk .'</td>
+                            <td style="text-align:right;line-height:'.$line_height.'px">'.number_format($ss->final_selling_price).'</td>
+                            <td style="text-align:right;line-height:'.$line_height.'px">'.number_format($ss->final_amount *$ss->final_selling_price).'</td>
                         </tr>';
+
                         $total=$total+($ss->final_amount * $ss->final_selling_price);
                     }
                     
@@ -120,7 +142,7 @@
                 </tr>
                 <tr>
                     <td>Jatuh Tempo</td>
-                    <td>: '.$inv->jatuh_tempo.'</td>
+                    <td>: '.tanggalCantik(date("Y/m/d",strtotime($inv->jatuh_tempo))).'</td>
                 </tr>
                 <tr>
                     <td>Total</td>
@@ -135,42 +157,55 @@
                     </td>
                 </tr>
             </table>
-            <br><br>
-            <table style="width:500px;text-align:center">
-                <tr>
-                <td style="width:50px"></td>
-                    <td colspan="4">************************** PACKING LIST **************************</td>
-                </tr>
-                <tr>
-                <td></td>
-                    <td style="text-align:left">Box-No</td>
-                    <td>Berat Bersih</td>
-                    <td>Berat Kotor</td>
-                    <td>Dimensi (L/W/H)</td>
-                </tr>
-                <tr>
-                <td></td>
-                    <td style="text-align:left">01</td>
-                    <td>17.231 kg</td>
-                    <td>234 kg</td>
-                    <td>35 * 35 * 34</td>
-                </tr>
-                <tr>
-                <td></td>
-                    <td colspan="4">*****************************************************************</td>
-                </tr>
-                <tr>
-                <td></td>
-                    <td  style="text-align:left" colspan="4">Total</td>
-                </tr>
-                <tr>
-                <td></td>
-                    <td style="text-align:left">01</td>
-                    <td>17.231 kg</td>
-                    <td>234 kg</td>
-                    <td>35 * 35 * 34</td>
-                </tr>
-            </table>
+            <br><br>';
+            if($inv->id_submit_od!="0"){
+                $content=$content.'
+                <table style="width:500px;text-align:center">
+                    <tr>
+                    <td style="width:50px"></td>
+                        <td colspan="4">************************** PACKING LIST **************************</td>
+                    </tr>
+                    <tr>
+                    <td></td>
+                        <td style="text-align:left">Box-No</td>
+                        <td>Berat Bersih</td>
+                        <td>Berat Kotor</td>
+                        <td>Dimensi (L/W/H)</td>
+                    </tr>';
+
+                    $no=0;
+                    foreach($box->result() as $boxx){
+                        $no++;
+                        $content=$content.'
+                        <tr>
+                        <td></td>
+                            <td style="text-align:left">'.sprintf("%02d",$no).'</td>
+                            <td>'.$boxx->berat_bersih.' kg</td>
+                            <td>'.$boxx->berat_kotor.' kg</td>
+                            <td>'.$boxx->dimensi_box.'</td>
+                        </tr>';
+                    }
+                    
+
+                    $content=$content.'
+                    <tr>
+                    <td></td>
+                        <td colspan="4">*****************************************************************</td>
+                    </tr>
+                    <tr>
+                    <td></td>
+                        <td  style="text-align:left" colspan="4">Total</td>
+                    </tr>
+                    <tr>
+                    <td></td>
+                        <td style="text-align:left">'.sprintf("%02d",$no).'</td>
+                        <td>'.$inv->berat_bersih.' kg</td>
+                        <td>'.$inv->berat_kotor.' kg</td>
+                        <td>'.$inv->dimensi.'</td>
+                    </tr>
+                </table>';
+            }
+            $content=$content.'
             <br>
             <br>
             <br>
@@ -181,7 +216,7 @@
                 <tr>
                     <td></td>
                     <td style="text-align:center">
-                        Jakarta, 13 Jun 2019
+                        Jakarta, '.tanggalCantik(date("Y/m/d",strtotime($inv->tgl_invoice_add))).'
                     </td>
                 </tr>
                 <tr>
@@ -193,10 +228,9 @@
                         <br>
                         <br>
                         <br>
-                        <br>
-                        asdasdassda
+                        <br>'.ucwords($this->session->nama_user).'
                     </td>
-                </tr>`
+                </tr>
             </table>
         </body>
     </html>

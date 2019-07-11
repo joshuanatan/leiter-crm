@@ -31,7 +31,7 @@ if(!function_exists("bulanRomawi")){
 if(!function_exists("tanggalCantik")){
     function tanggalCantik($tanggal){
         $cantik = explode("/",$tanggal);
-        switch((int)$cantik){
+        switch((int)$cantik[1]){
             case 1: return $cantik[2] . " Januari " .$cantik[0]; break;
             case 2: return $cantik[2] . " Februari " .$cantik[0]; break;
             case 3: return $cantik[2] . " Maret " .$cantik[0]; break;

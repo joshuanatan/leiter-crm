@@ -101,14 +101,26 @@
                     <tr>
                         <td></td>
                         <td></td>
+                        <td colspan="2">Down Payment ';
+
+                        foreach($dp->result() as $dpp){
+                            $content=$content.$dpp->persentase_pembayaran . '%';
+                        }
+                        
+                        $content=$content.'</td>
+                        <td style="text-align:right">'.number_format($total*($dpp->persentase_pembayaran/100)).'</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
                         <td colspan="2">PPN 10%</td>
-                        <td style="text-align:right">'.number_format(0.1*$total).'</td>
+                        <td style="text-align:right">'.number_format(0.1*($total*($dpp->persentase_pembayaran/100))).'</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td></td>
                         <td colspan="2" style="background-color: rgb(198, 224, 180); font-weight:bold">TOTAL</td>
-                        <td  style="background-color: rgb(198, 224, 180); font-weight:bold; text-align:right">'.number_format($total+(0.1*$total)).'</td>
+                        <td  style="background-color: rgb(198, 224, 180); font-weight:bold; text-align:right">'.number_format(1.1*($total*($dpp->persentase_pembayaran/100))).'</td>
                     </tr>
             </table>
             <br>
@@ -120,11 +132,11 @@
                 </tr>
                 <tr>
                     <td>Jatuh Tempo</td>
-                    <td>: '.$inv->jatuh_tempo.'</td>
+                    <td>: '.tanggalCantik(date("Y/m/d",strtotime($inv->jatuh_tempo))).'</td>
                 </tr>
                 <tr>
                     <td>Total</td>
-                    <td>: IDR '.number_format($total+(0.1*$total)).'</td>
+                    <td>: IDR '.number_format(1.1*($total*($dpp->persentase_pembayaran/100))).'</td>
                 </tr>
                 <tr>
                     <td>Rekening Pembayaran</td>

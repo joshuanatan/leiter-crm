@@ -302,6 +302,13 @@
                                     <span class="text-help">User Type</span>
                                 </div>
                             </div>
+                            <div class = "form-group">
+                                <div class = "col-md-12 col-lg-12">
+                                    <input type = "submit" class = "btn btn-sm btn-outline btn-primary">
+
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
