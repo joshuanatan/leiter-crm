@@ -108,6 +108,7 @@
                                 <select class = "form-control" name = "jk_cp" data-plugin = "select2">
                                     <option value = "Mr">Mr</option>
                                     <option value = "Ms">Ms</option>
+                                    <option value = "Mrs">Mrs</option>
                                 </select>
                             </div>
                             <div class = "form-group">

@@ -65,6 +65,7 @@
                                             <select class = "form-control" name = "jk_cp" data-plugin = "select2">
                                                 <option value = "Mr">Mr</option>
                                                 <option value = "Ms" <?php if($a->jk_cp == "Ms") echo "selected"; ?>>Ms</option>
+                                                <option value = "Mrs" <?php if($a->jk_cp == "Mrs") echo "selected"; ?>>Mrs</option>
                                             </select>
                                         </div>
                                         <div class = "form-group">
@@ -121,6 +122,7 @@
                                 <select class = "form-control" name = "jk_cp" data-plugin = "select2">
                                     <option value = "Mr">Mr</option>
                                     <option value = "Ms">Ms</option>
+                                    <option value = "Mrs">Mrs</option>
                                 </select>
                             </div>
                             <div class = "form-group">
