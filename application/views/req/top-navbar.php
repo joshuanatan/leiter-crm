@@ -58,12 +58,6 @@
             </ul>
           <!-- End Navbar Toolbar Right -->
     
-            <div class="navbar-brand navbar-brand-center">
-                <a href="<?php echo base_url();?>welcome">
-                <img class="navbar-brand-logo navbar-brand-logo-normal" src="<?php echo base_url();?>assets/images/logo.png" title="Remark">
-                <img class="navbar-brand-logo navbar-brand-logo-special" src="<?php echo base_url();?>assets/images/logo-colored.png" title="Remark">
-                </a>
-            </div>
         </div>
     </div>
 </nav> 
