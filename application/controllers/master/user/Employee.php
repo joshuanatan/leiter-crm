@@ -124,16 +124,6 @@ class Employee extends CI_Controller{
         $this->Mduser->insertTipe($data);
         /*----------- end insert personal data ------------ */
 
-        /*----------- begin update privilege   ------------ */
-        $privilege = $this->input->post("privileges");
-        foreach($privilege as $a){
-            $data = array(
-                "id_menu" => $a,
-                "id_user" => $insertID
-            );
-            insertRow("privilage",$data);
-        }
-        /*----------- end update privilege   ------------ */
         redirect("master/user/employee");
     }
     public function editemployee(){
