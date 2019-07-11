@@ -30,6 +30,7 @@ class Receivable extends CI_Controller{
         $this->load->view("req/html-close");
     }
     public function index(){
+        if($this->session->id_user == "") redirect("login/welcome");
         $where = array(
             "invoice" => array(
                 "status_aktif_invoice" => 0

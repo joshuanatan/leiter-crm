@@ -36,6 +36,7 @@ class Oc extends CI_Controller{
     }
     /*page*/
     public function index(){
+        if($this->session->id_user == "") redirect("login/welcome");
         $this->req();
         $where = array(
             "oc" => array(

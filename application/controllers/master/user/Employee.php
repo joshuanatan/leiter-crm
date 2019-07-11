@@ -8,6 +8,7 @@ class Employee extends CI_Controller{
     }
     /*page*/
     public function index(){
+        if($this->session->id_user == "") redirect("login/welcome");
         $this->load->view("req/head");
         $this->load->view("plugin/datatable/datatable-css");
         $this->load->view("plugin/breadcrumb/breadcrumb-css");

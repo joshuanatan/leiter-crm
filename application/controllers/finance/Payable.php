@@ -23,7 +23,8 @@ class Payable extends CI_Controller{
         $this->load->view("finance/finance-close");
         $this->load->view("req/html-close"); 
     }
-    public function index(){ //sudah di cek
+    public function index(){ 
+        if($this->session->id_user == "") redirect("login/welcome");//sudah di cek
         $where = array(
             "tagihan" => array(
                 "status_aktif_invoice" => 0

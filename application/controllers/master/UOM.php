@@ -17,6 +17,7 @@ class UOM extends CI_Controller{
         $this->load->view("req/navbar");
     }
     public function index(){
+        if($this->session->id_user == "") redirect("login/welcome");
         $where = array(
             "uom" => array(
                 "status_satuan" => 0

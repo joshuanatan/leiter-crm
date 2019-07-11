@@ -28,7 +28,8 @@ class Request extends CI_Controller{
         $this->load->view("crm/crm-close");
         $this->load->view("req/html-close");
     }
-    public function index(){ //sudah di cek
+    public function index(){ 
+        if($this->session->id_user == "") redirect("login/welcome");//sudah di cek
         $this->req();
         $where = array(
             "price_request" => array(

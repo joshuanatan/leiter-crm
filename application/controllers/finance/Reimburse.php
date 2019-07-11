@@ -23,7 +23,8 @@ class Reimburse extends CI_Controller{
         $this->load->view("finance/finance-close");
         $this->load->view("req/html-close");
     }
-    public function index(){ //sudah di cek //untuk yang di finance
+    public function index(){
+        if($this->session->id_user == "") redirect("login/welcome"); //sudah di cek //untuk yang di finance
         $where = array(
             "reimburse" => array(
                 "status_aktif_reimburse" => 0,
@@ -68,7 +69,8 @@ class Reimburse extends CI_Controller{
         $this->load->view("finance/content-close");
         $this->close();
     }
-    public function request(){ //sudah di cek //untuk disetiap orang
+    public function request(){
+        if($this->session->id_user == "") redirect("login/welcome"); //sudah di cek //untuk disetiap orang
         $where = array(
             "reimburse" => array(
                 "id_user_add" => $this->session->id_user,

@@ -23,6 +23,7 @@ class Petty extends CI_Controller{
         $this->load->view("req/html-close"); 
     }
     public function index(){
+        if($this->session->id_user == "") redirect("login/welcome");
         $where = array(
             "expanses_type" => array(
                 "status_type" => 0
