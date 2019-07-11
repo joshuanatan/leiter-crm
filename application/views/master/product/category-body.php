@@ -36,7 +36,7 @@
             <tr>
                 <td><?php echo $produk[$a]["id_produk"];?></td>
                 <td><?php echo $produk[$a]["bn_produk"];?></td>
-                <td><?php echo $produk[$a]["deskripsi_produk"];?></td>
+                <td><?php echo nl2br($produk[$a]["deskripsi_produk"]);?></td>
                 <td><?php echo $produk[$a]["satuan_produk"];?></td>
                 <td><img style = "width:100%" src = "<?php echo base_url();?>assets/system/produk/<?php echo $produk[$a]["gambar_produk"];?>"></td>
                 <td class="actions">
