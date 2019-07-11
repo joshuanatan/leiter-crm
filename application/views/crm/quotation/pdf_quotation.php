@@ -57,7 +57,7 @@ foreach($quotation ->result() as $quo){
                     $content = $content .'</td>
                 </tr>
                 <tr>
-                    <td>'.$quo->alamat_perusahaan.'
+                    <td>'.nl2br($quo->alamat_perusahaan).'
                     </td>
                 </tr>    
                 <tr>

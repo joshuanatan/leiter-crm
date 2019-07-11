@@ -267,19 +267,34 @@ class Receivable extends CI_Controller{
         $this->load->model('M_pdf_invoice');
         $invoice = $this->M_pdf_invoice->selectInvoice($where);
         $perusahaan = $this->M_pdf_invoice->selectPerusahaan($where);
-        $barang = $this->M_pdf_invoice->selectBarang($where);
 
+        $cekOd = get1Value("invoice_core","id_submit_od",array("id_submit_invoice"=>$id_submit_invoice));
+
+        if($cekOd=="0"){
+            $barang = $this->M_pdf_invoice->selectBarangOc($where);
+        }else{
+            $barang = $this->M_pdf_invoice->selectBarangOd($where);
+        }
+        
+
+        $jalan = $this->M_pdf_invoice->selectJalan($where);
+
+        $dp = $this->M_pdf_invoice->selectDp($where);
+        $box = $this->M_pdf_invoice->selectBox($where);
         $data=array(
             "invoice"=>$invoice,
             "perusahaan"=>$perusahaan,
             "barang"=>$barang,
+            "jalan"=>$jalan,
+            "dp"=>$dp,
+            "cekOd"=>$cekOd,
+            "box"=>$box,
         );
 
         $tipe_invoice = get1Value("invoice_core","tipe_invoice",array("id_submit_invoice"=>$id_submit_invoice));
-
         if($tipe_invoice=="1"){
             $this->load->view('finance/receivable/pdf_invoice',$data);
-        }else if($tipe_invoice="2"){
+        }else if($tipe_invoice=="2"){
             $this->load->view('finance/receivable/pdf_invoice2',$data);
         }else{
             $this->load->view('finance/receivable/pdf_invoice3',$data);
