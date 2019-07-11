@@ -110,6 +110,7 @@
                                     <div class = "form-group col-lg-4">
                                         <h5 style = "opacity:0.5">Shipper</h5>
                                         <select class = "form-control" name = "id_shipper" data-plugin = "select2" onchange = "getDetailShipper()" id = "id_shipper">
+                                        <option>Choose Shipper</option>
                                             <?php for($sup = 0; $sup<count($shipper);$sup++):?>
                                             <option value = "<?php echo $shipper[$sup]["id_perusahaan"];?>"><?php echo $shipper[$sup]["nama_perusahaan"];?></option>
                                             <?php endfor;?>
