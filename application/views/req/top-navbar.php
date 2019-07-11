@@ -44,12 +44,12 @@
                     <a class="nav-link navbar-avatar" data-toggle="dropdown" href="#" aria-expanded="false"
                         data-animation="scale-up" role="button">
                         <span class="avatar avatar-online">
-                        <img src="<?php echo base_url();?>global/portraits/5.jpg" alt="...">
+                        <img src="<?php echo base_url();?>assets/images/default.jpg" alt="...">
                         <i></i>
                         </span>
                     </a>
                     <div class="dropdown-menu" role="menu">
-                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-user" aria-hidden="true"></i> Profile</a>
+                        <button data-toggle = "modal" data-target = "#changePassword" class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-user" aria-hidden="true"></i> Profile</button>
                         <a class="dropdown-item" href="<?php echo base_url();?>finance/reimburse/request" role="menuitem"><i class="icon wb-payment" aria-hidden="true"></i> Reimburse</a>
                         <div class="dropdown-divider" role="presentation"></div>
                         <a class="dropdown-item" href="<?php echo base_url();?>login/welcome/logout" role="menuitem"><i class="icon wb-power" aria-hidden="true"></i> Logout</a>
@@ -61,3 +61,23 @@
         </div>
     </div>
 </nav> 
+<div class = "modal fade" id = "changePassword">
+    <div class = "modal-dialog">
+        <div class = "modal-content">
+            <div class = "modal-header">
+                <h4 class = "modal-title">CHANGE PASSWORD</h4>
+            </div>
+            <div class = "modal-body">
+                <form action = "<?php echo base_url();?>login/welcome/changePassword" method = "POST">
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">NEW PASSWORD</h5>
+                        <input type = "password" name = "password" class = "form-control">
+                    </div>    
+                    <div class = "form-group">
+                        <input type = "submit" class = "btn btn-sm btn-primary btn-outline">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

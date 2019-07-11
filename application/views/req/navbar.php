@@ -5,7 +5,7 @@
             <div class="overlay-panel vertical-align overlay-background">
                 <div class="vertical-align-middle">
                     <a class="avatar avatar-lg" href="javascript:void(0)">
-                        <img src="<?php echo base_url();?>global/portraits/1.jpg" alt="">
+                        <img src="<?php echo base_url();?>assets/images/default.jpg" alt="...">
                     </a>
                     <div class="site-menubar-info">
                         <h5 class="site-menubar-user"><?php echo $this->session->nama_user;?></h5>

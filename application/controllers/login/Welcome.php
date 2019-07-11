@@ -37,6 +37,16 @@ class Welcome extends CI_Controller{
     public function logout(){
         redirect("login/welcome/index");
     }
+    public function changePassword(){
+        $data = array(
+            "password" => md5($this->input->post("password"))
+        );
+        $where = array(
+            "id_user" => $this->session->id_user
+        );
+        updateRow("user",$data,$where);
+        redirect("login/welcome");
+    }
 }
 
 ?>
