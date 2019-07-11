@@ -1,3 +1,5 @@
+
+application/x-httpd-php config.php ( PHP script, ASCII text )
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
