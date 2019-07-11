@@ -22,24 +22,23 @@ class Employee extends CI_Controller{
             "employee" => array(
                 "status_user" => 0
             ),
-            "menu" => array(),
-            "privilege" => array()
         );
-        $data = array(
+        $result = array(
             "employee" => $this->Mduser->select($where["employee"]),
-            "menu" => $this->Mdmenu->select($where["menu"]),
-            "privilege" => $this->Mdprivilage->select($where["privilege"])
         );
+        $field["employee"] = array(
+            "id_user","nama_user","email_user","nohp_user","password","jenis_user"
+        );
+        $data["employee"] = foreachMultipleResult($result["employee"],$field["employee"], $field["employee"]);
+        
         $this->load->view("master/content-open");
         $this->load->view("master/employee/category-header");
         $this->load->view("master/employee/category-body",$data);
         $this->load->view("master/content-close");
         /*--------------------------------------------------------*/
         $this->load->view("req/script");
-        $this->load->view("plugin/jqtabledit/jqtabledit-js");
         $this->load->view("plugin/datatable/page-datatable-js");
         $this->load->view("plugin/form/form-js");
-        $this->load->view("master/employee/js/employee-additional-js");
         $this->load->view("master/master-close");
         $this->load->view("req/html-close");
     }
@@ -126,22 +125,13 @@ class Employee extends CI_Controller{
         /*----------- end insert personal data ------------ */
 
         /*----------- begin update privilege   ------------ */
-        $menuType = $this->Mdmenu->selectType($where["menuType"]);
-        foreach($menuType->result() as $a){
-            $category = $this->input->post(strtolower($a->type_menu));
-            count($category);
-            foreach($category as $a){
-                $data = array(
-                    "status_privilage" => 0,
-                    "id_user_edit" => $this->session->id_user,
-                    "date_user_edit" => date("Y-m-d H:i:s")
-                );
-                $where = array(
-                    "id_menu" => $a,
-                    "id_user" => $insertID
-                );
-                $this->Mdprivilage->update($data,$where);
-            }
+        $privilege = $this->input->post("privileges");
+        foreach($privilege as $a){
+            $data = array(
+                "id_menu" => $a,
+                "id_user" => $insertID
+            );
+            insertRow("privilage",$data);
         }
         /*----------- end update privilege   ------------ */
         redirect("master/user/employee");
@@ -164,6 +154,12 @@ class Employee extends CI_Controller{
             "id_user_edit" => $this->session->id_user
         );
         $this->Mduser->update($data,$where);
+        if($this->input->post("password") != "-"){
+            $data = array(
+                "password" => md5($this->input->post("password"))
+            );
+            updateRow("user",$data,$where);
+        }
         redirect("master/user/employee");
     }
     public function delete($i){
@@ -181,32 +177,14 @@ class Employee extends CI_Controller{
         $where = array(
             "id_user" => $i /*karena kan semua yang diprivilage di jagain sama iduser dan idmenu. idmenu mau di update statusnya semua jadi bisa diabaikan idmenunya dalam proses update status*/
         );
-        $data = array(
-            "privilage.status_privilage" => 1,
-            "id_user_edit" => $this->session->id_user,
-            "date_user_edit" => date("Y-m-d H:i:s")
-        );
-        $this->Mdprivilage->update($data,$where); /*statusnya di satuin dulu semua */
-
-        $where = array(
-            "menuType" => array()
-        );
-        $menuType = $this->Mdmenu->selectType($where["menuType"]); /*ngambil semua tipe menu yang ada */
-        foreach($menuType->result() as $a){
-            $category = $this->input->post(strtolower($a->type_menu)); /*ngepost perkategori*/
-            count($category);
-            foreach($category as $a){ /*update ke semua menu yang terdaftar*/
-                $data = array(
-                    "status_privilage" => 0, /*ubah jadi aktif*/
-                    "id_user_edit" => $this->session->id_user,
-                    "date_user_edit" => date("Y-m-d H:i:s")
-                );
-                $where = array(
-                    "id_menu" => $a,
-                    "id_user" => $i
-                );
-                $this->Mdprivilage->update($data,$where);
-            }
+        deleteRow("privilage",$where);
+        $privilege = $this->input->post("privileges");
+        foreach($privilege as $a){
+            $data = array(
+                "id_menu" => $a,
+                "id_user" => $i
+            );
+            insertRow("privilage",$data);
         }
         redirect("master/user/employee");
     }
