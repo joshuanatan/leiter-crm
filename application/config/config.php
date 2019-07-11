@@ -24,9 +24,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 //$config['base_url'] = 'http://localhost/leiter-crm';
-$config['base_url'] = 'http://localhost:8888/project/leiter-crm'; //jeen
+//$config['base_url'] = 'http://localhost:8888/project/leiter-crm'; //jeen
 //$config['base_url'] = 'http://localhost/leiter-crm'; //vina
-//$config['base_url'] = 'http://leiter-crm.com'; //live
+$config['base_url'] = 'http://leiter-crm.com'; //live
 /*
 |--------------------------------------------------------------------------
 | Index File
