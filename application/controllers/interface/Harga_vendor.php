@@ -106,4 +106,31 @@ class Harga_vendor extends CI_Controller{
         $data = $this->input->post("harga_vendor_data");
         insertRow("harga_vendor",$data);
     }
+    public function getVendorPriceForPo(){
+        $id_oc_item = $this->input->post("id_oc_item");
+        $id_perusahaan = $this->input->post("id_supplier");
+        $id_quotation_item = get1value("order_confirmation_item","id_quotation_item",array("id_oc_item" => $id_oc_item));
+        $id_request_item = get1value("quotation_item","id_request_item",array("id_quotation_item" => $id_quotation_item));
+        $detail_harga_vendor = selectRow("harga_vendor",array("id_perusahaan" => $id_perusahaan,"id_request_item"=>$id_request_item));
+        $field = array(
+            "harga_produk","nama_produk_vendor","mata_uang"
+        );
+        $data = array();
+        if($detail_harga_vendor->num_rows() > 0){
+            $final_detail = foreachResult($detail_harga_vendor,$field,$field);
+            $data = array(
+                "harga_produk" => $final_detail["harga_produk"],
+                "nama_produk_vendor" => $final_detail["nama_produk_vendor"],
+                "mata_uang" => $final_detail["mata_uang"]
+            );
+        }
+        else{
+            $data = array(
+                "harga_produk" => "NO DATA, PLEASE UNCHECK IF NOT ORDERING",
+                "nama_produk_vendor" => "NO DATA, PLEASE UNCHECK IF NOT ORDERING",
+                "mata_uang" => "NO DATA, PLEASE UNCHECK IF NOT ORDERING"
+            ); 
+        }
+        echo json_encode($data);
+    }
 }

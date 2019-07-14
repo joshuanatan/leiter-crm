@@ -358,3 +358,21 @@ function removePOItem(id_po_item){
     showItem(); 
 }
 </script>
+<script>
+function getDetailHargaVendor(urutan){
+    var id_oc_item = $("#id_oc_item"+urutan).val();
+    var id_supplier = $("#id_supplier").val();
+    $.ajax({
+        url:"<?php echo base_url();?>interface/harga_vendor/getVendorPriceForPo",
+        data:{id_oc_item:id_oc_item,id_supplier:id_supplier},
+        type:"POST",
+        dataType:"JSON",
+        success:function(respond){
+            $("#nama_produk_vendor"+urutan).val(respond["nama_produk_vendor"]);
+            $("#harga_satuan_produk"+urutan).val(addCommas(respond["harga_produk"]));
+            $("#currency"+urutan).val(respond["mata_uang"]);
+        } 
+    });
+}
+
+</script>

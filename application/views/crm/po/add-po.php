@@ -75,6 +75,7 @@
                                             <th style = "width:18%">Nama Produk Vendor</th>
                                             <th style = "width:18%">Quantity</th>
                                             <th style = "width:18%">Selling Price</th>
+                                            <th style = "width:18%">Currency (From Vendor Price)</th>
                                             <th style = "width:18%">Vendor Price</th>
                                         </thead>
                                         <tbody>
@@ -82,7 +83,7 @@
                                             <tr>
                                                 <td>
                                                     <div class = "checkbox-custom checkbox-primary">
-                                                        <input type = "checkbox" name = "checks[]" value = "<?php echo $a;?>">
+                                                        <input onclick = "getDetailHargaVendor(<?php echo $a;?>)" type = "checkbox" name = "checks[]" value = "<?php echo $a;?>">
                                                         <label></label>
                                                     </div>
                                                 </td>
@@ -96,6 +97,8 @@
                                                 <td><input type = "text" id = "jumlah_produk<?php echo $a;?>" class = "form-control" name = "jumlah_produk<?php echo $a;?>"></td>
 
                                                 <td><input type = "text" readonly id = "harga_jual_satuan_produk<?php echo $a;?>" class = "form-control" name = ""></td>
+
+                                                <td><input type = "text" readonly id = "currency<?php echo $a;?>" class = "form-control" name = ""></td>
 
                                                 <td><input type = "text" oninput = "commas('harga_satuan_produk<?php echo $a;?>')" id = "harga_satuan_produk<?php echo $a;?>" class = "form-control" name = "harga_satuan_produk<?php echo $a;?>"></td>
                                             </tr>
@@ -132,11 +135,7 @@
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">Address</h5>
                                     <textarea readonly id = "alamat_shipper" class = "form-control"></textarea>
-                                </div>
-                                <div class = "form-group">
-                                    <h5 style = "opacity:0.5">Notify Party</h5>
-                                    <textarea id = "notify_party" class = "form-control" name = "notify_party"></textarea>
-                                </div>
+                                </div>  
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">Shipping Method</h5>
                                     <select class = "form-control" name = "shipping_method" data-plugin = "select2">

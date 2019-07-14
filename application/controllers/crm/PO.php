@@ -133,7 +133,6 @@ class Po extends CI_Controller{
             "shipping_term" => $this->input->post("shipping_term"),
             "requirement_date" => $this->input->post("requirement_date"),
             "destination" => $this->input->post("destination"),
-            "notify_party" => $this->input->post("notify_party"),
             "total_supplier_payment" => 0,
             "mata_uang_pembayaran" => $this->input->post("mata_uang_pembayaran"),
             "id_user_add" => $this->session->id_user
@@ -160,7 +159,7 @@ class Po extends CI_Controller{
             "id_submit_po" => $id_submit_po
         );
         $field["po_core"] = array(
-            "id_submit_oc","id_submit_po","no_po","id_supplier","id_cp_supplier","id_shipper","id_cp_shipper","shipping_method","shipping_term","requirement_date","destination","mata_uang_pembayaran","notify_party"
+            "id_submit_oc","id_submit_po","no_po","id_supplier","id_cp_supplier","id_shipper","id_cp_shipper","shipping_method","shipping_term","requirement_date","destination","mata_uang_pembayaran"
         );
         $result["po_core"] = selectRow("po_core", $where["main"]);
         $data["po_core"] = foreachResult($result["po_core"],$field["po_core"],$field["po_core"]);
@@ -291,7 +290,6 @@ class Po extends CI_Controller{
             "shipping_method" => $this->input->post("shipping_method"),
             "shipping_term" => $this->input->post("shipping_term"),
             "requirement_date" => $this->input->post("requirement_date"), 
-            "notify_party" => $this->input->post("notify_party"), 
             "destination" => $this->input->post("destination"),
             "mata_uang_pembayaran" => $this->input->post("mata_uang_pembayaran"),
         );
@@ -334,7 +332,6 @@ class Po extends CI_Controller{
             "customer"=>$custt,
             "barang"=>$barangg,
             "mata_uang" => get1Value("po_core","mata_uang_pembayaran",array("id_submit_po" => $id_submit_po)),
-            "notify_party" => get1Value("po_core","notify_party",array("id_submit_po" => $id_submit_po))
         );
         $this->load->view('crm/po/pdf_po',$data);
     }

@@ -161,8 +161,11 @@ function getMargin(){
     var input = $("#inputNominal").val();
     var totalfinal = splitter(total,",");
     var inputfinal = splitter(input,",");
-    var margin = parseInt(((parseInt(inputfinal)*parseInt(detail_pesanan[0]) - parseInt(totalfinal))/(parseInt(inputfinal)*parseInt(detail_pesanan[0]))*100)*1000); // 0.8748577 -> 87.4 (87)
-    var margin2 = parseFloat(margin/1000)+0.001;
+    var totalQuotationPrice =parseFloat(inputfinal)*parseFloat(detail_pesanan[0]);
+    var selisih = totalQuotationPrice- parseFloat(totalfinal);
+    var margin = selisih/totalQuotationPrice*100; //biar jadi persen
+    var margin2 = parseInt(margin*1000)/1000;
+    console.log(margin);
 
     $("#totalMargin").val(margin2+"%");
 }
@@ -204,15 +207,15 @@ function getTotal(){
     var courierfinal = splitter(courier,",");
     var inputfinal = splitter(input,",");
 
-    $("#totalPrice").val(addCommas((parseInt(shipperfinal)*parseInt(detail_pesanan[0]))+(parseInt(produkfinal)*parseInt(detail_pesanan[0]))+(parseInt(courierfinal)*parseInt(detail_pesanan[0]))));
-    $("#inputNominal").val(addCommas(parseInt(shipperfinal)+parseInt(produkfinal)+parseInt(courierfinal)));
+    $("#totalPrice").val(addCommas((parseFloat(shipperfinal)*parseFloat(detail_pesanan[0]))+(parseFloat(produkfinal)*parseFloat(detail_pesanan[0]))+(parseFloat(courierfinal)*parseFloat(detail_pesanan[0]))));
+    $("#inputNominal").val(addCommas(parseFloat(shipperfinal)+parseFloat(produkfinal)+parseFloat(courierfinal)));
 }
 </script>
 
 <script>
 function decimal(){
     var number = splitter($("#inputNominal").val(),",");
-    $("#inputNominal").val(addCommas(parseInt(number)));
+    $("#inputNominal").val(addCommas(parseFloat(number)));
 }
 </script>
 

@@ -28,7 +28,6 @@ class Quotation extends CI_Controller{
         $this->load->view("plugin/datatable/page-datatable-js");
         $this->load->view("plugin/form/form-js");
         $this->load->view("plugin/tabs/tabs-js");
-        $this->load->view("crm/quotation/js/dynamic-form-js");
         $this->load->view("crm/quotation/js/request-ajax");
         $this->load->view("crm/quotation/js/payment-script");
         $this->load->view("crm/crm-close");
@@ -564,6 +563,9 @@ class Quotation extends CI_Controller{
             "quotation"=> $quotation,
             "perusahaan" => $perusahaan,
             "items" => $itemnya,
+            "persentase1" => get1Value("quotation_metode_pembayaran","persentase_pembayaran",array("id_submit_quotation" => $id_submit_quotation)),
+            "persentase2" => get1Value("quotation_metode_pembayaran","persentase_pembayaran2",array("id_submit_quotation" => $id_submit_quotation)),
+            "trigger_pembayaran2" => get1Value("quotation_metode_pembayaran","trigger_pembayaran2",array("id_submit_quotation" => $id_submit_quotation))
         );
         $this->load->view('crm/quotation/pdf_quotation',$data);
     }

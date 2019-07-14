@@ -160,7 +160,7 @@ foreach($quotation ->result() as $quo){
                 <tr>
                     <td style="width:15px"></td>
                     <td style="width:15px">•</td>
-                    <td>Franco : '.$quo->franco.'k</td>
+                    <td>Franco : '.$quo->franco.'</td>
                 </tr>
                 <tr>
                     <td style="width:15px"></td>
@@ -175,7 +175,25 @@ foreach($quotation ->result() as $quo){
                 </tr>
                 <tr>
                     <td style="width:15px">2. </td>
-                    <td colspan="2"  style="width:500px">Pembayaran : '.$quo->durasi_pembayaran.' minggu setelah PO dikonfirmasi</td>
+                    <td colspan="2"  style="width:500px">Pembayaran : ';
+                    $first = 0;
+                    if($persentase1 != 0){
+                        $content = $content.$persentase1.'% DP diawal';
+                        $first = 1;
+                    }
+                    if($persentase2 != 0){
+                        if($first == 1){ //ini di br
+                            $content = $content."<br/>";
+                        }
+                        if($trigger_pembayaran2 == 1){ //sebelom OD
+                            $content = $content.$persentase2.'% pelunasan dalam '.$quo->durasi_pembayaran.' minggu setelah invoice diterima';
+                        }
+                        else{ //abis OD
+
+                            $content = $content.$persentase2.'% pelunasan dalam '.$quo->durasi_pembayaran.' minggu setelah barang & invoice diterima';
+                        }
+                    }
+                    $content = $content .'</td>
                 </tr>
                 <tr>
                     <td style="width:15px">3. </td>

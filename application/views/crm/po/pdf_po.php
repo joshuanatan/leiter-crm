@@ -123,8 +123,6 @@
                 }
                 
                 $content=$content.'
-                                      <br>&nbsp;&nbsp;&nbsp;&nbsp;Notify Party:<br/>
-                '.nl2br($notify_party).'
 
                 </td>
             </tr>
