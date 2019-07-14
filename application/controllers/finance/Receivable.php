@@ -138,7 +138,7 @@ class Receivable extends CI_Controller{
         $beratKotor = 0;
         $jumlah_box = 0;
         echo var_dump($checks);
-        if(count($checks) > 0){
+        if($checks != ""){
             foreach($checks as $checked){
                 $jumlah_box++;
                 $data = array(
