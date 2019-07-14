@@ -137,28 +137,31 @@ class Receivable extends CI_Controller{
         $beratBersih = 0;
         $beratKotor = 0;
         $jumlah_box = 0;
-        foreach($checks as $checked){
-            $jumlah_box++;
-            $data = array(
-                "id_submit_invoice" => $id_submit_invoice,
-                "berat_bersih" => $this->input->post("berat_bersih".$checked),
-                "berat_kotor" => $this->input->post("berat_kotor".$checked),
-                "dimensi_box" => $this->input->post("dimensi_box".$checked),
-            );
-            insertRow("invoice_packaging_box",$data);
-            $beratBersih += $this->input->post("berat_bersih".$checked);
-            $beratKotor += $this->input->post("berat_kotor".$checked);
-            $split_satuan = explode(" ",$this->input->post("dimensi_box".$checked)); // 8*9*10 m => [8*9*10] [m]
-            $split_box = explode("*",$split_satuan[0]); //8*9*10 => [8][9][10]
-            $volumeBox = 1;
-            for($a = 0; $a<count($split_box); $a++){
-                $volumeBox *= $split_box[$a];
-            }
-            if($volumeBox > $maxVolumeBox ){
-                $maxVolumeBox = $volumeBox;
-                $maxBoxDimensi = $this->input->post("dimensi_box".$checked);
+        if(count($checks) > 0){
+            foreach($checks as $checked){
+                $jumlah_box++;
+                $data = array(
+                    "id_submit_invoice" => $id_submit_invoice,
+                    "berat_bersih" => $this->input->post("berat_bersih".$checked),
+                    "berat_kotor" => $this->input->post("berat_kotor".$checked),
+                    "dimensi_box" => $this->input->post("dimensi_box".$checked),
+                );
+                insertRow("invoice_packaging_box",$data);
+                $beratBersih += $this->input->post("berat_bersih".$checked);
+                $beratKotor += $this->input->post("berat_kotor".$checked);
+                $split_satuan = explode(" ",$this->input->post("dimensi_box".$checked)); // 8*9*10 m => [8*9*10] [m]
+                $split_box = explode("*",$split_satuan[0]); //8*9*10 => [8][9][10]
+                $volumeBox = 1;
+                for($a = 0; $a<count($split_box); $a++){
+                    $volumeBox *= $split_box[$a];
+                }
+                if($volumeBox > $maxVolumeBox ){
+                    $maxVolumeBox = $volumeBox;
+                    $maxBoxDimensi = $this->input->post("dimensi_box".$checked);
+                }
             }
         }
+        
         if($jumlah_box > 0){
             $where = array(
                 "id_submit_invoice" => $id_submit_invoice,
