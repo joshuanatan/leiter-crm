@@ -137,6 +137,7 @@ class Receivable extends CI_Controller{
         $beratBersih = 0;
         $beratKotor = 0;
         $jumlah_box = 0;
+        echo var_dump($checks);
         if(count($checks) > 0){
             foreach($checks as $checked){
                 $jumlah_box++;
@@ -161,7 +162,7 @@ class Receivable extends CI_Controller{
                 }
             }
         }
-        
+
         if($jumlah_box > 0){
             $where = array(
                 "id_submit_invoice" => $id_submit_invoice,
