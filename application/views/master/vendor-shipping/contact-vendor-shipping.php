@@ -70,15 +70,15 @@
                                         </div>
                                         <div class = "form-group">
                                             <h5 style = "opacity:0.5">Email PIC</h5>
-                                            <input type = "text" class = "form-control" value = <?php echo $a->email_cp;?> name = "email_cp">
+                                            <input type = "text" class = "form-control" value = "<?php echo $a->email_cp;?>" name = "email_cp">
                                         </div>
                                         <div class = "form-group">
                                             <h5 style = "opacity:0.5">No HP PIC</h5>
-                                            <input type = "text" class = "form-control" value = <?php echo $a->nohp_cp;?> name = "nohp_cp">
+                                            <input type = "text" class = "form-control" value = "<?php echo $a->nohp_cp;?>" name = "nohp_cp">
                                         </div>
                                         <div class = "form-group">
                                             <h5 style = "opacity:0.5">Jabatan PIC</h5>
-                                            <input type = "text" class = "form-control" value = <?php echo $a->jabatan_cp;?> name = "jabatan_cp">
+                                            <input type = "text" class = "form-control" value = "<?php echo $a->jabatan_cp;?>" name = "jabatan_cp">
                                         </div>
                                         <input type = "hidden" name = "id_perusahaan" value = "<?php echo $id_perusahaan ?>">
                                         <input type = "hidden" name = "id_cp" value = "<?php echo $a->id_cp ?>">
