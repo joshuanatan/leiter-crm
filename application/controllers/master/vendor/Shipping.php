@@ -26,7 +26,7 @@ class Shipping extends CI_Controller{
                 "contact_person.status_cp" => 0
             ),
             "no_urut" => array(
-                "peran_perusahaan" => "PRODUK",
+                "peran_perusahaan" => "SHIPPING",
                 "status_perusahaan" => 0
             )
         );
