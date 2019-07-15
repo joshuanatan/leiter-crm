@@ -88,7 +88,14 @@ class Product extends CI_Controller{
         $this->load->library('upload', $config);
 
         if ( !$this->upload->do_upload('gambar_produk')){
-            $this->session->set_flashdata("imageerror" ,$this->upload->display_errors());
+            $data = array(
+                "bn_produk" => $this->input->post("bn_produk"),
+                "nama_produk" => "-",
+                "satuan_produk" => strtoupper($uom),
+                "deskripsi_produk" => $this->input->post("deskripsi_produk"),
+                "gambar_produk" => "-",
+                "id_user_add" => $this->session->id_user
+            );
         }
         else{
             $data = array('upload_data' => $this->upload->data());
@@ -100,8 +107,8 @@ class Product extends CI_Controller{
                 "gambar_produk" => $data["upload_data"]["file_name"],
                 "id_user_add" => $this->session->id_user
             );
-            $this->Mdproduk->insert($data);
         }
+        $this->Mdproduk->insert($data);
         redirect("master/product");
     }
     public function delete($id_produk){

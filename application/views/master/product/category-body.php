@@ -38,7 +38,11 @@
                 <td><?php echo $produk[$a]["bn_produk"];?></td>
                 <td><?php echo nl2br($produk[$a]["deskripsi_produk"]);?></td>
                 <td><?php echo $produk[$a]["satuan_produk"];?></td>
-                <td><img style = "width:100%" src = "<?php echo base_url();?>assets/system/produk/<?php echo $produk[$a]["gambar_produk"];?>"></td>
+                <td>
+                    <?php if($produk[$a]["gambar_produk"] != "-"):?>
+                    <img style = "width:100%" src = "<?php echo base_url();?>assets/system/produk/<?php echo $produk[$a]["gambar_produk"];?>">
+                    <?php endif;?>
+                </td>
                 <td class="actions">
                     
                     <button data-target="#editItem<?php echo $produk[$a]["id_produk"];?>" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
