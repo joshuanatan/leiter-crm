@@ -11,7 +11,7 @@
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
-                <th>ID Type</th>
+                <th>#</th>
                 <th>Type Code</th> <!-- bank / cash -->
                 <th>Type Name</th> <!-- income / expanses -->
                 <th>Type Status</th>
