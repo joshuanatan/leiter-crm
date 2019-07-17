@@ -95,6 +95,148 @@ class Receivable extends CI_Controller{
         $this->load->view("finance/content-close");
         $this->close();
     }
+    public function openDataEntry(){
+        $where = array(
+            "oc" => array(
+                "status_aktif_oc" => 0
+            )   
+        );
+        $field["oc"] = array(
+            "id_submit_oc","no_po_customer","id_submit_quotation",
+        );
+        $result["oc"] = $this->Mdorder_confirmation->getListOc($where["oc"]);
+        $data["oc"] = foreachMultipleResult($result["oc"],$field["oc"],$field["oc"]);
+        for($a = 0; $a<count($data["oc"]);$a++){
+            $id_submit_request = get1Value("quotation","id_request",array("id_submit_quotation" => $data["oc"][$a]["id_submit_quotation"]));
+            $id_cp = get1Value("price_request","id_cp",array("id_submit_request" => $id_submit_request));
+            $id_perusahaan = get1Value("price_request","id_perusahaan",array("id_submit_request" => $id_submit_request));
+            $data["oc"][$a]["id_perusahaan"] = $id_perusahaan;
+            $data["oc"][$a]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan", array("id_perusahaan" => $id_perusahaan));
+            $data["oc"][$a]["nama_cp"] = get1Value("contact_person","nama_cp", array("id_cp" => $id_cp));
+            
+            $data["oc"][$a]["not_new"] = isExistsInTable("invoice_core",array("id_submit_oc" => $data["oc"][$a]["id_submit_oc"],"status_aktif_invoice" => 0));
+        }
+        $data["maxId"] = getMaxId("invoice_core","id_invoice",array("bulan_invoice" => date("m"),"tahun_invoice" => date("Y"),"status_aktif_invoice" => 0));
+
+        $this->req();
+        $this->load->view("finance/content-open");
+        $this->load->view("finance/receivable/category-header");
+        $this->load->view("finance/receivable/data-entry-invoice",$data);
+        $this->load->view("finance/content-close");
+        $this->close();
+    }
+    public function dataentry(){
+        $ppn_check = $this->input->post("ppn");
+        $is_ppn = 1;
+        foreach($ppn_check as $a){
+            $is_ppn = 0;
+        }
+        $jumlah_ppn = 0;
+        if($is_ppn == 0){
+            $jumlah_ppn = 0.1*splitterMoney($this->input->post("nominal_pembayaran"),",");
+        }
+        $tgl_invoice = $this->input->post("tgl_invoice");
+        $split = explode("-",$tgl_invoice);
+        $bulan_input = $split[1];
+        $tahun_input = $split[0];
+        $id_od = 0;
+        if($this->input->post("no_od") == ""){
+            $id_od = "-";
+        } 
+        else{
+            $no_od = $this->input->post("no_od");
+            $split = explode("/",$no_od);
+            $no_od = $split[0];
+            $id_od = substr($no_od,-3);
+            $data = array(
+                "id_submit_oc" => $this->input->post("id_submit_oc"),
+                "id_od" => $id_od,
+                "bulan_od" => $bulan_input,
+                "tahun_od" => $tahun_input,
+                "no_od" => $this->input->post("no_od"),
+                "id_courier" => -1,
+                "delivery_method" => "-",
+                "alamat_pengiriman" => "-",
+                "up_cp" => "-",
+                "id_user_add" => $this->session->id_user
+            );
+            $id_od = insertRow("od_core",$data);
+        }
+        $no_invoice = $this->input->post("no_invoice");
+        $split = explode("/",$no_invoice);
+        $id_invoice = substr($split[0],-2);
+        $data = array(
+            "id_invoice" =>  $id_invoice,
+            "bulan_invoice" => $bulan_input,
+            "tahun_invoice" => $tahun_input,
+            "no_invoice" =>  $this->input->post("no_invoice"),
+            "id_submit_oc" =>  $this->input->post("id_submit_oc"), 
+            "tipe_invoice" =>  $this->input->post("tipe_invoice"),
+            "id_submit_od" =>  $id_od,
+            "is_ppn" =>  $is_ppn,
+            "ppn" =>  $jumlah_ppn,
+            "franco" =>  $this->input->post("franco"),
+            "att" =>  $this->input->post("att"),
+            "alamat_penagihan" =>  $this->input->post("alamat_penagihan"),
+            "durasi_pembayaran" =>  $this->input->post("durasi_pembayaran"),
+            "jatuh_tempo" =>  $this->input->post("jatuh_tempo"),
+            "nominal_pembayaran" =>  splitterMoney($this->input->post("nominal_pembayaran"),",")+$jumlah_ppn,
+            "no_rekening" => $this->input->post("no_rekening"), 
+            "jumlah_box" => 0,
+            "berat_bersih" => 0,
+            "berat_kotor" => 0,
+            "dimensi" => "-",
+            "id_user_add" => $this->session->id_user 
+        );
+        $id_submit_invoice = insertRow("invoice_core",$data);
+
+        $checks = $this->input->post("checks");
+        $maxVolumeBox = 0;
+        $maxBoxDimensi = "";
+        $beratBersih = 0;
+        $beratKotor = 0;
+        $jumlah_box = 0;
+        if($checks != ""){
+            foreach($checks as $checked){
+                $data = array(
+                    "id_submit_invoice" => $id_submit_invoice,
+                    "no_box" => $this->input->post("no_box".$checked),
+                    "berat_bersih" => $this->input->post("berat_bersih".$checked),
+                    "berat_kotor" => $this->input->post("berat_kotor".$checked),
+                    "dimensi_box" => $this->input->post("dimensi_box".$checked),
+                );
+                insertRow("invoice_packaging_box",$data);
+                $box_amount = $this->input->post("jumlah_box".$checked);
+                $jumlah_box += $box_amount;
+                $beratBersih += $this->input->post("berat_bersih".$checked)*$box_amount;
+                $beratKotor += $this->input->post("berat_kotor".$checked)*$box_amount;
+                $split_satuan = explode(" ",$this->input->post("dimensi_box".$checked)); // 8*9*10 m => [8*9*10] [m]
+                $split_box = explode("*",$split_satuan[0]); //8*9*10 => [8][9][10]
+                $volumeBox = 1;
+                for($a = 0; $a<count($split_box); $a++){
+                    $volumeBox *= $split_box[$a];
+                }
+                if($volumeBox > $maxVolumeBox ){
+                    $maxVolumeBox = $volumeBox;
+                    $maxBoxDimensi = $this->input->post("dimensi_box".$checked);
+                }
+            }
+        }
+
+        if($jumlah_box > 0){
+            $where = array(
+                "id_submit_invoice" => $id_submit_invoice,
+            );
+            $data = array(
+                "jumlah_box" => $jumlah_box,
+                "berat_bersih" => $beratBersih,
+                "berat_kotor" => $beratKotor,
+                "dimensi" => $maxBoxDimensi,
+            );
+            updateRow("invoice_core",$data,$where);
+        }
+        redirect("finance/receivable");
+    }
     public function createinvoice(){
         $ppn_check = $this->input->post("ppn");
         $is_ppn = 1;
@@ -139,16 +281,18 @@ class Receivable extends CI_Controller{
         $jumlah_box = 0;
         if($checks != ""){
             foreach($checks as $checked){
-                $jumlah_box++;
                 $data = array(
                     "id_submit_invoice" => $id_submit_invoice,
+                    "no_box" => $this->input->post("no_box".$checked),
                     "berat_bersih" => $this->input->post("berat_bersih".$checked),
                     "berat_kotor" => $this->input->post("berat_kotor".$checked),
                     "dimensi_box" => $this->input->post("dimensi_box".$checked),
                 );
                 insertRow("invoice_packaging_box",$data);
-                $beratBersih += $this->input->post("berat_bersih".$checked);
-                $beratKotor += $this->input->post("berat_kotor".$checked);
+                $box_amount = $this->input->post("jumlah_box".$checked);
+                $jumlah_box += $box_amount;
+                $beratBersih += $this->input->post("berat_bersih".$checked)*$box_amount;
+                $beratKotor += $this->input->post("berat_kotor".$checked)*$box_amount;
                 $split_satuan = explode(" ",$this->input->post("dimensi_box".$checked)); // 8*9*10 m => [8*9*10] [m]
                 $split_box = explode("*",$split_satuan[0]); //8*9*10 => [8][9][10]
                 $volumeBox = 1;

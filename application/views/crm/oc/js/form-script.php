@@ -94,6 +94,25 @@ function countTotal(){
 }
 </script>
 <script>
+function countTotalDataEntry(){
+    var jumlah_row = $("#t1 tr").length;
+    console.log(jumlah_row);
+    var jumlah_tagihan = 0;
+    for(var a = 0; a<jumlah_row; a++){
+        if($('#selling_price'+(a)).val() != ""){
+            var jumlah = $("#jumlah_produk"+a).val();
+            var split = jumlah.split(" ");
+            var biaya = $("#selling_price"+a).val();
+            console.log(splitter(biaya),",");
+            jumlah_tagihan += parseInt(splitter(biaya,","))*parseInt(split[0]);
+            console.log("jumlah tagihan "+jumlah_tagihan);
+        }
+    }
+    $("#totalQuotation").val(addCommas(jumlah_tagihan));
+    
+}
+</script>
+<script>
 function paymentWithDP(){
     var persenDp = $("#persenDp").val();
     var persen = splitter(persenDp,"%");

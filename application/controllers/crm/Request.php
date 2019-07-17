@@ -84,7 +84,8 @@ class Request extends CI_Controller{
             ),
             "maxId" => array(
                 "bulan_request" => date("m"),
-                "tahun_request" => date("Y")
+                "tahun_request" => date("Y"),
+                "status_aktif_request" => 0
             )
         );
         $field = array(

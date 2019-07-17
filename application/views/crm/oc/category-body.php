@@ -2,9 +2,12 @@
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-            <a href = "<?php echo base_url();?>crm/oc/create" class="btn btn-outline btn-primary">
-                <i class="icon wb-plus" aria-hidden="true"></i> Create Order Confirmation
-            </a>
+                <a href = "<?php echo base_url();?>crm/oc/create" class="btn btn-outline btn-primary btn-sm">
+                    <i class="icon wb-plus" aria-hidden="true"></i> Create Order Confirmation
+                </a>
+                <a href = "<?php echo base_url();?>crm/oc/openDataEntry" class="btn btn-outline btn-primary btn-sm">
+                    <i class="icon wb-plus" aria-hidden="true"></i> Data Entry
+                </a>
             </div>
         </div>
     </div>

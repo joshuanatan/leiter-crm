@@ -7,19 +7,24 @@
                 <div class="nav-tabs-vertical" data-plugin="tabs">
                     <ul class="nav nav-tabs mr-25" role="tablist">
                         <li class="nav-item" role="presentation"><a class="nav-link active" data-toggle="tab" href="#primaryData" aria-controls="primaryData" role="tab">Primary Data</a></li>
-
-                        <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#items" aria-controls="pengiriman" role="tab">Items</a></li>
                         <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#document" aria-controls="pengiriman" role="tab">Document</a></li>
                         <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#box" aria-controls="pengiriman" role="tab">Box</a></li>
 
                     </ul>
-                    <form action = "<?php echo base_url();?>finance/receivable/createinvoice" method = "post">    
+                    <form action = "<?php echo base_url();?>finance/receivable/dataentry" method = "post">    
                         <div class="tab-content">
                             <div class="tab-pane active" id="primaryData" role="tabpanel">
                                 <div class = "form-group"> <!-- nanti bentuknya nomorquotation/versi -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Invoice No</h5> <!-- max id -->
-                                    <input name = "no_invoice" type ="text" value = "<?php echo $noinvoice;?>" class = "form-control" readonly>
-                                    <input id="" name = "id_invoice" type ="hidden" value = "<?php echo $maxId;?>" class = "form-control" readonly>
+                                    <input name = "no_invoice" type ="text" placeholder = "<?php echo $noinvoice;?>" class = "form-control">
+                                </div>
+                                <div class = "form-group"> <!-- nanti bentuknya nomorquotation/versi -->
+                                    <h5 style = "color:darkgrey; opacity:0.8">No OD</h5> <!-- max id -->
+                                    <input name = "no_od" type ="text" placeholder = "180936/LI/SJ/18 kalau tidak menggunakan OD, isi '-' " class = "form-control">
+                                </div>
+                                <div class = "form-group"> <!-- nanti bentuknya nomorquotation/versi -->
+                                    <h5 style = "color:darkgrey; opacity:0.8">Tanggal Invoice</h5> <!-- max id -->
+                                    <input name = "tgl_invoice" type ="date" class = "form-control">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Customer PO</h5>
@@ -42,50 +47,20 @@
 
                                 <div class = "form-group dp" style = "display:none"> <!-- nanti bentuknya nomorquotation/versi -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Dp (%)</h5> <!-- ngejax di item --> 
-                                    <input type = "text" class = "form-control" id = "persen_dp" readonly>
+                                    <input type = "text" class = "form-control" id = "persen_dp">
                                 </div>
                                 <div class = "form-group pelunasan" style = "display:none"> <!-- nanti bentuknya nomorquotation/versi -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Pelunasan (%)</h5> <!-- ngejax di item --> 
-                                    <input type = "text" class = "form-control" id = "persen_sisa" readonly>
+                                    <input type = "text" class = "form-control" id = "persen_sisa">
                                 </div>
                                 
-                                <div class = "form-group dp" style = "display:none"> <!-- nanti bentuknya nomorquotation/versi -->
-                                    <h5 style = "color:darkgrey; opacity:0.8">Total Dp</h5> <!-- ngejax di item --> 
-                                    <input type = "text" class = "form-control" id = "total_dp" readonly>
+                                <div class = "form-group dp" style = "display:none"> <!-- nanti bentuknya nomorquotation/versi --> 
+                                    <input type = "hidden" class = "form-control" id = "total_dp" readonly>
                                 </div>
-                                <div class = "form-group pelunasan" style = "display:none"> <!-- nanti bentuknya nomorquotation/versi -->
-                                    <h5 style = "color:darkgrey; opacity:0.8">Total Sisa</h5> <!-- ngejax di item --> 
-                                    <input type = "text" class = "form-control" id = "total_sisa" readonly>
+                                <div class = "form-group pelunasan" style = "display:none"> <!-- nanti bentuknya nomorquotation/versi --> 
+                                    <input type = "hidden" class = "form-control" id = "total_sisa" readonly>
                                 </div>
                                 
-                                <div class = "form-group">
-                                    <a href = "<?php echo base_url();?>finance/receivable" class = "btn btn-sm btn-primary btn-outline col-lg-2">BACK</a>
-                                </div>
-                            </div>
-                            <!-- fungsi -->
-                            <div class="tab-pane" id="items" role="tabpanel">
-                                <div class = "form-group" id = "od_container"> <!-- nanti bentuknya nomorquotation/versi -->
-                                    <h5 style = "color:darkgrey; opacity:0.8">Order Delivery No</h5> <!-- ngejax di item --> 
-                                    <select data-plugin = "select2" class = "form-control" name = "id_od" id = "od" onchange = "loadOdItem()">
-                                        <option>Choose Order Delivery No</option>
-                                    </select>
-                                </div>
-                                
-                                <div class = "form-group col-lg-12 method2">
-                                    <table class = "table table-stripped col-lg-12" id="paymentWithOd" style = "width:100%;">
-                                        <thead>
-                                            <th>#</th>
-                                            <th>Product Name</th>
-                                            <th>Amount</th>
-                                            <th>Selling Price</th>
-                                            <th>Final Price</th>
-                                        </thead>
-                                        <tbody id ="list_item_oc">
-                                            <!-- di load pake foreach abis onchange -->
-                                            <!-- bentuknya checklist, nanti yang ke checklist masuk ke db -->
-                                        </tbody>
-                                    </table>
-                                </div>
                                 <div class = "form-group">
                                     <div class="checkbox-custom checkbox-primary">
                                         <input type="checkbox" id="inputUnchecked" checked name = "ppn[]">
@@ -96,14 +71,12 @@
                                     <a href = "<?php echo base_url();?>finance/receivable" class = "btn btn-sm btn-primary btn-outline col-lg-2">BACK</a>
                                 </div>
                             </div>
+                            <!-- fungsi -->
+                            
                             <div class="tab-pane" id="document" role="tabpanel">   
-                                <div class = "form-group"> <!-- nanti bentuknya nomorquotation/versi -->
-                                    <h5 style = "color:darkgrey; opacity:0.8">Harga Total PO</h5> <!-- ngejax di item --> 
-                                    <input type = "text" class = "form-control" id = "total_tagihan_po" readonly>
-                                </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Sub Total</h5>
-                                    <input name = "nominal_pembayaran" id = "nominal_pembayaran" readonly type ="text" class = "form-control namaCust">
+                                    <input name = "nominal_pembayaran" id = "nominal_pembayaran" oninput = "commas('nominal_pembayaran');" type ="text" class = "form-control namaCust">
                                 </div> 
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Franco Penyerahan</h5>
@@ -119,11 +92,11 @@
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Durasi Pembayaran</h5>
-                                    <input name = "durasi_pembayaran" id = "durasi_pembayaran" type ="text" class = "form-control namaCust">
+                                    <input name = "durasi_pembayaran" id = "durasi_pembayaran" type ="text" value = "8" class = "form-control namaCust">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Jatuh Tempo</h5>
-                                    <input name = "jatuh_tempo" id = "jatuh_tempo" type ="date" class = "form-control namaCust">
+                                    <input name = "jatuh_tempo" id = "jatuh_tempo" type ="date" value = "<?php echo date('Y-m-d');?>" class = "form-control namaCust">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Rekening Pembayaran</h5>
@@ -138,6 +111,8 @@
                                     <table data-plugin = "dataTable" class = "table table-stripped col-lg-12" style = "width:100%;">
                                         <thead>
                                             <th>#</th>
+                                            <th>Box No</th>
+                                            <th>Jumlah Box</th>
                                             <th>Berat Bersih</th>
                                             <th>Berat Kotor</th>
                                             <th>Dimensi (P * L * T satuan)</th>

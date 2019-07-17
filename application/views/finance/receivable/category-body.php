@@ -2,9 +2,12 @@
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-            <a href = "<?php echo base_url();?>finance/receivable/create" class="btn btn-outline btn-primary">
-                <i class="icon wb-plus" aria-hidden="true"></i> Create Invoice
-            </a>
+                <a href = "<?php echo base_url();?>finance/receivable/create" class="btn btn-outline btn-sm btn-primary">
+                    <i class="icon wb-plus" aria-hidden="true"></i> Create Invoice
+                </a>
+                <a href = "<?php echo base_url();?>finance/receivable/openDataEntry" class="btn btn-outline btn-sm btn-primary">
+                    <i class="icon wb-plus" aria-hidden="true"></i> Data Entry
+                </a>
             </div>
         </div>
     </div>
