@@ -15,8 +15,10 @@
         <thead>
             <tr>
                 <th>No Transaction</th>
+                <th>No PV</th>
                 <th>User Name</th> <!-- yang ngelaurin invoice ini -->
                 <th>Transaction Subject</th> 
+                <th>Transaction Date</th> 
                 <th>Amount</th> <!-- ini yang tertulis. backgroundnya karena yang tertulis kadang belum termasuk pph 23-->
                 <th>Expanses Type</th> <!-- ini yang harus di bayarkan --> 
                 <th>Notes</th> <!-- catetan aja seperti nomor rekening, dsb -->
@@ -28,8 +30,10 @@
             <?php for($a = 0; $a<count($petty); $a++): ?>
             <tr>
                 <td><?php echo $petty[$a]["id_transaksi_petty"];?></td>
+                <td><?php echo $petty[$a]["no_pv"];?></td>
                 <td><?php echo $petty[$a]["user_name"];?></td>
                 <td><?php echo $petty[$a]["subject"];?></td>
+                <td><?php $date = date_create($petty[$a]["tgl_transaksi"]); echo date_format($date,"D, d-m-Y");?></td>
                 <td><?php echo number_format($petty[$a]["amount"]);?></td>
                 <td><?php echo $petty[$a]["nama_expanses"];?></td>
                 <td><?php echo $petty[$a]["notes"];?></td>
