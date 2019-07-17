@@ -88,6 +88,7 @@ class Petty extends CI_Controller{
             "attachment" => $fileData["file_name"],
         );
         $id_petty_cash = insertRow("petty_cash",$data);
+
         redirect("finance/petty");
     }
     public function remove($id_transaksi_petty){
