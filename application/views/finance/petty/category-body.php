@@ -55,7 +55,7 @@
                                     <div class ="modal-body">
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">Transaction Date</h5>
-                                            <input type = "date" class = "form-control" name = "tgl_transaksi" value = <?php echo $petty[$a]["tgl_transaksi"];?>>
+                                            <input type = "date" class = "form-control col-lg-4 col-sm-12" name = "tgl_transaksi" value = <?php echo $petty[$a]["tgl_transaksi"];?>>
                                         </div>
                                         <div class = "form-group">
                                             <h5 style = "opacity:0.5">No Payment Voucher (PV)</h5>
@@ -115,7 +115,7 @@
                     </div>
                     <div class = "form-group">
                         <h5 class = "opacity:0.5">Transaction Date</h5>
-                        <input type = "date" class = "form-control" name = "tgl_transaksi_petty" value = <?php echo date("d-m-Y");?>>
+                        <input type = "date" class = "form-control col-lg-4 col-sm-12" name = "tgl_transaksi_petty" value = <?php echo date("d-m-Y");?>>
                     </div>
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">No Payment Voucher (PV)</h5>
