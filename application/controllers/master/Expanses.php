@@ -19,6 +19,7 @@ class expanses extends CI_Controller{
         if($this->session->id_user == "") redirect("login/welcome");
         $where = array(
             "finance_type" => array(
+                "status_type" => 0
             )
         );
         $field = array(
