@@ -72,7 +72,6 @@ class Petty extends CI_Controller{
             $fileData = $this->upload->data();
         }
         else{
-            $error =$this->upload->display_errors();
             $fileData = array(
                 "file_name" => "-"
             );
