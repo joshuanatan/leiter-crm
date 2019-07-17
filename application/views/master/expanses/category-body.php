@@ -21,7 +21,7 @@
         <tbody>
             <?php for($a = 0; $a<count($finance_type); $a++): ?>
             <tr class="gradeA">
-                <td><?php echo $finance_type[$a]["id_type"];?></td>
+                <td><?php echo ($a+1);?></td>
                 <td><?php echo $finance_type[$a]["kode_type"];?></td>
                 <td><?php echo $finance_type[$a]["name_type"];?></td>
                 <td>
