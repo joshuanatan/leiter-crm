@@ -44,13 +44,27 @@
     <button class = "btn btn-primary btn-outline btn-sm" data-toggle = "modal" data-target = "#viewCourier">VIEW COURIER</button>
     <br/><br/>
     <div class = "modal fade" id = "addSupplier">
-        <div class = "modal-dialog modal-xl">
+        <div class = "modal-dialog modal-lg">
             <div class = "modal-content">
                 <div class = "modal-header">
                     <h4 class = "modal-title">ADD SUPPLIER PRICE</h4>
                 </div>
                 <form action = "<?php echo base_url();?>crm/vendor/insertHargaSupplier" method = "POST" enctype = "multipart/form-data">
-                    <div class = "modal-body actual-select" >
+                    <div class = "modal-body actual-select">
+                        <table class = "table table-stripped table-bordered" data-plugin = "dataTable">
+                            <thead>
+                                <th>#</th>
+                                <th>Nama Supplier</th>
+                                <th>PIC</th>
+                                <th>Supplier Product Name</th>
+                                <th>Harga/satuan</th>
+                                <th>Rate</th>
+                                <th>Currency</th>
+                                <th>Notes</th>
+                                <th>Attachment</th>
+                            </thead>
+
+                        </table>
                         <div class = "form-group">
                             <button class = "btn btn-primary btn-sm" data-toggle = "modal" type = "button" data-target="#supplierBaru">New Supplier</button>
                             

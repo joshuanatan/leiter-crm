@@ -269,6 +269,224 @@ class Oc extends CI_Controller{
         /*end metode pembayaran*/
         redirect("crm/oc");
     }   
+    public function dataentry(){ //sudah di cek
+        /*masukin ke rfq dlu*/
+        $date_input = $this->input->post("tgl_oc");
+        $extract_date = explode("-",$date_input);
+        $tahun_input = $date_input[0];
+        $bulan_input = $date_input[1];
+        $id_request = getMaxId("price_request","id_request",array("bulan_request" => date("m"),"tahun_request" => date("Y")));
+        $no_request =  "LI-".sprintf("%03d",$id_request)."/RFQ/".bulanRomawi($bulan_input)."/2019";
+        $data = array(
+            "id_request" => $id_request,
+            "status_aktif_request" => 0,
+            "bulan_request" => $bulan_input,
+            "tahun_request" => $tahun_input,
+            "no_request" => $no_request,
+            "id_perusahaan" => $this->input->post("id_perusahaan"), // customer
+            "id_cp" => ,
+            "franco" => ,
+            "untuk_stock" => 1,
+            "tgl_dateline_request" => date("d-m-Y"),
+            "status_buat_quo" => 0,
+            "status_request" => 3
+        );
+        $id_submit_request = insertRow("price_request",$data);
+        /*masukin rfq item*/ 
+        $id_request_item = array();
+        $counter = 0;
+        /*nanti di loop sesuai yang dicentang yang dimasukin dari oc item*/
+            $data = array(
+                "id_submit_request" => $id_submit_request,
+                "nama_produk" => ,
+                "jumlah_produk" => ,
+                "satuan_produk" => ,
+                "notes_produk" => "-",
+                "file" => "-",
+                "id_user_add" => $this->session->id_user
+            );
+            $id_request_item[$counter] = insertRow("price_request_item",$data);
+            $counter++;
+        /*end loop*/
+        
+        /*masukin ke harga vendor (1 harga aja)*/
+        /*masukin ke harga courier (1 harga aja) */
+        /*masukin ke harga shipping (1 harga aja) */
+        for($a = 0; $a<count($id_request_item); $a++){
+            $data = array(
+                "id_request_item" => $id_request_item[$a],
+                "id_perusahaan" => ,
+                "id_cp" => ,
+                "harga_produk" => ,
+                "vendor_price_rate" => ,
+                "mata_uang" => ,
+                "nama_produk_vendor" => ,
+                "notes" => "-",
+                "attachment" => "-",
+                "id_user_add" => $this->session->id_user
+            );
+            $id_harga_vendor = insertRow("harga_vendor",$data);
+            $data = array(
+                "id_request_item" => $id_request_item[$a],
+                "id_perusahaan" => ,
+                "id_cp" => ,
+                "harga_produk" => ,
+                "vendor_price_rate" => ,
+                "mata_uang" => ,
+                "notes" => "-",
+                "attachment" => "-",
+                "metode_pengiriman" => "-",    
+                "id_user_add" => $this->session->id_user
+            );
+            $id_harga_courier = insertRow("harga_courier",$data);
+            $data = array(
+                "id_harga_vendor" => $id_harga_vendor,
+                "id_perusahaan" => ,
+                "id_cp" => ,
+                "harga_produk" => ,
+                "vendor_price_rate" => ,
+                "mata_uang" => ,
+                "notes" => "-",
+                "attachment" => "-",
+                "metode_pengiriman" => "-",    
+                "id_user_add" => $this->session->id_user
+            );
+            $id_harga_shipping = insertRow("harga_shipping",$data);
+            $data = array(
+                "id_submit_quotation" => ,
+                "id_request_item" => ,
+                "nama_produk_leiter" => ,
+                "attachment" => "-",
+                "id_harga_vendor" => $id_harga_vendor,
+                "id_harga_shipping" => $id_harga_shipping,
+                "id_harga_courier" => $id_harga_courier,
+                "item_amount" => ,
+                "satuan_produk" => ,
+                "selling_price" => ,
+                "margin_price" => "0%"
+            );
+            $id_quotation_item = insertRow("quotation_item",$data);
+            $data = array(
+                "id_submit_oc" =>,
+                "id_quotation_item" => $id_quotation_item,
+                "nama_oc_item" => ,
+                "final_amount" => ,
+                "satuan_produk" => ,
+                "final_selling_price" => ,
+            );
+        }
+        /*masukin ke quotation*/
+        $data = array(
+            "id_submit_quotation" => $this->input->post("id_submit_quotation"),
+            "id_oc" => $this->input->post("id_oc"),
+            "bulan_oc" => date("m"),
+            "tahun_oc" => date("Y"),
+            "no_oc" => $this->input->post("no_oc"),
+            "no_po_customer" => $this->input->post("no_po_customer"),
+            "tgl_po_customer" => $this->input->post("tgl_po_customer"),
+            "total_oc_price" => 0,
+            "up_cp" => $this->input->post("up_cp"),
+            "durasi_pembayaran" => $this->input->post("durasi_pembayaran"),
+            "durasi_pengiriman" => $this->input->post("durasi_pengiriman"),
+            "metode_pengiriman" => $this->input->post("metode_pengiriman"),
+            "total_oc_price" => splitterMoney($this->input->post("total_oc_price"),","),
+            "franco" => $this->input->post("franco"),
+            "id_user_add" => $this->session->id_user
+        );
+        $id_submit_oc = insertRow("order_confirmation",$data);
+        
+        /*masukin ke quotation item*/
+        /*masukin ke quotation metode pembayaran*/
+
+        /*insert ke oc tanpa total_oc_price*/
+        
+        /*insert ke item oc*/
+        $checks = $this->input->post("checkbox");
+        $id_quotation_item = $this->input->post("id_quotation_item");
+        $nama_oc_item = $this->input->post("nama_oc_item");
+        $final_amount = $this->input->post("final_amount");
+        $final_selling_price = $this->input->post("final_selling_price");
+        
+        /*sekarang masukin per item detailnya*/
+        $category = array();
+        $is_checked = array();
+        $urutan = 0;
+        foreach($checks as $checked){
+            $is_checked[$urutan] = $checked; /*nampung id yang ke checked pake value (urutan baris dari 0 - ... di front end) */
+            $urutan++;
+        }
+        $urutan = 0;
+        foreach($id_quotation_item as $a){
+            $category[$urutan]["id_quotation_item"] = $a; /*variable ini urutan 1, 2, 3, 4, dst*/
+            $urutan++;
+        }
+        $urutan = 0;
+        foreach($nama_oc_item as $a){
+            $category[$urutan]["nama_oc_item"] = $a; /*variable ini urutan 1, 2, 3, 4, dst*/
+            $urutan++;
+        }
+        $urutan = 0;
+        foreach($final_amount as $a){
+            $category[$urutan]["final_amount"] = $a; /*variable ini urutan 1, 2, 3, 4, dst*/
+            $urutan++;
+        }
+        $urutan = 0;
+        foreach($final_selling_price as $a){
+            $category[$urutan]["final_selling_price"] = $a; /*variable ini urutan 1, 2, 3, 4, dst*/
+            $urutan++;
+        }
+        for($a = 0; $a<count($category); $a++){ /*ngontrol jumlah barang karena semua item ada ngepost baik dipilih atau tidak didepan*/
+            $split = explode(" ",$category[$a]["final_amount"]); /*mecahin final amountnya dari urutan ini*/
+            $items[$a] = array(/*barang 1, 2, 3, 4, ... */
+                "id_submit_oc" => $id_submit_oc,
+                "id_quotation_item" => $category[$a]["id_quotation_item"], /*quotation barang 1*/
+                "nama_oc_item" => $category[$a]["nama_oc_item"], /*nama produk oc barang 1*/
+                "final_amount" => $split[0], /*3*/
+                "satuan_produk" => $split[1], /*meter*/
+                "final_selling_price" =>splitterMoney($category[$a]["final_selling_price"],","),
+            );
+            $id_oc_item = insertRow("order_confirmation_item",$items[$a]);
+            if(in_array($a,$is_checked)){ /*kalau yang urutan baris/item ada di array is_checked*/
+                $where = array(
+                    "id_oc_item" => $id_oc_item
+                );
+                $data =  array(
+                    "status_oc_item" => 0
+                );
+                updateRow("order_confirmation_item",$data,$where);
+            }
+        }
+        /*end masukin oc_item*/
+        /*masukin metode pembayaran*/
+        $is_ada_transaksi = 0;
+        if($this->input->post("persentase_pembayaran") == 0){ //persentase DP 0
+            $is_ada_transaksi = 1;
+        }
+        $is_ada_transaksi2 = 0;
+        if($this->input->post("persentase_pembayaran2") == 0){ //persentase pelunasan 0
+            $is_ada_transaksi2 = 1;
+        }
+        $data = array(
+            "id_submit_oc" => $id_submit_oc,
+            "persentase_pembayaran" => $this->input->post("persentase_pembayaran"),
+            "nominal_pembayaran" => splitterMoney($this->input->post("nominal_pembayaran"),","),
+            "trigger_pembayaran" => $this->input->post("trigger_pembayaran"),
+            "status_bayar" => 1,
+            "is_ada_transaksi" => $is_ada_transaksi,
+            "persentase_pembayaran2" => $this->input->post("persentase_pembayaran2"),
+            "nominal_pembayaran2" => splitterMoney($this->input->post("nominal_pembayaran2"),","),
+            "trigger_pembayaran2" => $this->input->post("trigger_pembayaran2"),
+            "status_bayar2" => 1,
+            "is_ada_transaksi2" => $is_ada_transaksi2,
+            "kurs" => $this->input->post("mata_uang_pembayaran")
+        );
+        insertRow("order_confirmation_metode_pembayaran",$data);
+        /*end metode pembayaran*/
+        
+
+        updateRow("quotation",$data,$where);
+        redirect("crm/oc");
+    }   
     public function insertoc(){ //sudah di cek
         /*insert ke oc tanpa total_oc_price*/
         $data = array(
