@@ -37,7 +37,7 @@ class Petty extends CI_Controller{
                 "id_type","name_type"
             ),
             "petty" => array(
-                "id_transaksi_petty","id_user_add","amount","expanses_type","notes","subject","attachment","tgl_transaksi_petty"
+                "id_transaksi_petty","id_user_add","amount","expanses_type","notes","subject","attachment","tgl_transaksi_petty","no_pv"
             )
         );
         $print = array(
@@ -45,7 +45,7 @@ class Petty extends CI_Controller{
                 "id_type","name_type"
             ),
             "petty" => array(
-                "id_transaksi_petty","id_user_add","amount","expanses_type","notes","subject","attachment","tgl_transaksi"
+                "id_transaksi_petty","id_user_add","amount","expanses_type","notes","subject","attachment","tgl_transaksi","no_pv"
             )
         );
         $result["expanses_type"] = selectRow("finance_usage_type",$where["expanses_type"]);
@@ -80,7 +80,9 @@ class Petty extends CI_Controller{
         $data = array(
             "id_user_add" => $this->session->id_user,
             "subject" => $this->input->post("subject"),
+            "no_pv" => $this->input->post("no_pv"),
             "expanses_type" => $this->input->post("expanses"),
+            "tgl_transaksi_petty" => $this->input->post("tgl_transaksi_petty"),
             "amount" => $money,
             "notes" => $this->input->post("notes"),
             "attachment" => $fileData["file_name"],
@@ -114,6 +116,7 @@ class Petty extends CI_Controller{
                 "tgl_transaksi_petty" => $this->input->post("tgl_transaksi"),
                 "id_user_add" => $this->session->id_user,
                 "subject" => $this->input->post("subject"),
+                "no_pv" => $this->input->post("no_pv"),
                 "expanses_type" => $this->input->post("expanses"),
                 "amount" => $money,
                 "notes" => $this->input->post("notes"),
@@ -127,6 +130,7 @@ class Petty extends CI_Controller{
                 "tgl_transaksi_petty" => $this->input->post("tgl_transaksi"),
                 "id_user_add" => $this->session->id_user,
                 "subject" => $this->input->post("subject"),
+                "no_pv" => $this->input->post("no_pv"),
                 "expanses_type" => $this->input->post("expanses"),
                 "amount" => $money,
                 "notes" => $this->input->post("notes"),

@@ -54,6 +54,10 @@
                                             <input type = "date" class = "form-control" name = "tgl_transaksi" value = <?php echo $petty[$a]["tgl_transaksi"];?>>
                                         </div>
                                         <div class = "form-group">
+                                            <h5 style = "opacity:0.5">No Payment Voucher (PV)</h5>
+                                            <input value = "<?php echo $petty[$a]["no_pv"];?>" type = "text" class = "form-control" name = "no_pv">
+                                        </div>
+                                        <div class = "form-group">
                                             <h5 class = "opacity:0.5">Payment Subject</h5>
                                             <input type = "text" class = "form-control" name = "subject" value = "<?php echo $petty[$a]["subject"];?>">
                                         </div>
@@ -104,6 +108,14 @@
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Subject</h5>
                         <input type = "text" class = "form-control" name = "subject">
+                    </div>
+                    <div class = "form-group">
+                        <h5 class = "opacity:0.5">Transaction Date</h5>
+                        <input type = "date" class = "form-control" name = "tgl_transaksi_petty" value = <?php echo date("d-m-Y");?>>
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">No Payment Voucher (PV)</h5>
+                        <input type = "text" class = "form-control" name = "no_pv">
                     </div>
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Expanses</h5>
