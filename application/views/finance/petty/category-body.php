@@ -15,6 +15,8 @@
         <thead>
             <tr>
                 <th>No Transaction</th>
+                <th>No PV</th>
+                <th>Transaction Date</th>
                 <th>User Name</th> <!-- yang ngelaurin invoice ini -->
                 <th>Transaction Subject</th> 
                 <th>Amount</th> <!-- ini yang tertulis. backgroundnya karena yang tertulis kadang belum termasuk pph 23-->
@@ -28,6 +30,8 @@
             <?php for($a = 0; $a<count($petty); $a++): ?>
             <tr>
                 <td><?php echo $petty[$a]["id_transaksi_petty"];?></td>
+                <td><?php echo $petty[$a]["no_pv"];?></td>
+                <td><?php echo $petty[$a]["tgl_transaksi_petty"];?></td>
                 <td><?php echo $petty[$a]["user_name"];?></td>
                 <td><?php echo $petty[$a]["subject"];?></td>
                 <td><?php echo number_format($petty[$a]["amount"]);?></td>
@@ -54,7 +58,7 @@
                                             <input type = "date" class = "form-control col-lg-4 col-sm-12" name = "tgl_transaksi" value = <?php echo $petty[$a]["tgl_transaksi"];?>>
                                         </div>
                                         <div class = "form-group">
-                                            <h5 style = "opacity:0.5">No Payment Voucher (PV)</h5>
+                                            <h5 style = "opacity:0.5">No Payment Voucher  (PV)</h5>
                                             <input value = "<?php echo $petty[$a]["no_pv"];?>" type = "text" class = "form-control" name = "no_pv">
                                         </div>
                                         <div class = "form-group">
