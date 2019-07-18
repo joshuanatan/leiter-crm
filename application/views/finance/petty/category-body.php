@@ -31,7 +31,7 @@
             <tr>
                 <td><?php echo $petty[$a]["id_transaksi_petty"];?></td>
                 <td><?php echo $petty[$a]["no_pv"];?></td>
-                <td><?php echo $petty[$a]["tgl_transaksi_petty"];?></td>
+                <td><?php echo $petty[$a]["tgl_transaksi"];?></td>
                 <td><?php echo $petty[$a]["user_name"];?></td>
                 <td><?php echo $petty[$a]["subject"];?></td>
                 <td><?php echo number_format($petty[$a]["amount"]);?></td>
