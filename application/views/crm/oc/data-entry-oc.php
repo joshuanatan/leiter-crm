@@ -45,6 +45,7 @@
                                 <div class = "form-group col-lg-12">
                                     <table class = "table table-stripped col-lg-12" style = "width:100%" data-plugin = "dataTable">
                                         <thead>
+                                            <th>Product ID</th>
                                             <th>Product Name</th>
                                             <th>Amount</th>
                                             <th>Final Price (Per item)</th>
@@ -52,6 +53,14 @@
                                         <tbody id ="t1">
                                             <?php for($a = 0; $a<20; $a++):?>
                                             <tr>
+                                                <td>
+                                                    <select class = "form-control" name = "id_produk[]" data-plugin="select2">
+                                                        <option value = "">Pilih Produk</option>
+                                                        <?php for($prod_counter = 0; $prod_counter < count($produk); $prod_counter++):?>
+                                                        <option value = "<?php echo $produk[$prod_counter]["id_produk"];?>"><?php echo $produk[$prod_counter]["nama_produk"];?></option>
+                                                        <?php endfor;?>
+                                                    </select>
+                                                </td>
                                                 <td><textarea name = "nama_oc_item[]" class = "form-control"></textarea></td>
                                                 <td><input type = "text" id = "jumlah_produk<?php echo $a;?>" name = "final_amount[]" class = "form-control"></td>
                                                 <td><input type = "text" id = "selling_price<?php echo $a;?>" oninput = "commas('selling_price<?php echo $a;?>')" name ="final_selling_price[]" class = "form-control"></td>

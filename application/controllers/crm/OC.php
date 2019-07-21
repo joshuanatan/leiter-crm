@@ -283,6 +283,14 @@ class Oc extends CI_Controller{
         $data = array(
             "customer" => foreachMultipleResult($result,$field["customer"],$field["customer"])
         );
+        $where = array(
+            "status_produk" => 0
+        );  
+        $result = selectRow("produk",$where);
+        $field["produk"] = array(
+            "id_produk","nama_produk"
+        );
+        $data["produk"] = foreachMultipleResult($result,$field["produk"],$field["produk"]);
         $this->req();
         $this->load->view("crm/content-open");
         $this->load->view("crm/oc/category-header");
@@ -310,10 +318,23 @@ class Oc extends CI_Controller{
         /*items submitted*/
         $id_quotation_item = $this->input->post("id_quotation_item");
         $nama_oc_item = $this->input->post("nama_oc_item");
+        $id_produk = $this->input->post("id_produk");
         $final_amount = $this->input->post("final_amount");
         $final_selling_price = $this->input->post("final_selling_price");
         $category = array();
-        
+
+        $urutan = 0;
+        foreach($id_produk as $a){
+            if($a == "") break;
+            $category[$urutan]["id_produk"] = $a; /*variable ini urutan 1, 2, 3, 4, dst*/
+            $urutan++;
+        }
+        $urutan = 0;
+        foreach($id_produk as $a){
+            if($a == "") break;
+            $category[$urutan]["id_produk"] = $a; /*variable ini urutan 1, 2, 3, 4, dst*/
+            $urutan++;
+        }
         $urutan = 0;
         foreach($nama_oc_item as $a){
             if($a == "") break;
@@ -471,6 +492,7 @@ class Oc extends CI_Controller{
                 "id_submit_oc" => $id_submit_oc,
                 "id_quotation_item" => $id_quotation_item, /*quotation barang 1*/
                 "nama_oc_item" => $category[$a]["nama_oc_item"], /*nama produk oc barang 1*/
+                "id_produk" => $category[$a]["id_produk"], 
                 "final_amount" => $category[$a]["jumlah"], /*3*/
                 "satuan_produk" => $category[$a]["satuan"], /*meter*/
                 "final_selling_price" => $category[$a]["final_selling_price"],
