@@ -330,12 +330,6 @@ class Oc extends CI_Controller{
             $urutan++;
         }
         $urutan = 0;
-        foreach($id_produk as $a){
-            if($a == "") break;
-            $category[$urutan]["id_produk"] = $a; /*variable ini urutan 1, 2, 3, 4, dst*/
-            $urutan++;
-        }
-        $urutan = 0;
         foreach($nama_oc_item as $a){
             if($a == "") break;
             $category[$urutan]["nama_oc_item"] = $a; /*variable ini urutan 1, 2, 3, 4, dst*/
