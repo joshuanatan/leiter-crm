@@ -124,3 +124,68 @@ function paymentWithDP(){
     $("#jumlahDpClean").val(parseInt(persen)/100*totalTagihan);
 }
 </script>
+
+<script>
+function copy(id_source, id_target){
+    var text = $("#"+id_source).val();
+    $("#"+id_target).val(text);
+}
+</script>
+<script>
+function getRecommendationPerusahaan(){
+    
+    var teks = $("#control_namaperusahaan").val();
+    var length = teks.length;
+    if(teks != ""){
+        $.ajax({
+            url:"<?php echo base_url();?>interface/perusahaan/searchCustomerByName",
+            type:"POST",
+            dataType:"JSON",
+            data:{nama_perusahaan:teks},
+            success:function(respond){
+                if(respond.length != 0){
+                    $("#customerNotFound").css("display","none");
+                    $("#namaperusahaan").val(respond["nama_perusahaan"]);
+                    var sumber = document.getElementById("namaperusahaan");
+                    sumber.focus();
+                    sumber.setSelectionRange(length,respond["nama_perusahaan"].length);
+                    $("#id_perusahaan").val(respond["id_perusahaan"]);
+                }
+                else{
+                    $("#customerNotFound").css("display","block");
+                }
+            }
+        });
+    }
+    
+}
+</script>
+<script>
+function getRecommendationProduk(baris){
+    var teks = $("#control_namaproduk"+baris).val();
+    var length = teks.length;
+    if(teks != ""){
+        $.ajax({
+            url:"<?php echo base_url();?>interface/produk/searchProdukByName",
+            type:"POST",
+            dataType:"JSON",
+            data:{nama_produk:teks},
+            success:function(respond){
+                if(respond.length != 0){
+                    $("#produkNotFound"+baris).css("display","none");
+                    $("#namaproduk"+baris).val(respond["nama_produk"]);
+                    var sumber = document.getElementById("namaproduk"+baris);
+                    sumber.focus();
+                    sumber.setSelectionRange(length,respond["nama_produk"].length);
+                    $("#id_produk"+baris).val(respond["id_produk"]);
+                }
+                else{
+                    $("#produkNotFound"+baris).css("display","block");
+                    $("#id_produk"+baris).val(0);
+                }
+            }
+        });
+    }
+    
+}
+</script>

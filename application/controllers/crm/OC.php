@@ -82,6 +82,7 @@ class Oc extends CI_Controller{
             $result["metode_pembayaran"] = selectRow("order_confirmation_metode_pembayaran",$where["metode_pembayaran"]);
 
             $data["oc"][$a]["metode_pembayaran"] = foreachResult($result["metode_pembayaran"],$field["metode_pembayaran"],$field["metode_pembayaran"]);
+
             if($data["oc"][$a]["metode_pembayaran"]["trigger_pembayaran"] == 1){
                 $data["oc"][$a]["metode_pembayaran"]["trigger_pembayaran"] = "BEFORE ORDER DELIVERY";
             }
@@ -325,7 +326,7 @@ class Oc extends CI_Controller{
 
         $urutan = 0;
         foreach($id_produk as $a){
-            if($a == "") break;
+            if($a == 0) break;
             $category[$urutan]["id_produk"] = $a; /*variable ini urutan 1, 2, 3, 4, dst*/
             $urutan++;
         }

@@ -28,11 +28,11 @@
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
-                                    <select class = "form-control" data-plugin="select2" name = "id_perusahaan">
-                                        <?php for($a = 0; $a<count($customer); $a++):?>
-                                        <option value = "<?php echo $customer[$a]["id_perusahaan"];?>-<?php echo $customer[$a]["id_cp"];?>"><?php echo $customer[$a]["nama_perusahaan"];?> - <?php echo $customer[$a]["nama_cp"];?></option>
-                                        <?php endfor;?>
-                                    </select>
+                                    <span id = "customerNotFound" style = "color:red; display:none">CUSTOMER NOT FOUND</span>
+                                    <input type = "text" class = "form-control" oninput = "copy('namaperusahaan','control_namaperusahaan');getRecommendationPerusahaan()" id = "namaperusahaan">
+                                    <input type = "hidden" class = "form-control" id = "control_namaperusahaan">
+                                    <input type = "hidden" class = "form-control" id = "id_perusahaan" name = "id_perusahaan">
+                                        
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Franco</h5>
@@ -54,12 +54,10 @@
                                             <?php for($a = 0; $a<20; $a++):?>
                                             <tr>
                                                 <td>
-                                                    <select class = "form-control" name = "id_produk[]" data-plugin="select2">
-                                                        <option value = "">Pilih Produk</option>
-                                                        <?php for($prod_counter = 0; $prod_counter < count($produk); $prod_counter++):?>
-                                                        <option value = "<?php echo $produk[$prod_counter]["id_produk"];?>"><?php echo $produk[$prod_counter]["nama_produk"];?></option>
-                                                        <?php endfor;?>
-                                                    </select>
+                                                    <span id = "produkNotFound<?php echo $a;?>" style = "color:red; display:none">PRODUCT NOT FOUND</span>
+                                                    <input type = "text" class = "form-control" id = "namaproduk<?php echo $a;?>" oninput = "copy('namaproduk<?php echo $a;?>','control_namaproduk<?php echo $a;?>');getRecommendationProduk('<?php echo $a;?>')">
+                                                    <input type = "hidden" value = "0" name = "id_produk[]" id = "id_produk<?php echo $a;?>">
+                                                    <input type = "hidden" id = "control_namaproduk<?php echo $a;?>">
                                                 </td>
                                                 <td><textarea name = "nama_oc_item[]" class = "form-control"></textarea></td>
                                                 <td><input type = "text" id = "jumlah_produk<?php echo $a;?>" name = "final_amount[]" class = "form-control"></td>
@@ -111,7 +109,7 @@
                                 <!-- end ngeloadnya pembayaran -->
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Mata Uang Pembayaran</h5>
-                                    <input name = "mata_uang_pembayaran" id = "kurs" type ="text" class = "form-control">
+                                    <input required name = "mata_uang_pembayaran" id = "kurs" type ="text" class = "form-control">
                                 </div>
                                 <button class = "btn btn-primary btn-outline btn-sm">SUBMIT</button>
                             </div>
