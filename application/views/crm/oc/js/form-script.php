@@ -149,7 +149,13 @@ function getRecommendationPerusahaan(){
                     var sumber = document.getElementById("namaperusahaan");
                     sumber.focus();
                     sumber.setSelectionRange(length,respond["nama_perusahaan"].length);
-                    $("#id_perusahaan").val(respond["id_perusahaan"]);
+                    $.ajax({
+                        url:"<?php echo base_url();?>interface/contact_person/getContactPerson/"+respond["id_perusahaan"],
+                        dataType:"JSON",
+                        success:function(cp){
+                            $("#id_perusahaan").val(respond["id_perusahaan"]+"-"+cp[0]["id_cp"]);
+                        }
+                    })
                 }
                 else{
                     $("#customerNotFound").css("display","block");
@@ -159,6 +165,7 @@ function getRecommendationPerusahaan(){
     }
     
 }
+
 </script>
 <script>
 function getRecommendationProduk(baris){

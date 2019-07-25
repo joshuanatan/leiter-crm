@@ -310,8 +310,8 @@ class Oc extends CI_Controller{
             "tgl_po_customer" => $this->input->post("tgl_po_customer"),
         );
         $split = explode("-",$input_data["id_perusahaan"]);
-        $input_data["id_perusahaan"] = $split[0];
-        $input_data["id_cp_perusahaan"] = $split[1];
+        $input_data["id_perusahaan"] = $split[0]; //ini perusahaan gapunya cp
+        $input_data["id_cp_perusahaan"] = $split[1]; //ini perusahaan ga punya cp
 
         $split = explode("-",$input_data["tgl_po_customer"]);
         $tahun_input = $split[0];
