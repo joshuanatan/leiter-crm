@@ -173,10 +173,10 @@ function getRecommendationProduk(baris){
             success:function(respond){
                 if(respond.length != 0){
                     $("#produkNotFound"+baris).css("display","none");
-                    $("#namaproduk"+baris).val(respond["nama_produk"]);
+                    $("#namaproduk"+baris).val(respond["deskripsi_produk"]);
                     var sumber = document.getElementById("namaproduk"+baris);
                     sumber.focus();
-                    sumber.setSelectionRange(length,respond["nama_produk"].length);
+                    sumber.setSelectionRange(length,respond["deskripsi_produk"].length);
                     $("#id_produk"+baris).val(respond["id_produk"]);
                 }
                 else{

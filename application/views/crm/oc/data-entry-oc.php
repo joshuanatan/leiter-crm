@@ -55,7 +55,7 @@
                                             <tr>
                                                 <td>
                                                     <span id = "produkNotFound<?php echo $a;?>" style = "color:red; display:none">PRODUCT NOT FOUND</span>
-                                                    <input type = "text" class = "form-control" id = "namaproduk<?php echo $a;?>" oninput = "copy('namaproduk<?php echo $a;?>','control_namaproduk<?php echo $a;?>');getRecommendationProduk('<?php echo $a;?>')">
+                                                    <textarea class = "form-control" id = "namaproduk<?php echo $a;?>" oninput = "copy('namaproduk<?php echo $a;?>','control_namaproduk<?php echo $a;?>');getRecommendationProduk('<?php echo $a;?>')"></textarea>
                                                     <input type = "hidden" value = "0" name = "id_produk[]" id = "id_produk<?php echo $a;?>">
                                                     <input type = "hidden" id = "control_namaproduk<?php echo $a;?>">
                                                 </td>
