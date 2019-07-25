@@ -94,5 +94,15 @@ if(! function_exists('selectRowBetweenDates')){
         return $CI->db->get_where($table,$where);
     }
 }
+if(! function_exists('selectLike')){
+    function selectLike($table,$like,$where,$limit = 0){
+        $CI =& get_instance();
+        $CI->db->like($like[0],$like[1],$like[2]);
+        if($limit != 0){
+            $CI->db->limit($limit);
+        }
+        return $CI->db->get_where($table,$where);
+    }
+}
 
 ?>

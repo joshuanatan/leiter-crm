@@ -11,7 +11,7 @@ class Pdf extends TCPDF
     //Page header
     public function Header() {
         // Logo
-        $image_file = K_PATH_IMAGES.'logo.png';
+        $image_file = base_url().'assets/images/logo_oc.png';
         $this->Image($image_file, 10, 8, 45, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         // Set font
         //$this->SetFont('helvetica', 'B', 20);

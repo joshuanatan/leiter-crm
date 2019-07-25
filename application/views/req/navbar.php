@@ -259,6 +259,13 @@
                                 </a>
                             </li>
 <?php endif;?>
+                            <?php if(isExistsInTable("privilage",array("id_user" => $this->session->id_user, "id_menu" => "visit")) == 0):?>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="<?php echo base_url();?>report/main/visit">
+                                <span class="site-menu-title">Visit Report</span>
+                                </a>
+                            </li>
+<?php endif;?>
                         </ul>
                     </li>
                 </ul> 

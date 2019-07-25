@@ -205,6 +205,14 @@
                                             <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "report")) == 0) echo "checked"; ?> value = "report">
                                             <label><?php echo strtoupper("report") ?></label>
                                         </div>
+                                        <div class = "checkbox-custom checkbox-primary">
+                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "visit")) == 0) echo "checked"; ?> value = "visit">
+                                            <label><?php echo strtoupper("Visit Report") ?></label>
+                                        </div>
+                                        <div class = "checkbox-custom checkbox-primary">
+                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "call")) == 0) echo "checked"; ?> value = "call">
+                                            <label><?php echo strtoupper("Call Report") ?></label>
+                                        </div>
                                         <div class = "form-group">
                                             <button type = "submit" class = "btn btn-primary btn-outline col-lg-2 col-md-12">SUBMIT</button>
                                         </div>

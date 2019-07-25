@@ -40,4 +40,19 @@ class Perusahaan extends CI_Controller{
         $id_perusahaan = get1Value("price_request","id_perusahaan",array("id_submit_request" => $id_submit_request));
         $this->getDetailPerusahaan($id_perusahaan);
     }
+    public function searchCustomerByName(){ //dipake di visit report buat nyari nama perusahaan
+        $like = array(
+            "nama_perusahaan",$this->input->post("nama_perusahaan"),"after"
+        );
+        $where = array(
+            "status_perusahaan" => 0,
+            "peran_perusahaan" => "CUSTOMER"
+        );
+        $result = selectLike("perusahaan",$like,$where,1);
+        $field = array(
+            "nama_perusahaan","id_perusahaan"
+        );
+        $data = foreachResult($result,$field,$field);
+        echo json_encode($data);
+    }
 }
