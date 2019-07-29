@@ -413,7 +413,8 @@ class Oc extends CI_Controller{
             "durasi_pengiriman" => "-",
             "metode_pengiriman" => "-",
             "franco" => $input_data["franco"],
-            "id_user_add" => $this->session->id_user
+            "id_user_add" => $this->session->id_user,
+            "date_oc_add" => $input_data["tgl_po_customer"]
         );
         $id_submit_oc = insertRow("order_confirmation",$data);
 
@@ -422,7 +423,7 @@ class Oc extends CI_Controller{
         for($a = 0; $a<count($category); $a++){
             $data = array(
                 "id_submit_request" => $id_submit_request,
-                "nama_produk" => $category[$a]["nama_oc_item"],
+                "nama_produk" => $category[$a]["nama_oc_item"], //kenapa error lagi pas di live z
                 "jumlah_produk" => $category[$a]["jumlah"],
                 "satuan_produk" => $category[$a]["satuan"],
                 "notes_produk" => "-",
