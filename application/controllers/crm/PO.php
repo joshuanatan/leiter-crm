@@ -2,15 +2,8 @@
 class Po extends CI_Controller{
     public function __construct(){
         parent::__construct();
-        $this->load->model("Mdprice_request");
-        $this->load->model("Mdharga_vendor");
-        $this->load->model("Mdmata_uang");
-        $this->load->model("Mdprice_request_item");
-        $this->load->model("MdPo_setting");
-        $this->load->model("MdPo_item");
         $this->load->model("Mdpo_core");
         $this->load->model("Mdorder_confirmation");
-        $this->load->model("Mdquotation_item");
 
         $this->load->library('Pdf_oc');
     }
