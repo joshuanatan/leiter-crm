@@ -16,15 +16,15 @@
                             <div class="tab-pane active" id="primaryData" role="tabpanel">
                                 <div class = "form-group"> <!-- nanti bentuknya nomorquotation/versi -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Invoice No</h5> <!-- max id -->
-                                    <input name = "no_invoice" type ="text" placeholder = "<?php echo $noinvoice;?>" class = "form-control">
+                                    <input required name = "no_invoice" type ="text" placeholder = "<?php echo $noinvoice;?>" class = "form-control">
                                 </div>
                                 <div class = "form-group"> <!-- nanti bentuknya nomorquotation/versi -->
                                     <h5 style = "color:darkgrey; opacity:0.8">No OD</h5> <!-- max id -->
-                                    <input name = "no_od" type ="text" placeholder = "180936/LI/SJ/18 kalau tidak menggunakan OD, isi '-' " class = "form-control">
+                                    <input required name = "no_od" type ="text" placeholder = "180936/LI/SJ/18 kalau tidak menggunakan OD, isi '-' " class = "form-control">
                                 </div>
                                 <div class = "form-group"> <!-- nanti bentuknya nomorquotation/versi -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Tanggal Invoice</h5> <!-- max id -->
-                                    <input name = "tgl_invoice" type ="date" class = "form-control">
+                                    <input required name = "tgl_invoice" type ="date" class = "form-control">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Customer PO</h5>
@@ -47,11 +47,11 @@
 
                                 <div class = "form-group dp" style = "display:none"> <!-- nanti bentuknya nomorquotation/versi -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Dp (%)</h5> <!-- ngejax di item --> 
-                                    <input type = "text" class = "form-control" id = "persen_dp">
+                                    <input required type = "text" class = "form-control" id = "persen_dp">
                                 </div>
                                 <div class = "form-group pelunasan" style = "display:none"> <!-- nanti bentuknya nomorquotation/versi -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Pelunasan (%)</h5> <!-- ngejax di item --> 
-                                    <input type = "text" class = "form-control" id = "persen_sisa">
+                                    <input required type = "text" class = "form-control" id = "persen_sisa">
                                 </div>
                                 
                                 <div class = "form-group dp" style = "display:none"> <!-- nanti bentuknya nomorquotation/versi --> 
@@ -67,24 +67,22 @@
                                         <label for="inputUnchecked">PPN</label>
                                     </div>
                                 </div>
-                                <div class = "form-group">
-                                    <a href = "<?php echo base_url();?>finance/receivable" class = "btn btn-sm btn-primary btn-outline col-lg-2">BACK</a>
-                                </div>
+                                
                             </div>
                             <!-- fungsi -->
                             
                             <div class="tab-pane" id="document" role="tabpanel">   
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Sub Total</h5>
-                                    <input name = "nominal_pembayaran" id = "nominal_pembayaran" oninput = "commas('nominal_pembayaran');" type ="text" class = "form-control namaCust">
+                                    <input required name = "nominal_pembayaran" id = "nominal_pembayaran" oninput required = "commas('nominal_pembayaran');" type ="text" class = "form-control namaCust">
                                 </div> 
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Franco Penyerahan</h5>
-                                    <input name = "franco" id = "franco" type ="text" class = "form-control namaCust">
+                                    <input required name = "franco" id = "franco" type ="text" class = "form-control namaCust">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Att</h5>
-                                    <input name = "att" id = "att" type ="text" class = "form-control namaCust">
+                                    <input required name = "att" id = "att" type ="text" class = "form-control namaCust">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Alamat Penagihan</h5>
@@ -92,19 +90,17 @@
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Durasi Pembayaran</h5>
-                                    <input name = "durasi_pembayaran" id = "durasi_pembayaran" type ="text" value = "8" class = "form-control namaCust">
+                                    <input required name = "durasi_pembayaran" id = "durasi_pembayaran" type ="text" value = "8" class = "form-control namaCust">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Jatuh Tempo</h5>
-                                    <input name = "jatuh_tempo" id = "jatuh_tempo" type ="date" value = "<?php echo date('Y-m-d');?>" class = "form-control namaCust">
+                                    <input required name = "jatuh_tempo" id = "jatuh_tempo" type ="date" value = "<?php echo date('Y-m-d');?>" class = "form-control namaCust">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Rekening Pembayaran</h5>
-                                    <input name = "no_rekening" id = "no_rekening" type ="text" value = "489O-335-581" class = "form-control namaCust">
+                                    <input required name = "no_rekening" id = "no_rekening" type ="text" value = "4890-335-581" class = "form-control namaCust">
                                 </div>
-                                <div class = "form-group">
-                                    <a href = "<?php echo base_url();?>finance/receivable" class = "btn btn-sm btn-primary btn-outline col-lg-2">BACK</a>
-                                </div>
+                                
                             </div>
                             <div class="tab-pane" id="box" role="tabpanel">
                                 <div class = "form-group col-lg-12 method2" id="boxes">
@@ -148,8 +144,7 @@
                                 </div>
                                 
                                 <div class = "form-group">
-                                    <button type = "submit" class = "btn btn-primary btn-outline col-lg-2 btn-sm">CREATE INVOICE</button>
-                                    <a href = "<?php echo base_url();?>finance/receivable" class = "btn btn-primary btn-sm btn-outline col-lg-2">BACK</a>
+                                    <button type = "submit" class = "btn btn-primary btn-sm">CREATE INVOICE</button>
                                 </div>
                             </div>
                         </div>
@@ -159,4 +154,6 @@
             <!-- End Example Tabs Left -->
         </div>
     </div>
+    
+    <a href = "<?php echo base_url();?>finance/receivable" class = "btn btn-primary btn-sm">BACK</a>
 </div>
