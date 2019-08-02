@@ -300,244 +300,276 @@ class Oc extends CI_Controller{
         $this->close();
     }
     public function dataentry(){ //sudah di cek
-        
-        /*data submitted*/
-        $input_data = array(
-            "id_perusahaan" => $this->input->post("id_perusahaan"),
-            "no_po_customer" => $this->input->post("no_po_customer"),
-            "no_oc" => $this->input->post("no_oc"),
-            "franco" => $this->input->post("franco"),
-            "tgl_po_customer" => $this->input->post("tgl_po_customer"),
-        );
-        $split = explode("-",$input_data["id_perusahaan"]);
-        $input_data["id_perusahaan"] = $split[0]; //ini perusahaan gapunya cp
-        $input_data["id_cp_perusahaan"] = $split[1]; //ini perusahaan ga punya cp
+        try{
+            $input_data = array(
+                "id_perusahaan" => $this->input->post("id_perusahaan"),
+                "no_po_customer" => $this->input->post("no_po_customer"),
+                "no_oc" => $this->input->post("no_oc"),
+                "franco" => $this->input->post("franco"),
+                "tgl_po_customer" => $this->input->post("tgl_po_customer"),
+                "total_oc_price" => $this->input->post("total_oc_price"),
+                "persentase_pembayaran" => $this->input->post("persentase_pembayaran"),
+                "persentase_pembayaran2" => $this->input->post("persentase_pembayaran2"),
+                "nominal_pembayaran" => $this->input->post("nominal_pembayaran"),
+                "trigger_pembayaran" => $this->input->post("trigger_pembayaran"),
+                "nominal_pembayaran2" => $this->input->post("nominal_pembayaran2"),
+                "trigger_pembayaran2" => $this->input->post("trigger_pembayaran2"),
+                "mata_uang_pembayaran" => $this->input->post("mata_uang_pembayaran"),
+                "up_cp" => $this->input->post("up_cp"),
+                "durasi_pembayaran" => $this->input->post("durasi_pembayaran"),
+                "durasi_pengiriman" => $this->input->post("durasi_pengiriman"),
+                "metode_pengiriman" => $this->input->post("metode_pengiriman"),
+            );
+            if(in_array("",$input_data)){
+                $this->session->set_flashdata("invalid","[ DATA GAGAL DISUBMIT ] Terdapat form yang terlewat. Mohon lebih hati-hati");
+                redirect("crm/oc/opendataentry");
+            }
+            if($this->session->id_user == ""){
+                redirect("welcome");
+            }
+            $split = explode("-",$input_data["id_perusahaan"]);
+            if(count($split) != 2){
+                $this->session->set_flashdata("invalid","[ DATA GAGAL DISUBMIT ] Perusahaan tidak ditemukan");
+                redirect("crm/oc/opendataentry");
+            }
+            $input_data["id_perusahaan"] = $split[0]; //ini perusahaan gapunya cp
+            $input_data["id_cp_perusahaan"] = $split[1]; //ini perusahaan ga punya cp
 
-        $split = explode("-",$input_data["tgl_po_customer"]);
-        $tahun_input = $split[0];
-        $bulan_input = $split[1];
-        /*items submitted*/
-        $id_quotation_item = $this->input->post("id_quotation_item");
-        $nama_oc_item = $this->input->post("nama_oc_item");
-        $id_produk = $this->input->post("id_produk");
-        $final_amount = $this->input->post("final_amount");
-        $final_selling_price = $this->input->post("final_selling_price");
-        $category = array();
+            $split = explode("-",$input_data["tgl_po_customer"]);
+            $tahun_input = $split[0];
+            $bulan_input = $split[1];
 
-        $urutan = 0;
-        foreach($id_produk as $a){
-            if($a == 0) break;
-            $category[$urutan]["id_produk"] = $a; /*variable ini urutan 1, 2, 3, 4, dst*/
-            $urutan++;
-        }
-        $urutan = 0;
-        foreach($nama_oc_item as $a){
-            if($a == "") break;
-            $category[$urutan]["nama_oc_item"] = $a; /*variable ini urutan 1, 2, 3, 4, dst*/
-            $urutan++;
-        }
-        $urutan = 0;
-        foreach($final_amount as $a){
-            if($a == "") break;
-            $category[$urutan]["final_amount"] = $a; /*variable ini urutan 1, 2, 3, 4, dst*/
-            $split = explode(" ",$category[$urutan]["final_amount"]);
+            $is_ada_transaksi = 0;
+            if($input_data["persentase_pembayaran"] == 0){ //persentase DP 0
+                $is_ada_transaksi = 1;
+            }
+            $is_ada_transaksi2 = 0;
+            if($input_data["persentase_pembayaran2"] == 0){ //persentase pelunasan 0
+                $is_ada_transaksi2 = 1;
+            }
+            $input_data += array(
+                "nama_oc_item" => $this->input->post("nama_oc_item"),
+                "id_produk" => $this->input->post("id_produk"),
+                "final_amount" => $this->input->post("final_amount"),
+                "final_selling_price" => $this->input->post("final_selling_price"),
+            );
+            $category = array();
+            $urutan = 0;
+            foreach($input_data["id_produk"] as $a){
+                if($a == 0) break;
+                $category[$urutan]["id_produk"] = $a; /*variable ini urutan 1, 2, 3, 4, dst*/
+                $urutan++;
+            }
+            $urutan = 0;
+            foreach($input_data["nama_oc_item"] as $a){
+                if($a == "") break;
+                $category[$urutan]["nama_oc_item"] = $a; /*variable ini urutan 1, 2, 3, 4, dst*/
+                $urutan++;
+            }
+            $urutan = 0;
+            foreach($input_data["final_amount"] as $a){
+                if($a == "") break;
+                $category[$urutan]["final_amount"] = $a; /*variable ini urutan 1, 2, 3, 4, dst*/
+                $split = explode(" ",$category[$urutan]["final_amount"]);
+                if(count($split) != 2){
+                    $this->session->set_flashdata("invalid","[ DATA GAGAL DISUBMIT ] Format satuan tolong diperhatikan");
+                    redirect("crm/oc/opendataentry");
+                }
+                $category[$urutan]["jumlah"] = $split[0];
+                $category[$urutan]["satuan"] = $split[1];
+                $urutan++;
+            }
+            $urutan = 0;
+            foreach($input_data["final_selling_price"] as $a){
+                if($a == "") break;
+                $category[$urutan]["final_selling_price"] = splitterMoney($a,","); /*variable ini urutan 1, 2, 3, 4, dst*/
+                $urutan++;
+            }
             
-            $category[$urutan]["jumlah"] = $split[0];
-            $category[$urutan]["satuan"] = $split[1];
-            $urutan++;
-        }
-        $urutan = 0;
-        foreach($final_selling_price as $a){
-            if($a == "") break;
-            $category[$urutan]["final_selling_price"] = splitterMoney($a,","); /*variable ini urutan 1, 2, 3, 4, dst*/
-            $urutan++;
-        }
-        
-        $id_request = getMaxId("price_request","id_request",array("bulan_request" => $bulan_input,"tahun_request" => $tahun_input, "status_aktif_request" => 0));
-        $no_request =  "LI-".sprintf("%03d",$id_request)."/RFQ/".bulanRomawi($bulan_input)."/".$tahun_input;
-        $data = array(
-            "id_request" => $id_request,
-            "status_aktif_request" => 0,
-            "bulan_request" => $bulan_input,
-            "tahun_request" => $tahun_input,
-            "no_request" => $no_request,
-            "id_perusahaan" => $input_data["id_perusahaan"], // customer
-            "id_cp" => $input_data["id_cp_perusahaan"],
-            "franco" => $input_data["franco"],
-            "untuk_stock" => 1,
-            "tgl_dateline_request" => $input_data["tgl_po_customer"],
-            "status_buat_quo" => 0,
-            "status_request" => 3
-        );
-        $id_submit_request = insertRow("price_request",$data);
-        /******************************************************************** */
-        //QUOTATION//
-        /******************************************************************** */
-        $id_quotation = getMaxId("quotation","id_quotation",array("status_aktif_quotation" => 0,"bulan_quotation" => $bulan_input,"tahun_quotation" => $tahun_input));
-        $no_quotation =  "LI-".sprintf("%03d",$id_quotation)."/QUO/".bulanRomawi($bulan_input)."/".$tahun_input;
-        $data = array(
-            "id_quotation" => $id_quotation,
-            "bulan_quotation" => $bulan_input,
-            "tahun_quotation" => $tahun_input,
-            "versi_quotation" => 1,
-            "no_quotation" => $no_quotation,
-            "id_request" => $id_submit_request,
-            "total_quotation_price" =>  splitterMoney($this->input->post("total_oc_price"),","), //nanti ini diisi setelah quotation item ketotal
-            "hal_quotation" => "-",
-            "up_cp" => "-",
-            "durasi_pengiriman" => "-",
-            "franco" => $input_data["franco"],
-            "durasi_pembayaran" => "-", 
-            "alamat_perusahaan" => "-",
-            "dateline_quotation" =>  $input_data["tgl_po_customer"],
-            "status_quotation" => 2,
-            "id_user_add" => $this->session->id_user
-        );
-        $id_submit_quotation = insertRow("quotation",$data);
-        /******************************************************************** */
-        //OC//
-        /******************************************************************** */
-        $no_oc = $this->input->post("no_oc");
-        $id_oc = substr($no_oc,-4); //LI20190003 = 0003 => 3
-        $data = array(
-            "id_submit_quotation" => $id_submit_quotation,
-            "id_oc" => $id_oc,
-            "bulan_oc" => $bulan_input,
-            "tahun_oc" => $tahun_input,
-            "no_oc" => $no_oc,
-            "no_po_customer" => $input_data["no_po_customer"],
-            "tgl_po_customer" => $input_data["tgl_po_customer"],
-            "total_oc_price" =>  splitterMoney($this->input->post("total_oc_price"),","),
-            "up_cp" => "-",
-            "durasi_pembayaran" => "-",
-            "durasi_pengiriman" => "-",
-            "metode_pengiriman" => "-",
-            "franco" => $input_data["franco"],
-            "id_user_add" => $this->session->id_user,
-            "date_oc_add" => $input_data["tgl_po_customer"]
-        );
-        $id_submit_oc = insertRow("order_confirmation",$data);
+            $id_request = getMaxId("price_request","id_request",array("bulan_request" => $bulan_input,"tahun_request" => $tahun_input, "status_aktif_request" => 0));
+            
+            $no_request =  "LI-".sprintf("%03d",$id_request)."/RFQ/".bulanRomawi($bulan_input)."/".$tahun_input;
+            $id_quotation = getMaxId("quotation","id_quotation",array("status_aktif_quotation" => 0,"bulan_quotation" => $bulan_input,"tahun_quotation" => $tahun_input));
+            
+            $no_quotation =  "LI-".sprintf("%03d",$id_quotation)."/QUO/".bulanRomawi($bulan_input)."/".$tahun_input;
+            
+            $id_oc = substr($input_data["no_oc"],-4); //LI20190003 = 0003 => 3
+            /*end of load data, masuk bagian checkingnya*/
 
-        /*nanti di loop sesuai yang dicentang yang dimasukin dari oc item*/
-        $counter = 0;
-        for($a = 0; $a<count($category); $a++){
+            
+        }
+        catch(Exception $e){
+            $this->session->set_flashdata("error_input","[ DATA GAGAL DISUBMIT ] there are some errors, please becareful on data input");
+            redirect("crm/oc/opendataentry");
+        }
+        finally{
             $data = array(
-                "id_submit_request" => $id_submit_request,
-                "nama_produk" => $category[$a]["nama_oc_item"], //kenapa error lagi pas di live z
-                "jumlah_produk" => $category[$a]["jumlah"],
-                "satuan_produk" => $category[$a]["satuan"],
-                "notes_produk" => "-",
-                "file" => "-",
+                "id_request" => $id_request,
+                "status_aktif_request" => 0,
+                "bulan_request" => $bulan_input,
+                "tahun_request" => $tahun_input,
+                "no_request" => $no_request,
+                "id_perusahaan" => $input_data["id_perusahaan"], // customer
+                "id_cp" => $input_data["id_cp_perusahaan"],
+                "franco" => $input_data["franco"],
+                "untuk_stock" => 1,
+                "tgl_dateline_request" => $input_data["tgl_po_customer"],
+                "status_buat_quo" => 0,
+                "status_request" => 3
+            );
+            $id_submit_request = insertRow("price_request",$data);
+
+            $data = array(
+                "id_quotation" => $id_quotation,
+                "bulan_quotation" => $bulan_input,
+                "tahun_quotation" => $tahun_input,
+                "versi_quotation" => 1,
+                "no_quotation" => $no_quotation,
+                "id_request" => $id_submit_request,
+                "total_quotation_price" =>  splitterMoney($input_data["total_oc_price"],","), //nanti ini diisi setelah quotation item ketotal
+                "hal_quotation" => "-",
+                "up_cp" => $input_data["up_cp"],
+                "durasi_pengiriman" => $input_data["durasi_pengiriman"],
+                "franco" => $input_data["franco"],
+                "durasi_pembayaran" => $input_data["durasi_pembayaran"], 
+                "alamat_perusahaan" => "-",
+                "dateline_quotation" =>  $input_data["tgl_po_customer"],
+                "status_quotation" => 2,
                 "id_user_add" => $this->session->id_user
             );
-            $id_request_item = insertRow("price_request_item",$data);
-            $data = array(
-                "id_request_item" => $id_request_item,
-                "id_perusahaan" => -1, // klo data entry abaikan aja, cuman buat jalanin sistemnya
-                "id_cp" => -1, // klo data entry abaikan aja, cuman buat jalanin sistemnya
-                "harga_produk" => 1, //gaperlu masukin karena gapenting
-                "vendor_price_rate" => 1, //gaperlu masukin karena gapenting
-                "mata_uang" => "-",
-                "nama_produk_vendor" => "-",
-                "notes" => "-",
-                "attachment" => "-",
-                "id_user_add" => $this->session->id_user
-            );
-            $id_harga_vendor = insertRow("harga_vendor",$data);
-            $data = array(
-                "id_harga_vendor" => $id_harga_vendor,
-                "id_perusahaan" => -1, // klo data entry abaikan aja, cuman buat jalanin sistemnya
-                "id_cp" => -1, // klo data entry abaikan aja, cuman buat jalanin sistemnya
-                "harga_produk" => 1,
-                "vendor_price_rate" => 1,
-                "mata_uang" => "-",
-                "notes" => "-",
-                "attachment" => "-",
-                "metode_pengiriman" => "-",    
-                "id_user_add" => $this->session->id_user
-            );
-            $id_harga_shipping = insertRow("harga_shipping",$data);
-            $data = array(
-                "id_request_item" => $id_request_item,
-                "id_perusahaan" => -1, // klo data entry abaikan aja, cuman buat jalanin sistemnya
-                "id_cp" => -1, // klo data entry abaikan aja, cuman buat jalanin sistemnya
-                "harga_produk" => 1,
-                "vendor_price_rate" => 1,
-                "mata_uang" => "-",
-                "notes" => "-",
-                "attachment" => "-",
-                "metode_pengiriman" => "-",    
-                "id_user_add" => $this->session->id_user
-            );
-            $id_harga_courier = insertRow("harga_courier",$data);
+            $id_submit_quotation = insertRow("quotation",$data);
+            
             $data = array(
                 "id_submit_quotation" => $id_submit_quotation,
-                "id_request_item" => $id_request_item[$a],
-                "nama_produk_leiter" => $category[$a]["nama_oc_item"],
-                "attachment" => "-",
-                "id_harga_vendor" => $id_harga_vendor[$a],
-                "id_harga_courier" => $id_harga_courier[$a],
-                "id_harga_shipping" => $id_harga_shipping[$a],
-                "item_amount" => $category[$a]["jumlah"],
-                "satuan_produk" => $category[$a]["satuan"],
-                "selling_price" => $category[$a]["final_selling_price"],
-                "margin_price" => "0%"
+                "id_oc" => $id_oc,
+                "bulan_oc" => $bulan_input,
+                "tahun_oc" => $tahun_input,
+                "no_oc" => $input_data["no_oc"],
+                "no_po_customer" => $input_data["no_po_customer"],
+                "tgl_po_customer" => $input_data["tgl_po_customer"],
+                "total_oc_price" =>  splitterMoney($input_data["total_oc_price"],","),
+                "up_cp" => $input_data["up_cp"],
+                "durasi_pembayaran" => $input_data["durasi_pembayaran"],
+                "durasi_pengiriman" => $input_data["durasi_pengiriman"],
+                "metode_pengiriman" => $input_data["metode_pengiriman"],
+                "franco" => $input_data["franco"],
+                "id_user_add" => $this->session->id_user,
+                "date_oc_add" => $input_data["tgl_po_customer"]
             );
-            $id_quotation_item = insertRow("quotation_item",$data);
+            $id_submit_oc = insertRow("order_confirmation",$data);
+
+            /*nanti di loop sesuai yang dicentang yang dimasukin dari oc item*/
+            for($a = 0; $a<count($category); $a++){
+                $data = array(
+                    "id_submit_request" => $id_submit_request,
+                    "nama_produk" => $category[$a]["nama_oc_item"], //kenapa error lagi pas di live z
+                    "jumlah_produk" => $category[$a]["jumlah"],
+                    "satuan_produk" => $category[$a]["satuan"],
+                    "notes_produk" => "-",
+                    "file" => "-",
+                    "id_user_add" => $this->session->id_user
+                );
+                $id_request_item = insertRow("price_request_item",$data);
+                $data = array(
+                    "id_request_item" => $id_request_item,
+                    "id_perusahaan" => -1, // klo data entry abaikan aja, cuman buat jalanin sistemnya
+                    "id_cp" => -1, // klo data entry abaikan aja, cuman buat jalanin sistemnya
+                    "harga_produk" => 1, //gaperlu masukin karena gapenting
+                    "vendor_price_rate" => 1, //gaperlu masukin karena gapenting
+                    "mata_uang" => "-",
+                    "nama_produk_vendor" => "-",
+                    "notes" => "-",
+                    "attachment" => "-",
+                    "id_user_add" => $this->session->id_user
+                );
+                $id_harga_vendor = insertRow("harga_vendor",$data);
+                $data = array(
+                    "id_harga_vendor" => $id_harga_vendor,
+                    "id_perusahaan" => -1, // klo data entry abaikan aja, cuman buat jalanin sistemnya
+                    "id_cp" => -1, // klo data entry abaikan aja, cuman buat jalanin sistemnya
+                    "harga_produk" => 1,
+                    "vendor_price_rate" => 1,
+                    "mata_uang" => "-",
+                    "notes" => "-",
+                    "attachment" => "-",
+                    "metode_pengiriman" => "-",    
+                    "id_user_add" => $this->session->id_user
+                );
+                $id_harga_shipping = insertRow("harga_shipping",$data);
+                $data = array(
+                    "id_request_item" => $id_request_item,
+                    "id_perusahaan" => -1, // klo data entry abaikan aja, cuman buat jalanin sistemnya
+                    "id_cp" => -1, // klo data entry abaikan aja, cuman buat jalanin sistemnya
+                    "harga_produk" => 1,
+                    "vendor_price_rate" => 1,
+                    "mata_uang" => "-",
+                    "notes" => "-",
+                    "attachment" => "-",
+                    "metode_pengiriman" => "-",    
+                    "id_user_add" => $this->session->id_user
+                );
+                $id_harga_courier = insertRow("harga_courier",$data);
+                $data = array(
+                    "id_submit_quotation" => $id_submit_quotation,
+                    "id_request_item" => $id_request_item[$a],
+                    "nama_produk_leiter" => $category[$a]["nama_oc_item"],
+                    "attachment" => "-",
+                    "id_harga_vendor" => $id_harga_vendor[$a],
+                    "id_harga_courier" => $id_harga_courier[$a],
+                    "id_harga_shipping" => $id_harga_shipping[$a],
+                    "item_amount" => $category[$a]["jumlah"],
+                    "satuan_produk" => $category[$a]["satuan"],
+                    "selling_price" => $category[$a]["final_selling_price"],
+                    "margin_price" => "0%"
+                );
+                $id_quotation_item = insertRow("quotation_item",$data);
+                $data = array(
+                    "id_submit_oc" => $id_submit_oc,
+                    "id_quotation_item" => $id_quotation_item, /*quotation barang 1*/
+                    "nama_oc_item" => $category[$a]["nama_oc_item"], /*nama produk oc barang 1*/
+                    "id_produk" => $category[$a]["id_produk"], 
+                    "final_amount" => $category[$a]["jumlah"], /*3*/
+                    "satuan_produk" => $category[$a]["satuan"], /*meter*/
+                    "final_selling_price" => $category[$a]["final_selling_price"],
+                    "status_oc_item" => 0
+                );
+                insertRow("order_confirmation_item",$data);
+            }
+            
+            
+            /*masukin metode pembayaran*/
+            
             $data = array(
                 "id_submit_oc" => $id_submit_oc,
-                "id_quotation_item" => $id_quotation_item, /*quotation barang 1*/
-                "nama_oc_item" => $category[$a]["nama_oc_item"], /*nama produk oc barang 1*/
-                "id_produk" => $category[$a]["id_produk"], 
-                "final_amount" => $category[$a]["jumlah"], /*3*/
-                "satuan_produk" => $category[$a]["satuan"], /*meter*/
-                "final_selling_price" => $category[$a]["final_selling_price"],
-                "status_oc_item" => 0
+                "persentase_pembayaran" => $input_data["persentase_pembayaran"],
+                "nominal_pembayaran" => splitterMoney($input_data["nominal_pembayaran"],","),
+                "trigger_pembayaran" => $input_data["trigger_pembayaran"],
+                "status_bayar" => 1,
+                "is_ada_transaksi" => $is_ada_transaksi,
+                "persentase_pembayaran2" => $input_data["persentase_pembayaran2"],
+                "nominal_pembayaran2" => splitterMoney($input_data["nominal_pembayaran2"],","),
+                "trigger_pembayaran2" => $input_data["trigger_pembayaran2"],
+                "status_bayar2" => 1,
+                "is_ada_transaksi2" => $is_ada_transaksi2,
+                "kurs" => $input_data["mata_uang_pembayaran"]
             );
-            $id_oc_item = insertRow("order_confirmation_item",$data);
+            insertRow("order_confirmation_metode_pembayaran",$data);
+            $data = array(
+                "id_submit_quotation" => $id_submit_quotation,
+                "persentase_pembayaran" => $input_data["persentase_pembayaran"],
+                "nominal_pembayaran" => splitterMoney($input_data["nominal_pembayaran"],","),
+                "trigger_pembayaran" => $input_data["trigger_pembayaran"],
+                "status_bayar" => 1,
+                "is_ada_transaksi" => $is_ada_transaksi,
+                "persentase_pembayaran2" => $input_data["persentase_pembayaran2"],
+                "nominal_pembayaran2" => splitterMoney($input_data["nominal_pembayaran2"],","),
+                "trigger_pembayaran2" => $input_data["trigger_pembayaran2"],
+                "status_bayar2" => 1,
+                "is_ada_transaksi2" => $is_ada_transaksi2,
+                "kurs" => $input_data["mata_uang_pembayaran"]
+            );
+            insertRow("quotation_metode_pembayaran",$data);
         }
-        
-        
-        /*masukin metode pembayaran*/
-        $is_ada_transaksi = 0;
-        if($this->input->post("persentase_pembayaran") == 0){ //persentase DP 0
-            $is_ada_transaksi = 1;
-        }
-        $is_ada_transaksi2 = 0;
-        if($this->input->post("persentase_pembayaran2") == 0){ //persentase pelunasan 0
-            $is_ada_transaksi2 = 1;
-        }
-        $data = array(
-            "id_submit_oc" => $id_submit_oc,
-            "persentase_pembayaran" => $this->input->post("persentase_pembayaran"),
-            "nominal_pembayaran" => splitterMoney($this->input->post("nominal_pembayaran"),","),
-            "trigger_pembayaran" => $this->input->post("trigger_pembayaran"),
-            "status_bayar" => 1,
-            "is_ada_transaksi" => $is_ada_transaksi,
-            "persentase_pembayaran2" => $this->input->post("persentase_pembayaran2"),
-            "nominal_pembayaran2" => splitterMoney($this->input->post("nominal_pembayaran2"),","),
-            "trigger_pembayaran2" => $this->input->post("trigger_pembayaran2"),
-            "status_bayar2" => 1,
-            "is_ada_transaksi2" => $is_ada_transaksi2,
-            "kurs" => $this->input->post("mata_uang_pembayaran")
-        );
-        insertRow("order_confirmation_metode_pembayaran",$data);
-        $data = array(
-            "id_submit_quotation" => $id_submit_quotation,
-            "persentase_pembayaran" => $this->input->post("persentase_pembayaran"),
-            "nominal_pembayaran" => splitterMoney($this->input->post("nominal_pembayaran"),","),
-            "trigger_pembayaran" => $this->input->post("trigger_pembayaran"),
-            "status_bayar" => 1,
-            "is_ada_transaksi" => $is_ada_transaksi,
-            "persentase_pembayaran2" => $this->input->post("persentase_pembayaran2"),
-            "nominal_pembayaran2" => splitterMoney($this->input->post("nominal_pembayaran2"),","),
-            "trigger_pembayaran2" => $this->input->post("trigger_pembayaran2"),
-            "status_bayar2" => 1,
-            "is_ada_transaksi2" => $is_ada_transaksi2,
-            "kurs" => $this->input->post("mata_uang_pembayaran")
-        );
-        insertRow("quotation_metode_pembayaran",$data);
-
         redirect("crm/oc");
     }   
     public function insertoc(){ //sudah di cek

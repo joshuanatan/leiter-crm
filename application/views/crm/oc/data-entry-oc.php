@@ -10,33 +10,34 @@
                         <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#items" aria-controls="pengiriman" role="tab">Items</a></li>
 
                         <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#payment" aria-controls="produksi" role="tab">Pembayaran</a></li>
+
+                        <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#detail" aria-controls="detail" role="tab">Detail</a></li>
                     </ul>
                     <form action = "<?php echo base_url();?>crm/oc/dataentry" method = "post">    
                         <div class="tab-content">
                             <div class="tab-pane active" id="primaryData" role="tabpanel">
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">No OC</h5>
-                                    <input type ="text" name = "no_oc" class = "form-control" placeholder = "LI20190001">
+                                    <input required type ="text" name = "no_oc" class = "form-control" placeholder = "LI20190001">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">No PO Customer</h5>
-                                    <input name = "no_po_customer" type ="text" class = "form-control">
+                                    <input required name = "no_po_customer" type ="text" class = "form-control">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Tanggal PO Customer</h5>
-                                    <input name = "tgl_po_customer" type ="date" class = "form-control">
+                                    <input required name = "tgl_po_customer" type ="date" class = "form-control">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
                                     <span id = "customerNotFound" style = "color:red; display:none">CUSTOMER NOT FOUND</span>
-                                    <input type = "text" class = "form-control" oninput = "copy('namaperusahaan','control_namaperusahaan');getRecommendationPerusahaan()" id = "namaperusahaan">
-                                    <input type = "hidden" class = "form-control" id = "control_namaperusahaan">
-                                    <input type = "hidden" class = "form-control" id = "id_perusahaan" name = "id_perusahaan">
+                                    <input required type = "text" class = "form-control" oninput = "getRecommendationPerusahaan()" id = "namaperusahaan" placeholder="Ketik Perusahaan"> 
+                                    <select class = "form-control" name = "id_perusahaan" id = "recommendationPerusahaan"></select>
                                         
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Franco</h5>
-                                    <input name = "franco" id = "franco" type ="text" class = "form-control"> 
+                                    <input required name = "franco" id = "franco" type ="text" class = "form-control"> 
                                 </div>
                             </div>
                             <!-- fungsi -->
@@ -55,9 +56,10 @@
                                             <tr>
                                                 <td>
                                                     <span id = "produkNotFound<?php echo $a;?>" style = "color:red; display:none">PRODUCT NOT FOUND</span>
-                                                    <textarea class = "form-control" id = "namaproduk<?php echo $a;?>" oninput = "copy('namaproduk<?php echo $a;?>','control_namaproduk<?php echo $a;?>');getRecommendationProduk('<?php echo $a;?>')"></textarea>
-                                                    <input type = "hidden" value = "0" name = "id_produk[]" id = "id_produk<?php echo $a;?>">
-                                                    <input type = "hidden" id = "control_namaproduk<?php echo $a;?>">
+                                                    <input placeholder = "search item here..." type = "text" class = "form-control" id = "namaproduk<?php echo $a;?>" oninput = "getRecommendationProduk('<?php echo $a;?>')">
+                                                    <select class = "form-control" id = "similarProduk<?php echo $a;?>" name = "id_produk[]">
+                                                        <option value = "0"></option>
+                                                    </select>
                                                 </td>
                                                 <td><textarea name = "nama_oc_item[]" class = "form-control"></textarea></td>
                                                 <td><input type = "text" id = "jumlah_produk<?php echo $a;?>" name = "final_amount[]" class = "form-control"></td>
@@ -71,12 +73,12 @@
                             <div class="tab-pane" id="payment" role="tabpanel">
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">Total oc Amount</h5>
-                                    <input type = "text" id = "totalQuotation" class = "form-control" name = "total_oc_price" onclick = "countTotalDataEntry()">
+                                    <input required type = "text" id = "totalQuotation" class = "form-control" name = "total_oc_price" onclick = "countTotalDataEntry()">
                                 </div>
                                 <div class = "row">
                                     <div class = "form-group col-lg-4 containerDp" style = ""> <!-- textarea klo DP % -->
                                         <h5 style = "opacity:0.5">DP (%)</h5>
-                                        <input name = "persentase_pembayaran" id = "persenDp" oninput = "paymentWithDP()" type ="text" class = "form-control">
+                                        <input required name = "persentase_pembayaran" id = "persenDp" oninput = "paymentWithDP()" type ="text" class = "form-control">
                                     </div>
                                     <div class = "form-group col-lg-4">
                                         <h5 style = "opacity:0.5">Payment Method</h5>
@@ -109,13 +111,32 @@
                                 <!-- end ngeloadnya pembayaran -->
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Mata Uang Pembayaran</h5>
-                                    <input required name = "mata_uang_pembayaran" id = "kurs" type ="text" class = "form-control">
+                                    <input required placeholder = "contoh: IDR" name = "mata_uang_pembayaran" id = "kurs" type ="text" class = "form-control">
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="detail" role="tabpanel">
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">UP CP </h5>
+                                    <input required type ="text" name = "up_cp" class = "form-control" placeholder = "contoh: Bapak Johny">
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Durasi Pembayaran (... Minggu)</h5>
+                                    <input required type ="number" name = "durasi_pembayaran" placeholder = "contoh: 12" class = "form-control">
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Durasi Pengiriman (... Minggu)</h5>
+                                    <input required type ="number" name = "durasi_pengiriman" placeholder = "contoh: 16" class = "form-control">
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Metode Pengiriman</h5>
+                                    <input required type ="text" name = "metode_pengiriman" class = "form-control">
                                 </div>
                                 <button class = "btn btn-primary btn-outline btn-sm">SUBMIT</button>
                             </div>
                         </div>
                     </form>
                 </div>
+                <a href = "<?php echo base_url();?>crm/oc" class = "btn btn-sm btn-primary">BACK</a>
             </div>
             <!-- End Example Tabs Left -->
         </div>

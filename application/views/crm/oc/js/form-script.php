@@ -134,8 +134,7 @@ function copy(id_source, id_target){
 <script>
 function getRecommendationPerusahaan(){
     
-    var teks = $("#control_namaperusahaan").val();
-    var length = teks.length;
+    var teks = $("#namaperusahaan").val();
     if(teks != ""){
         $.ajax({
             url:"<?php echo base_url();?>interface/perusahaan/searchCustomerByName",
@@ -143,23 +142,16 @@ function getRecommendationPerusahaan(){
             dataType:"JSON",
             data:{nama_perusahaan:teks},
             success:function(respond){
+                var html = "";
                 if(respond.length != 0){
-                    $("#customerNotFound").css("display","none");
-                    $("#namaperusahaan").val(respond["nama_perusahaan"]);
-                    var sumber = document.getElementById("namaperusahaan");
-                    sumber.focus();
-                    sumber.setSelectionRange(length,respond["nama_perusahaan"].length);
-                    $.ajax({
-                        url:"<?php echo base_url();?>interface/contact_person/getContactPerson/"+respond["id_perusahaan"],
-                        dataType:"JSON",
-                        success:function(cp){
-                            $("#id_perusahaan").val(respond["id_perusahaan"]+"-"+cp[0]["id_cp"]);
-                        }
-                    })
+                    for(var a =0; a<respond.length; a++){
+                        html += "<option value = '"+respond[a]["id_perusahaan"]+"-"+respond[a]["id_cp"]+"'>"+respond[a]["nama_perusahaan"]+" "+respond[a]["nama_cp"]+"</option>";
+                    }
                 }
                 else{
-                    $("#customerNotFound").css("display","block");
+                    html = "<option>CUSTOMER TIDAK DITEMUKAN</option>";
                 }
+                $("#recommendationPerusahaan").html(html);
             }
         });
     }
@@ -169,8 +161,7 @@ function getRecommendationPerusahaan(){
 </script>
 <script>
 function getRecommendationProduk(baris){
-    var teks = $("#control_namaproduk"+baris).val();
-    var length = teks.length;
+    var teks = $("#namaproduk"+baris).val();
     if(teks != ""){
         $.ajax({
             url:"<?php echo base_url();?>interface/produk/searchProdukByName",
@@ -179,17 +170,16 @@ function getRecommendationProduk(baris){
             data:{nama_produk:teks},
             success:function(respond){
                 if(respond.length != 0){
-                    $("#produkNotFound"+baris).css("display","none");
-                    $("#namaproduk"+baris).val(respond["deskripsi_produk"]);
-                    var sumber = document.getElementById("namaproduk"+baris);
-                    sumber.focus();
-                    sumber.setSelectionRange(length,respond["deskripsi_produk"].length);
-                    $("#id_produk"+baris).val(respond["id_produk"]);
+                    var html = "";
+                    for(var a = 0; a<respond.length; a++){
+                        html += "<option value = '"+respond[a]["id_produk"]+"'>"+respond[a]["deskripsi_produk"]+"</option>";
+                    }
                 }
                 else{
-                    $("#produkNotFound"+baris).css("display","block");
-                    $("#id_produk"+baris).val(0);
+                    var html = "<option value = '0'>PRODUK TIDAK DITEMUKAN</option>"
                 }
+                $("#similarProduk"+baris).html(html);
+                $("#jumlah_produk"+baris).val(" "+respond[0]["satuan_produk"]);
             }
         });
     }

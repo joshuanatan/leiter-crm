@@ -42,17 +42,29 @@ class Perusahaan extends CI_Controller{
     }
     public function searchCustomerByName(){ //dipake di visit report buat nyari nama perusahaan
         $like = array(
-            "nama_perusahaan",$this->input->post("nama_perusahaan"),"after"
+            "nama_perusahaan",$this->input->post("nama_perusahaan"),"both"
         );
         $where = array(
             "status_perusahaan" => 0,
             "peran_perusahaan" => "CUSTOMER"
         );
-        $result = selectLike("perusahaan",$like,$where,1);
+        $sql = "
+            select 
+                nama_perusahaan, 
+                perusahaan.id_perusahaan,
+                contact_person.nama_cp, 
+                id_cp from perusahaan
+            inner join contact_person
+                on contact_person.id_perusahaan = perusahaan.id_perusahaan
+            where perusahaan.status_perusahaan = 0 and 
+            peran_perusahaan = 'CUSTOMER' and 
+            nama_perusahaan like '%".$this->input->post("nama_perusahaan")."%'
+            group by perusahaan.id_perusahaan";
+        $result = executeQuery($sql);
         $field = array(
-            "nama_perusahaan","id_perusahaan"
+            "nama_perusahaan","id_perusahaan","nama_cp","id_cp"
         );
-        $data = foreachResult($result,$field,$field);
+        $data = foreachMultipleResult($result,$field,$field);
         echo json_encode($data);
     }
 }

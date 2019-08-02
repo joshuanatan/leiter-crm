@@ -104,5 +104,12 @@ if(! function_exists('selectLike')){
         return $CI->db->get_where($table,$where);
     }
 }
+if(! function_exists('executeQuery')){
+    function executeQuery($query){
+        
+        $CI =& get_instance();
+        return $CI->db->query($query);
+    }
+}
 
 ?>

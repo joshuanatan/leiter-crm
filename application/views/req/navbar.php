@@ -41,7 +41,7 @@
                             </li>
                             <?php endif;?>
 
-                            <?php if(isExistsInTable("privilage",array("id_user" => $this->session->id_user, "id_menu" => "uom")) == 0):?>
+                            <?php /*if(isExistsInTable("privilage",array("id_user" => $this->session->id_user, "id_menu" => "uom")) == 0):*/ if(false):?>
                             <li class="site-menu-item">
                                 <a class="animsition-link" href="<?php echo base_url();?>master/uom/">
                                     <span class="site-menu-title">Unit of Measures</span>
