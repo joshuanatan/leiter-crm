@@ -415,7 +415,8 @@ class Oc extends CI_Controller{
                 "untuk_stock" => 1,
                 "tgl_dateline_request" => $input_data["tgl_po_customer"],
                 "status_buat_quo" => 0,
-                "status_request" => 3
+                "status_request" => 3,
+                "date_request_add" => $input_data["tgl_po_customer"]
             );
             $id_submit_request = insertRow("price_request",$data);
 
@@ -435,7 +436,8 @@ class Oc extends CI_Controller{
                 "alamat_perusahaan" => "-",
                 "dateline_quotation" =>  $input_data["tgl_po_customer"],
                 "status_quotation" => 2,
-                "id_user_add" => $this->session->id_user
+                "id_user_add" => $this->session->id_user,
+                "date_quotation_add" => $input_data["tgl_po_customer"]
             );
             $id_submit_quotation = insertRow("quotation",$data);
             
