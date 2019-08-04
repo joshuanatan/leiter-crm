@@ -40,7 +40,6 @@
                     <?php else:?>
                     <button class = "btn btn-success btn-outline btn-sm">PAID</button>
                     <?php endif;?>
-                    <a href = "<?php echo base_url();?>finance/receivable/invoicePdf/<?php echo $invoice[$a]["id_submit_invoice"];?>" class = "btn btn-sm btn-primary btn-outline">EDIT</a>
                 </td>
             </tr>
             <?php endfor;?>

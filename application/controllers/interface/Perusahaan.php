@@ -41,13 +41,7 @@ class Perusahaan extends CI_Controller{
         $this->getDetailPerusahaan($id_perusahaan);
     }
     public function searchCustomerByName(){ //dipake di visit report buat nyari nama perusahaan
-        $like = array(
-            "nama_perusahaan",$this->input->post("nama_perusahaan"),"both"
-        );
-        $where = array(
-            "status_perusahaan" => 0,
-            "peran_perusahaan" => "CUSTOMER"
-        );
+        
         $sql = "
             select 
                 nama_perusahaan, 

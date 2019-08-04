@@ -357,7 +357,15 @@ class Receivable extends CI_Controller{
         redirect("finance/receivable");
     }
     public function edit($i){
-
+        $data = array(
+            
+        );
+        $this->req();
+        $this->load->view("finance/content-open");
+        $this->load->view("finance/receivable/category-header");
+        $this->load->view("finance/receivable/edit-invoice");
+        $this->load->view("finance/content-close");
+        $this->close();
     }
     public function pay($id_submit_invoice){
         $where = array(
@@ -391,10 +399,8 @@ class Receivable extends CI_Controller{
             "mata_uang_pembayaran" => "IDR",
             "total_pembayaran" => splitterMoney($this->input->post("nominal_pembayaran"),","),
             "metode_pembayaran" => $this->input->post("metode_pembayaran"),
-            "jenis_pembayaran" => "MASUK",
-            "kategori_pembayaran" => "PELUNASAN CUSTOMER"
         );
-        insertRow("pembayaran",$data);
+        insertRow("pembayaran_customer",$data);
 
         /*sekarang yang di metode pembayaran*/
         $tipe_invoice = get1Value("invoice_core","tipe_invoice",array("id_submit_invoice" => $id_submit_invoice));

@@ -2,6 +2,8 @@
 class Margin extends CI_Controller{
     public function __construct(){
         parent::__construct();
+        $this->load->model("Mdmargin_calculation");
+        $this->load->model("Mdorder_data");
     }
     public function req(){
         $this->load->view("req/head");
@@ -24,26 +26,48 @@ class Margin extends CI_Controller{
     }
     public function index(){
         if($this->session->id_user == "") redirect("login/welcome");
+        $kolom = array(
+            "no_po_customer","tgl_po_customer","nama_perusahaan","no_oc","total_oc_price","id_submit_oc"
+        );
         $where = array(
-            "oc" => array(
-                "status_oc" => 0
-            )
+            "status_aktif_request" => 0,
+            "status_aktif_quotation" => 0,
+            "status_aktif_oc" => 0
         );
-        $field = array(
-            "oc" => array(
-                "id_oc","no_oc","no_po_customer"
-            )
+        $limit  = array(
+            "offset" => 0,
+            "limit" => 10
         );
-        $print = array(
-            "oc" => array(
-                "id_oc","no_oc","no_po_customer"
-            )
+        $result = $this->Mdorder_data->getListInvoice($kolom,$where,$limit);
+        $data["oc"] = $result->result_array();
+        $data["total"] = ($this->Mdorder_data->getTotalData($where)->row()->total_item)/10;
+        $data["page"] = 1;
+        $this->req();
+        $this->load->view("finance/content-open");
+        $this->load->view("finance/margin/category-header");
+        $this->load->view("finance/margin/category-body",$data);
+        $this->load->view("finance/content-close");
+        $this->close();
+    }
+    public function page($page){
+        if($this->session->id_user == "") redirect("login/welcome");
+        $kolom = array(
+            "no_po_customer","tgl_po_customer","nama_perusahaan","no_oc","total_oc_price","id_submit_oc"
         );
-        $result["oc"] = selectRow("order_confirmation",$where["oc"]);
-        $data["oc"] = foreachMultipleResult($result["oc"],$field["oc"],$print["oc"]);
-        for($a = 0; $a< count($data["oc"]); $a++){
-            $data["oc"][$a]["items"] = selectRow("quotation_item",array("id_oc" => $data["oc"][$a]["id_oc"]))->num_rows();
-        }
+        $where = array(
+            "status_aktif_request" => 0,
+            "status_aktif_quotation" => 0,
+            "status_aktif_oc" => 0
+        );
+        $limit  = array(
+            "offset" => 10*($page-1),
+            "limit" => 10
+        );
+        $result = $this->Mdorder_data->getListInvoice($kolom,$where,$limit);
+        $data["oc"] = $result->result_array();
+        $data["total"] = ($this->Mdorder_data->getTotalData($where)->row()->total_item)/10;
+        $data["page"] = $page;
+        $data["kolom"] = $kolom;
         $this->req();
         $this->load->view("finance/content-open");
         $this->load->view("finance/margin/category-header");
@@ -53,73 +77,10 @@ class Margin extends CI_Controller{
     }
     public function detail($id_oc){
         $where = array(
-            "oc_item" => array(
-                "id_oc" => $id_oc
-            )
+            "id_submit_oc" => $id_oc
         );
-        $field = array(
-            "oc_item" => array(
-                "id_quotation_item","id_request_item","final_amount","final_selling_price"
-            )
-        );
-        $print = array(
-            "oc_item" => array(
-                "id_quotation_item","id_request_item","final_amount","final_selling_price"
-            )
-        );
-        $result["oc_item"] = selectRow("quotation_item",$where["oc_item"]);
-        $data["oc_item"] = foreachMultipleResult($result["oc_item"],$field["oc_item"],$print["oc_item"]);
-
-        for($a = 0; $a< count($data["oc_item"]); $a++){
-            $data["oc_item"][$a]["nama_item"] = get1Value("price_request_item","nama_produk",array("id_request_item" => $data["oc_item"][$a]["id_request_item"]));
-            $data["oc_item"][$a]["jumlah_pesan"] = $data["oc_item"][$a]["final_amount"];
-            $data["oc_item"][$a]["harga_jual"] = $data["oc_item"][$a]["final_selling_price"];
-            
-            $where["item_margin"] = array(
-                "id_quotation_item" => $data["oc_item"][$a]["id_quotation_item"]
-            );
-            $field["item_margin"] = array(
-                "margin_produk","harga_supplier","harga_shipping","harga_courier","notes_shipper","notes_supplier","notes_courier"
-            );
-            $print["item_margin"] = array(
-                "margin_produk","harga_supplier","harga_shipping","harga_courier","notes_shipper","notes_supplier","notes_courier"
-            );
-            $result["item_margin"] = selectRow("item_margin",$where["item_margin"]);
-            $data["item_margin"] = foreachResult($result["item_margin"],$field["item_margin"],$print["item_margin"]);
-            if(count($data["item_margin"]) > 0){
-
-                $data["oc_item"][$a]["harga_supplier"] = $data["item_margin"]["harga_supplier"];
-                $data["oc_item"][$a]["harga_courier"] = $data["item_margin"]["harga_courier"];
-                $data["oc_item"][$a]["harga_shipping"] = $data["item_margin"]["harga_shipping"];
-                $data["oc_item"][$a]["notes_shipper"] = $data["item_margin"]["notes_shipper"];
-                $data["oc_item"][$a]["notes_courier"] = $data["item_margin"]["notes_courier"];
-                $data["oc_item"][$a]["notes_supplier"] = $data["item_margin"]["notes_supplier"];
-                $data["oc_item"][$a]["margin"] = $data["item_margin"]["margin_produk"];
-            }
-            else{
-                $insertMargin = array(
-                    "id_quotation_item" => $data["oc_item"][$a]["id_quotation_item"],
-                    "margin_produk" => 0,
-                    "harga_supplier" => 0,
-                    "harga_shipping" => 0,
-                    "harga_courier" => 0,
-                    "notes_supplier" => "-",
-                    "notes_shipper" => "-",
-                    "notes_courier" => "-",
-                );
-                insertRow("item_margin",$insertMargin);
-                $data["oc_item"][$a]["harga_supplier"] = "0";
-                $data["oc_item"][$a]["harga_courier"] = "0";
-                $data["oc_item"][$a]["harga_shipping"] = "0";
-                $data["oc_item"][$a]["margin"] = "0";
-                $data["oc_item"][$a]["notes_supplier"] = "-";
-                $data["oc_item"][$a]["notes_shipper"] = "-";
-                $data["oc_item"][$a]["notes_courier"] = "-";
-            }
-        }
-        $result["oc"] = selectRow("order_confirmation",$where["oc_item"]);
-        $data["oc"] = foreachResult($result["oc"],array("no_po_customer","no_oc"),array("no_po_customer","no_oc"));
-        $data["id_oc"] = $id_oc;
+        $result = $this->Mdmargin_calculation->selectTransaksiOc($where);
+        $data["pembayaran"] = $result->result_array();
         $this->req();
         $this->load->view("finance/content-open");
         $this->load->view("finance/margin/category-header");

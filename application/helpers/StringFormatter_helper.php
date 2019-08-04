@@ -62,5 +62,15 @@ if(!function_exists("hariCantik")){
         }
     }
 }
+if(!function_exists("splitGiveSpace")){
+    function splitGiveSpace($string,$separator){
+        $split = explode($separator,$string);
+        $result = "";
+        for($a = 0; $a<count($split); $a++){
+            $result .= $split[$a]." ";
+        }
+        return $result;
+    }
+}
 
 ?>
