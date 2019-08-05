@@ -234,14 +234,15 @@ class Receivable extends CI_Controller{
 
                 }
                 else{
-                    $data = array(
+                    $insert_data = array(
                         "id_submit_invoice" => $id_submit_invoice,
                         "no_box" => $data["no_box"],
                         "berat_bersih" => $data["berat_bersih"],
                         "berat_kotor" => $data["berat_kotor"],
-                        "dimensi_box" => $data["dimensi_box"]
+                        "dimensi_box" => $data["dimensi_box"],
+                        
                     );
-                    insertRow("invoice_packaging_box",$data);
+                    insertRow("invoice_packaging_box",$insert_data);
                     echo "\$jumlah box".$jumlah_box;
                     echo "jumlahbox array".$data["jumlah_box"];
                     $jumlah_box += $data["jumlah_box"];
