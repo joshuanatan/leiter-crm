@@ -188,6 +188,14 @@
                                 </a>
                             </li>
                             <?php endif;?>
+                            <?php if(false):?>
+                            
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="<?php echo base_url();?>finance/othercashflow">
+                                    <span class="site-menu-title">Other Cashflow</span>
+                                </a>
+                            </li>
+                            <?php endif;?>
                             <?php if(isExistsInTable("privilage",array("id_user" => $this->session->id_user, "id_menu" => "margin")) == 0):?>
                             
                             <li class="site-menu-item">
