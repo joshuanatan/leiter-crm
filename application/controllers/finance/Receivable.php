@@ -243,8 +243,8 @@ class Receivable extends CI_Controller{
                         
                     );
                     insertRow("invoice_packaging_box",$insert_data);
-                    echo "\$jumlah box".$jumlah_box;
-                    echo "jumlahbox array".$data["jumlah_box"];
+                    //echo "\$jumlah box".$jumlah_box;
+                    //echo "jumlahbox array".$data["jumlah_box"];
                     $jumlah_box += $data["jumlah_box"];
                     $beratBersih += $data["berat_bersih"]*$data["jumlah_box"];
                     $beratKotor += $data["berat_kotor"]*$data["jumlah_box"];
