@@ -309,6 +309,10 @@ class Receivable extends CI_Controller{
             "dimensi" => "-",
             "id_user_add" => $this->session->id_user 
         );
+        if(in_array("",$data)){
+            $this->session->set_flashdata("invalid","Form belum lengkap, mohon dilengkapi dahulu");
+            redirect("finance/receivable/openDataEntry");
+        }
         $id_submit_invoice = insertRow("invoice_core",$data);
 
         $checks = $this->input->post("checks");
