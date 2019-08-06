@@ -513,7 +513,7 @@ class Oc extends CI_Controller{
                 $id_harga_courier = insertRow("harga_courier",$data);
                 $data = array(
                     "id_submit_quotation" => $id_submit_quotation,
-                    "id_request_item" => $id_request_item[$a],
+                    "id_request_item" => $id_request_item,
                     "nama_produk_leiter" => $category[$a]["nama_oc_item"],
                     "attachment" => "-",
                     "id_harga_vendor" => $id_harga_vendor[$a],

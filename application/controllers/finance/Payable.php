@@ -159,10 +159,6 @@ class Payable extends CI_Controller{
         $where = array(
             "id_tagihan" => $id_tagihan
         );
-        $data = array(
-            "status_lunas" => 0
-        );
-        updateRow("tagihan",$data,$where);
         /*masukin ke pembayaran*/
         $config["upload_path"] = "./assets/dokumen/buktibayar/";
         $config["allowed_types"] = "gif|jpg|jpeg|pdf|png";
@@ -219,6 +215,13 @@ class Payable extends CI_Controller{
             );
             insertRow("tax",$data);
         }
+        $where = array(
+            "id_tagihan" => $id_tagihan
+        );
+        $data = array(
+            "status_lunas" => 0
+        );
+        updateRow("tagihan",$data,$where);
         redirect("finance/payable");
         /*selain ubah jadi paid, insert tax juga disini kalau emang dicentang di settingnya, cek is_ppn dan is_pph di db*/
     }

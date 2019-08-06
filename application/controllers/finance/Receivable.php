@@ -373,10 +373,6 @@ class Receivable extends CI_Controller{
         $where = array(
             "id_submit_invoice" => $id_submit_invoice
         );
-        $data = array(
-            "status_lunas" => 0
-        );
-        updateRow("invoice_core",$data,$where);
 
 
         /*masukin ke pembayaran*/
@@ -439,6 +435,13 @@ class Receivable extends CI_Controller{
             );
             insertRow("tax",$data);
         }
+        $where = array(
+            "id_submit_invoice" => $id_submit_invoice
+        );
+        $data = array(
+            "status_lunas" => 0
+        );
+        updateRow("invoice_core",$data,$where);
         redirect("finance/receivable");
     }
     public function delete($id_submit_invoice){

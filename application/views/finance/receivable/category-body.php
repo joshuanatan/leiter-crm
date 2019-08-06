@@ -65,15 +65,15 @@
                     </div>
                     <div class = "form-group">
                         <h5 class = "opacity:0.5">Payment Subject</h5>
-                        <input type = "text" class = "form-control" name = "subject_pembayaran">
+                        <input required type = "text" class = "form-control" name = "subject_pembayaran">
                     </div>
                     <div class = "form-group">
                         <h5 class = "opacity:0.5">Payment Date</h5>
-                        <input type = "date" class = "form-control" name = "tgl_bayar">
+                        <input required type = "date" class = "form-control" name = "tgl_bayar">
                     </div>
                     <div class = "form-group">
                         <h5 class = "opacity:0.5">Payment Amount</h5>
-                        <input type = "text" class = "form-control" name = "nominal_pembayaran" id="paymentAmount<?php echo $a;?>" value = "<?php echo number_format($invoice[$a]["nominal_pembayaran"]);?>" oninput = "commas('paymentAmount<?php echo $a;?>')">
+                        <input required type = "text" class = "form-control" name = "nominal_pembayaran" id="paymentAmount<?php echo $a;?>" value = "<?php echo number_format($invoice[$a]["nominal_pembayaran"]);?>" oninput = "commas('paymentAmount<?php echo $a;?>')">
                     </div>
                     <div class = "form-group">
                         <h5 class = "opacity:0.5">Notes</h5>

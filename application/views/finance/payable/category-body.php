@@ -103,23 +103,23 @@
                                         </div>
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">Payment Subject</h5>
-                                            <input type = "text" class = "form-control" name = "subject_pembayaran">
+                                            <input required type = "text" class = "form-control" name = "subject_pembayaran">
                                         </div>
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">Payment Date</h5>
-                                            <input type = "date" class = "form-control" name = "tgl_bayar">
+                                            <input required type = "date" class = "form-control" name = "tgl_bayar">
                                         </div>
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">Payment Amount</h5>
-                                            <input type = "text" class = "form-control" name = "nominal_pembayaran" id="paymentAmount<?php echo $a;?>" value = "<?php echo number_format($tagihan[$a]["total"]);?>" oninput = "commas('paymentAmount<?php echo $a;?>')">
+                                            <input required type = "text" class = "form-control" name = "nominal_pembayaran" id="paymentAmount<?php echo $a;?>" value = "<?php echo number_format($tagihan[$a]["total"]);?>" oninput = "commas('paymentAmount<?php echo $a;?>')">
                                         </div>
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">Rate</h5>
-                                            <input type = "text" oninput = "commas('paymentRate<?php echo $a;?>')" id = "paymentRate<?php echo $a;?>" placeholder = "Kurs mata uang pembayaran ke IDR. 1 untuk IDR ke IDR" class = "form-control" name = "kurs_pembayaran">
+                                            <input required type = "text" oninput = "commas('paymentRate<?php echo $a;?>')" id = "paymentRate<?php echo $a;?>" placeholder = "Kurs mata uang pembayaran ke IDR. 1 untuk IDR ke IDR" class = "form-control" name = "kurs_pembayaran">
                                         </div>
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">Currency</h5>
-                                            <input type = "text" class = "form-control" <?php echo $tagihan[$a]["mata_uang"];?> name = "mata_uang_pembayaran" placeholder = "Mata uang pembayaran" value = "<?php echo $tagihan[$a]["mata_uang"];?>">
+                                            <input required type = "text" class = "form-control" <?php echo $tagihan[$a]["mata_uang"];?> name = "mata_uang_pembayaran" placeholder = "Mata uang pembayaran" value = "<?php echo $tagihan[$a]["mata_uang"];?>">
                                         </div>
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">Notes</h5>
