@@ -140,10 +140,10 @@ class Receivable extends CI_Controller{
             "jatuh_tempo" => $this->input->post("jatuh_tempo"),
             "no_rekening" => $this->input->post("no_rekening")
         );
-        if(in_array("",$input_data)){
+        if(in_array(null,$input_data)){
             $this->session->set_flashdata("invalid","[ DATA GAGAL DISUBMIT ] Terdapat form yang terlewat. Mohon lebih hati-hati");
-            print_r($input_data);
-            //redirect("finance/receivable/opendataentry");
+            //print_r($input_data);
+            redirect("finance/receivable/opendataentry");
         }
         $ppn_check = $this->input->post("ppn"); //centang ga centang gapapa
         $is_ppn = 1;
@@ -309,10 +309,11 @@ class Receivable extends CI_Controller{
             "dimensi" => "-",
             "id_user_add" => $this->session->id_user 
         );
-        if(in_array(NULL,$data)){
-            $this->session->set_flashdata("invalid","Form belum lengkap, mohon dilengkapi dahulu");
-            redirect("finance/receivable/openDataEntry");
+        /*
+        if(in_array("",$data)){
+            $this->session->set_flashdata("invalid","Form belum lengkap, mohon dilengkapi da")
         }
+        */
         $id_submit_invoice = insertRow("invoice_core",$data);
 
         $checks = $this->input->post("checks");
