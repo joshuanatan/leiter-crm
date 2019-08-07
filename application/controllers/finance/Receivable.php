@@ -148,11 +148,12 @@ class Receivable extends CI_Controller{
         $ppn_check = $this->input->post("ppn"); //centang ga centang gapapa
         $is_ppn = 1;
         $jumlah_ppn = 0;
-        foreach($ppn_check as $a){
-            $is_ppn = 0;
-            $jumlah_ppn = 0.1*splitterMoney($input_data["nominal_pembayaran"],",");
+        if($ppn_check != ""){
+            foreach($ppn_check as $a){
+                $is_ppn = 0;
+                $jumlah_ppn = 0.1*splitterMoney($input_data["nominal_pembayaran"],",");
+            }
         }
-
         $split = explode("-",$input_data["tgl_invoice"]);
         $bulan_input = $split[1];
         $tahun_input = $split[0];
