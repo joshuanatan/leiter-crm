@@ -18,7 +18,7 @@
                 <th>Items Quantity</th>
                 <th>Dateline</th>
                 <th>Detail Item</th>
-                <th>Status</th>
+                <th>Last Edit</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -72,15 +72,7 @@
                     </div>
                 </td>
                 <td>
-                    <?php if($request[$a]["status_request"] == 0):?>
-                    <button class = "btn btn-primary btn-outline btn-sm">ON RFQ</button>
-                    <?php elseif($request[$a]["status_request"] == 1):?>
-                    <button class = "btn btn-primary btn-outline btn-sm">ON VENDOR PRICE</button>
-                    <?php elseif($request[$a]["status_request"] == 2):?>
-                    <button class = "btn btn-primary btn-outline btn-sm">ON QUOTATION</button>
-                    <?php elseif($request[$a]["status_request"] == 3):?>
-                    <button class = "btn btn-primary btn-outline btn-sm">QUOTATION WIN</button>
-                    <?php endif;?>
+                   <?php echo $request[$a]["date_request_edit"];?>
                 </td>
                 <td class="actions">
                     

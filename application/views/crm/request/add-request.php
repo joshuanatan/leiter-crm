@@ -2,13 +2,13 @@
     <form action = "<?php echo base_url();?>crm/request/insert" method = "POST" enctype="multipart/form-data">
         <div class = "form-group">
             <h5 style = "opacity:0.5">ID RFQ</h5>
-            <input name = "no_request" type = "text" class = "form-control" value = "LI-<?php echo sprintf("%03d",$maxId);?>/RFQ/<?php echo bulanRomawi(date("m"));?>/<?php echo date("Y");?>" readonly>
+            <input required name = "no_request" type = "text" class = "form-control" value = "LI-<?php echo sprintf("%03d",$maxId);?>/RFQ/<?php echo bulanRomawi(date("m"));?>/<?php echo date("Y");?>" readonly>
         </div>
         <div class = "form-group">
             <button class = "btn btn-sm btn-primary btn-outline" data-toggle = "modal" data-target = "#addNewCustomer" type = "button">Tambah Customer Baru</button>
             <h5 style = "opacity:0.5">Nama Perusahaan Customer</h5>
             
-            <select id = "idperusahaan" onchange = "getContactPerson()" class = "form-control" name = "id_perusahaan" data-plugin = "select2">
+            <select required id = "idperusahaan" onchange = "getContactPerson()" class = "form-control" name = "id_perusahaan" data-plugin = "select2">
                 <option>Choose Customer</option>
                 <?php for($a = 0; $a<count($customer);$a++):?>
                 <option value = "<?php echo $customer[$a]["id_perusahaan"];?>"><?php echo $customer[$a]["nama_perusahaan"];?></option>
@@ -17,7 +17,7 @@
         </div>
         <div class = "form-group">
             <h5 style = "opacity:0.5">PIC Customer</h5>
-            <select class = "form-control" name = "id_cp" id = "cpperusahaan" onchange = "getDetailContactPerson()" data-plugin="select2">
+            <select required class = "form-control" name = "id_cp" id = "cpperusahaan" onchange = "getDetailContactPerson()" data-plugin="select2">
             </select>
         </div>
         <div class = "form-group">
@@ -30,11 +30,11 @@
         </div>
         <div class = "form-group">
             <h5 style = "opacity:0.5">Franco</h5>
-            <input type = "text" name = "franco" class = "form-control">
+            <input required type = "text" name = "franco" class = "form-control">
         </div>
         <div class = "form-group">
             <h5 style = "opacity:0.5">Dateline</h5>
-            <input type = "date" name = "tgl_dateline_request" class = "form-control">
+            <input required type = "date" name = "tgl_dateline_request" class = "form-control">
         </div>
         <div class="col-xl-12 form-group">
             <h5 style = "opacity:0.5">Items</h5>
@@ -75,11 +75,11 @@
             </table>
         </div>
         <div class="col-xl-12 form-group">
-            <input type="hidden" value = "<?php echo $maxId;?>" class="form-control" name="id_request" readonly>
+            <input required type="hidden" value = "<?php echo $maxId;?>" class="form-control" name="id_request" readonly>
         </div>
         <div class = "form-group">
-            <button type = "submit" class = "btn btn-primary btn-outline col-lg-2 btn-sm">SUBMIT</button>
-            <a href = "<?php echo base_url();?>crm/request" class = "btn btn-primary btn-outline col-lg-2 btn-sm">BACK</a>
+            <button type = "submit" class = "btn btn-primary btn-outline btn-sm">SUBMIT</button>
+            <a href = "<?php echo base_url();?>crm/request" class = "btn btn-primary btn-outline btn-sm">BACK</a>
         </div>
     </form>
 </div>
@@ -127,7 +127,7 @@
                         <input type = "text" class = "form-control" name = "add_phone_pic">
                     </div>
                     <div class = "form-group">
-                        <button type = "submit" class = "btn btn-primary btn-outline col-lg-2 btn-sm">SUBMIT</button>
+                        <button type = "submit" class = "btn btn-primary btn-outline btn-sm">SUBMIT</button>
                     </div>
                 </div>
             </form>

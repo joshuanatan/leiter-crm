@@ -1,13 +1,13 @@
 <div class="panel-body col-lg-12">
     <form action = "<?php echo base_url();?>crm/request/update" method = "POST" enctype="multipart/form-data">
+        <input required type = "hidden" name = "id_submit_request" value = "<?php echo $id_submit_request;?>">
         <div class = "form-group">
             <h5 style = "opacity:0.5">Price Request ID</h5>
-            <input name = "no_request" type = "text" class = "form-control" value = "<?php echo $price_request["no_request"];?>" readonly>
+            <input required name = "no_request" type = "text" class = "form-control" value = "<?php echo $price_request["no_request"];?>" readonly>
         </div>
         <div class = "form-group">
             <h5 style = "opacity:0.5">Customer Name</h5>
-            <select id = "idperusahaan" onchange = "getContactPerson()" class = "form-control" name = "id_perusahaan" data-plugin = "select2">
-                <option>Choose Customer</option>
+            <select required id = "idperusahaan" onchange = "getContactPerson()" class = "form-control" name = "id_perusahaan" data-plugin = "select2">
                 <?php for($a = 0; $a<count($perusahaan);$a++):?>
                 <option value = "<?php echo $perusahaan[$a]["id_perusahaan"];?>" <?php if($perusahaan[$a]["id_perusahaan"] == $price_request["id_perusahaan"]) echo "selected"; ?> ><?php echo $perusahaan[$a]["nama_perusahaan"];?></option>
                 <?php endfor;?>
@@ -16,7 +16,7 @@
         </div>
         <div class = "form-group">
             <h5 style = "opacity:0.5">Customer PIC</h5>
-            <select class = "form-control" name = "id_cp" id = "cpperusahaan" onchange = "getDetailContactPerson()" data-plugin="select2">
+            <select required class = "form-control" name = "id_cp" id = "cpperusahaan" onchange = "getDetailContactPerson()" data-plugin="select2">
                 <?php for($a = 0; $a<count($cp); $a++):?>
                 <option value = "<?php echo $cp[$a]["id_cp"]?>" <?php if($cp[$a]["id_cp"] == $price_request["id_cp"]) echo "selected"; ?> ><?php echo $cp[$a]["jk_cp"];?>. <?php echo $cp[$a]["nama_cp"]?></option>    
                 <?php endfor;?>
@@ -33,7 +33,7 @@
         </div>
         <div class = "form-group">
             <h5 style = "opacity:0.5">Franco</h5>
-            <input type = "text" name = "franco" value = "<?php echo $price_request["franco"];?>" class = "form-control">
+            <input required type = "text" name = "franco" value = "<?php echo $price_request["franco"];?>" class = "form-control">
             <span class="text-help">Before:<?php echo $price_request["franco"];?></span>
         </div>
         <div class = "form-group">
@@ -41,7 +41,7 @@
             <?php
             $date = date_create($price_request["tgl_dateline_request"]); 
             ?>
-            <input type = "date" name = "tgl_dateline_request" value = "<?php echo $price_request["tgl_dateline_request"];?>" class = "form-control">
+            <input required type = "date" name = "tgl_dateline_request" value = "<?php echo $price_request["tgl_dateline_request"];?>" class = "form-control">
             <span class="text-help">Before: <?php echo date_format($date,"d-m-Y");?></span>
         </div>
         <div class="form-group">
@@ -122,8 +122,8 @@
             </table>
         </div>
         <div class = "form-group">
-            <button type = "submit" class = "btn btn-primary btn-outline col-lg-2">SUBMIT</button>
-            <a href = "<?php echo base_url();?>crm/request" class = "btn btn-primary btn-outline col-lg-2">BACK</a>
+            <button type = "submit" class = "btn btn-primary btn-outline btn-sm">SUBMIT</button>
+            <a href = "<?php echo base_url();?>crm/request" class = "btn btn-primary btn-outline btn-sm">BACK</a>
         </div>
     </form>
 </div>

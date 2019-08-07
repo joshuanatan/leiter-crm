@@ -38,7 +38,7 @@ class Request extends CI_Controller{
         );
         $field = array(
             "request" => array(
-                "id_request","no_request","id_perusahaan","id_cp","franco","bulan_request","tahun_request","status_request","tgl_dateline_request","id_submit_request"
+                "id_request","no_request","id_perusahaan","id_cp","franco","bulan_request","tahun_request","status_request","tgl_dateline_request","id_submit_request","date_request_edit"
             ),
             "items" => array(
                 "nama_produk","jumlah_produk","notes_produk","file","satuan_produk"
@@ -46,7 +46,7 @@ class Request extends CI_Controller{
         );
         $print = array(
             "request" => array(
-                "id_request","no_request","id_perusahaan","id_cp","franco","bulan_request","tahun_request","status_request","dateline","id_submit_request"
+                "id_request","no_request","id_perusahaan","id_cp","franco","bulan_request","tahun_request","status_request","dateline","id_submit_request","date_request_edit"
             ),
             "items" => array(
                 "nama_produk","jumlah_produk","notes_produk","file","satuan_produk"
@@ -190,6 +190,7 @@ class Request extends CI_Controller{
         );
         $result = selectRow("price_request_item",$where["items"]);
         $data["items"] = foreachMultipleResult($result,$field["items"],$print["items"]);
+        $data["id_submit_request"] = $id_submit_request;
         /*end load list item yang sudah tersubmit */
         $this->req();
         $this->load->view("crm/content-open");
@@ -209,15 +210,31 @@ class Request extends CI_Controller{
             "id_perusahaan" => $this->input->post("id_perusahaan"),
             "id_cp" => $this->input->post("id_cp"),
             "franco" => $this->input->post("franco"),
-            "untuk_stock" => 1,
+            "untuk_stock" => '1',
             "tgl_dateline_request" => $this->input->post("tgl_dateline_request"),
-            "status_request" => 0 ,
-            "id_user_add" => $this->session->id_user
+            "status_request" => '0' , //jatoh disini
+            "id_user_add" => $this->session->id_user,
+            "date_request_add" => date("Y-m-d H:i:s"),
+            "date_request_edit" => date("Y-m-d H:i:s")
         );
+        if(in_array("",$data)){ //kalau ada data kosong
+            $this->session->set_flashdata("invalid","Data form tidak lengkap, mohon diisi dengan hati-hati");
+            //print_r($data);
+            redirect("crm/request/add");
+        }
+        if($this->session->id_user == ""){ //kalau session ga ada
+            redirect("welcome");
+        }
+        $checks = $this->input->post("checks");
+        if($checks == ""){ //kalau ga ada yang di check
+            $this->session->set_flashdata("invalid","Item tidak diisi, tolong diisi dan jangan lupa di centang");
+            redirect("crm/request/add");
+        }
+
         $id_submit_request = insertRow("price_request",$data);
         /*end price_request*/
 
-        $checks = $this->input->post("checks"); //ngambil yang di centang
+         //ngambil yang di centang
         if(count($checks) != 0){ //kalau ada barang yang disubmit
             $config['upload_path']          = './assets/rfq/';
             $config['allowed_types']        = 'docx|jpeg|jpg|pdf|gif|png|xls|xlsx|doc';
@@ -225,16 +242,33 @@ class Request extends CI_Controller{
             $this->load->library('upload', $config);
         }
         foreach($checks as $a){ //mengambil barang-barang yang di check di depan berdasarkan centang
-            $produk = $this->input->post("jumlah_produk".$a);
-            $split = explode(" ",$produk);
+            $check_data = array(
+                "jumlah" => $this->input->post("jumlah_produk".$a),
+                "nama_produk" => $this->input->post("item".$a),
+                "notes_produk" => $this->input->post("notes".$a),
+            );
+            if($check_data["jumlah"] == ""){ //kalau kosong aja
+                $check_data["jumlah"] = "0 -"; 
+            }
+            if($check_data["nama_produk"] == ""){ //kalau kosong aja
+                $check_data["nama_produk"] = "-";
+            }
+            if($check_data["notes_produk"] == ""){ //kalau kosong aja
+                $check_data["notes_produk"] = "-";
+            }
+
+            $split = explode(" ",$check_data["jumlah"]);
+            if(count($split) == 1){ //kalau diinputnya jumlah doang
+                $split[1] = "-";
+            }
             if($this->upload->do_upload("attachment".$a)){
                 $report = $this->upload->data();
                 $data = array(
                     "id_submit_request" => $id_submit_request,
-                    "nama_produk" => $this->input->post("item".$a),
+                    "nama_produk" => $check_data["nama_produk"],
                     "jumlah_produk" => $split[0],
                     "satuan_produk" => $split[1],
-                    "notes_produk" => $this->input->post("notes".$a),
+                    "notes_produk" => $check_data["notes_produk"],
                     "file" =>$report["file_name"],
                     "id_user_add" => $this->session->id_user
                 );
@@ -243,10 +277,10 @@ class Request extends CI_Controller{
                 $report = array('upload_data' => $this->upload->display_errors());
                 $data = array(
                     "id_submit_request" => get1Value("price_request","id_submit_request", array("no_request" => $this->input->post("no_request"))),
-                    "nama_produk" => $this->input->post("item".$a),
+                    "nama_produk" => $check_data["nama_produk"],
                     "jumlah_produk" => $split[0],
                     "satuan_produk" => $split[1],
-                    "notes_produk" => $this->input->post("notes".$a),
+                    "notes_produk" => $check_data["notes_produk"],
                     "file" =>"-",
                     "id_user_add" => $this->session->id_user
                 );
@@ -257,16 +291,28 @@ class Request extends CI_Controller{
     }
     public function update(){ //sudah di cek
         $where = array(            
-            "id_submit_request" => get1Value("price_request","id_submit_request", array("no_request" => $this->input->post("no_request"))),
+            "id_submit_request" => $this->input->post("id_submit_request")
         );
+        if(in_array("",$where)){
+            $this->input->set_flashdata("invalid","ID Request tidak ada");
+            redirect("crm/request/edit/".$where["id_submit_request"]);
+        }
         $data = array(
             "tgl_dateline_request" => $this->input->post("tgl_dateline_request"),
             "id_perusahaan" => $this->input->post("id_perusahaan"),
             "id_cp" => $this->input->post("id_cp"),
             "franco" => $this->input->post("franco"),
+            "id_user_edit" => $this->session->id_user,
+            "date_request_edit" => date("Y-m-d H:i:s")
         );
+        if(in_array("",$data)){
+            $this->input->set_flashdata("invalid","Data ada yang belum lengkap");
+            redirect("crm/request/edit/".$where["id_submit_request"]);
+        }
         updateRow("price_request",$data,$where);
+
         deleteRow("price_request_item",$where);
+
         $checks_ordered = $this->input->post("ordered_checks");
         $config['upload_path']          = './assets/rfq/';
         $config['allowed_types']        = 'docx|jpeg|jpg|pdf|gif|png|xls|xlsx|doc';
@@ -276,31 +322,46 @@ class Request extends CI_Controller{
         if($checks_ordered != "" && count($checks_ordered) != 0){
             
             foreach($checks_ordered as $a){
-                $produk = $this->input->post("ordered_amount".$a);
-                $split = explode(" ",$produk);
+                $check_data = array(
+                    "jumlah" => $this->input->post("ordered_amount".$a),
+                    "nama_produk" => $this->input->post("ordered_nama".$a),
+                    "notes_produk" => $this->input->post("ordered_notes".$a),
+                );
+                if($check_data["jumlah"] == ""){ //kalau kosong aja
+                    $check_data["jumlah"] = "0 -"; 
+                }
+                if($check_data["nama_produk"] == ""){ //kalau kosong aja
+                    $check_data["nama_produk"] = "-";
+                }
+                if($check_data["notes_produk"] == ""){ //kalau kosong aja
+                    $check_data["notes_produk"] = "-";
+                }
+                $split = explode(" ",$check_data["jumlah"]);
+                if(count($split) == 1){ //kalau diinputnya jumlah doang
+                    $split[1] = "-";
+                }
                 /*kalau dia centang dan upload file baru*/
                 if($this->upload->do_upload("ordered_new_attachment".$a)){ 
                     $report = $this->upload->data();
                     $data = array(
-                        "id_submit_request" => get1Value("price_request","id_submit_request", array("no_request" => $this->input->post("no_request"))),
-                        "nama_produk" => $this->input->post("ordered_nama".$a),
+                        "id_submit_request" => $where["id_submit_request"],
+                        "nama_produk" => $check_data["nama_produk"],
                         "jumlah_produk" => $split[0], 
                         "satuan_produk" => $split[1], 
-                        "notes_produk" => $this->input->post("ordered_notes".$a),
+                        "notes_produk" => $check_data["notes_produk"],
                         "file" =>$report["file_name"],
                         "id_user_add" => $this->session->id_user
                     );
                 }
                 /*kalau dia centang tapi tidak uplaod file baru*/
                 else{
-                    $report = array('upload_data' => $this->upload->display_errors());
                     $data = array(
-                        "id_submit_request" => get1Value("price_request","id_submit_request", array("no_request" => $this->input->post("no_request"))),
-                        "nama_produk" => $this->input->post("ordered_nama".$a),
+                        "id_submit_request" => $where["id_submit_request"],
+                        "nama_produk" => $check_data["nama_produk"],
                         "jumlah_produk" => $split[0], 
                         "satuan_produk" => $split[1], 
-                        "notes_produk" => $this->input->post("ordered_notes".$a),
-                        "file" =>$this->input->post("ordered_attachment".$a),
+                        "notes_produk" => $check_data["notes_produk"],
+                        "file" => "-",
                         "id_user_add" => $this->session->id_user
                     );
                 }
@@ -313,30 +374,45 @@ class Request extends CI_Controller{
         
         if($checks != "" && count($checks) != 0){
             foreach($checks as $a){
-                $produk = $this->input->post("jumlah_produk".$a);
-                $split = explode(" ",$produk);
+                $check_data = array(
+                    "jumlah" => $this->input->post("jumlah_produk".$a),
+                    "nama_produk" => $this->input->post("item".$a),
+                    "notes_produk" => $this->input->post("notes".$a),
+                );
+                if($check_data["jumlah"] == ""){ //kalau kosong aja
+                    $check_data["jumlah"] = "0 -"; 
+                }
+                if($check_data["nama_produk"] == ""){ //kalau kosong aja
+                    $check_data["nama_produk"] = "-";
+                }
+                if($check_data["notes_produk"] == ""){ //kalau kosong aja
+                    $check_data["notes_produk"] = "-";
+                }
+                $split = explode(" ",$check_data["jumlah"]);
+                if(count($split) == 1){ //kalau diinputnya jumlah doang
+                    $split[1] = "-";
+                }
                 /*yang dicentang, upload file*/
                 if($this->upload->do_upload("attachment".$a)){
                     $report = $this->upload->data();
                     $data = array(
-                        "id_submit_request" => get1Value("price_request","id_submit_request", array("no_request" => $this->input->post("no_request"))),
-                        "nama_produk" => $this->input->post("item".$a),
+                        "id_submit_request" => $where["id_submit_request"],
+                        "nama_produk" => $check_data["nama_produk"],
                         "jumlah_produk" => $split[0], 
                         "satuan_produk" => $split[1], 
-                        "notes_produk" => $this->input->post("notes".$a),
+                        "notes_produk" => $check_data["notes_produk"],
                         "file" =>$report["file_name"],
                         "id_user_add" => $this->session->id_user
                     );
                 }
                 /*yang dicentang, tidak upload*/
                 else{
-                    $report = array('upload_data' => $this->upload->display_errors());
                     $data = array(
-                        "id_submit_request" => get1Value("price_request","id_submit_request", array("no_request" => $this->input->post("no_request"))),
-                        "nama_produk" => $this->input->post("item".$a),
+                        "id_submit_request" => $where["id_submit_request"],
+                        "nama_produk" => $check_data["nama_produk"],
                         "jumlah_produk" => $split[0], 
                         "satuan_produk" => $split[1], 
-                        "notes_produk" => $this->input->post("notes".$a),
+                        "notes_produk" => $check_data["notes_produk"],
                         "file" =>"-",
                         "id_user_add" => $this->session->id_user
                     );
