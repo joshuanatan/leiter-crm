@@ -20,7 +20,7 @@
                 <th style = "width:15%">Customer Contact Person</th>
                 <th style = "width:10%">Customer PO Number</th>
                 <th style = "width:10%">Customer PO Date</th>
-                <th style = "width:10%">Items Confirmed</th>
+                <th style = "width:10%">PO Price</th>
                 <th style = "width:10%">OC Detail</th>
                 <th>Actions</th>
             </tr>
@@ -34,7 +34,7 @@
                 <td><?php echo $oc[$a]["nama_cp"];?></td>
                 <td><?php echo $oc[$a]["no_po_customer"];?></td> 
                 <td><?php $date = date_create($oc[$a]["tgl_po_customer"]);echo date_format($date,"d-m-Y") ?></td> 
-                <td><?php echo number_format($oc[$a]["total_oc_price"]);?></td>
+                <td><?php echo number_format($oc[$a]["total_oc_price"],2,".",",");?></td>
                 <td>
                     <button class = "btn btn-primary btn-sm btn-outline col-lg-12" data-toggle = "modal" data-target = "#detailItem<?php echo $a;?>">DETAIL ITEM</button>
                     <button class = "btn btn-primary btn-sm btn-outline col-lg-12" data-toggle = "modal" data-target = "#detailpayment<?php echo $a;?>">DETAIL PAYMENT</button>

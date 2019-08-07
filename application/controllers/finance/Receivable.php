@@ -175,7 +175,18 @@ class Receivable extends CI_Controller{
                 "id_user_add" => $this->session->id_user
             );
             $id_submit_od = insertRow("od_core",$data);
+            $item_oc = selectRow("order_confirmation_item",array("id_submit_oc" => $input_data["id_submit_oc"]),array("id_oc_item"));
+            $array_item_oc = $item_oc->result_array();
+            for($a = 0; $a<count($array_item_oc); $a++){
+                $od_item = array(
+                    "id_submit_od" => $id_submit_od, 
+                    "id_oc_item" => $array_item_oc[$a]["id_oc_item"],
+                    "item_qty" => 0
+                );
+                insertRow("od_item",$od_item);
+            }
         }
+        /*harusnya tambahin data od_item*/
         $no_invoice = $input_data["no_invoice"];
         $split = explode("/",$no_invoice);
         $id_invoice = substr($split[0],-2);
@@ -204,7 +215,6 @@ class Receivable extends CI_Controller{
             "tgl_invoice_add" => $input_data["jatuh_tempo"] 
         );
         $id_submit_invoice = insertRow("invoice_core",$data);
-
         $checks = $this->input->post("checks");
         $maxVolumeBox = 0;
         $maxBoxDimensi = "";
@@ -212,6 +222,7 @@ class Receivable extends CI_Controller{
         $beratKotor = 0;
         $jumlah_box = 0;
         if($checks != ""){
+            
             foreach($checks as $checked){ //check ini apakah yang di check beneran ada datanya atau enggak
                 $data = array(
                     "id_submit_invoice" => $id_submit_invoice,
@@ -398,13 +409,14 @@ class Receivable extends CI_Controller{
             "attachment" =>  $fileData["file_name"],
             "notes_pembayaran" =>  $this->input->post("notes_pembayaran"),
             "nominal_pembayaran" =>  splitterMoney($this->input->post("nominal_pembayaran"),","),
-            "kurs_pembayaran" =>  1,
-            "mata_uang_pembayaran" => "IDR",
-            "total_pembayaran" => splitterMoney($this->input->post("nominal_pembayaran"),","),
+            "kurs_pembayaran" =>  splitterMoney($this->input->post("kurs_pembayaran"),","),
+            "mata_uang_pembayaran" => $this->input->post("mata_uang_pembayaran"),
+            "total_pembayaran" => splitterMoney($this->input->post("nominal_pembayaran"),",")*splitterMoney($this->input->post("kurs_pembayaran"),","),
             "metode_pembayaran" => $this->input->post("metode_pembayaran"),
         );
+        //print_r($data);
         insertRow("pembayaran_customer",$data);
-
+        
         /*sekarang yang di metode pembayaran*/
         $tipe_invoice = get1Value("invoice_core","tipe_invoice",array("id_submit_invoice" => $id_submit_invoice));
         switch($tipe_invoice){

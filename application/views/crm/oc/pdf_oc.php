@@ -102,8 +102,8 @@
                         <td>'. nl2br($baris).'
                         </td>
                         <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'. $brnya->final_amount. ' '.$brnya->satuan_produk .'</td>
-                        <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.number_format($brnya->final_selling_price).'</td>
-                        <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.number_format($brnya->final_selling_price*$brnya->final_amount).'</td>
+                        <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.number_format($brnya->final_selling_price,2,".",",").'</td>
+                        <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.number_format($brnya->final_selling_price*$brnya->final_amount,2,".",",").'</td>
                     </tr>';
                     $jum=$jum+ ($brnya->final_selling_price * $brnya->final_amount);
                 }
@@ -111,7 +111,7 @@
                 $content=$content.'
                 <tr>
                     <td colspan="4" style="text-align:right"><b>TOTAL</b></td>
-                    <td style="text-align:center"><b>'.number_format($jum).'</b></td>
+                    <td style="text-align:center"><b>'.number_format($jum,2,".",",").'</b></td>
                 </tr>
                 ';
                 
@@ -136,8 +136,8 @@
                     <td style="width:6px;">: </td>
                     <td>'.$occ->durasi_pengiriman.' minggu, setelah PO dikonfirmasi</td>
                 </tr>';
-
                 foreach($metodebayar->result() as $cc){
+                    
                     $content_dp = "";
                     if($cc->persentase_pembayaran != 0){ //kalau ada persen dp (ada transaksi dp)
                         $content_dp = $cc->persentase_pembayaran.'% DP diawal
@@ -159,6 +159,7 @@
                             $content_dp = '100% pelunasan dalam '.$occ->durasi_pembayaran.' minggu setelah barang & invoice diterima';
                         }
                     }
+                }   
                     $content=$content.'
                     <tr>
                         <td>Pembayaran</td>
@@ -167,7 +168,7 @@
                         </td>
                     </tr>
                 </table>';
-                }
+                
                
 
             $content=$content.'
@@ -183,7 +184,7 @@
         </html>
 ';
 $pdf->writeHTML($content);
-
+//echo $content;
 $pdf->SetFont('MonotypeCorsivai','', 24);
 $content = $this->session->nama_user;
 $pdf->writeHTML($content); //yang keluarin html nya. Setfont nya harus diatas kontennya

@@ -32,13 +32,13 @@
                 
                 foreach($perusahaan->result() as $x){
                     $content=$content.$x->nama_perusahaan .'
-                    <br>'.nl2br($inv->alamat_penagihan).'
+                    <br>'.nl2br("$inv->alamat_penagihan").'
                     <br>Telp. '.$x->notelp_perusahaan.'
-                    <br>att: '.$inv->att.'</td>
-                    </tr>
-                    ';
+                    <br>att: '.$inv->att;
                 }
-                
+                $content = $content.'</td>
+                </tr>
+                ';
                 $content=$content.'<tr>
                 <td>Surat Jalan</td>
                 <td> : -</td>
@@ -84,8 +84,8 @@
                             <td>'.$no.'</td>
                             <td>'.$ss->nama_oc_item.'</td>
                             <td style="text-align:center">'.number_format($ss->final_amount).'</td>
-                            <td style="text-align:right">'.number_format($ss->final_selling_price).'</td>
-                            <td style="text-align:right">'.number_format($ss->final_amount *$ss->final_selling_price).'</td>
+                            <td style="text-align:right">'.number_format($ss->final_selling_price,2,".",",").'</td>
+                            <td style="text-align:right">'.number_format($ss->final_amount *$ss->final_selling_price,2,".",",").'</td>
                         </tr>';
                         $total=$total+($ss->final_amount * $ss->final_selling_price);
                     }
@@ -96,7 +96,7 @@
                         <td></td>
                         <td></td>
                         <td colspan="2">Total Sebelum PPN</td>
-                        <td style="text-align:right">'.number_format($total).'</td>
+                        <td style="text-align:right">'.number_format($total,2,".",",").'</td>
                     </tr>
                     <tr>
                         <td></td>
@@ -181,6 +181,7 @@
     //$obj_pdf->SetFont(Courier','', 8); //untuk font, liat dokumentasui
     $pdf->writeHTML($content); //yang keluarin html nya. Setfont nya harus diatas kontennya
     //$pdf->Write(5, 'Contoh Laporan PDF dengan CodeIgniter + tcpdf');
+    
     $pdf->Output('contoh1.pdf', 'I');
 ?>
 <?php endforeach; ?>

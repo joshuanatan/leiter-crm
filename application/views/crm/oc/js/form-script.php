@@ -104,7 +104,7 @@ function countTotalDataEntry(){
             var split = jumlah.split(" ");
             var biaya = $("#selling_price"+a).val();
             console.log(splitter(biaya),",");
-            jumlah_tagihan += parseInt(splitter(biaya,","))*parseInt(split[0]);
+            jumlah_tagihan += parseFloat(splitter(biaya,","))*parseInt(split[0]);
             console.log("jumlah tagihan "+jumlah_tagihan);
         }
     }
@@ -116,7 +116,7 @@ function countTotalDataEntry(){
 function paymentWithDP(){
     var persenDp = $("#persenDp").val();
     var persen = splitter(persenDp,"%");
-    var totalTagihan = parseInt(splitter($("#totalQuotation").val(),","));
+    var totalTagihan = parseFloat(splitter($("#totalQuotation").val(),","));
     $("#persenSisa").val(100-parseInt(persen)+"%"); /*persenSisa*/
     $("#jumlahSisa").val(addCommas((100-parseInt(persen))/100*totalTagihan));
     $("#jumlahDp").val(addCommas(parseInt(persen)/100*totalTagihan));

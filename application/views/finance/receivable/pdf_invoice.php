@@ -34,11 +34,11 @@
                     $content=$content.$x->nama_perusahaan .'
                     <br>'.nl2br($inv->alamat_penagihan).'
                     <br>Telp. '.$x->notelp_perusahaan.'
-                    <br>att: '.$inv->att.'</td>
-                    </tr>
-                    ';
+                    <br>att: '.$inv->att;
                 }
-                
+                $content = $content.'</td>
+                </tr>
+                ';
                 $content=$content.'<tr>
                 <td>Surat Jalan</td>
                 <td> : ';

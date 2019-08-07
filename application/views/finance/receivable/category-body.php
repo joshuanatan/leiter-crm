@@ -27,7 +27,7 @@
                 
                 <td><?php echo $invoice[$a]["no_invoice"];?></td>
                 <td><?php echo $invoice[$a]["no_po_customer"];?></td>
-                <td><?php echo number_format($invoice[$a]["nominal_pembayaran"]);?></td>
+                <td><?php echo number_format($invoice[$a]["nominal_pembayaran"],2,".",",");?></td>
                 <td><?php echo $invoice[$a]["purpose"];?></td>
                 <td class="actions">
                 <a href = "<?php echo base_url();?>finance/receivable/invoicePdf/<?php echo $invoice[$a]["id_submit_invoice"];?>" class = "btn btn-sm btn-primary btn-outline" target="_blank">CETAK</a>
@@ -73,7 +73,15 @@
                     </div>
                     <div class = "form-group">
                         <h5 class = "opacity:0.5">Payment Amount</h5>
-                        <input required type = "text" class = "form-control" name = "nominal_pembayaran" id="paymentAmount<?php echo $a;?>" value = "<?php echo number_format($invoice[$a]["nominal_pembayaran"]);?>" oninput = "commas('paymentAmount<?php echo $a;?>')">
+                        <input required type = "text" class = "form-control" name = "nominal_pembayaran" id="paymentAmount<?php echo $a;?>" value = "<?php echo number_format($invoice[$a]["nominal_pembayaran"],2,".",",");?>" oninput = "commas('paymentAmount<?php echo $a;?>')">
+                    </div>
+                    <div class = "form-group">
+                        <h5 class = "opacity:0.5">Rate</h5>
+                        <input required type = "text" oninput = "commas('paymentRate<?php echo $a;?>')" id = "paymentRate<?php echo $a;?>" placeholder = "Kurs mata uang pembayaran ke IDR. 1 untuk IDR ke IDR" class = "form-control" name = "kurs_pembayaran">
+                    </div>
+                    <div class = "form-group">
+                        <h5 class = "opacity:0.5">Currency</h5>
+                        <input required type = "text" class = "form-control" name = "mata_uang_pembayaran" placeholder = "Mata uang pembayaran" >
                     </div>
                     <div class = "form-group">
                         <h5 class = "opacity:0.5">Notes</h5>

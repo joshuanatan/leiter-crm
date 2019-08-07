@@ -23,8 +23,11 @@ if ( ! function_exists('deleteRow')){
 }
 
 if ( ! function_exists('selectRow')){
-    function selectRow($table,$where){
+    function selectRow($table,$where,$field = ""){
         $CI =& get_instance();
+        if($field != ""){
+            $CI->db->select($field);
+        }
         return $CI->db->get_where($table,$where);
     }
 }
