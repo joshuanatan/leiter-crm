@@ -105,10 +105,10 @@ function countTotalDataEntry(){
             var biaya = $("#selling_price"+a).val();
             console.log(splitter(biaya),",");
             jumlah_tagihan += (parseFloat(splitter(biaya,","))*parseInt(split[0]))*100;
-            console.log("jumlah tagihan "+(jumlah_tagihan/100));
+            console.log("jumlah tagihan "+(jumlah_tagihan));
         }
     }
-    $("#totalQuotation").val(addCommas(jumlah_tagihan));
+    $("#totalQuotation").val(addCommas(jumlah_tagihan/100));
     
 }
 </script>
