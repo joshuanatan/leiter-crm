@@ -437,7 +437,7 @@ class Request extends CI_Controller{
             "id_submit_request" => $id_submit_request
         );
         $data = array(
-            "status_request" => 1
+            "status_request" => 3
         );
         updateRow("price_request",$data,$where);
         redirect("crm/request");
