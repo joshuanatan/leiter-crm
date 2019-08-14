@@ -292,18 +292,23 @@ class Quotation extends CI_Controller{
             "durasi_pembayaran" => $this->input->post("durasi_pembayaran") ,
             "alamat_perusahaan" => $this->input->post("alamat_perusahaan") ,
             "dateline_quotation" => $this->input->post("dateline_quotation"),
-            "status_quotation" => 0,
-            "status_aktif_quotation" => 0,
+            "status_quotation" => "0",
+            "status_aktif_quotation" => "0",
+            //"id_user_add" => "",
             "id_user_add" => $this->session->id_user,
             "date_quotation_add" => date("Y-m-d H:i:s"),
             "id_user_edit" => $this->session->id_user,
             "date_quotation_edit" => date("Y-m-d H:i:s"),
-            "id_user_edit" => 0,
+            "id_user_edit" => "0",
             "date_quotation_delete" => date("Y-m-d H:i:s")
         );
         if(in_array("",$data)){
             $this->session->set_flashdata("invalid","[Data gagal disubmit] Terdapat form yang kosong, mohon mengisi dengan hati-hati");
-            
+            $report = "Your Input Before: ";
+            foreach($data as $key => $value){
+                $report .= $key." = ".$value."<br/>";
+            }
+            $this->session->set_flashdata("report",$report);
             redirect("crm/quotation/create/");
         }
         $id_submit_quotation = insertRow("quotation",$data);
@@ -327,13 +332,17 @@ class Quotation extends CI_Controller{
                 "nama_produk_vendor" => $this->input->post("nama_produk_vendor".$checked),
                 "notes" => $this->input->post("notes_vendor".$checked),
                 "attachment" => "-",
-                "status_harga_vendor" => 0,
+                "status_harga_vendor" => "0",
                 "id_user_add" => $this->session->id_user,
                 "date_harga_vendor_add" => date("Y-m-d H:i:s"),
             );
             if(in_array("",$data)){
                 $this->session->set_flashdata("invalid","[Data gagal disubmit] Terdapat form yang kosong, mohon mengisi dengan hati-hati");
-                
+                $report = "Your Input Before: ";
+                foreach($data as $key => $value){
+                    $report .= $key." = ".$value."<br/>";
+                }
+                $this->session->set_flashdata("report",$report);
                 redirect("crm/quotation/create/");
             }
             $id_harga_vendor = insertRow("harga_vendor",$data);
@@ -347,13 +356,17 @@ class Quotation extends CI_Controller{
                 "notes" => $this->input->post("notes_shipper".$checked),
                 "attachment" => "-",
                 "metode_pengiriman" => "-",
-                "status_aktif_harga_shipping" => 0,
+                "status_aktif_harga_shipping" => "0",
                 "id_user_add" => $this->session->id_user,
                 "date_harga_shipping_add" => date("Y-m-d H:i:s"),
             );
             if(in_array("",$data)){
                 $this->session->set_flashdata("invalid","[Data gagal disubmit] Terdapat form yang kosong, mohon mengisi dengan hati-hati");
-                
+                $report = "Your Input Before: ";
+                foreach($data as $key => $value){
+                    $report .= $key." = ".$value."<br/>";
+                }
+                $this->session->set_flashdata("report",$report);
                 redirect("crm/quotation/create/");
             }
             $id_harga_shipping = insertRow("harga_shipping",$data);
@@ -367,13 +380,17 @@ class Quotation extends CI_Controller{
                 "notes" => $this->input->post("notes_kurir".$checked),
                 "attachment" => "-",
                 "metode_pengiriman" => "-",
-                "status_aktif_harga_shipping" => 0,
+                "status_aktif_harga_shipping" => "0",
                 "id_user_add" => $this->session->id_user,
                 "date_harga_shipping_add" => date("Y-m-d H:i:s"),
             );
             if(in_array("",$data)){
                 $this->session->set_flashdata("invalid","[Data gagal disubmit] Terdapat form yang kosong, mohon mengisi dengan hati-hati");
-                
+                $report = "Your Input Before: ";
+                foreach($data as $key => $value){
+                    $report .= $key." = ".$value."<br/>";
+                }
+                $this->session->set_flashdata("report",$report);
                 redirect("crm/quotation/create/");
             }
             $id_harga_kurir = insertRow("harga_courier",$data);
@@ -452,7 +469,7 @@ class Quotation extends CI_Controller{
             "id_request" => $this->input->post("id_request")
         );
         $data["price_request"] = array(
-            "status_buat_quo" => 0
+            "status_buat_quo" => "0"
         );
         updateRow("price_request",$data["price_request"],$where["price_request"]);
         redirect("crm/quotation");

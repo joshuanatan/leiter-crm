@@ -264,7 +264,7 @@ function getMarginItem(a){
     var modal = splitter($("#modal_vendor"+a).val(),",");
     var sellingPrice = splitter($("#selling_price"+a).val(),",");
     
-    var margin = ((sellingPrice*100)-(modal*100))/(sellingPrice*100);
+    var margin = ((sellingPrice*100)-(modal*100))/(sellingPrice*100)*100;
     $("#margin_price"+a).val(margin.toFixed(2) +"%");
 
 }
