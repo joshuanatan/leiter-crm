@@ -1,5 +1,5 @@
 <script>
-function detailPriceRequest(){
+function detailPriceRequest(){ //kemungkinan udah ga dipake
     
     var id_submit_request = $("#id_request").val();
     $(document).ready(function(){
@@ -16,8 +16,11 @@ function detailPriceRequest(){
                 $("#alamatCust").val(respond["price_request"]["alamat_perusahaan"]);
                 $("#franco").val(respond["price_request"]["franco"]);
                 $("#itemsOrdered").html("<option selected>RFQ Item</option>");
+                var row = "";
                 for(var a = 0; a<respond["price_request_item"].length; a++){
-                    $("#itemsOrdered").append("<option value = '"+respond["price_request_item"][a]["id_request_item"]+"'>"+respond["price_request_item"][a]["nama_produk"]+"</option>detailPriceRequest");
+                    row = "<tr><td><div class = 'checkbox-custom checkbox-primary'><input type = 'checkbox' name = 'checks[]' checked value = '"+(jumlah_baris+1)+"' id = 'checks"+(jumlah_baris+1)+"'><label></label></div></td><td><input type = 'text' value = '"+id_request_item+"' readonly class = 'form-control' name = 'id_request_item"+(jumlah_baris+1)+"'></td><td><textarea readonly class = 'form-control' name = 'nama_produk_leiter"+(jumlah_baris+1)+"'>"+nama_produk_leiter+"</textarea></td><td><input type = 'text' value = '"+item_amount+"' readonly class = 'form-control' id = 'jumlah_produk"+(jumlah_baris+1)+"' name = 'item_amount"+(jumlah_baris+1)+"'></td><td><input type = 'text' value = '"+selling_price+"' readonly class = 'form-control' id = 'selling_price"+(jumlah_baris+1)+"'  name = 'selling_price"+(jumlah_baris+1)+"'></td><td><input type = 'text' value = '"+margin_price+"' readonly class = 'form-control' name = 'margin_price"+(jumlah_baris+1)+"'></td><td><input type = 'file' readonly class = 'form-control' name = 'attachment"+(jumlah_baris+1)+"'></td><input type = 'hidden' value = '"+id_harga_vendor+"' name = 'id_harga_vendor"+(jumlah_baris+1)+"'><input type = 'hidden' value = '"+id_harga_shipping+"' name = 'id_harga_shipping"+(jumlah_baris+1)+"'><input type = 'hidden' value = '"+id_harga_courier+"' name = 'id_harga_courier"+(jumlah_baris+1)+"'></tr>";
+                    
+                    $("#itemsOrdered").append(row);
                 }
             }
 
@@ -218,4 +221,68 @@ function decimal(){
     $("#inputNominal").val(addCommas(parseFloat(number)));
 }
 </script>
+<!-------- update 14/08/2019 ----------------->
+<script>
+function countTotalVendorPrice(a){ //baris keberapa
+    //var itemAmount = $("#item_amount"+a);
+    //var itemSplit = itemAmount.split(" "); //misahin angka dengan satuan
+    //var jumlahBarang = splitter(itemSplit[0],","); //takut kedepannya kalau ribuan mau pake koma
+    var jumlahBarang = 1; //takut kedepannya kalau ribuan mau pake koma
 
+    var hargaVendor = splitter($("#harga_produk_vendor"+a).val(),","); //supaya jadi angka normal
+    var rateVendor = splitter($("#rate_vendor"+a).val(),","); //supaya jadi angka normal
+    var totalVendor = parseFloat(hargaVendor)*parseFloat(rateVendor)*parseFloat(jumlahBarang);
+
+    var hargaKurir = splitter($("#harga_produk_kurir"+a).val(),","); //supaya jadi angka normal
+    var rateKurir = splitter($("#rate_kurir"+a).val(),","); //supaya jadi angka normal
+    var totalKurir = parseFloat(hargaKurir)*parseFloat(rateKurir)*parseFloat(jumlahBarang);
+
+    var hargaShipper = splitter($("#harga_produk_shipper"+a).val(),","); //supaya jadi angka normal
+    var rateShipper = splitter($("#rate_shipper"+a).val(),","); //supaya jadi angka normal
+    var totalShipper = parseFloat(hargaShipper)*parseFloat(rateShipper)*parseFloat(jumlahBarang);
+
+    var modal = (totalVendor*100)+(totalKurir*100)+(totalShipper*100);
+    var finalModal = modal/100;
+    $("#modal_vendor"+a).val(addCommas(finalModal));
+}
+</script>
+<script>
+function totalJualBarang(a){
+    var sellingPrice = splitter($("#selling_price"+a).val(),",");
+    
+    var itemAmount = $("#item_amount"+a).val();
+    var itemSplit = itemAmount.split(" "); //misahin angka dengan satuan
+    var jumlahBarang = splitter(itemSplit[0],","); //takut kedepannya kalau ribuan mau pake koma
+
+    var totalSellingPrice = parseFloat(sellingPrice)*parseFloat(jumlahBarang);
+    $("#harga_jual"+a).val(addCommas(totalSellingPrice.toFixed(2)));
+}
+</script>
+<script>
+function getMarginItem(a){
+    //keuntungan / harga jual
+    var modal = splitter($("#modal_vendor"+a).val(),",");
+    var sellingPrice = splitter($("#selling_price"+a).val(),",");
+    
+    var margin = ((sellingPrice*100)-(modal*100))/(sellingPrice*100);
+    $("#margin_price"+a).val(margin.toFixed(2) +"%");
+
+}
+</script>
+<script>
+function getQuotationPrice(){
+    var jumlah_row = $("#quotation_item_table tr").length;
+    var jumlah_tagihan = 0;
+
+    for(var a = 0; a<jumlah_row; a++){
+        if($('#checks'+(a)).is(":checked")){
+            var jumlah = splitter($("#harga_jual"+a).val(),",");
+            jumlah_tagihan += parseFloat(jumlah);
+            console.log(jumlah);
+            console.log(jumlah_tagihan);
+        }
+    }
+    $("#totalQuotation").val(addCommas(jumlah_tagihan.toFixed(2)));
+    
+}
+</script>

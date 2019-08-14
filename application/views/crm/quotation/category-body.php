@@ -2,9 +2,9 @@
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-            <a href = "<?php echo base_url();?>crm/quotation/create" class="btn btn-outline btn-primary">
+            <button type = "button" data-toggle = "modal" data-target = "#createQuotation" href = "<?php echo base_url();?>crm/quotation/create" class="btn btn-outline btn-primary">
                 <i class="icon wb-plus" aria-hidden="true"></i> Create Quotation
-            </a>
+            </button>
             </div>
         </div>
     </div>
@@ -49,7 +49,7 @@
                 </td>
                 <td><?php echo $quotation[$a]["date_quotation_add"];?></td>
 				<td><?php echo $quotation[$a]["jumlah_quotation_item"];?> Items</td>
-				<td><?php echo number_format($quotation[$a]["total_quotation_price"]);?></td>
+				<td><?php echo number_format($quotation[$a]["total_quotation_price"],2);?></td>
 				<td>
 					<button type = "button" class = "btn btn-primary btn-outline btn-sm col-lg-12" data-toggle = "modal" data-target = "#detailQuotation<?php echo $a;?>">DETAIL QUOTATION</button>
 
@@ -95,7 +95,7 @@
 				</div>
 				<div class = "form-group">
 					<h5 style = "opacity:0.5">UP</h5>
-					<input type = "text" class = "form-control" readonly value = "<?php echo $quotation[$a]["up_cp"];?>">
+					<input type = "text" class = "form-control" readonly value = "<?php echo $quotation[$a]["up_cp_quotation"];?>">
 				</div>
 				<div class = "form-group">
 					<h5 style = "opacity:0.5">Quotation Price</h5>
@@ -103,7 +103,7 @@
 				</div>
 				<div class = "form-group">
 					<h5 style = "opacity:0.5">Durasi Pengiriman</h5>
-					<input type = "text" class = "form-control" readonly value = "<?php echo $quotation[$a]["durasi_pengiriman"];?> Minggu setelah PO dikonfirmasi">
+					<input type = "text" class = "form-control" readonly value = "<?php echo $quotation[$a]["durasi_pengiriman_quotation"];?> Minggu setelah PO dikonfirmasi">
 				</div>
 				<div class = "form-group">
 					<h5 style = "opacity:0.5">Alamat Perusahaan</h5>
@@ -133,17 +133,17 @@
 							<th>Margin Price</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody id = "quotation_item_table">
 						<?php for($items = 0; $items<count($quotation[$a]["quotation_item"]); $items++):?>
 						<tr>
 							<td><?php echo $quotation[$a]["quotation_item"][$items]["nama_produk_leiter"];?></td>
-							<td><a href = "<?php echo base_url();?>assets/dokumen/quotation/<?php echo $quotation[$a]["quotation_item"][$items]["product_image"];?>" target = "_blank" class = "btn btn-primary btn-sm">IMAGE</a></td>
-							<td><?php echo $quotation[$a]["quotation_item"][$items]["item_amount"]." ".$quotation[$a]["quotation_item"][$items]["satuan_produk"];?></td>
-							<td><?php echo $quotation[$a]["quotation_item"][$items]["nama_supplier"];?></td>
+							<td><a href = "<?php echo base_url();?>assets/dokumen/quotation/<?php echo $quotation[$a]["quotation_item"][$items]["attachment_quotation"];?>" target = "_blank" class = "btn btn-primary btn-sm">IMAGE</a></td>
+							<td><?php echo $quotation[$a]["quotation_item"][$items]["item_amount_quotation"]." ".$quotation[$a]["quotation_item"][$items]["satuan_produk_quotation"];?></td>
+							<td><?php echo $quotation[$a]["quotation_item"][$items]["nama_vendor"];?></td>
 							<td><?php echo $quotation[$a]["quotation_item"][$items]["nama_shipper"];?></td>
 							<td><?php echo $quotation[$a]["quotation_item"][$items]["nama_courier"];?></td>
-							<td><?php echo number_format($quotation[$a]["quotation_item"][$items]["selling_price"]);?></td>
-							<td><?php echo $quotation[$a]["quotation_item"][$items]["margin_price"];?>%</td>
+							<td><?php echo number_format($quotation[$a]["quotation_item"][$items]["selling_price_quotation"],2,'.',',');?></td>
+							<td><?php echo $quotation[$a]["quotation_item"][$items]["margin_price_quotation"];?>%</td>
 						</tr>
 						<?php endfor;?>
 					</tbody>
@@ -159,42 +159,42 @@
 				<h4 class = "modal-title">DETAIL QUOTATION ITEM NO <?php echo $quotation[$a]["no_quotation"];?></h4>
 			</div>
 			<div class = "modal-body">
-				<?php if($quotation[$a]["metode_pembayaran"]["is_ada_transaksi"] == 0):?>
+				<?php if($quotation[$a]["metode_pembayaran"][0]["is_ada_transaksi"] == 0):?>
 				<div class = "row">
 					<div class = "form-group col-lg-4 col-sm-12">
 						<h5 style = "opacity:0.5">DP</h5>
-						<input type = "text" class = "form-control" readonly value = "<?php echo $quotation[$a]["metode_pembayaran"]["persentase_pembayaran"];?>">
+						<input type = "text" class = "form-control" readonly value = "<?php echo $quotation[$a]["metode_pembayaran"][0]["persentase_pembayaran"];?>">
 					</div>
 					<div class = "form-group col-lg-4 col-sm-12">
 						<h5 style = "opacity:0.5">DP Amount</h5>
-						<input type = "text" class = "form-control" readonly value = "<?php echo number_format($quotation[$a]["metode_pembayaran"]["nominal_pembayaran"]);?>">
+						<input type = "text" class = "form-control" readonly value = "<?php echo number_format($quotation[$a]["metode_pembayaran"][0]["nominal_pembayaran"]);?>">
 					</div>
 					<div class = "form-group col-lg-4 col-sm-12">
 						<h5 style = "opacity:0.5">DP Trigger</h5>
-						<input type = "text" class = "form-control" readonly value = "<?php echo $quotation[$a]["metode_pembayaran"]["trigger_pembayaran"];?>">
+						<input type = "text" class = "form-control" readonly value = "<?php echo $quotation[$a]["metode_pembayaran"][0]["trigger_pembayaran"];?>">
 					</div>
 				</div>
 				<?php endif;?>
-				<?php if($quotation[$a]["metode_pembayaran"]["is_ada_transaksi2"] == 0):?>
+				<?php if($quotation[$a]["metode_pembayaran"][0]["is_ada_transaksi2"] == 0):?>
 				<div class = "row">
 					<div class = "form-group col-lg-4 col-sm-12">
 						<h5 style = "opacity:0.5">Pelunasan (%)</h5>
-						<input type = "text" class = "form-control" readonly value = "<?php echo $quotation[$a]["metode_pembayaran"]["persentase_pembayaran2"];?>%">
+						<input type = "text" class = "form-control" readonly value = "<?php echo $quotation[$a]["metode_pembayaran"][0]["persentase_pembayaran2"];?>%">
 					</div>
 					<div class = "form-group col-lg-4 col-sm-12">
 						<h5 style = "opacity:0.5">Pelunasan Amount</h5>
-						<input type = "text" class = "form-control" readonly value = "<?php echo number_format($quotation[$a]["metode_pembayaran"]["nominal_pembayaran2"]);?>">
+						<input type = "text" class = "form-control" readonly value = "<?php echo number_format($quotation[$a]["metode_pembayaran"][0]["nominal_pembayaran2"]);?>">
 					</div>
 					<div class = "form-group col-lg-4 col-sm-12">
 						<h5 style = "opacity:0.5">Pelunasan Trigger</h5>
-						<input type = "text" class = "form-control" readonly value = "<?php echo $quotation[$a]["metode_pembayaran"]["trigger_pembayaran2"];?>">
+						<input type = "text" class = "form-control" readonly value = "<?php echo $quotation[$a]["metode_pembayaran"][0]["trigger_pembayaran2"];?>">
 					</div>
 				</div>
 				<?php endif;?>
 				<div class = "row">
 					<div class = "form-group col-lg-12">
 						<h5 style = "opacity:0.5">Currency</h5>
-						<input type = "text" value = "<?php echo $quotation[$a]["metode_pembayaran"]["kurs"];?>" readonly class = "form-control">
+						<input type = "text" value = "<?php echo $quotation[$a]["metode_pembayaran"][0]["kurs"];?>" readonly class = "form-control">
 					</div>
 				</div>
 			</div>
@@ -203,3 +203,30 @@
 </div>		
 
 <?php } ?>
+<div class = "modal fade" id = "createQuotation">
+	<div class = "modal-dialog">
+		<div class = "modal-content">
+			<div class = "modal-header">
+				<h4 class = "modal-title">Create Quotation</h4>
+			</div>
+			<div class = "modal-body">
+				<div class = "form-group">
+					<form action = "<?php echo base_url();?>crm/quotation/create" method = "POST">
+						<div class = "form-group">
+							<h5>Choose RFQ</h5>
+							<select class = "form-control" name = "id_submit_request" data-plugin = "select2">
+								<option disabled selected>Pilih No RFQ</option>
+								<?php for($a = 0; $a<count($price_request);$a++):?>
+								<option value = "<?php echo $price_request[$a]["id_submit_request"];?>"><?php echo $price_request[$a]["no_request"];?> - <?php echo $price_request[$a]["nama_perusahaan"];?> - <?php echo $price_request[$a]["nama_cp"];?></option>
+								<?php endfor;?>
+							</select>
+						</div>
+						<div class = "form-group">
+							<button type = "submit" class = "btn btn-sm btn-primary">CREATE QUOTATION</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

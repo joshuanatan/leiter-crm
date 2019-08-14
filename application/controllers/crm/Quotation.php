@@ -36,67 +36,74 @@ class Quotation extends CI_Controller{
     /*page*/
     public function index(){ 
         if($this->session->id_user == "") redirect("login/welcome");//sudah di cek
-        $this->req();
+        $this->session->id_submit_request = "";
         $where = array(
-            "quotation" => array(
-                "status_aktif_quotation" => 0
-            ),
-            "price_request" => array(
-                "price_request.status_request" => 3 /*ngambil yang sudah kasih harga vendor */
-            )
+            "status_aktif_quotation" => 0
         );
-        $data = array(
-            "quotation_id" => getMaxId("quotation","id_quotation",array("status_aktif_quotation" => 0,"bulan_quotation" => date("m"), "tahun_quotation" => date("Y"))),
-            "request" => $this->Mdprice_request->select($where["price_request"])
+        $data["quotation_id"] = getMaxId("quotation","id_quotation",array("status_aktif_quotation" => 0,"bulan_quotation" => date("m"), "tahun_quotation" => date("Y")));
+        
+        $where = array(
+            "price_request.status_request" => 3, /*ngambil yang sudah kasih harga vendor */
+            "status_buat_quo" => 1,
+            "untuk_stock" => 1
         );
-        $field["quotation"] = array(
-            "id_submit_quotation","versi_quotation","no_quotation","id_request","status_quotation","date_quotation_add","total_quotation_price","hal_quotation","up_cp","durasi_pengiriman","franco","durasi_pembayaran","alamat_perusahaan"
+        $field = array(
+            "id_submit_request","no_request"
         );
-        $result["quotation"] = $this->Mdquotation->getListQuotation($where["quotation"]);
-        $data["quotation"] = foreachMultipleResult($result["quotation"],$field["quotation"],$field["quotation"]);
+        $result = selectRow("price_request",$where,$field);
+        $data["request"] = $result->result_array();
+
+        $where = array(
+            "status_aktif_quotation" => 0
+        );
+        $field = array(
+            "id_submit_quotation","versi_quotation","no_quotation","id_request","status_quotation","date_quotation_add","total_quotation_price","hal_quotation","durasi_pengiriman_quotation","franco","durasi_pembayaran_quotation","alamat_perusahaan","nama_perusahaan","nama_cp","up_cp_quotation"
+        );
+        $result = selectRow("order_detail",$where,$field);
+        $data["quotation"] = $result->result_array();
         for($a = 0; $a<count($data["quotation"]); $a++){
 
-            $data["quotation"][$a]["id_perusahaan"] = get1Value("price_request","id_perusahaan", array("id_submit_request" => $data["quotation"][$a]["id_request"]));
-            $data["quotation"][$a]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan", array("id_perusahaan" => $data["quotation"][$a]["id_perusahaan"]));
-
-            $data["quotation"][$a]["id_cp"] = get1Value("price_request","id_cp", array("id_submit_request" => $data["quotation"][$a]["id_request"]));
-            $data["quotation"][$a]["nama_cp"] = get1Value("contact_person","nama_cp", array("id_cp" => $data["quotation"][$a]["id_cp"]));
-
-            $where["quotation_item"] = array(
+            $where = array(
                 "id_submit_quotation" => $data["quotation"][$a]["id_submit_quotation"]
             );
-            $result["quotation_item"] = $this->Mdquotation_item->getListQuotationItem($where["quotation_item"]);
-            $field["quotation_item"] = array(
-                "nama_produk_leiter","attachment","harga_shipping","harga_shipping","harga_courier","vendor_price_rate","shipping_price_rate","courier_price_rate","item_amount","satuan_produk","selling_price","margin_price","id_shipper","id_vendor","id_courier","product_image"
+
+            $field = array(
+                "nama_produk_leiter","attachment_quotation","harga_produk_shipping","harga_produk_vendor","harga_produk_courier","vendor_price_rate_vendor","vendor_price_rate_shipping","attachment_quotation","vendor_price_rate_courier","item_amount_quotation","satuan_produk_quotation","selling_price_quotation","margin_price_quotation","nama_shipper","nama_vendor","nama_courier"
             );
-            $data["quotation"][$a]["jumlah_quotation_item"] = $result["quotation_item"]->num_rows();
-            $data["quotation"][$a]["quotation_item"] = foreachMultipleResult($result["quotation_item"],$field["quotation_item"],$field["quotation_item"]); /*list quotation item dalam 1 quotation*/
-            for($b = 0; $b<count($data["quotation"][$a]["quotation_item"]); $b++){
-                $data["quotation"][$a]["quotation_item"][$b]["nama_supplier"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $data["quotation"][$a]["quotation_item"][$b]["id_vendor"]));
-                $data["quotation"][$a]["quotation_item"][$b]["nama_shipper"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $data["quotation"][$a]["quotation_item"][$b]["id_shipper"]));
-                $data["quotation"][$a]["quotation_item"][$b]["nama_courier"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $data["quotation"][$a]["quotation_item"][$b]["id_courier"]));
-            }
-            $where["metode_pembayaran"] = array(
-                "id_submit_quotation" => $data["quotation"][$a]["id_submit_quotation"]
-            );
-            $result["metode_pembayaran"] = $this->Mdmetode_pembayaran->getListQuotationMetodePembayaran($where["metode_pembayaran"]);
-            $field["metode_pembayaran"] = array(
+            $result = selectRow("order_item_detail",$where,$field);
+            
+            $data["quotation"][$a]["jumlah_quotation_item"] = $result->num_rows();
+            $data["quotation"][$a]["quotation_item"] = $result->result_array();
+
+
+            $field = array(
                 "persentase_pembayaran","nominal_pembayaran","trigger_pembayaran","is_ada_transaksi","persentase_pembayaran2","nominal_pembayaran2","trigger_pembayaran2","is_ada_transaksi2","kurs"
             );
-            $data["quotation"][$a]["metode_pembayaran"] = foreachResult($result["metode_pembayaran"],$field["metode_pembayaran"],$field["metode_pembayaran"]);
-            if($data["quotation"][$a]["metode_pembayaran"]["trigger_pembayaran"] == 1){
-                $data["quotation"][$a]["metode_pembayaran"]["trigger_pembayaran"] = "BEFORE ORDER DELIVERY";
+            $result = selectRow("quotation_metode_pembayaran",$where,$field);
+            $data["quotation"][$a]["metode_pembayaran"] = $result->result_array();
+            if($data["quotation"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] == 1){
+                $data["quotation"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] = "BEFORE ORDER DELIVERY";
             }
             else{
-                $data["quotation"][$a]["metode_pembayaran"]["trigger_pembayaran"] = "AFTER ORDER DELIVERY";
+                $data["quotation"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] = "AFTER ORDER DELIVERY";
             }
-            if($data["quotation"][$a]["metode_pembayaran"]["trigger_pembayaran2"] == 1){
-                $data["quotation"][$a]["metode_pembayaran"]["trigger_pembayaran2"] = "BEFORE ORDER DELIVERY";
+            if($data["quotation"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] == 1){
+                $data["quotation"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] = "BEFORE ORDER DELIVERY";
             }
             else{
-                $data["quotation"][$a]["metode_pembayaran"]["trigger_pembayaran2"] = "AFTER ORDER DELIVERY";
+                $data["quotation"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] = "AFTER ORDER DELIVERY";
             }
         }
+        $field = array(
+            "no_request","id_submit_request","nama_perusahaan","nama_cp"
+        );
+        $where = array(
+            "status_buat_quo" => 1,
+            "status_aktif_request" => 0
+        );
+        $result = selectRow("order_detail",$where,$field);
+        $data["price_request"] = $result->result_array();
+        $this->req();
         $this->load->view("crm/content-open");
         $this->load->view("crm/quotation/category-header");
         $this->load->view("crm/quotation/category-body",$data);
@@ -104,30 +111,52 @@ class Quotation extends CI_Controller{
         $this->close();
     }
     public function create(){ //sudah di cek
-        $this->req();
+        if($this->session->id_user == ""){
+            redirect("welcome");
+        }
+        if($this->session->id_submit_request == ""){
+            $this->session->id_submit_request = $this->input->post("id_submit_request");
+        }
         $where = array(
-            "quotation" => array(
-                "status_quo" => 0  
-            ),
-            "price_request" => array(
-                "price_request.status_request" => 3,
-                "status_buat_quo" => 1,
-                "untuk_stock" => 1
-            ),
-            
+            "id_submit_request" => $this->session->id_submit_request
         );
         $field = array(
-            "request" => array(
-                "id_submit_request","no_request","id_perusahaan"
-            )
+            "id_submit_request","no_request","id_perusahaan","nama_perusahaan","nama_cp"
+            
         );
-        $result["request"] = $this->Mdprice_request->getListPriceRequest($where["price_request"]);
-        $data["request"] = foreachMultipleResult($result["request"],$field["request"],$field["request"]);
-        for($a = 0; $a<count($data["request"]); $a++){
-            $data["request"][$a]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan", array("id_perusahaan" => $data["request"][$a]["id_perusahaan"]));
-        }
+        $result = selectRow("order_detail",$where,$field);
+        $data["request"] = $result->result_array();
+        $data["request"][0]["alamat_perusahaan"] = get1Value("perusahaan","alamat_perusahaan",array("id_perusahaan" => $data["request"][0]["id_perusahaan"]));
+
         $data["quotation_id"] = getMaxId("quotation","id_quotation",array("bulan_quotation" => date("m"),"tahun_quotation" => date("Y"), "status_aktif_quotation" => 0));
         $data["id_submit_quotation"] = getMaxId("quotation","id_submit_quotation",array());
+
+        $field = array(
+            "id_request_item","nama_produk_request","jumlah_produk_request","satuan_produk_request","file","notes_produk_request"
+        );
+        $where = array(
+            "id_submit_request" => $this->session->id_submit_request           
+        );
+        $result = selectRow("order_item_detail",$where,$field);
+        $data["items"] = $result->result_array();
+
+        $field = array(
+            "id_perusahaan","nama_perusahaan"
+        );
+        $where = array(
+            "status_perusahaan" => 0,
+            "peran_perusahaan" => "PRODUK"
+        );
+        $result = selectRow("perusahaan",$where,$field);
+        $data["vendor"] = $result->result_array();
+
+        $where = array(
+            "status_perusahaan" => 0,
+            "peran_perusahaan" => "SHIPPING"
+        );
+        $result = selectRow("perusahaan",$where,$field);
+        $data["shipper"] = $result->result_array();
+        $this->req();
         $this->load->view("crm/content-open");
         $this->load->view("crm/quotation/category-header");
         $this->load->view("crm/quotation/add-quotation",$data);
@@ -248,11 +277,13 @@ class Quotation extends CI_Controller{
     /*function*/
     public function insertquotation(){ //sudah di cek
         /*insert data quotation*/
-        $data["quotation"] = array(
+        $data = array(
             "id_quotation" => $this->input->post("id_quotation") ,
+            "bulan_quotation" => date("m"),
+            "tahun_quotation" => date("Y"),
             "versi_quotation" => $this->input->post("versi_quotation") ,
             "no_quotation" => $this->input->post("no_quotation") ,
-            "id_request" => $this->input->post("id_request") ,
+            "id_request" => $this->session->id_submit_request ,
             "total_quotation_price" => splitterMoney($this->input->post("total_quotation_price"),","),
             "hal_quotation" => $this->input->post("hal_quotation") ,
             "up_cp" => $this->input->post("up_cp") ,
@@ -260,12 +291,22 @@ class Quotation extends CI_Controller{
             "franco" => $this->input->post("franco") ,
             "durasi_pembayaran" => $this->input->post("durasi_pembayaran") ,
             "alamat_perusahaan" => $this->input->post("alamat_perusahaan") ,
-            "dateline_quotation" => $this->input->post("dateline_quotation") ,
-            "bulan_quotation" => date("m"),
-            "tahun_quotation" => date("Y"),
+            "dateline_quotation" => $this->input->post("dateline_quotation"),
+            "status_quotation" => 0,
+            "status_aktif_quotation" => 0,
             "id_user_add" => $this->session->id_user,
+            "date_quotation_add" => date("Y-m-d H:i:s"),
+            "id_user_edit" => $this->session->id_user,
+            "date_quotation_edit" => date("Y-m-d H:i:s"),
+            "id_user_edit" => 0,
+            "date_quotation_delete" => date("Y-m-d H:i:s")
         );
-        $id_submit_quotation = insertRow("quotation",$data["quotation"]);
+        if(in_array("",$data)){
+            $this->session->set_flashdata("invalid","[Data gagal disubmit] Terdapat form yang kosong, mohon mengisi dengan hati-hati");
+            
+            redirect("crm/quotation/create/");
+        }
+        $id_submit_quotation = insertRow("quotation",$data);
         /*---- Metode Pembayaran ----*/
         
         /*insert quotation item*/
@@ -275,7 +316,68 @@ class Quotation extends CI_Controller{
         );
         $this->load->library("upload",$config);
         $check = $this->input->post("checks");
-        foreach($check as $checked){ /*keambil value setiap yang di check, dalam hal ini nomor urut*/
+        foreach($check as $checked){ 
+            $data = array(
+                "id_request_item" => $checked,
+                "id_perusahaan" => $this->input->post("vendor".$checked),
+                "id_cp" => "-1",
+                "harga_produk" => $this->input->post("harga_produk_vendor".$checked),
+                "vendor_price_rate" => $this->input->post("rate_vendor".$checked),
+                "mata_uang" => $this->input->post("mata_uang_vendor".$checked),
+                "nama_produk_vendor" => $this->input->post("nama_produk_vendor".$checked),
+                "notes" => $this->input->post("notes_vendor".$checked),
+                "attachment" => "-",
+                "status_harga_vendor" => 0,
+                "id_user_add" => $this->session->id_user,
+                "date_harga_vendor_add" => date("Y-m-d H:i:s"),
+            );
+            if(in_array("",$data)){
+                $this->session->set_flashdata("invalid","[Data gagal disubmit] Terdapat form yang kosong, mohon mengisi dengan hati-hati");
+                
+                redirect("crm/quotation/create/");
+            }
+            $id_harga_vendor = insertRow("harga_vendor",$data);
+            $data = array(
+                "id_harga_vendor" => $id_harga_vendor,
+                "id_perusahaan" => $this->input->post("shipper".$checked),
+                "id_cp" => "-1",
+                "harga_produk" => $this->input->post("harga_produk_shipper".$checked),
+                "vendor_price_rate" => $this->input->post("rate_shipper".$checked),
+                "mata_uang" => $this->input->post("mata_uang_shipper".$checked),
+                "notes" => $this->input->post("notes_shipper".$checked),
+                "attachment" => "-",
+                "metode_pengiriman" => "-",
+                "status_aktif_harga_shipping" => 0,
+                "id_user_add" => $this->session->id_user,
+                "date_harga_shipping_add" => date("Y-m-d H:i:s"),
+            );
+            if(in_array("",$data)){
+                $this->session->set_flashdata("invalid","[Data gagal disubmit] Terdapat form yang kosong, mohon mengisi dengan hati-hati");
+                
+                redirect("crm/quotation/create/");
+            }
+            $id_harga_shipping = insertRow("harga_shipping",$data);
+            $data = array(
+                "id_request_item" => $checked,
+                "id_perusahaan" => $this->input->post("kurir".$checked),
+                "id_cp" => "-1",
+                "harga_produk" => $this->input->post("harga_produk_kurir".$checked),
+                "vendor_price_rate" => $this->input->post("rate_kurir".$checked),
+                "mata_uang" => $this->input->post("mata_uang_kurir".$checked),
+                "notes" => $this->input->post("notes_kurir".$checked),
+                "attachment" => "-",
+                "metode_pengiriman" => "-",
+                "status_aktif_harga_shipping" => 0,
+                "id_user_add" => $this->session->id_user,
+                "date_harga_shipping_add" => date("Y-m-d H:i:s"),
+            );
+            if(in_array("",$data)){
+                $this->session->set_flashdata("invalid","[Data gagal disubmit] Terdapat form yang kosong, mohon mengisi dengan hati-hati");
+                
+                redirect("crm/quotation/create/");
+            }
+            $id_harga_kurir = insertRow("harga_courier",$data);
+
             if($this->upload->do_upload("attachment".$checked)){
                 $fileData = $this->upload->data();
             }
@@ -283,17 +385,31 @@ class Quotation extends CI_Controller{
                 $fileData["file_name"] = "-";
             }
             $item_amount = $this->input->post("item_amount".$checked);
+            if($item_amount == ""){
+                $this->session->set_flashdata("invalid","[Data gagal disubmit] Jumlah item kosong, mohon diisi");
+                redirect("crm/quotation/create/");
+                
+            }
             $item_amount_split = explode(" ",$item_amount);
+            if(count($item_amount_split) == 1){
+                $item_amount_split[1] = "-";
+            }
             $margin_price = $this->input->post("margin_price".$checked);
+            if($margin_price == ""){
+                $this->session->set_flashdata("invalid","[Data gagal disubmit] Jumlah item kosong, mohon diisi");
+                redirect("crm/quotation/create/");
+                
+            }
             $margin_price_split = explode("%",$margin_price);
+
             $data["quotation_item"] = array( /*siapin data per nomor urut*/
                 "id_submit_quotation" => $id_submit_quotation,
-                "id_request_item" => $this->input->post("id_request_item".$checked) ,
+                "id_request_item" => $checked,
                 "nama_produk_leiter" => $this->input->post("nama_produk_leiter".$checked) ,
                 "attachment" => $fileData["file_name"], // abc.jpg / -
-                "id_harga_vendor" => $this->input->post("id_harga_vendor".$checked) ,
-                "id_harga_shipping" => $this->input->post("id_harga_shipping".$checked) ,
-                "id_harga_courier" => $this->input->post("id_harga_courier".$checked) ,
+                "id_harga_vendor" => $id_harga_vendor ,
+                "id_harga_shipping" => $id_harga_shipping ,
+                "id_harga_courier" => $id_harga_kurir ,
                 "item_amount" => $item_amount_split[0] , //23 Meter => 23
                 "satuan_produk" => $item_amount_split[1] , // 23 Meter => Meter
                 "selling_price" => splitterMoney($this->input->post("selling_price".$checked),","), //123.456.789 => 123456789
@@ -478,7 +594,6 @@ class Quotation extends CI_Controller{
                 "selling_price" => splitterMoney($this->input->post("selling_price".$checked),","), //123.456.789 => 123456789
                 "margin_price" => $margin_price_split[0] // 3,78% => 3,78
             );
-            print_r($data["quotation_item"]);
             echo $item_amount;
             insertRow("quotation_item",$data["quotation_item"]);
         }
