@@ -675,6 +675,14 @@ class Quotation extends CI_Controller{
             "id_submit_quotation" => $id_submit_quotation
         );
         updateRow("quotation",$data,$where);
+        $id_submit_request = get1Value("order_detail","id_submit_request",$where);
+        $data = array(
+            "status_buat_quo" => "1"
+        );
+        $where = array(
+            "id_submit_request" => $id_submit_request
+        );
+        updateRow("price_request",$data,$where);
         redirect("crm/quotation");
     }
     /*ajax*/
