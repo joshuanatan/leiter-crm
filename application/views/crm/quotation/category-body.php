@@ -90,6 +90,10 @@
 					<input type = "text" class = "form-control" readonly value = "<?php echo $quotation[$a]["no_quotation"];?>">
 				</div>
 				<div class = "form-group">
+					<h5 style = "opacity:0.5">No RFQ</h5>
+					<input type = "text" class = "form-control" readonly value = "<?php echo $quotation[$a]["no_request"];?>">
+				</div>
+				<div class = "form-group">
 					<h5 style = "opacity:0.5">Perihal</h5>
 					<input type = "text" class = "form-control" readonly value = "<?php echo $quotation[$a]["hal_quotation"];?>">
 				</div>
@@ -99,7 +103,7 @@
 				</div>
 				<div class = "form-group">
 					<h5 style = "opacity:0.5">Quotation Price</h5>
-					<input type = "text" class = "form-control" readonly value = "<?php echo number_format($quotation[$a]["total_quotation_price"]);?>">
+					<input type = "text" class = "form-control" readonly value = "<?php echo number_format($quotation[$a]["total_quotation_price"],2);?>">
 				</div>
 				<div class = "form-group">
 					<h5 style = "opacity:0.5">Durasi Pengiriman</h5>
@@ -167,7 +171,7 @@
 					</div>
 					<div class = "form-group col-lg-4 col-sm-12">
 						<h5 style = "opacity:0.5">DP Amount</h5>
-						<input type = "text" class = "form-control" readonly value = "<?php echo number_format($quotation[$a]["metode_pembayaran"][0]["nominal_pembayaran"]);?>">
+						<input type = "text" class = "form-control" readonly value = "<?php echo number_format($quotation[$a]["metode_pembayaran"][0]["nominal_pembayaran"],2);?>">
 					</div>
 					<div class = "form-group col-lg-4 col-sm-12">
 						<h5 style = "opacity:0.5">DP Trigger</h5>
@@ -183,7 +187,7 @@
 					</div>
 					<div class = "form-group col-lg-4 col-sm-12">
 						<h5 style = "opacity:0.5">Pelunasan Amount</h5>
-						<input type = "text" class = "form-control" readonly value = "<?php echo number_format($quotation[$a]["metode_pembayaran"][0]["nominal_pembayaran2"]);?>">
+						<input type = "text" class = "form-control" readonly value = "<?php echo number_format($quotation[$a]["metode_pembayaran"][0]["nominal_pembayaran2"],2);?>">
 					</div>
 					<div class = "form-group col-lg-4 col-sm-12">
 						<h5 style = "opacity:0.5">Pelunasan Trigger</h5>

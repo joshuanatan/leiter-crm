@@ -123,8 +123,8 @@ foreach($quotation ->result() as $quo){
                     $content=$content. '
                     </td>
                     <td  style="text-align:center;height:20px;line-height:'.$line_height.'px;">'. $x->item_amount .' '. $x->satuan_produk.'</td>
-                    <td  style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.number_format($x->selling_price).'</td>
-                    <td  style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.number_format($x->selling_price * $x->item_amount).'</td>
+                    <td  style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.number_format($x->selling_price,2).'</td>
+                    <td  style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.number_format($x->selling_price * $x->item_amount,2).'</td>
                     </tr>';
                     
                     $total = $total + ($x->selling_price * $x->item_amount);
@@ -136,7 +136,7 @@ foreach($quotation ->result() as $quo){
                 <tr>
                     <td colspan="3"></td>
                     <td style="font-weight:bold; text-align:center">TOTAL</td>
-                    <td style="font-weight:bold; text-align:center">'.number_format($total).'</td>
+                    <td style="font-weight:bold; text-align:center">'.number_format($total,2).'</td>
                 </tr>
             </table>
             <br><br>
@@ -176,7 +176,19 @@ foreach($quotation ->result() as $quo){
                 <tr>
                     <td style="width:15px">2. </td>
                     <td colspan="2"  style="width:500px">Pembayaran : ';
-                    $first = 0;
+                    if($pembayaran[0]["is_ada_transaksi"] == 0 && $pembayaran[0]["is_ada_transaksi2"] == 1){
+                        $content = $content.'100% DP diawal';
+                    }
+                    else if($pembayaran[0]["is_ada_transaksi"] == 0 && $pembayaran[0]["is_ada_transaksi2"] == 0 && $pembayaran[0]["trigger_pembayaran2"] == 1){ //sebelum kirim
+                        $content = $content.$pembayaran[0]['persentase_pembayaran'].'% diawal, '.$pembayaran[0]['persentase_pembayaran2'].'% pelunasan saat barang siap dikirim';
+                    }
+                    else if($pembayaran[0]["is_ada_transaksi"] == 0 && $pembayaran[0]["is_ada_transaksi2"] == 0 && $pembayaran[0]["trigger_pembayaran2"] == 2){ //sesudah kirim
+                        $content = $content.$pembayaran[0]['persentase_pembayaran'].'% diawal, '.$pembayaran[0]['persentase_pembayaran2'].'% pelunasan dalam '.$quo->durasi_pembayaran.' minggu setelah barang & invoice diterima';
+                    }
+                    else if($pembayaran[0]["is_ada_transaksi"] == 1 && $pembayaran[0]["is_ada_transaksi2"] == 0){
+                        $content = $content.$quo->durasi_pembayaran.' minggu setelah barang & invoice diterima';
+                    }
+                    /*$first = 0;
                     if($persentase1 != 0){
                         $content = $content.$persentase1.'% DP diawal';
                         $first = 1;
@@ -192,7 +204,7 @@ foreach($quotation ->result() as $quo){
 
                             $content = $content.$persentase2.'% pelunasan dalam '.$quo->durasi_pembayaran.' minggu setelah barang & invoice diterima';
                         }
-                    }
+                    }*/
                     $content = $content .'</td>
                 </tr>
                 <tr>
@@ -239,7 +251,7 @@ foreach($quotation ->result() as $quo){
     $pdf->writeHTML($content); //yang keluarin html nya. Setfont nya harus diatas kontennya
 
     $pdf->SetFont('Tahoma','', 10.5);
-    $content ='Sales Director (+62811837081)<br>PT LEITER INDONESIA';
+    $content ='Sales Director <br/>(+62811837081)';
 $pdf->writeHTML($content);
     //$pdf->Write(5, 'Contoh Laporan PDF dengan CodeIgniter + tcpdf');
     $pdf->Output($quo->no_quotation, 'I');

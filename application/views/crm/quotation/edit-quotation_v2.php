@@ -16,26 +16,21 @@
                         <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#tambahan" aria-controls="pengiriman" role="tab">S&K Quotation</a></li>
 
                     </ul>
-                    <form action = "<?php echo base_url();?>crm/quotation/insertquotation" method = "post" enctype = "multipart/form-data">    
+                    <form action = "<?php echo base_url();?>crm/quotation/editquotation_v2" method = "post" enctype = "multipart/form-data">    
                         <div class="tab-content">
                             <div class="tab-pane active" id="primaryData" role="tabpanel">
                                 <input 
                                     type = "hidden"  
-                                    value = "<?php echo $id_submit_quotation;?>" 
-                                    id = "id_submit_quotation" 
-                                    required 
-                                />
-                                <input 
-                                    type = "hidden"  
-                                    value = "<?php echo $id_submit_quotation;?>" 
-                                    id = "id_submit_quotation" 
+                                    value = "<?php echo $quotation[0]["id_submit_quotation"];?>" 
+                                    id = "id_submit_quotation"
+                                    name = "id_submit_quotation" 
                                     required 
                                 />
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">RFQ</h5>
                                     <input  
                                         type = "text" 
-                                        value = "<?php echo $request[0]["no_request"];?>" 
+                                        value = "<?php echo $quotation[0]["no_request"];?>" 
                                         class = "form-control" 
                                         required 
                                         readonly
@@ -45,18 +40,11 @@
                                     <h5 style = "color:darkgrey; opacity:0.8">Quotation No</h5> <!-- nanti ganti jadi select -->
                                     <input 
                                         type ="text" 
-                                        value = "LI-<?php echo sprintf("%03d",$quotation_id);?>/QUO/<?php echo bulanRomawi(date("m"));?>/<?php echo date("Y");?>"
+                                        value = "<?php echo $quotation[0]["no_quotation"];?>"
                                         id = "no_quotation" 
                                         class = "form-control" 
-                                        name = "no_quotation" 
                                         required 
                                         readonly  
-                                    />
-                                    <input 
-                                        type ="hidden" 
-                                        value = "<?php echo $quotation_id;?>" 
-                                        id = "id_quotation"
-                                        name = "id_quotation"  
                                     />
                                 </div>
                                 <div class = "form-group">
@@ -66,7 +54,6 @@
                                         value = "1" 
                                         id = "versi_quotation" 
                                         class = "form-control"
-                                        name = "versi_quotation" 
                                         readonly 
                                     />
                                 </div>
@@ -74,7 +61,7 @@
                                     <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
                                     <input 
                                         type ="text" 
-                                        value = "<?php echo $request[0]["nama_perusahaan"];?>" 
+                                        value = "<?php echo $quotation[0]["nama_perusahaan"];?>" 
                                         class = "form-control perusahaanCust" 
                                         readonly
                                     />
@@ -83,7 +70,7 @@
                                     <h5 style = "color:darkgrey; opacity:0.8">Nama Customer</h5>
                                     <input 
                                         type ="text" 
-                                        value = "<?php echo $request[0]["nama_cp"];?>" 
+                                        value = "<?php echo $quotation[0]["nama_cp"];?>" 
                                         class = "form-control namaCust" 
                                         name = "" 
                                         readonly
@@ -95,7 +82,8 @@
                                 <div class = "form-group col-lg-12">
                                     <table class = "table table-stripped col-lg-12" style = "width:100%">
                                         <thead>
-                                            <th>#</th>
+                                            <th>Add</th>
+                                            <th>delete</th>
                                             <th>Vendor Price</th>
                                             <th style = "width:15%">Quotation Product Name</th>
                                             <th style = "width:15%">Modal</th>
@@ -115,6 +103,20 @@
                                                             value = "<?php echo $items[$a]["id_request_item"];?>"
                                                             id = "checks<?php echo $a;?>" 
                                                             name = "checks[]" 
+                                                            <?php if($items[$a]["id_quotation_item"] != ""): //belom ada di quotation item?>
+                                                            checked
+                                                            <?php endif;?>
+                                                        >
+                                                        <label></label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class = "checkbox-custom checkbox-primary">
+                                                        <input 
+                                                            type = "checkbox" 
+                                                            value = "<?php echo $items[$a]["id_request_item"];?>"
+                                                            id = "checks<?php echo $a;?>" 
+                                                            name = "delete[]" 
                                                         >
                                                         <label></label>
                                                     </div>
@@ -126,7 +128,13 @@
                                                     <textarea 
                                                         name = "nama_produk_leiter<?php echo $items[$a]["id_request_item"];?>" 
                                                         class = "form-control"
-                                                        ><?php echo $items[$a]["nama_produk_request"];?></textarea>
+                                                        ><?php 
+                                                        if($items[$a]["nama_produk_leiter"] == ""): 
+                                                            echo $items[$a]["nama_produk_request"]; 
+                                                        else: 
+                                                            echo $items[$a]["nama_produk_leiter"];
+                                                        endif;
+                                                        ?></textarea>
                                                 </td>
                                                 <td>
                                                     <input 
@@ -135,6 +143,7 @@
                                                         class = "form-control" 
                                                         readonly 
                                                         onclick="countTotalVendorPrice(<?php echo $a;?>)"
+                                                        value = ""
                                                     />
                                                 </td>
                                                 <td>
@@ -143,17 +152,28 @@
                                                         id = "selling_price<?php echo $a;?>" 
                                                         class = "form-control" 
                                                         name = "selling_price<?php echo $items[$a]["id_request_item"];?>"
-                                                         
+                                                        required 
                                                         oninput = "commas('selling_price<?php echo $a;?>')" 
+                                                        value = "<?php 
+                                                        if($items[$a]["selling_price_quotation"] == ""): 
+                                                            echo "0"; 
+                                                        else: 
+                                                            echo number_format($items[$a]["selling_price_quotation"],2); 
+                                                        endif;?>"
                                                     />
                                                 </td>
                                                 <td>
                                                     <input 
                                                         type = "text" 
-                                                        value = "<?php echo $items[$a]["jumlah_produk_request"];?> <?php echo $items[$a]["satuan_produk_request"];?>"
                                                         id = "item_amount<?php echo $a;?>" 
                                                         class = "form-control" 
                                                         name = "item_amount<?php echo $items[$a]["id_request_item"];?>" 
+                                                        value = "<?php 
+                                                        if($items[$a]["item_amount_quotation"] == ""): 
+                                                            echo $items[$a]["jumlah_produk_request"];?> <?php echo $items[$a]["satuan_produk_request"]; 
+                                                        else: 
+                                                            echo $items[$a]["item_amount_quotation"];?> <?php echo $items[$a]["satuan_produk_quotation"]; 
+                                                        endif;?>"
                                                     />
                                                 </td>
                                                 <td>
@@ -163,6 +183,13 @@
                                                         class = "form-control" 
                                                         readonly 
                                                         onclick = "totalJualBarang(<?php echo $a;?>)"
+                                                        value = "<?php 
+                                                        if($items[$a]["selling_price_quotation"] == ""):
+                                                            echo "0";
+                                                        else:
+                                                            echo number_format($items[$a]["selling_price_quotation"]*$items[$a]["item_amount_quotation"],2);
+                                                        endif;
+                                                        ?>"
                                                     />
                                                 </td>
                                                 <td>
@@ -171,9 +198,16 @@
                                                         id = "margin_price<?php echo $a;?>" 
                                                         class = "form-control"
                                                         name = "margin_price<?php echo $items[$a]["id_request_item"];?>" 
-                                                         
+                                                        required 
                                                         readonly 
                                                         onclick = "getMarginItem(<?php echo $a;?>)" 
+                                                        value = "<?php 
+                                                        if($items[$a]["margin_price_quotation"] == ""):
+                                                            echo "0";
+                                                        else:
+                                                            echo number_format($items[$a]["margin_price_quotation"],2);
+                                                        endif;
+                                                        ?>"
                                                     />
                                                 </td>
                                                 <td>
@@ -197,6 +231,7 @@
                                         required 
                                         readonly 
                                         onclick = "getQuotationPrice()"
+                                        value = "<?php echo number_format($quotation[0]["total_quotation_price"],2);?>"
                                     />
                                 </div>
                                 <div class = "row">
@@ -209,6 +244,7 @@
                                             name = "persentase_pembayaran" 
                                             required 
                                             oninput = "paymentWithDP()" 
+                                            value = "<?php echo $metode_pembayaran[0]["persentase_pembayaran"];?>"
                                         />
                                     </div>
                                     <div class = "form-group col-lg-4">
@@ -225,6 +261,7 @@
                                             class = "form-control"
                                             name = "nominal_pembayaran" 
                                             required 
+                                            value = "<?php echo number_format($metode_pembayaran[0]["nominal_pembayaran"],2);?>"
                                         />
                                     </div>
                                 </div>
@@ -237,13 +274,14 @@
                                             class = "form-control"
                                             name = "persentase_pembayaran2" 
                                             required 
+                                            value = "<?php echo $metode_pembayaran[0]["persentase_pembayaran2"];?>"
                                         />
                                     </div>
                                     <div class = "form-group col-lg-4">
                                         <h5 style = "opacity:0.5">Payment Method</h5>
                                         <select class = "form-control" id = "paymentMethod" name = "trigger_pembayaran2">
                                             <option value = "1">BEFORE DELIVERY</option>
-                                            <option value = "2" selected>AFTER DELIVERY</option>
+                                            <option value = "2" <?php if($metode_pembayaran[0]["trigger_pembayaran2"] == 2) echo "selected"; ?>>AFTER DELIVERY</option>
                                         </select>
                                     </div>  
                                     <div class = "form-group col-lg-4 containerSisa" style = ""> <!-- Nominal DP -->
@@ -254,6 +292,7 @@
                                             class = "form-control"
                                             name = "nominal_pembayaran2" 
                                             required 
+                                            value = "<?php echo number_format($metode_pembayaran[0]["nominal_pembayaran2"],2);?>"
                                         />
                                     </div>
                                 </div>
@@ -264,6 +303,7 @@
                                         class = "form-control"
                                         name = "durasi_pembayaran" 
                                         required 
+                                        value = "<?php echo $quotation[0]["durasi_pembayaran_quotation"];?>"
                                     />
                                 </div>
                                 <div class = "form-group">
@@ -274,6 +314,7 @@
                                         class = "form-control"
                                         name = "mata_uang_pembayaran" 
                                         required 
+                                        value = "<?php echo $metode_pembayaran[0]["kurs"];?>"
                                     />
                                 </div>
                                 <!-- (1) invoice keluar triggernya abis keluarin OC -->
@@ -293,7 +334,7 @@
                                     <h5 style = "color:darkgrey; opacity:0.8">No Quotation</h5>
                                     <input 
                                         type ="text" 
-                                        value = "LI-<?php echo sprintf("%03d",$quotation_id);?>/QUO/<?php echo bulanRomawi(date("m"));?>/2019" 
+                                        value = "<?php echo $quotation[0]["no_quotation"];?>"
                                         class = "form-control" 
                                         required 
                                         readonly
@@ -306,26 +347,29 @@
                                         class = "form-control"
                                         name = "hal_quotation" 
                                         required 
+                                        value = "<?php echo $quotation[0]["hal_quotation"];?>"
                                     />
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
                                     <input 
                                         type ="text" 
-                                        value = "<?php echo $request[0]["nama_perusahaan"];?>" 
+                                        value = "<?php echo $quotation[0]["nama_perusahaan"];?>" 
                                         class = "form-control perusahaanCust" 
                                         required
                                         readonly
+                                        value = "<?php echo $quotation[0]["nama_perusahaan"];?>"
                                     />
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Nama Customer</h5>
                                     <input 
                                         type ="text" 
-                                        value = "<?php echo $request[0]["nama_cp"];?>" 
+                                        value = "<?php echo $quotation[0]["nama_cp"];?>" 
                                         class = "form-control namaCust" 
                                         name = "" 
                                         readonly
+                                        value = "<?php echo $quotation[0]["nama_cp"];?>"
                                     />
                                 </div>
                                 <div class = "form-group">
@@ -334,7 +378,7 @@
                                         name = "alamat_perusahaan" 
                                         class = "form-control" 
                                         id ="alamatCust"
-                                        ><?php echo $request[0]["alamat_perusahaan"];?></textarea>
+                                        ><?php echo $quotation[0]["alamat_perusahaan"];?></textarea>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Up Nama Customer</h5>
@@ -343,6 +387,7 @@
                                         class = "form-control"
                                         name = "up_cp" 
                                         required 
+                                        value = "<?php echo $quotation[0]["up_cp_quotation"];?>"
                                     />
                                 </div>
                             </div>
@@ -355,6 +400,7 @@
                                         class = "form-control"
                                         name = "durasi_pengiriman" 
                                         required 
+                                        value = "<?php echo $quotation[0]["durasi_pengiriman_quotation"];?>"
                                     />
                                 </div>
                                 <div class = "form-group">
@@ -364,6 +410,7 @@
                                         class = "form-control"
                                         name = "dateline_quotation" 
                                         required 
+                                        value = "<?php echo $quotation[0]["dateline_quotation"];?>"
                                     />
                                 </div>
                                 <div class = "form-group">
@@ -374,6 +421,7 @@
                                         class = "form-control"
                                         name = "franco" 
                                         required 
+                                        value = "<?php echo $quotation[0]["franco_quotation"];?>"
                                     /> 
                                 </div>
                                 
@@ -418,6 +466,11 @@
                                             <tbody>
                                                 <tr>
                                                     <td>Harga Vendor</td>
+                                                    <input
+                                                        type = "hidden"
+                                                        name = "id_harga_vendor<?php echo $items[$a]["id_request_item"];?>"
+                                                        value = "<?php echo $items[$a]["id_harga_vendor"];?>"
+                                                    />
                                                     <td>
                                                         <select 
                                                             data-plugin = "select2" 
@@ -426,6 +479,7 @@
                                                             >
                                                             <?php for($i =0; $i<count($vendor); $i++):?>
                                                             <option 
+                                                                <?php if($vendor[$i]["id_perusahaan"] == $items[$a]["id_vendor"]) echo "selected";?>
                                                                 value = "<?php echo $vendor[$i]["id_perusahaan"];?>">
                                                                 <?php echo $vendor[$i]["nama_perusahaan"];?>
                                                             </option>
@@ -436,7 +490,7 @@
                                                         <textarea
                                                             name = "nama_produk_vendor<?php echo $items[$a]["id_request_item"];?>"
                                                             class = "form-control"
-                                                            ></textarea>
+                                                            ><?php echo $items[$a]["nama_produk_vendor"];?></textarea>
                                                     </td>
                                                     <td>
                                                         <input 
@@ -445,6 +499,7 @@
                                                             class = "form-control" 
                                                             name = "harga_produk_vendor<?php echo $items[$a]["id_request_item"];?>"
                                                             oninput = "commas('harga_produk_vendor<?php echo $a;?>')" 
+                                                            value = "<?php echo number_format($items[$a]["harga_produk_vendor"],2);?>"
                                                         />
                                                     </td>
                                                     <td>
@@ -454,6 +509,7 @@
                                                             class = "form-control" 
                                                             name = "rate_vendor<?php echo $items[$a]["id_request_item"];?>"
                                                             oninput = "commas('rate_vendor<?php echo $a;?>')" 
+                                                            value = "<?php echo number_format($items[$a]["vendor_price_rate_vendor"],2);?>"
                                                         />
                                                     </td>
                                                     <td>
@@ -461,6 +517,7 @@
                                                             type = "text" 
                                                             class = "form-control" 
                                                             name = "mata_uang_vendor<?php echo $items[$a]["id_request_item"];?>"
+                                                            value = "<?php echo $items[$a]["mata_uang_vendor"];?>"
                                                         />
                                                     </td>
                                                     <td>
@@ -468,18 +525,25 @@
                                                             name = "notes_vendor<?php echo $items[$a]["id_request_item"];?>"
                                                             class = "form-control"
                                                             
-                                                            >-</textarea>
+                                                            ><?php echo $items[$a]["notes_vendor"];?></textarea>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Harga Shipper</td>
+                                                    <input
+                                                        type = "hidden"
+                                                        name = "id_harga_shipping<?php echo $items[$a]["id_request_item"];?>"
+                                                        value = "<?php echo $items[$a]["id_harga_shipping"];?>"
+                                                    />
                                                     <td>
                                                         <select 
                                                             data-plugin = "select2" 
                                                             class = "form-control" 
                                                             name = "shipper<?php echo $items[$a]["id_request_item"];?>">
                                                             <?php for($i =0; $i<count($shipper); $i++):?>
-                                                            <option value = "<?php echo $shipper[$i]["id_perusahaan"];?>"><?php echo $shipper[$i]["nama_perusahaan"];?>
+                                                            <option 
+                                                                <?php if($shipper[$i]["id_perusahaan"] == $items[$a]["id_shipping"]) echo "selected";?> 
+                                                                value = "<?php echo $shipper[$i]["id_perusahaan"];?>"><?php echo $shipper[$i]["nama_perusahaan"];?>
                                                             </option>
                                                             <?php endfor;?>
                                                         </select>
@@ -493,6 +557,7 @@
                                                             class = "form-control" 
                                                             name = "harga_produk_shipper<?php echo $items[$a]["id_request_item"];?>"
                                                             oninput = "commas('harga_produk_shipper<?php echo $a;?>')" 
+                                                            value = "<?php echo number_format($items[$a]["harga_produk_shipping"],2);?>"
                                                         />
                                                     </td>
                                                     <td>
@@ -502,6 +567,7 @@
                                                             class = "form-control" 
                                                             name = "rate_shipper<?php echo $items[$a]["id_request_item"];?>"
                                                             oninput = "commas('rate_shipper<?php echo $a;?>')" 
+                                                            value = "<?php echo number_format($items[$a]["vendor_price_rate_shipping"],2);?>"
                                                         />
                                                     </td>
                                                     <td>
@@ -509,6 +575,7 @@
                                                             type = "text" 
                                                             class = "form-control" 
                                                             name = "mata_uang_shipper<?php echo $items[$a]["id_request_item"];?>"
+                                                            value = "<?php echo $items[$a]["mata_uang_shipping"];?>"
                                                         />
                                                     </td>
                                                     <td>
@@ -516,15 +583,22 @@
                                                             name = "notes_shipper<?php echo $items[$a]["id_request_item"];?>"
                                                             class = "form-control"
                                                             
-                                                            >-</textarea>
+                                                            ><?php echo $items[$a]["notes_shipping"];?></textarea>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Harga Kurir</td>
+                                                    <input
+                                                        type = "hidden"
+                                                        name = "id_harga_courier<?php echo $items[$a]["id_request_item"];?>"
+                                                        value = "<?php echo $items[$a]["id_harga_courier"];?>"
+                                                    />
                                                     <td>
                                                         <select data-plugin = "select2" class = "form-control" name = "kurir<?php echo $items[$a]["id_request_item"];?>">
                                                             <?php for($i =0; $i<count($shipper); $i++):?>
-                                                            <option value = "<?php echo $shipper[$i]["id_perusahaan"];?>"><?php echo $shipper[$i]["nama_perusahaan"];?></option>
+                                                            <option
+                                                                <?php if($shipper[$i]["id_perusahaan"] == $items[$a]["id_courier"]) echo "selected";?> 
+                                                                value = "<?php echo $shipper[$i]["id_perusahaan"];?>"><?php echo $shipper[$i]["nama_perusahaan"];?></option>
                                                             <?php endfor;?>
                                                         </select>
                                                     </td>
@@ -537,6 +611,7 @@
                                                             class = "form-control" 
                                                             name = "harga_produk_kurir<?php echo $items[$a]["id_request_item"];?>"    
                                                             oninput = "commas('harga_produk_kurir<?php echo $a;?>')" 
+                                                            value = "<?php echo number_format($items[$a]["harga_produk_courier"],2);?>"
                                                         />
                                                     </td>
                                                     <td>
@@ -545,7 +620,8 @@
                                                             id = "rate_kurir<?php echo $a;?>" 
                                                             class = "form-control" 
                                                             name = "rate_kurir<?php echo $items[$a]["id_request_item"];?>"
-                                                            oninput = "commas('rate_kurir<?php echo $a;?>')" 
+                                                            oninput = "commas('rate_kurir<?php echo $a;?>')"
+                                                            value = "<?php echo number_format($items[$a]["vendor_price_rate_courier"],2);?>"
                                                         />
                                                     </td>
                                                     <td>
@@ -553,6 +629,7 @@
                                                             type = "text" 
                                                             class = "form-control" 
                                                             name = "mata_uang_kurir<?php echo $items[$a]["id_request_item"];?>"
+                                                            value = "<?php echo $items[$a]["mata_uang_courier"];?>"
                                                         />
                                                     </td>
                                                     <td>
@@ -560,7 +637,7 @@
                                                             name = "notes_kurir<?php echo $items[$a]["id_request_item"];?>"
                                                             class = "form-control"
                                                             
-                                                            >-</textarea>
+                                                            ><?php echo $items[$a]["notes_courier"];?></textarea>
                                                     </td>
                                                 </tr>
                                             </tbody>
