@@ -28,7 +28,7 @@ class Pdf_oc extends TCPDF
     $html="
     <p>
     <hr style='width:98%;'>
-    <br><br><span style='font-size: medium'>PT LEITER INDONESIA</span><br><span style='font-size:2pt '>Ruku Prominence Alam Sutera 38F/53-22 Jln. Jalur Sutera Prominence, Alam Sutera, Tangerang 15143 Banten - INDONESIA<br>Tel: 021-2958-6786 &nbsp;&nbsp; Fax: 021-29490663</span>
+    <br><br><span style='font-size: medium'>PT LEITER INDONESIA</span><br><span style='font-size:2pt '>Ruku Prominence Alam Sutera 38F/53 Jln. Jalur Sutera Prominence, Alam Sutera, Tangerang 15143 Banten - INDONESIA<br>Tel: 021-2958-6786 &nbsp;&nbsp; Fax: 021-29490663</span>
     </p>";
     $this->SetFontSize(8);
     $this->SetTextColor(128, 179, 128);
