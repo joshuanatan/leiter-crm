@@ -78,34 +78,28 @@ function quotationDetail(){
 <script>
 function countTotal(){
     var jumlah_row = $("#t1 tr").length;
-    console.log(jumlah_row);
     var jumlah_tagihan = 0;
     for(var a = 0; a<jumlah_row; a++){
         if($('#checks'+(a)).is(":checked")){
             var jumlah = $("#jumlah_produk"+a).val();
             var split = jumlah.split(" ");
-            console.log(split[0]);
-            jumlah_tagihan += parseInt(splitter($("#selling_price"+(a)).val(),","))*parseInt(split[0]);
-            console.log("jumlah tagihan "+jumlah_tagihan);
+            jumlah_tagihan += parseFloat(splitter($("#selling_price"+a).val(),","))*parseFloat(split[0]);
         }
     }
-    $("#totalQuotation").val(addCommas(jumlah_tagihan));
+    $("#totalQuotation").val(addCommas(jumlah_tagihan.toFixed(2)));
     
 }
 </script>
 <script>
 function countTotalDataEntry(){
     var jumlah_row = $("#t1 tr").length;
-    console.log(jumlah_row);
     var jumlah_tagihan = 0;
     for(var a = 0; a<jumlah_row; a++){
         if($('#selling_price'+(a)).val() != ""){
             var jumlah = $("#jumlah_produk"+a).val();
             var split = jumlah.split(" ");
             var biaya = $("#selling_price"+a).val();
-            console.log(splitter(biaya),",");
             jumlah_tagihan += (parseFloat(splitter(biaya,","))*parseInt(split[0]))*100;
-            console.log("jumlah tagihan "+(jumlah_tagihan));
         }
     }
     $("#totalQuotation").val(addCommas(jumlah_tagihan/100));
@@ -117,11 +111,11 @@ function paymentWithDP(){
     var persenDp = $("#persenDp").val();
     var persen = splitter(persenDp,"%");
     var totalTagihan = parseFloat(splitter($("#totalQuotation").val(),","));
-    $("#persenSisa").val(100-parseInt(persen)+"%"); /*persenSisa*/
-    $("#jumlahSisa").val(addCommas((100-parseInt(persen))/100*totalTagihan));
-    $("#jumlahDp").val(addCommas(parseInt(persen)/100*totalTagihan));
-    $("#jumlahSisaClean").val((100-parseInt(persen))/100*totalTagihan);
-    $("#jumlahDpClean").val(parseInt(persen)/100*totalTagihan);
+    $("#persenSisa").val(100-parseFloat(persen)+"%"); /*persenSisa*/
+    $("#jumlahSisa").val(addCommas(((100-parseFloat(persen))/100*totalTagihan).toFixed(2)));
+    $("#jumlahDp").val(addCommas((parseFloat(persen)/100*totalTagihan).toFixed(2)));
+    $("#jumlahSisaClean").val((100-parseFloat(persen))/100*totalTagihan);
+    $("#jumlahDpClean").val(parseFloat(persen)/100*totalTagihan);
 }
 </script>
 
@@ -180,6 +174,32 @@ function getRecommendationProduk(baris){
                 }
                 $("#similarProduk"+baris).html(html);
                 $("#jumlah_produk"+baris).val(" "+respond[0]["satuan_produk"]);
+            }
+        });
+    }
+    
+}
+</script>
+<script>
+function searchProdukByName(baris){
+    var teks = $("#namaproduk"+baris).val();
+    if(teks != ""){
+        $.ajax({
+            url:"<?php echo base_url();?>interface/produk/searchProdukByName",
+            type:"POST",
+            dataType:"JSON",
+            data:{nama_produk:teks},
+            success:function(respond){
+                if(respond.length != 0){
+                    var html = "";
+                    for(var a = 0; a<respond.length; a++){
+                        html += "<option value = '"+respond[a]["id_produk"]+"'>"+respond[a]["deskripsi_produk"]+"</option>";
+                    }
+                }
+                else{
+                    var html = "<option value = '0'>PRODUK TIDAK DITEMUKAN</option>"
+                }
+                $("#similarProduk"+baris).html(html);
             }
         });
     }

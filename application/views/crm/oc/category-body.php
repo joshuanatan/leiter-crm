@@ -2,9 +2,9 @@
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-                <a href = "<?php echo base_url();?>crm/oc/create" class="btn btn-outline btn-primary btn-sm">
+                <button data-toggle = "modal" data-target = "#createOc" class="btn btn-outline btn-primary btn-sm">
                     <i class="icon wb-plus" aria-hidden="true"></i> Create Order Confirmation
-                </a>
+                </button>
                 <a href = "<?php echo base_url();?>crm/oc/openDataEntry" class="btn btn-outline btn-primary btn-sm">
                     <i class="icon wb-plus" aria-hidden="true"></i> Data Entry
                 </a>
@@ -78,9 +78,9 @@
                         <?php for($item = 0; $item<count($oc[$a]["oc_item"]); $item++):?>
                         <tr>
                             <td><?php echo $oc[$a]["oc_item"][$item]["id_oc_item"];?></td>
-                            <td><textarea readonly rows = "5" class = "form-control"><?php echo $oc[$a]["oc_item"][$item]["nama_oc_item"];?></textarea></td>
-                            <td><?php echo $oc[$a]["oc_item"][$item]["final_amount"];?> <?php echo $oc[$a]["oc_item"][$item]["satuan_produk"];?></td>
-                            <td><?php echo number_format($oc[$a]["oc_item"][$item]["final_selling_price"]);?></td>
+                            <td><textarea readonly rows = "5" class = "form-control"><?php echo nl2br($oc[$a]["oc_item"][$item]["nama_oc_item"]);?></textarea></td>
+                            <td><?php echo $oc[$a]["oc_item"][$item]["final_amount_oc"];?> <?php echo $oc[$a]["oc_item"][$item]["satuan_produk_oc"];?></td>
+                            <td><?php echo number_format($oc[$a]["oc_item"][$item]["final_selling_price_oc"]);?></td>
                         </tr>
                         <?php endfor;?>
                     </tbody>
@@ -99,42 +99,42 @@
             </div>
             <div class = "modal-body">
                 <table class = "table table-stripped table-bordered">
-                    <?php if($oc[$a]["metode_pembayaran"]["is_ada_transaksi"] == 0):?>
+                    <?php if($oc[$a]["metode_pembayaran"][0]["is_ada_transaksi"] == 0):?>
                     <div class = "row">
                         <div class = "form-group col-lg-4 col-sm-12">
                             <h5 style = "opacity:0.5">DP</h5>
-                            <input type = "text" class = "form-control" readonly value = "<?php echo $oc[$a]["metode_pembayaran"]["persentase_pembayaran"];?>%">
+                            <input type = "text" class = "form-control" readonly value = "<?php echo $oc[$a]["metode_pembayaran"][0]["persentase_pembayaran"];?>%">
                         </div>
                         <div class = "form-group col-lg-4 col-sm-12">
                             <h5 style = "opacity:0.5">DP Amount</h5>
-                            <input type = "text" class = "form-control" readonly value = "<?php echo number_format($oc[$a]["metode_pembayaran"]["nominal_pembayaran"]);?>">
+                            <input type = "text" class = "form-control" readonly value = "<?php echo number_format($oc[$a]["metode_pembayaran"][0]["nominal_pembayaran"]);?>">
                         </div>
                         <div class = "form-group col-lg-4 col-sm-12">
                             <h5 style = "opacity:0.5">DP Trigger</h5>
-                            <input type = "text" class = "form-control" readonly value = "<?php echo $oc[$a]["metode_pembayaran"]["trigger_pembayaran"];?>">
+                            <input type = "text" class = "form-control" readonly value = "<?php echo $oc[$a]["metode_pembayaran"][0]["trigger_pembayaran"];?>">
                         </div>
                     </div>
                     <?php endif;?>
-                    <?php if($oc[$a]["metode_pembayaran"]["is_ada_transaksi2"] == 0):?>
+                    <?php if($oc[$a]["metode_pembayaran"][0]["is_ada_transaksi2"] == 0):?>
                     <div class = "row">
                         <div class = "form-group col-lg-4 col-sm-12">
                             <h5 style = "opacity:0.5">Pelunasan (%)</h5>
-                            <input type = "text" class = "form-control" readonly value = "<?php echo $oc[$a]["metode_pembayaran"]["persentase_pembayaran2"];?>%">
+                            <input type = "text" class = "form-control" readonly value = "<?php echo $oc[$a]["metode_pembayaran"][0]["persentase_pembayaran2"];?>%">
                         </div>
                         <div class = "form-group col-lg-4 col-sm-12">
                             <h5 style = "opacity:0.5">Pelunasan Amount</h5>
-                            <input type = "text" class = "form-control" readonly value = "<?php echo number_format($oc[$a]["metode_pembayaran"]["nominal_pembayaran2"]);?>">
+                            <input type = "text" class = "form-control" readonly value = "<?php echo number_format($oc[$a]["metode_pembayaran"][0]["nominal_pembayaran2"]);?>">
                         </div>
                         <div class = "form-group col-lg-4 col-sm-12">
                             <h5 style = "opacity:0.5">Pelunasan Trigger</h5>
-                            <input type = "text" class = "form-control" readonly value = "<?php echo $oc[$a]["metode_pembayaran"]["trigger_pembayaran2"];?>">
+                            <input type = "text" class = "form-control" readonly value = "<?php echo $oc[$a]["metode_pembayaran"][0]["trigger_pembayaran2"];?>">
                         </div>
                     </div>
                     <?php endif;?>
                     <div class = "row">
                         <div class = "form-group col-lg-12">
                             <h5 style = "opacity:0.5">Currency</h5>
-                            <input type = "text" value = "<?php echo $oc[$a]["metode_pembayaran"]["kurs"];?>" readonly class = "form-control">
+                            <input type = "text" value = "<?php echo $oc[$a]["metode_pembayaran"][0]["kurs"];?>" readonly class = "form-control">
                         </div>
                     </div>
                 </table>
@@ -143,3 +143,31 @@
     </div>
 </div>
 <?php endfor;?>
+
+<div class = "modal fade" id = "createOc">
+	<div class = "modal-dialog">
+		<div class = "modal-content">
+			<div class = "modal-header">
+				<h4 class = "modal-title">Create Order Confirmation</h4>
+			</div>
+			<div class = "modal-body">
+				<div class = "form-group">
+					<form action = "<?php echo base_url();?>crm/oc/create" method = "POST">
+						<div class = "form-group">
+							<h5>Choose Quotation</h5>
+							<select class = "form-control" name = "id_submit_quotation" data-plugin = "select2">
+								<option disabled selected>Pilih No Quotation</option>
+								<?php for($a = 0; $a<count($quotation);$a++):?>
+								<option value = "<?php echo $quotation[$a]["id_submit_quotation"];?>"><?php echo $quotation[$a]["no_quotation"];?> - <?php echo $quotation[$a]["nama_perusahaan"];?> - <?php echo $quotation[$a]["nama_cp"];?></option>
+								<?php endfor;?>
+							</select>
+						</div>
+						<div class = "form-group">
+							<button type = "submit" class = "btn btn-sm btn-primary">CREATE QUOTATION</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
