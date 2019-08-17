@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-            <button type = "button" data-toggle = "modal" data-target = "#createQuotation" href = "<?php echo base_url();?>crm/quotation/create" class="btn btn-outline btn-primary">
+            <button type = "button" data-toggle = "modal" data-target = "#createQuotation" class="btn btn-outline btn-primary">
                 <i class="icon wb-plus" aria-hidden="true"></i> Create Quotation
             </button>
             </div>
