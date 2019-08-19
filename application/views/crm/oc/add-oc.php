@@ -61,7 +61,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <textarea name = "nama_oc_item<?php echo $items[$a]["id_quotation_item"];?>" class = "form-control"><?php echo nl2br($items[$a]["nama_produk_leiter"]);?></textarea>
+                                                    <textarea name = "nama_oc_item<?php echo $items[$a]["id_quotation_item"];?>" class = "form-control"><?php echo ($items[$a]["nama_produk_leiter"]);?></textarea>
                                                 </td>
                                                 <td>
                                                     <span id = "produkNotFound<?php echo $a;?>" style = "color:red; display:none">PRODUCT NOT FOUND</span>
@@ -155,7 +155,7 @@
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Alamat Customer</h5>
-                                    <textarea class = "form-control" id ="alamatCust" readonly><?php echo $oc[0]["alamat_perusahaan"];?></textarea>
+                                    <textarea class = "form-control" id ="alamatCust" name = "alamat_perusahaan_oc"><?php echo $oc[0]["alamat_perusahaan"];?></textarea>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Up Nama Customer</h5>

@@ -268,9 +268,9 @@ class Quotation extends CI_Controller{
         $field = array(
             "nama_produk_leiter","attachment_quotation","id_quotation_item","id_harga_vendor","id_harga_courier","id_harga_shipping","item_amount_quotation","satuan_produk_quotation","selling_price_quotation","margin_price_quotation","id_request_item","jumlah_produk_request","satuan_produk_request","nama_produk_request","harga_produk_vendor","nama_produk_vendor","vendor_price_rate_vendor","mata_uang_vendor","notes_vendor","harga_produk_shipping","vendor_price_rate_shipping","mata_uang_shipping","notes_shipping","harga_produk_courier","vendor_price_rate_courier","mata_uang_courier","notes_courier","id_harga_shipping","id_harga_vendor","id_harga_courier","id_vendor","id_courier","id_shipping"
         );
-        $result = selectRow("order_item_detail",$where,$field);
+        $result = $this->Mdquotation->getQuotationItem($data["quotation"][0]["id_submit_request"],$id_submit_quotation,$field);
+        
         $data["items"] = $result->result_array();
-
         $where = array(
             "id_submit_quotation" => $id_submit_quotation
         );
@@ -623,7 +623,7 @@ class Quotation extends CI_Controller{
                 $report .= $key." = ".$value."<br/>";
             }
             $this->session->set_flashdata("report",$report);
-            //redirect("crm/quotation/revision/".$this->input->post("id_submit_quotation"));
+            redirect("crm/quotation/revision/".$this->input->post("id_submit_quotation"));
         }
         $id_submit_quotation = insertRow("quotation",$data);
         /*---- Metode Pembayaran ----*/
@@ -658,7 +658,7 @@ class Quotation extends CI_Controller{
                 }
                 $this->session->set_flashdata("report",$report);
                 
-                //redirect("crm/quotation/revision/".$this->input->post("id_submit_quotation"));
+                redirect("crm/quotation/revision/".$this->input->post("id_submit_quotation"));
             }
             $id_harga_vendor = insertRow("harga_vendor",$data);
             $data = array(
@@ -682,7 +682,7 @@ class Quotation extends CI_Controller{
                     $report .= $key." = ".$value."<br/>";
                 }
                 $this->session->set_flashdata("report",$report);
-                //redirect("crm/quotation/revision/".$this->input->post("id_submit_quotation"));
+                redirect("crm/quotation/revision/".$this->input->post("id_submit_quotation"));
             }
             $id_harga_shipping = insertRow("harga_shipping",$data);
             $data = array(
@@ -706,7 +706,7 @@ class Quotation extends CI_Controller{
                     $report .= $key." = ".$value."<br/>";
                 }
                 $this->session->set_flashdata("report",$report);
-                //redirect("crm/quotation/revision/".$this->input->post("id_submit_quotation"));
+                redirect("crm/quotation/revision/".$this->input->post("id_submit_quotation"));
             }
             $id_harga_kurir = insertRow("harga_courier",$data);
 
@@ -719,7 +719,7 @@ class Quotation extends CI_Controller{
             $item_amount = $this->input->post("item_amount".$checked);
             if($item_amount == ""){
                 $this->session->set_flashdata("invalid","[Data gagal disubmit] Jumlah item kosong, mohon diisi");
-                //redirect("crm/quotation/revision/".$this->input->post("id_submit_quotation"));
+                redirect("crm/quotation/revision/".$this->input->post("id_submit_quotation"));
                 
             }
             $item_amount_split = explode(" ",$item_amount);
@@ -729,7 +729,7 @@ class Quotation extends CI_Controller{
             $margin_price = $this->input->post("margin_price".$checked);
             if($margin_price == ""){
                 $this->session->set_flashdata("invalid","[Data gagal disubmit] Jumlah item kosong, mohon diisi");
-                //redirect("crm/quotation/revision/".$this->input->post("id_submit_quotation"));
+                redirect("crm/quotation/revision/".$this->input->post("id_submit_quotation"));
                 
             }
             $margin_price_split = explode("%",$margin_price);
@@ -821,8 +821,8 @@ class Quotation extends CI_Controller{
         $check = $this->input->post("checks");
         if($check != ""){
             foreach($check as $checked){ 
-                if(get1Value("order_item_detail","id_quotation_item",array("id_request_item" => $checked)) != ""){ //kalau ga ada quotation item
-                    
+                if(isExistsInTable("quotation_item",array("id_request_item" => $checked,"id_submit_quotation" => $this->input->post("id_submit_quotation"))) == 0){ // ada di quotation item
+                 
                     //update here
                     $where = array(
                         "id_harga_vendor" => $this->input->post("id_harga_vendor".$checked) //dapet dari hidden popup table expectation
@@ -899,6 +899,8 @@ class Quotation extends CI_Controller{
                         $this->session->set_flashdata("report",$report);
                         redirect("crm/quotation/create/");
                     }
+                    updateRow("harga_courier",$data,$where);
+
                     $item_amount = $this->input->post("item_amount".$checked);
                     if($item_amount == ""){
                         $this->session->set_flashdata("invalid","[Data gagal disubmit] Jumlah item kosong, mohon diisi");
@@ -914,16 +916,16 @@ class Quotation extends CI_Controller{
                         redirect("crm/quotation/edit/".$where["id_submit_quotation"]);                        
                     }
                     $margin_price_split = explode("%",$margin_price);
-                    updateRow("harga_courier",$data,$where);
                     
-                    
+                    /**
+                     * convert id_request_item jadi quotation item dengan jagain pake id_submit_quotation biar ga kecampur dengan versi sebelumnya
+                     */
                     $where = array(
-                        "id_request_item" => $checked
+                        "id_quotation_item" => get1Value("order_item_detail","id_quotation_item",array("id_request_item" => $checked,"id_submit_quotation" => $this->input->post("id_submit_quotation")))
                     );
                     if($this->upload->do_upload("attachment".$checked)){
                         $fileData = $this->upload->data();
                         $data = array( /*siapin data per nomor urut*/
-                            "id_submit_quotation" => $this->input->post("id_submit_quotation"),
                             "nama_produk_leiter" => $this->input->post("nama_produk_leiter".$checked) ,
                             "attachment" => $fileData["file_name"], // abc.jpg / -
                             "item_amount" => $item_amount_split[0] , //23 Meter => 23
@@ -935,7 +937,6 @@ class Quotation extends CI_Controller{
                     }
                     else{
                         $data = array( /*siapin data per nomor urut*/
-                            "id_submit_quotation" => $this->input->post("id_submit_quotation"),
                             "nama_produk_leiter" => $this->input->post("nama_produk_leiter".$checked) ,
                             "item_amount" => $item_amount_split[0] , //23 Meter => 23
                             "satuan_produk" => $item_amount_split[1] , // 23 Meter => Meter
@@ -946,6 +947,8 @@ class Quotation extends CI_Controller{
                     }
                 }
                 else{
+                
+                       
                     $data = array(
                         "id_request_item" => $checked,
                         "id_perusahaan" => $this->input->post("vendor".$checked),
@@ -970,6 +973,7 @@ class Quotation extends CI_Controller{
                         redirect("crm/quotation/edit/".$this->input->post("id_submit_quotation"));
                     }
                     $id_harga_vendor = insertRow("harga_vendor",$data);
+
                     $data = array(
                         "id_harga_vendor" => $id_harga_vendor,
                         "id_perusahaan" => $this->input->post("shipper".$checked),
@@ -994,6 +998,7 @@ class Quotation extends CI_Controller{
                         redirect("crm/quotation/edit/".$this->input->post("id_submit_quotation"));
                     }
                     $id_harga_shipping = insertRow("harga_shipping",$data);
+
                     $data = array(
                         "id_request_item" => $checked,
                         "id_perusahaan" => $this->input->post("kurir".$checked),
@@ -1064,8 +1069,10 @@ class Quotation extends CI_Controller{
         $delete = $this->input->post("delete");
         if($delete != ""){
             foreach($delete as $deleted){
+                
+                   
                 $where =array(
-                    "id_request_item" => $deleted
+                    "id_quotation_item" => $deleted
                 );
                 deleteRow("quotation_item",$where);
             }

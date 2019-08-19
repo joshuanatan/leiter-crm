@@ -78,7 +78,7 @@
                         <?php for($item = 0; $item<count($oc[$a]["oc_item"]); $item++):?>
                         <tr>
                             <td><?php echo $oc[$a]["oc_item"][$item]["id_oc_item"];?></td>
-                            <td><textarea readonly rows = "5" class = "form-control"><?php echo nl2br($oc[$a]["oc_item"][$item]["nama_oc_item"]);?></textarea></td>
+                            <td><?php echo nl2br($oc[$a]["oc_item"][$item]["nama_oc_item"]);?></td>
                             <td><?php echo $oc[$a]["oc_item"][$item]["final_amount_oc"];?> <?php echo $oc[$a]["oc_item"][$item]["satuan_produk_oc"];?></td>
                             <td><?php echo number_format($oc[$a]["oc_item"][$item]["final_selling_price_oc"]);?></td>
                         </tr>

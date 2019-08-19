@@ -52,4 +52,32 @@ class Mdorder_confirmation extends CI_Model{
         )
         */
     }
+    /************************************************************* */
+    
+    /**
+     * dipake untuk insert ke order confirmation serta table pendukungnya 
+     * $oc = data oc
+     * $oc_item = data item oc
+     * $oc_pembayaran = data metode pembayaran oc
+     */
+    public function createOrderConfirmation($oc,$oc_item,$oc_pembayaran){
+        $this->db->trans_begin();
+        $this->db->insert("order_confirmation",$oc);
+        $this->db->insert_batch("order_confirmation_item",$oc_item);
+        $this->db->insert("order_confirmation_metode_pembayaran",$oc_pembayaran);
+
+        if ($this->db->trans_status() === FALSE){
+            $this->db->trans_rollback();
+        }
+        else{
+            $where = array(
+                "id_submit_quotation" => $this->session->id_submit_quotation,
+            );
+            $data = array(
+                "status_quotation" => 3 /*yang udah create oc, ditandain*/
+            );
+            updateRow("quotation",$data,$where);
+            $this->db->trans_commit();
+        }
+    }
 }

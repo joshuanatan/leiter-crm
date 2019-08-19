@@ -34,7 +34,7 @@
         </div>
         <div class = "form-group">
             <h5 style = "opacity:0.5">Dateline</h5>
-            <input required type = "date" name = "tgl_dateline_request" class = "form-control">
+            <input required type = "date" name = "tgl_dateline_request" class = "form-control" style = "width:20%">
         </div>
         <div class="col-xl-12 form-group">
             <h5 style = "opacity:0.5">Items</h5>

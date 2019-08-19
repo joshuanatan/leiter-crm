@@ -50,7 +50,6 @@ class Oc extends CI_Controller{
         for($a = 0; $a<count($data["oc"]);$a++){
             
             $where = array(
-                "status_oc_item" => 0,
                 "id_submit_oc" => $data["oc"][$a]["id_submit_oc"]
             );
             $field = array(
@@ -145,32 +144,29 @@ class Oc extends CI_Controller{
             "id_submit_oc" => $id_submit_oc
         );
         $field = array(
-            "detail" => array(
-                "id_submit_quotation","no_oc","id_submit_oc","total_oc_price","no_po_customer","tgl_po_customer","up_cp","durasi_pengiriman","metode_pengiriman","franco","durasi_pembayaran"
-            ),
-            "items" => array(
-                "nama_oc_item","final_amount","satuan_produk","final_selling_price","status_oc_item","id_quotation_item","id_oc_item"
-            ),
-            "pembayaran" => array(
-                "persentase_pembayaran","nominal_pembayaran","trigger_pembayaran","status_bayar","is_ada_transaksi","persentase_pembayaran2","nominal_pembayaran2","trigger_pembayaran2","status_bayar2","is_ada_transaksi2","kurs"
-            )
+            "id_submit_quotation","no_oc","id_submit_oc","total_oc_price","no_po_customer","tgl_po_customer","up_cp_oc","durasi_pengiriman_oc","metode_pengiriman","franco_oc","durasi_pembayaran_oc","nama_perusahaan","nama_cp","alamat_perusahaan_oc"
         );
-        $result["detail"] = selectRow("order_confirmation",$where);
-        $data["detail"] = foreachResult($result["detail"],$field["detail"],$field["detail"]);
-        $id_submit_request = get1Value("quotation","id_request",array("id_submit_quotation" => $data["detail"]["id_submit_quotation"]));
+        $result = selectRow("order_detail",$where,$field);
+        $data["detail"] = $result->result_array();
 
-        $id_perusahaan = get1Value("price_request","id_perusahaan",array("id_submit_request" => $id_submit_request));
-        $data["detail"]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $id_perusahaan));
-        $data["detail"]["alamat_perusahaan"] = get1Value("perusahaan","alamat_perusahaan",array("id_perusahaan" => $id_perusahaan));
+        $where = array(
+            "id_submit_oc" => $id_submit_oc
+        );
+        $field = array(
+            "nama_oc_item","final_amount_oc","satuan_produk_oc","final_selling_price_oc","status_oc_item","id_quotation_item","nama_produk_leiter","item_amount_quotation","satuan_produk_quotation","selling_price_quotation","margin_price_quotation","id_oc_item"
+        );
+        $result = selectRow("order_item_detail",$where,$field);
+        $data["items"] = $result->result_array();
 
-        $id_cp = get1Value("price_request","id_cp",array("id_submit_request" => $id_submit_request));
-        $data["detail"]["nama_cp"] = get1Value("contact_person","nama_cp",array("id_cp" => $id_cp));
-
-        $result["items"] = selectRow("order_confirmation_item",$where);
-        $data["items"] = foreachMultipleResult($result["items"],$field["items"],$field["items"]);
-
-        $result["pembayaran"] = selectRow("order_confirmation_metode_pembayaran",$where);
-        $data["pembayaran"] = foreachResult($result["pembayaran"],$field["pembayaran"],$field["pembayaran"]);
+        $where = array(
+            "id_submit_oc" => $id_submit_oc
+        );
+        $field = array(
+            "persentase_pembayaran","nominal_pembayaran","trigger_pembayaran","status_bayar","is_ada_transaksi","persentase_pembayaran2","nominal_pembayaran2","trigger_pembayaran2","status_bayar2","is_ada_transaksi2","kurs"
+        );
+        $result = selectRow("order_confirmation_metode_pembayaran",$where);
+        $data["pembayaran"] = $result->result_array();
+        
         $this->req();
         $this->load->view("crm/content-open");
         $this->load->view("crm/oc/category-header");
@@ -182,6 +178,7 @@ class Oc extends CI_Controller{
     /*function*/
     public function editoc(){ //sudah di cek
         /*insert ke oc tanpa total_oc_price*/
+        /*
         $where["main"] = array(
             "id_submit_oc" => $this->input->post("id_submit_oc")
         );
@@ -193,61 +190,63 @@ class Oc extends CI_Controller{
             "metode_pengiriman" => $this->input->post("metode_pengiriman"),
             "franco" => $this->input->post("franco"),
             "durasi_pembayaran" => $this->input->post("durasi_pembayaran"),
+            "alamat_perusahaan_oc" => $this->input->post("alamat_perusahaan_oc"),
             "total_oc_price" => splitterMoney($this->input->post("total_oc_price"),","),
         );
+        if(in_array("",$data)){
+            $this->session->set_flashdata("invalid","[Data gagal diupdate] Terdapat form yang kosong, mohon mengisi dengan hati-hati");
+            $report = "Your Input Before: ";
+            foreach($data as $key => $value){
+                $report .= $key." = ".$value."<br/>";
+            }
+            $this->session->set_flashdata("report",$report);
+            redirect("crm/oc/edit/".$this->input->post("id_submit_oc"));
+        }
         updateRow("order_confirmation",$data,$where["main"]);
         /*insert ke item oc*/
 
+        /*
         $checks = $this->input->post("checkbox");
-        $id_quotation_item = $this->input->post("id_quotation_item");
-        $nama_oc_item = $this->input->post("nama_oc_item");
-        $final_amount = $this->input->post("final_amount");
-        $final_selling_price = $this->input->post("final_selling_price");
-        $id_oc_item = $this->input->post("id_oc_item");
-        
-        /*sekarang masukin per item detailnya*/
-        $category = array();
-        $is_checked = array();
-        $urutan = 0;
-        foreach($checks as $checked){
-            $is_checked[$urutan] = $checked; /*nampung id yang ke checked pake value (urutan baris dari 0 - ... di front end) */
-            $urutan++;
+        $delete = $this->input->post("delete");
+        if($checks != ""){
+            foreach($checks as $checked){
+                //check dulu apakah ini penambahanbaru / update pake isExistsInTable
+                
+                $data = array(
+
+                );
+            }
         }
-        $urutan = 0;
-        foreach($id_oc_item as $a){
-            $category[$urutan]["id_oc_item"] = $a; /*variable ini urutan 1, 2, 3, 4, dst*/
-            $urutan++;
-        }
-        $urutan = 0;
-        foreach($nama_oc_item as $a){
-            $category[$urutan]["nama_oc_item"] = $a; /*variable ini urutan 1, 2, 3, 4, dst*/
-            $urutan++;
-        }
-        $urutan = 0;
-        foreach($final_amount as $a){
-            $category[$urutan]["final_amount"] = $a; /*variable ini urutan 1, 2, 3, 4, dst*/
-            $urutan++;
-        }
-        $urutan = 0;
-        foreach($final_selling_price as $a){
-            $category[$urutan]["final_selling_price"] = $a; /*variable ini urutan 1, 2, 3, 4, dst*/
-            $urutan++;
+        if($delete != ""){
+            foreach($delete as $deleted){
+                $where = array(
+                    "id_oc_item" => $deleted
+                );
+                deleteRow("order_confirmation_item",$where);
+            }
         }
         for($a = 0; $a<count($category); $a++){ /*ngontrol jumlah barang karena semua item ada ngepost baik dipilih atau tidak didepan*/
+            /*
             $where["item"] = array(
                 "id_oc_item" => $category[$a]["id_oc_item"]
             );
             $split = explode(" ",$category[$a]["final_amount"]); /*mecahin final amountnya dari urutan ini*/
+            /*
             $items[$a] = array(/*barang 1, 2, 3, 4, ... */
+                /*
                 "nama_oc_item" => $category[$a]["nama_oc_item"], /*nama produk oc barang 1*/
+                /*
                 "final_amount" => $split[0], /*3*/
+                /*
                 "satuan_produk" => $split[1], /*meter*/
+                /*
                 "final_selling_price" =>splitterMoney($category[$a]["final_selling_price"],","),
             );
             
             updateRow("order_confirmation_item",$items[$a],$where["item"]); //update berdasarkan id_oc_item
 
             if(in_array($a,$is_checked)){ /*kalau yang urutan baris/item ada di array is_checked*/
+                /*
                 $data =  array(
                     "status_oc_item" => 0
                 );
@@ -256,6 +255,7 @@ class Oc extends CI_Controller{
         }
         /*end masukin oc_item*/
         /*masukin metode pembayaran*/
+        /*
         $is_ada_transaksi = 0;
         if($this->input->post("persentase_pembayaran") == 0){ //persentase DP 0
             $is_ada_transaksi = 1;
@@ -279,6 +279,7 @@ class Oc extends CI_Controller{
         );
         updateRow("order_confirmation_metode_pembayaran",$data["pembayaran"],$where["main"]);
         /*end metode pembayaran*/
+        $this->session->set_flashdata("invalid","[DATA TIDAK ADA YANG DIUPDATE] Mohon menunggu, sedang dalam masa percobaan");
         redirect("crm/oc");
     }   
     public function openDataEntry(){
@@ -601,6 +602,7 @@ class Oc extends CI_Controller{
             "durasi_pengiriman" => $this->input->post("durasi_pengiriman"),
             "metode_pengiriman" => $this->input->post("metode_pengiriman"),
             "franco" => $this->input->post("franco"),
+            "alamat_perusahaan_oc" => $this->input->post("alamat_perusahaan_oc"),
             "id_user_add" => $this->session->id_user
         );
         if(in_array("",$data)){
@@ -612,11 +614,13 @@ class Oc extends CI_Controller{
             $this->session->set_flashdata("report",$report);
             redirect("crm/oc/create");
         }
-        $id_submit_oc = insertRow("order_confirmation",$data["oc"]);
+        $id_submit_oc = getMaxId("order_confirmation","id_submit_oc",array());
+        //$id_submit_oc = insertRow("order_confirmation",$data["oc"]);
         /*insert ke item oc*/
         $checks = $this->input->post("checks");
         
         if($checks != ""){
+            $counter = 0;
             foreach($checks as $checked){
                 $amount = $this->input->post("final_amount".$checked);
                 if($amount == ""){
@@ -637,7 +641,7 @@ class Oc extends CI_Controller{
                 if($id_produk == ""){
                     $id_produk = -1;
                 }
-                $data = array(
+                $data["items"][$counter] = array(
                     "id_submit_oc" => $id_submit_oc,
                     "id_quotation_item" => $checked, /*quotation barang 1*/
                     "nama_oc_item" => $nama_item_oc, /*nama produk oc barang 1*/
@@ -655,7 +659,8 @@ class Oc extends CI_Controller{
                     $this->session->set_flashdata("report",$report);
                     redirect("crm/oc/create");
                 }
-                insertRow("order_confirmation_item",$data);
+                $counter++;
+                //insertRow("order_confirmation_item",$data);
             }
         }
         /*end masukin oc_item*/
@@ -668,7 +673,7 @@ class Oc extends CI_Controller{
         if($this->input->post("persentase_pembayaran2") == 0){ //persentase pelunasan 0
             $is_ada_transaksi2 = 1;
         }
-        $data = array(
+        $data["metode_pembayaran"] = array(
             "id_submit_oc" => $id_submit_oc,
             "persentase_pembayaran" => $this->input->post("persentase_pembayaran"),
             "nominal_pembayaran" => splitterMoney($this->input->post("nominal_pembayaran"),","),
@@ -691,16 +696,9 @@ class Oc extends CI_Controller{
             $this->session->set_flashdata("report",$report);
             redirect("crm/oc/create");
         }
-        insertRow("order_confirmation_metode_pembayaran",$data);
+        //insertRow("order_confirmation_metode_pembayaran",$data);
         /*end metode pembayaran*/
-        $where = array(
-            "id_submit_quotation" => $this->session->id_submit_quotation,
-        );
-        $data = array(
-            "status_quotation" => 3 /*yang udah create oc, ditandain*/
-        );
-
-        updateRow("quotation",$data,$where);
+        $this->Mdorder_confirmation->createOrderConfirmation($data["oc"],$data["items"],$data["metode_pembayaran"]);
         redirect("crm/oc");
     }   
     public function delete($id_submit_oc){ //sudah di cek

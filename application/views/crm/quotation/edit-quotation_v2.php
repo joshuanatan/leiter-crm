@@ -103,7 +103,7 @@
                                                             value = "<?php echo $items[$a]["id_request_item"];?>"
                                                             id = "checks<?php echo $a;?>" 
                                                             name = "checks[]" 
-                                                            <?php if($items[$a]["id_quotation_item"] != ""): //belom ada di quotation item?>
+                                                            <?php if(isExistsInTable("quotation_item",array("id_request_item" => $items[$a]["id_request_item"],"id_submit_quotation" => $quotation[0]["id_submit_quotation"])) == 0): //belom ada di quotation item?>
                                                             checked
                                                             <?php endif;?>
                                                         >
@@ -111,15 +111,16 @@
                                                     </div>
                                                 </td>
                                                 <td>
+                                                    <?php if($items[$a]["id_quotation_item"] != ""):?>
                                                     <div class = "checkbox-custom checkbox-primary">
                                                         <input 
                                                             type = "checkbox" 
-                                                            value = "<?php echo $items[$a]["id_request_item"];?>"
-                                                            id = "checks<?php echo $a;?>" 
+                                                            value = "<?php echo $items[$a]["id_quotation_item"];?>"
                                                             name = "delete[]" 
                                                         >
                                                         <label></label>
                                                     </div>
+                                                    <?php endif;?>
                                                 </td>
                                                 <td>
                                                     <button type = "button" class = "btn btn-primary btn-sm" data-toggle = "modal" data-target = "#estimation<?php echo $a;?>">ESTIMATION</button>

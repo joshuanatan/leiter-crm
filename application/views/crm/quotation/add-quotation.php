@@ -364,6 +364,7 @@
                                         class = "form-control"
                                         name = "dateline_quotation" 
                                         required 
+                                        style = "width:20%"
                                     />
                                 </div>
                                 <div class = "form-group">

@@ -55,5 +55,27 @@ class Mdquotation extends CI_Model{
         $this->db->order_by("id_submit_quotation","DESC");
         return $this->db->get_where("quotation",$where);
     }
+    /******************************************************************************* */
+    /**
+     * function ini dibutuhkan untuk mendapatkan barang di price request dan barang yang sudah ada dalam quotation 
+     * masalahnya adalah setelah revisi, semua item kedouble, sehingga dibutuhkan satu function agar tidak kecampur antar versi
+     * @params
+     * $id_submit_request = untuk tau item originnya apa (mengatasi kesalahan hapus)
+     * $id_submit_quotation = untuk tau quotation yang dipilhi apa
+     * $field = untuk field yang akan dipilih
+     */
+    public function getQuotationItem($id_submit_request,$id_submit_quotation,$field){
+        $this->db->select($field);
+        $this->db->group_start()
+            ->where("id_submit_request",$id_submit_request)
+            ->where("id_submit_quotation","")
+        ->group_end()
+        ->or_group_start()
+            ->where("id_submit_request",$id_submit_request)
+            ->where("id_submit_quotation",$id_submit_quotation)
+        ->group_end();
+
+        return $this->db->get("order_item_detail");
+    }
 }
 ?>
