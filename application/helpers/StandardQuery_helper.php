@@ -7,6 +7,12 @@ if ( ! function_exists('insertRow')){
         return $CI->db->insert_id();
     }
 }
+if ( ! function_exists('insertRowNoReturn')){
+    function insertRowNoReturn($table,$data){
+        $CI =& get_instance();
+        $CI->db->insert($table,$data);
+    }
+}
 
 if ( ! function_exists('updateRow')){
     function updateRow($table,$data,$where){
@@ -23,8 +29,24 @@ if ( ! function_exists('deleteRow')){
 }
 
 if ( ! function_exists('selectRow')){
-    function selectRow($table,$where,$field = ""){
+    function selectRow($table,$where,$field = "",$limit = "",$offset = "",$order = "", $order_direction = ""){
         $CI =& get_instance();
+        if($order != ""){
+            if($order_direction != ""){
+                $this->db->order_by($order,$order_direction);
+            }
+            else{
+                $this->db->order_by($order,'ASC');
+            }
+        }
+        if($limit != ""){
+            if($offset != ""){
+                $CI->db->limit($limit,$offset);
+            }
+            else{
+                $CI->db->limit($limit);
+            }
+        }
         if($field != ""){
             $CI->db->select($field);
         }

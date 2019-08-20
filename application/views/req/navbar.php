@@ -188,7 +188,7 @@
                                 </a>
                             </li>
                             <?php endif;?>
-                            <?php if(false):?>
+                            <?php if(true):?>
                             
                             <li class="site-menu-item">
                                 <a class="animsition-link" href="<?php echo base_url();?>finance/othercashflow">
