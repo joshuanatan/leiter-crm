@@ -55,36 +55,59 @@ for($a =0; $a<count($tax); $a++){
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
-                <th>ID Tax</th>
-                <th>Jumlah Pajak</th> <!-- yang ngelaurin invoice ini -->
-                <th>ID Tagihan</th> <!-- ini yang tertulis. backgroundnya karena yang tertulis kadang belum termasuk pph 23-->
-                <th>Bukti Bayar</th>
-                <th>Invoice</th> <!-- invoice yang dikeluarin vendor -->
+                <th>No Faktur Pajak</th>
+                <th>Jumlah Pajak</th>
+                <th>ID Tagihan</th>
+                <th>Attachment Faktur</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             <?php $jumlahMasukan = 0;for($a =0; $a<count($tax); $a++):?>
             <?php if($tax[$a]["tipe_pajak"] == "MASUKAN"): $jumlahMasukan += $tax[$a]["jumlah_pajak"];?>
             <tr>
-                <td><?php echo $tax[$a]["id_tax"];?></td>
+                <td><?php echo $tax[$a]["no_faktur_pajak"];?></td>
                 <td><?php echo number_format($tax[$a]["jumlah_pajak"]);?></td>
                 <td>
                     <?php if($tax[$a]["is_pib"] != 0):?>
-                    <a target = "_blank" href = "<?php echo base_url();?>finance/payable/"><?php echo $ppn[$a]["no_tagihan"];?></a>
+                    <a class = "btn btn-primary btn-sm" target = "_blank" href = "<?php echo base_url();?>finance/payable/"><?php echo $tax[$a]["id_refrensi"];?></a>
                     <?php else:?>
-                    <a target = "_blank" href = "<?php echo base_url();?>finance/tax/pib/"><?php echo $ppn[$a]["no_tagihan"];?></a>
+                    <a class = "btn btn-primary btn-sm" target = "_blank" href = "<?php echo base_url();?>finance/tax/pib/"><?php echo $tax[$a]["id_refrensi"];?></a>
                     <?php endif;?>
                 </td>
                 <td>
-                    <a target = "_blank" href = "<?php echo base_url();?>assets/dokumen/buktibayar/<?php echo $tax[$a]["bukti_bayar"];?>" class = "btn btn-primary btn-outline btn-sm">BUKTI BAYAR</a>
+                    <a target = "_blank" href = "<?php echo base_url();?>assets/dokumen/ppn/<?php echo $tax[$a]["attachment"];?>" class = "btn btn-primary btn-sm">ATTACHMENT FAKTUR</a>
                 </td>
-
                 <td>
-                    <?php if($tax[$a]["is_pib"] != 0):?>
-                    <a target = "_blank" href = "<?php echo base_url();?>assets/dokumen/invoice/<?php echo $tax[$a]["invoice"];?>" class = "btn btn-primary btn-outline btn-sm">INCOME INVOICE</a> 
-                    <?php else:?>
-                    <a target = "_blank" href = "<?php echo base_url();?>assets/dokumen/pib/<?php echo $tax[$a]["invoice"];?>" class = "btn btn-primary btn-outline btn-sm">PIB INVOICE</a> 
-                    <?php endif;?>
+                    <button class = "btn btn-primary btn-sm" type = "button" data-toggle = "modal" data-target = "#updateFakturBaru<?php echo $a;?>">UPDATE ATTACHMENT</button>
+                    <div class = "modal fade" id = "updateFakturBaru<?php echo $a;?>">
+                        <div class = "modal-dialog">
+                            <div class = "modal-content">
+                                <div class = "modal-header">
+                                    <h4 class = "modal-title">UPDATE ATTACHMENET</h4>
+                                </div>
+                                <div class = "modal-body">
+                                    <span style = "color:red">WARNING.</span>
+                                    <h5>Jumlah pajak, refrensi tidak diizinkan untuk dirubah.</h5>
+                                    <hr/>
+                                    <form action = "<?php echo base_url();?>finance/tax/ppn/updateFaktur" method = "POST" enctype="multipart/form-data">
+                                        <input name = "id_tax" type = "hidden" value = "<?php echo $tax[$a]["id_tax"];?>">
+                                        <div class = "form-group">
+                                            <h5 style = "opacity:0.5">NOMOR FAKTUR</h5>
+                                            <input class = "form-control" type = "text" name = "no_faktur_pajak" value = "<?php echo $tax[$a]["no_faktur_pajak"];?>" required>
+                                        </div>
+                                        <div class = "form-group">
+                                            <h5 style = "opacity:0.5">ATTACHMENT BARU FAKTUR</h5>
+                                            <input type = "file" name = "attachment">
+                                        </div>
+                                        <div class = "form-group">
+                                            <button type = "submit" class = "btn btn-primary btn-sm">SUBMIT</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </td>
             </tr>
             <?php endif;?>
@@ -102,10 +125,11 @@ for($a =0; $a<count($tax); $a++){
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
     <thead>
             <tr>
-            <th>ID Tax</th>
+                <th>No Faktur Pajak</th>
                 <th>Jumlah Pajak</th> <!-- yang ngelaurin invoice ini -->
-                <th>ID Tagihan</th> <!-- ini yang tertulis. backgroundnya karena yang tertulis kadang belum termasuk pph 23-->
-                <th>Bukti Bayar</th>
+                <th>ID Refrensi</th> <!-- ini yang tertulis. backgroundnya karena yang tertulis kadang belum termasuk pph 23-->
+                <th>Attachment Faktur</th>
+                <th>Action</th>
              
             </tr>
         </thead>
@@ -113,13 +137,44 @@ for($a =0; $a<count($tax); $a++){
             <?php for($a =0; $a<count($tax); $a++):?>
             <?php if($tax[$a]["tipe_pajak"] == "KELUARAN"):?>
             <tr>
-                <td><?php echo $tax[$a]["id_tax"];?></td>
+                <td><?php echo $tax[$a]["no_faktur_pajak"];?></td>
                 <td><?php echo number_format($tax[$a]["jumlah_pajak"]);?></td>
                 <td>
-                    <a target = "_blank" href = "<?php echo base_url();?>finance/receivable/"><?php echo $ppn[$a]["no_tagihan"];?></a>
+                    <a class = "btn btn-primary btn-sm" target = "_blank" href = "<?php echo base_url();?>finance/receivable/"><?php echo $tax[$a]["id_refrensi"];?></a>
                 </td>
                 <td>
-                    <a target = "_blank" href = "<?php echo base_url();?>assets/dokumen/buktibayar/<?php echo $tax[$a]["bukti_bayar"];?>" class = "btn btn-primary btn-outline btn-sm">BUKTI BAYAR</a>
+                    <a target = "_blank" href = "<?php echo base_url();?>assets/dokumen/ppn/<?php echo $tax[$a]["attachment"];?>" class = "btn btn-primary btn-sm">ATTACHMENT FAKTUR</a>
+                </td>
+                <td>
+                    <button class = "btn btn-primary btn-sm" type = "button" data-toggle = "modal" data-target = "#updateFakturBaru<?php echo $a;?>">UPDATE ATTACHMENT</button>
+                    <div class = "modal fade" id = "updateFakturBaru<?php echo $a;?>">
+                        <div class = "modal-dialog">
+                            <div class = "modal-content">
+                                <div class = "modal-header">
+                                    <h4 class = "modal-title">UPDATE ATTACHMENET</h4>
+                                </div>
+                                <div class = "modal-body">
+                                    <span style = "color:red">WARNING.</span>
+                                    <h5>Jumlah pajak, refrensi tidak diizinkan untuk dirubah.</h5>
+                                    <hr/>
+                                    <form action = "<?php echo base_url();?>finance/tax/ppn/updateFaktur" method = "POST" enctype="multipart/form-data">
+                                        <input name = "id_tax" type = "hidden" value = "<?php echo $tax[$a]["id_tax"];?>">
+                                        <div class = "form-group">
+                                            <h5 style = "opacity:0.5">NOMOR FAKTUR</h5>
+                                            <input class = "form-control" type = "text" name = "no_faktur_pajak" value = "<?php echo $tax[$a]["no_faktur_pajak"];?>" required>
+                                        </div>
+                                        <div class = "form-group">
+                                            <h5 style = "opacity:0.5">ATTACHMENT BARU FAKTUR</h5>
+                                            <input type = "file" name = "attachment">
+                                        </div>
+                                        <div class = "form-group">
+                                            <button type = "submit" class = "btn btn-primary btn-sm">SUBMIT</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </td>
 
             </tr>

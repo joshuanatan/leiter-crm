@@ -211,7 +211,7 @@ class Payable extends CI_Controller{
                 "tipe_pajak" => "-",
                 "jenis_pajak" => "PPH",
                 "status_aktif_pajak" => 0,
-                "id_refrensi" => $this->input->post("id_refrensi")
+                "id_refrensi" => $this->input->post("no_refrence")
             );
             insertRow("tax",$data);
         }

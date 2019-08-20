@@ -4,6 +4,8 @@ class Ppn extends CI_Controller{
         parent::__construct();
     }
     public function index(){
+        $this->session->bulan_pajak = "";
+        $this->session->tahun_pajak = "";
         $data = array(
             "bulan" => array(
                 "01" => "JANUARI",
@@ -23,6 +25,16 @@ class Ppn extends CI_Controller{
                 "2019"
             )
         );
+        $where = array(
+            "jenis_pajak" => "PPN",
+            "is_pib" => 1,
+            "no_faktur_pajak" => null
+        );
+        $field = array(
+            "id_tax","jumlah_pajak","id_refrensi"
+        );
+        $result = selectRow("tax",$where,$field);
+        $data["tax"] = $result->result_array();
         $this->req();
         $this->load->view("finance/content-open");
         $this->load->view("finance/tax/ppn/category-header");
@@ -52,41 +64,22 @@ class Ppn extends CI_Controller{
         $this->load->view("req/html-close"); 
     }
     public function detail(){
+        if($this->session->bulan_pajak == ""){
+            $this->session->bulan_pajak = $this->input->post("bulan_pajak");
+        }
+        if($this->session->tahun_pajak == ""){
+            $this->session->tahun_pajak = $this->input->post("tahun_pajak");
+        }
         $where = array(
-            "tax" => array(
-                "bulan_pajak" => $this->input->post("bulan_pajak"),
-                "tahun_pajak" => $this->input->post("tahun_pajak"),
-                "jenis_pajak" => "PPN"
-            )
+            "bulan_pajak" => $this->session->bulan_pajak,
+            "tahun_pajak" => $this->session->tahun_pajak,
+            "jenis_pajak" => "PPN",
         );
         $field = array(
-            "tax" => array(
-                "id_tax","jumlah_pajak","tipe_pajak","jenis_pajak","id_refrensi","status_aktif_pajak","is_pib"
-            )
+            "id_tax","jumlah_pajak","tipe_pajak","jenis_pajak","id_refrensi","status_aktif_pajak","is_pib","attachment","no_faktur_pajak"
         );
-        $print = array(
-            "tax" => array(
-                "id_tax","jumlah_pajak","tipe_pajak","jenis_pajak","id_refrensi","status_aktif_pajak","is_pib"
-            )
-        );
-        $result["tax"] = selectRow("tax",$where["tax"]);
-        $data["tax"] = foreachMultipleResult($result["tax"],$field["tax"],$print["tax"]);
-        for($a = 0; $a < count($data["tax"]); $a++){
-            $id_tagihan = $data["tax"][$a]["id_refrensi"]; /*id refrensi = id  */
-            $data["tax"][$a]["bukti_bayar"] = get1Value("pembayaran","attachment",array("id_refrensi" => $id_tagihan));
-            if($data["tax"][$a]["tipe_pajak"] == "MASUKAN"){ /*berarti dari tagihan*/
-                $data["tax"][$a]["invoice"] = get1Value("tagihan","attachment",array("id_tagihan" => $id_tagihan));
-                $data["ppn"][$a]["no_tagihan"] = get1Value("tagihan","no_invoice",array("id_tagihan" => $id_tagihan));
-            }
-            else{
-                $data["tax"][$a]["invoice"] = get1Value("invoice_core","id_invoice",array("id_invoice" => $id_tagihan)); /*nanti a href aja */
-                $data["ppn"][$a]["no_tagihan"] = get1Value("invoice_core","no_invoice",array("id_invoice" => $id_tagihan));
-            }
-            if($data["tax"][$a]["is_pib"] == 0){ /*refrence ke tax*/
-                $data["ppn"][$a]["no_tagihan"] = $data["tax"][$a]["id_refrensi"];
-                $data["tax"][$a]["invoice"] = get1Value("pib","attachment",array("no_pib" => $id_tagihan));
-            }
-        }
+        $result = selectRow("final_tax",$where,$field);
+        $data["tax"] = $result->result_array();
         $this->req();
         $this->load->view("finance/content-open");
         $this->load->view("finance/tax/ppn/category-header");
@@ -94,6 +87,56 @@ class Ppn extends CI_Controller{
         $this->load->view("finance/content-close");
         $this->close();
     }
+    public function insertFaktur(){
+        $where = array(
+            "id_tax" => $this->input->post("id_tax")
+        );  
+        $config["upload_path"] = "./assets/dokumen/ppn/";
+        $config["allowed_types"] = "png|jpg|jpeg|pdf|gif";
+        $this->load->library("upload",$config);
+        if($this->upload->do_upload("attachment")){
+            $fileData = $this->upload->data();
+        }
+        else{
+            $fileData = array(
+                "file_name" => "-"
+            );
+        }
+        $split_tgl = explode("-",$this->input->post("tgl_input_faktur"));
+        $data = array(
+            "bulan_pajak" => $split_tgl[1],
+            "tahun_pajak" => $split_tgl[0],
+            "tgl_input_faktur" => $this->input->post("tgl_input_faktur"),
+            "no_faktur_pajak" => $this->input->post("no_faktur_pajak"),
+            "attachment" => $fileData["file_name"]
+        );
+        echo $data["tgl_input_faktur"];
+        updateRow("tax",$data,$where);
+        
+        redirect("finance/tax/ppn");
+    }
+    public function updateFaktur(){
+        $where = array(
+            "id_tax" => $this->input->post("id_tax")
+        );
+        $config["upload_path"] = "./assets/dokumen/ppn/";
+        $config["allowed_types"] = "png|jpg|jpeg|pdf|gif";
+        $this->load->library("upload",$config);
+        if($this->upload->do_upload("attachment")){
+            $fileData = $this->upload->data();
+            $data = array(
+                "no_faktur_pajak" => $this->input->post("no_faktur_pajak"),
+                "attachment" => $fileData["file_name"]
+            );
+        }
+        else{
+            $data = array(
+                "no_faktur_pajak" => $this->input->post("no_faktur_pajak"),
+            );
+        }
+        updateRow("tax",$data,$where);
+        redirect("finance/tax/ppn/detail");
+    }
 }
 
-?>
+?>  
