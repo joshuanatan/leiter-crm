@@ -29,4 +29,53 @@
             </div>
         </div>
     </form>
+    
+</div>
+<div class="panel-body col-lg-12">
+    <div class="row">
+    </div>
+    <!--
+    <div class = "row">
+        <div class = "form-group col-lg-3">
+            <h5>Search Text</h5>
+            <h5></h5>
+            <input type = "text" class = "form-control" oninput = "">
+        </div>
+        <div class = "form-group col-lg-3">
+            <h5>Search By</h5>
+            <select class = "form-control" oninput = ""></select>
+        </div>
+        <div class = "form-group col-lg-3">
+            <h5>Sort By</h5>
+            <select class = "form-control"></select>
+        </div>
+    </div>
+-->
+    <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "DataTable">
+        <thead>
+            <tr>
+                <td>Jumlah Tax</td>
+                <td>No Refrensi</td>
+                <td>Tanggal Masuk Faktur Pajak</td>
+                <td>Nomor Faktur Pajak</td>
+                <td>Attachment</td>
+                <td>Action</td>
+            </tr>
+        </thead>
+        <tbody>
+            <?php for($a = 0; $a<count($tax); $a++):?>
+            <tr>
+                <form action = "<?php echo base_url();?>finance/tax/ppn/insertFaktur" method = "POST" enctype="multipart/form-data">
+                    <input type = "hidden" name = "id_tax" value = "<?php echo $tax[$a]["id_tax"];?>">
+                    <td><?php echo number_format($tax[$a]["jumlah_pajak"],2);?></td>
+                    <td><?php echo $tax[$a]["id_refrensi"];?></td>
+                    <td><input required type = "date" name = "tgl_input_faktur" class = "form-control"></td>
+                    <td><input required type = "text" name = "no_faktur_pajak" class = "form-control"></td>
+                    <td><input type = "file" name = "attachment"></td>
+                    <td><button type = "submit" class = "btn btn-primary btn-sm col-lg-12">SUBMIT</button></td>
+                </form>
+            </tr>
+            <?php endfor;?>
+        </tbody>
+    </table>
 </div>
