@@ -6,39 +6,14 @@ class Pib extends CI_Controller{
     
     public function index(){
         $where = array(
-            "pib" => array(
-                "status_aktif_pib" => 0
-            )
+            "status_aktif_pib" => 0
         );
         $field = array(
-            "pib" => array(
-                "no_pib","tgl_pib_masuk","ppn_impor","pph_impor","bea_cukai","no_po","notes_pib","attachment","status_bayar_pib","id_pib"
-            )
+            "no_pib","tgl_pib_masuk","ppn_impor","pph_impor","bea_cukai","no_po","notes_pib","attachment","status_bayar_pib","id_pib"
         );
-        $print = array(
-            "pib" => array(
-                "no_pib","tgl_pib_masuk","ppn_impor","pph_impor","bea_cukai","no_po","notes_pib","attachment","status_bayar_pib","id_pib"
-            )
-        );
-        $result["pib"] = selectRow("pib",$where["pib"]);
-        $data["pib"] = foreachMultipleResult($result["pib"],$field["pib"],$print["pib"]);
-        for($a = 0; $a<count($data["pib"]); $a++){
-            $data["pib"][$a]["total_tagihan"] = $data["pib"][$a]["ppn_impor"]+$data["pib"][$a]["pph_impor"]+$data["pib"][$a]["bea_cukai"];
-
-            if($data["pib"][$a]["status_bayar_pib"] == 0){
-                $where["payment_detail"] = array(
-                    "id_refrensi" => $data["pib"][$a]["no_pib"]
-                );
-                $field["payment_detail"] = array(
-                    "id_pembayaran","id_refrensi","subject_pembayaran","tgl_bayar","attachment","notes_pembayaran","nominal_pembayaran","metode_pembayaran"
-                );
-                $print["payment_detail"] = array(
-                    "id_pembayaran","id_refrensi","subject_pembayaran","tgl_bayar","attachment","notes_pembayaran","nominal_pembayaran","metode_pembayaran"
-                );
-                $result["payment_detail"] = selectRow("pembayaran",$where["payment_detail"]);
-                $data["pib"][$a]["payment_detail"] = foreachResult($result["payment_detail"],$field["payment_detail"],$print["payment_detail"]);
-            }
-        }
+        $result = selectRow("pib",$where,$field);
+        $data["pib"] = $result->result_array();
+        
         $this->req();
         $this->load->view("finance/content-open");
         $this->load->view("finance/tax/pib/category-header");
@@ -113,7 +88,7 @@ class Pib extends CI_Controller{
             $fileData["file_name"] = "-";
         }
         $data = array(
-            "id_refrensi" => $this->input->post("id_refrensi"),
+            "id_refrensi" => $id_pib,
             "subject_pembayaran" => $this->input->post("subject_pembayaran"),
             "tgl_bayar" => $this->input->post("tgl_bayar"),
             "nominal_pembayaran" =>  splitterMoney($this->input->post("nominal_pembayaran"),","),
@@ -123,10 +98,9 @@ class Pib extends CI_Controller{
             "mata_uang_pembayaran" => "IDR",
             "total_pembayaran" => splitterMoney($this->input->post("nominal_pembayaran"),","),
             "attachment" =>  $fileData["file_name"],
-            "jenis_pembayaran" => "KELUAR",
-            "kategori_pembayaran" => 5
+            "metode_pembayaran" => "KELUAR"
         );
-        insertRow("pembayaran",$data);
+        insertRow("pembayaran_pib",$data);
 
         /*insert ke tax juga */
         $data = array(
@@ -134,10 +108,12 @@ class Pib extends CI_Controller{
             "tahun_pajak" => date("Y"),
             "jumlah_pajak" => get1Value("pib","pph_impor",array("id_pib" => $id_pib)),
             "tipe_pajak" => "-",
-            "jenis_pajak" => "PPH",
+            "jenis_pajak" => "PPH21",
             "status_aktif_pajak" => 0,
             "is_pib" => 0,
-            "id_refrensi" => $this->input->post("id_refrensi")
+            "no_faktur_pajak" => $this->input->post("no_pib"),
+            "tgl_input_faktur" => date("Y-m-d"),
+            "id_refrensi" => $this->input->post("no_pib")
         );
         insertRow("tax",$data);
 
@@ -149,7 +125,9 @@ class Pib extends CI_Controller{
             "jenis_pajak" => "PPN",
             "status_aktif_pajak" => 0,
             "is_pib" => 0,
-            "id_refrensi" => $this->input->post("id_refrensi")
+            "no_faktur_pajak" => $this->input->post("no_pib"),
+            "tgl_input_faktur" => date("Y-m-d"),
+            "id_refrensi" => $this->input->post("no_pib")
         );
         insertRow("tax",$data);
 
@@ -161,7 +139,9 @@ class Pib extends CI_Controller{
             "jenis_pajak" => "BEA CUKAI",
             "status_aktif_pajak" => 0,
             "is_pib" => 0,
-            "id_refrensi" => $this->input->post("id_refrensi")
+            "no_faktur_pajak" => $this->input->post("no_pib"),
+            "tgl_input_faktur" => date("Y-m-d"),
+            "id_refrensi" => $this->input->post("no_pib")
         );
         insertRow("tax",$data);
         redirect("finance/tax/pib");
