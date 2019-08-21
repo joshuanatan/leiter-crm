@@ -4,8 +4,8 @@ class Ppn extends CI_Controller{
         parent::__construct();
     }
     public function index(){
-        $this->session->bulan_pajak = "";
-        $this->session->tahun_pajak = "";
+        $this->session->unset_userdata('bulan_pajak');
+        $this->session->unset_userdata('tahun_pajak');
         $data = array(
             "bulan" => array(
                 "01" => "JANUARI",
