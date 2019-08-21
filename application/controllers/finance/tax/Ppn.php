@@ -137,5 +137,4 @@ class Ppn extends CI_Controller{
         redirect("finance/tax/ppn/detail");
     }
 }
-
 ?>  
