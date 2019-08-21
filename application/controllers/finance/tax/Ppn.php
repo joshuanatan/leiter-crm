@@ -105,7 +105,8 @@ class Ppn extends CI_Controller{
             "attachment" => $fileData["file_name"]
         );
         updateRow("tax",$data,$where);
-        
+        echo "BERHASIL MENGUPDATE, SILAHKAN MENGGUNAKAN LINK DIBAWAH INI UNTUK KEMBALI";
+        echo "SILAHKAN MENGGUNAKAN LINK INI UNTUK KEMBALI <a href = '".base_url()."finance/tax/ppn'>REDIRECT</a>";
         redirect("finance/tax/ppn");
     }
     public function updateFaktur(){
