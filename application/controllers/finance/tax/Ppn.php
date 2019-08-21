@@ -64,12 +64,6 @@ class Ppn extends CI_Controller{
         $this->load->view("req/html-close"); 
     }
     public function detail(){
-        if($this->session->bulan_pajak == ""){
-            $this->session->bulan_pajak = $this->input->post("bulan_pajak");
-        }
-        if($this->session->tahun_pajak == ""){
-            $this->session->tahun_pajak = $this->input->post("tahun_pajak");
-        }
         $where = array(
             "bulan_pajak" => $this->session->bulan_pajak,
             "tahun_pajak" => $this->session->tahun_pajak,
