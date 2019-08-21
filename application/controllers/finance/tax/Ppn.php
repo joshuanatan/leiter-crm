@@ -65,8 +65,8 @@ class Ppn extends CI_Controller{
     }
     public function detail(){
         $where = array(
-            "bulan_pajak" => $this->session->bulan_pajak,
-            "tahun_pajak" => $this->session->tahun_pajak,
+            //"bulan_pajak" => $this->session->bulan_pajak,
+            //"tahun_pajak" => $this->session->tahun_pajak,
             "jenis_pajak" => "PPN",
         );
         $field = array(
