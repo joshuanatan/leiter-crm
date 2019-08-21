@@ -4,7 +4,43 @@ class Ppn extends CI_Controller{
         parent::__construct();
     }
     public function index(){
-       
+        //$this->session->unset_userdata('bulan_pajak');
+        //$this->session->unset_userdata('tahun_pajak');
+        $data = array(
+            "bulan" => array(
+                "01" => "JANUARI",
+                "02" => "FEBRUARI",
+                "03" => "MARET",
+                "04" => "APRIL",
+                "05" => "MEI",
+                "06" => "JUNI",
+                "07" => "JULI",
+                "08" => "AGUSTUS",
+                "09" => "SEPTEMBER",
+                "10" => "OKTOBER",
+                "11" => "NOVEMBER",
+                "12" => "DESEMBER"
+            ),
+            "tahun" => array(
+                "2019"
+            )
+        );
+        $where = array(
+            "jenis_pajak" => "PPN",
+            "is_pib" => 1,
+            "no_faktur_pajak" => null
+        );
+        $field = array(
+            "id_tax","jumlah_pajak","id_refrensi"
+        );
+        $result = selectRow("tax",$where,$field);
+        $data["tax"] = $result->result_array();
+        $this->req();
+        $this->load->view("finance/content-open");
+        $this->load->view("finance/tax/ppn/category-header");
+        $this->load->view("finance/tax/ppn/category-body",$data);
+        $this->load->view("finance/content-close");
+        $this->close();
     }
     
     public function req(){
