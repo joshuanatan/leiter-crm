@@ -131,7 +131,7 @@
                                         </div>
                                         <div class = "form-group">
                                             <h5 style = "opacity:0.5">Tanggal Pembayaran</h5>
-                                            <input type = "date" value = "<?php echo date("d-m-Y");?>" name = "tgl_bayar" class = "form-control">
+                                            <input type = "date" required name = "tgl_bayar" class = "form-control">
                                         </div>
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">Payment Method</h5>
