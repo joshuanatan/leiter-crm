@@ -6,7 +6,7 @@
                     <h5>MONTH</h5>
                     <select class = "form-control" name = "bulan_pajak">
                         <?php foreach($bulan as $key=>$value): ?>
-                        <option value = "<?php echo $key;?>"><?PHP echo $value;?></option>
+                        <option value = "<?php echo $key;?>"><?php echo $value;?></option>
                         <?php endforeach;?>
                     </select>
                 </div>
