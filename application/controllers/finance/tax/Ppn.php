@@ -1,6 +1,6 @@
 <?php
 class Ppn extends CI_Controller{
-    public function __constrcut(){
+    public function __construct(){
         parent::__construct();
     }
     public function index(){
