@@ -110,7 +110,6 @@ class Ppn extends CI_Controller{
             "no_faktur_pajak" => $this->input->post("no_faktur_pajak"),
             "attachment" => $fileData["file_name"]
         );
-        echo $data["tgl_input_faktur"];
         updateRow("tax",$data,$where);
         
         redirect("finance/tax/ppn");
