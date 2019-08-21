@@ -1,5 +1,7 @@
 <div class="page-header">
-    <h1 class="page-title">CRM - PPN</h1>
+    <h1 class="page-title">CRM - PPN</h1><span style = "color:red"><?php echo $this->session->flashdata("invalid");?></span> 
+    REPORT:<br/>
+    <?php echo $this->session->flashdata("report");?>
     <br/>
     <br/>
     <ol class="breadcrumb breadcrumb-arrow">
