@@ -149,11 +149,12 @@ class Oc extends CI_Controller{
         $result = selectRow("order_detail",$where,$field);
         $data["detail"] = $result->result_array();
 
+        $id_submit_quotation = get1Value("order_detail","id_submit_quotation",array("id_submit_oc" => $id_submit_oc));
         $where = array(
-            "id_submit_oc" => $id_submit_oc
+            "id_submit_quotation" => $id_submit_quotation
         );
         $field = array(
-            "nama_oc_item","final_amount_oc","satuan_produk_oc","final_selling_price_oc","status_oc_item","id_quotation_item","nama_produk_leiter","item_amount_quotation","satuan_produk_quotation","selling_price_quotation","margin_price_quotation","id_oc_item"
+            "nama_oc_item","final_amount_oc","satuan_produk_oc","final_selling_price_oc","status_oc_item","id_quotation_item","nama_produk_leiter","item_amount_quotation","satuan_produk_quotation","selling_price_quotation","margin_price_quotation","id_oc_item","deskripsi_produk","id_produk"
         );
         $result = selectRow("order_item_detail",$where,$field);
         $data["items"] = $result->result_array();
@@ -178,7 +179,6 @@ class Oc extends CI_Controller{
     /*function*/
     public function editoc(){ //sudah di cek
         /*insert ke oc tanpa total_oc_price*/
-        /*
         $where["main"] = array(
             "id_submit_oc" => $this->input->post("id_submit_oc")
         );
@@ -205,16 +205,79 @@ class Oc extends CI_Controller{
         updateRow("order_confirmation",$data,$where["main"]);
         /*insert ke item oc*/
 
-        /*
-        $checks = $this->input->post("checkbox");
+        
+        $checks = $this->input->post("checks");
         $delete = $this->input->post("delete");
         if($checks != ""){
             foreach($checks as $checked){
-                //check dulu apakah ini penambahanbaru / update pake isExistsInTable
-                
-                $data = array(
+                $amount = $this->input->post("final_amount".$checked);
+                if($amount == ""){
+                    $this->session->set_flashdata("invalid","Mohon jumlah produk diisi");
+                    redirect("crm/oc/create");
+                }
+                else{
+                    $split = explode(" ",$amount);
+                    if(count($split) == 1){
+                        $split[1] = "-"; //yang satuan, ada chance dikosongin
+                    } 
+                }
+                $nama_item_oc = $this->input->post("nama_oc_item".$checked);
+                if($nama_item_oc == ""){
+                    $nama_item_oc = "-";
+                }
+                $id_produk = $this->input->post("id_produk".$checked);
+                if($id_produk == ""){
+                    $id_produk = -1;
+                }
 
-                );
+                if($this->input->post("status_ada_item".$checked) != ""){
+                    $where = array(
+                        "id_oc_item" => $this->input->post("status_ada_item".$checked)
+                    );
+                    $data = array(
+                        "id_submit_oc" => $this->input->post("id_submit_oc"),
+                        "id_quotation_item" => $checked, /*quotation barang 1*/
+                        "nama_oc_item" => $nama_item_oc, /*nama produk oc barang 1*/
+                        "final_amount" => $split[0], /*3*/
+                        "satuan_produk" => $split[1], /*meter*/
+                        "final_selling_price" =>splitterMoney($this->input->post("final_selling_price".$checked),","),
+                        "id_produk" => $id_produk
+                    );
+                    if(in_array("",$data)){
+                        $this->session->set_flashdata("invalid","Mohon mengisi produk dengan benar");
+                        $report = "Your Input Before: ";
+                        foreach($data as $key => $value){
+                            $report .= $key." = ".$value."<br/>";
+                        }
+                        $this->session->set_flashdata("report",$report);
+                        redirect("crm/oc/create");
+                    }
+                    updateRow("order_confirmation_item",$data,$where);
+                    /*ada isinya*/
+                }
+                else{
+                    $data = array(
+                        "id_oc_item" => getMaxId("order_confirmation_item","id_oc_item",array()),
+                        "id_submit_oc" => $this->input->post("id_submit_oc"),
+                        "id_quotation_item" => $checked, /*quotation barang 1*/
+                        "nama_oc_item" => $nama_item_oc, /*nama produk oc barang 1*/
+                        "final_amount" => $split[0], /*3*/
+                        "satuan_produk" => $split[1], /*meter*/
+                        "final_selling_price" =>splitterMoney($this->input->post("final_selling_price".$checked),","),
+                        "id_produk" => $id_produk
+                    );
+                    if(in_array("",$data)){
+                        $this->session->set_flashdata("invalid","Mohon mengisi produk dengan benar");
+                        $report = "Your Input Before: ";
+                        foreach($data as $key => $value){
+                            $report .= $key." = ".$value."<br/>";
+                        }
+                        $this->session->set_flashdata("report",$report);
+                        redirect("crm/oc/create");
+                    }
+                    insertRow("order_confirmation_item",$data);
+                    /*baru*/
+                }
             }
         }
         if($delete != ""){
@@ -225,37 +288,8 @@ class Oc extends CI_Controller{
                 deleteRow("order_confirmation_item",$where);
             }
         }
-        for($a = 0; $a<count($category); $a++){ /*ngontrol jumlah barang karena semua item ada ngepost baik dipilih atau tidak didepan*/
-            /*
-            $where["item"] = array(
-                "id_oc_item" => $category[$a]["id_oc_item"]
-            );
-            $split = explode(" ",$category[$a]["final_amount"]); /*mecahin final amountnya dari urutan ini*/
-            /*
-            $items[$a] = array(/*barang 1, 2, 3, 4, ... */
-                /*
-                "nama_oc_item" => $category[$a]["nama_oc_item"], /*nama produk oc barang 1*/
-                /*
-                "final_amount" => $split[0], /*3*/
-                /*
-                "satuan_produk" => $split[1], /*meter*/
-                /*
-                "final_selling_price" =>splitterMoney($category[$a]["final_selling_price"],","),
-            );
-            
-            updateRow("order_confirmation_item",$items[$a],$where["item"]); //update berdasarkan id_oc_item
-
-            if(in_array($a,$is_checked)){ /*kalau yang urutan baris/item ada di array is_checked*/
-                /*
-                $data =  array(
-                    "status_oc_item" => 0
-                );
-                updateRow("order_confirmation_item",$data,$where["item"]);
-            }
-        }
-        /*end masukin oc_item*/
         /*masukin metode pembayaran*/
-        /*
+        
         $is_ada_transaksi = 0;
         if($this->input->post("persentase_pembayaran") == 0){ //persentase DP 0
             $is_ada_transaksi = 1;
@@ -279,7 +313,7 @@ class Oc extends CI_Controller{
         );
         updateRow("order_confirmation_metode_pembayaran",$data["pembayaran"],$where["main"]);
         /*end metode pembayaran*/
-        $this->session->set_flashdata("invalid","[DATA TIDAK ADA YANG DIUPDATE] Mohon menunggu, sedang dalam masa percobaan");
+        //$this->session->set_flashdata("invalid","[DATA TIDAK ADA YANG DIUPDATE] Mohon menunggu, sedang dalam masa percobaan");
         redirect("crm/oc");
     }   
     public function openDataEntry(){
@@ -615,7 +649,7 @@ class Oc extends CI_Controller{
             redirect("crm/oc/create");
         }
         $id_submit_oc = getMaxId("order_confirmation","id_submit_oc",array());
-        //$id_submit_oc = insertRow("order_confirmation",$data["oc"]);
+        
         /*insert ke item oc*/
         $checks = $this->input->post("checks");
         
@@ -660,7 +694,7 @@ class Oc extends CI_Controller{
                     redirect("crm/oc/create");
                 }
                 $counter++;
-                //insertRow("order_confirmation_item",$data);
+                
             }
         }
         /*end masukin oc_item*/
@@ -696,7 +730,7 @@ class Oc extends CI_Controller{
             $this->session->set_flashdata("report",$report);
             redirect("crm/oc/create");
         }
-        //insertRow("order_confirmation_metode_pembayaran",$data);
+        
         /*end metode pembayaran*/
         $this->Mdorder_confirmation->createOrderConfirmation($data["oc"],$data["items"],$data["metode_pembayaran"]);
         redirect("crm/oc");

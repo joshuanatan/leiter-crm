@@ -49,6 +49,7 @@
                                         <tbody id ="t1">
                                             <?php for($a = 0; $a<count($items); $a++):?>
                                             <tr>
+                                                <input type = "hidden" name = "status_ada_item<?php echo $items[$a]["id_quotation_item"];?>" value = "<?php echo $items[$a]["id_oc_item"]; ?>">
                                                 <td>
                                                     <div class = "checkbox-custom checkbox-primary" >
                                                         <input id = "checks<?php echo $a;?>" type = "checkbox" name = "checks[]" value = "<?php echo $items[$a]["id_quotation_item"];?>" checked>
@@ -58,26 +59,30 @@
                                                 <td>
                                                     <?php if($items[$a]["id_oc_item"] != ""):?>
                                                     <div class = "checkbox-custom checkbox-primary" >
-                                                        <input type = "checkbox" name = "delete[]" value = "<?php echo $items[$a]["id_oc_item"];?>" checked>
+                                                        <input type = "checkbox" name = "delete[]" value = "<?php echo $items[$a]["id_oc_item"];?>">
                                                         <label></label>
                                                     </div>
                                                     <?php endif;?>
                                                 </td>
                                                 <td>
-                                                    <textarea name = "nama_oc_item<?php echo $items[$a]["id_quotation_item"];?>" class = "form-control"><?php echo ($items[$a]["nama_produk_leiter"]);?></textarea>
+                                                    <textarea name = "nama_oc_item<?php echo $items[$a]["id_quotation_item"];?>" class = "form-control"><?php if($items[$a]["nama_oc_item"] != "") echo $items[$a]["nama_oc_item"]; else echo ($items[$a]["nama_produk_leiter"]);?></textarea>
                                                 </td>
                                                 <td>
                                                     <span id = "produkNotFound<?php echo $a;?>" style = "color:red; display:none">PRODUCT NOT FOUND</span>
                                                     <input placeholder = "search item here..." type = "text" class = "form-control" id = "namaproduk<?php echo $a;?>" oninput = "searchProdukByName('<?php echo $a;?>')">
                                                     <select class = "form-control" id = "similarProduk<?php echo $a;?>" name = "id_produk<?php echo $items[$a]["id_quotation_item"];?>">
+                                                        <?php if($items[$a]["id_produk"] == "" || $items[$a]["id_produk"] == "-1"):?>
                                                         <option value = "0"></option>
+                                                        <?php else:?>
+                                                        <option value = "<?php echo $items[$a]["id_produk"];?>"><?php echo $items[$a]["deskripsi_produk"];?></option>
+                                                        <?php endif;?>
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input id = "jumlah_produk<?php echo $a;?>" type = "text" name = "final_amount<?php echo $items[$a]["id_quotation_item"];?>" class = "form-control" value = "<?php echo $items[$a]["item_amount_quotation"]." ".$items[$a]["satuan_produk_quotation"];?>">
+                                                    <input id = "jumlah_produk<?php echo $a;?>" type = "text" name = "final_amount<?php echo $items[$a]["id_quotation_item"];?>" class = "form-control" value = "<?php if($items[$a]["final_amount_oc"] == "") echo $items[$a]["item_amount_quotation"]." ".$items[$a]["satuan_produk_quotation"]; else echo $items[$a]["final_amount_oc"]." ".$items[$a]["satuan_produk_oc"];?>">
                                                 </td>
                                                 <td>
-                                                    <input id = "selling_price<?php echo $a;?>" type = "text" oninput = "commas('selling_price<?php echo $a;?>')" name ="final_selling_price<?php echo $items[$a]["id_quotation_item"];?>" class = "form-control" value = "<?php echo number_format($items[$a]["selling_price_quotation"],2);?>">
+                                                    <input id = "selling_price<?php echo $a;?>" type = "text" oninput = "commas('selling_price<?php echo $a;?>')" name ="final_selling_price<?php echo $items[$a]["id_quotation_item"];?>" class = "form-control" value = "<?php if($items[$a]["final_selling_price_oc"] == "") echo number_format($items[$a]["selling_price_quotation"],2); else echo number_format($items[$a]["final_selling_price_oc"],2);?>">
                                                 </td>
                                             </tr>
                                             <?php endfor;?>
