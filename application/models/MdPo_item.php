@@ -57,5 +57,18 @@ class MdPo_item extends CI_Model{
             return $a->amount;
         }
     }
+    /******************************************************************/
+    public function getPoItem($id_submit_oc,$id_submit_po,$where,$field){
+        $this->db->select($field);
+        $this->db->join("po_item","po_item.id_oc_item = order_item_detail.id_oc_item","LEFT OUTER");
+        $this->db->where("id_submit_oc",$id_submit_oc);
+        $this->db->group_start();
+        $this->db->where("id_submit_po",$id_submit_po);
+        $this->db->or_where("id_submit_po is null",NULL,FALSE);
+        $this->db->group_end();
+        return $this->db->get_where("order_item_detail",$where);
+    }
+
+
 }
 ?>
