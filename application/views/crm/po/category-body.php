@@ -27,8 +27,8 @@
             <?php for($a = 0; $a<count($purchase_order);$a++): ?>
             <tr class="gradeA">
                 <td><?php echo $purchase_order[$a]["no_po"];?></td>
-                <td><?php echo strtoupper($purchase_order[$a]["nama_supplier"]);?></td>
-                <td><?php echo strtoupper($purchase_order[$a]["nama_shipper"]);?></td>
+                <td><?php echo strtoupper($purchase_order[$a]["nama_supplier_po"]);?></td>
+                <td><?php echo strtoupper($purchase_order[$a]["nama_shipper_po"]);?></td>
                 <td><?php echo $purchase_order[$a]["destination"];?></td>
                 <td><?php $date = date_create($purchase_order[$a]["requirement_date"]); echo date_format($date,"D, M d, Y");?></td>
                 <td>
@@ -66,19 +66,19 @@
                     </tr>
                     <tr>
                         <td>Nama Supplier</td>
-                        <td><?php echo ucwords($purchase_order[$a]["nama_supplier"]);?></td>
+                        <td><?php echo ucwords($purchase_order[$a]["nama_supplier_po"]);?></td>
                     </tr>
                     <tr>
                         <td>PIC Supplier</td>
-                        <td><?php echo ucwords($purchase_order[$a]["nama_pic_supplier"]);?></td>
+                        <td><?php echo ucwords($purchase_order[$a]["nama_cp_supplier"]);?></td>
                     </tr>
                     <tr>
                         <td>Nama Shipper</td>
-                        <td><?php echo ucwords($purchase_order[$a]["nama_shipper"]);?></td>
+                        <td><?php echo ucwords($purchase_order[$a]["nama_shipper_po"]);?></td>
                     </tr>
                     <tr>
                         <td>PIC Shipper</td>
-                        <td><?php echo ucwords($purchase_order[$a]["nama_pic_shipper"]);?></td>
+                        <td><?php echo ucwords($purchase_order[$a]["nama_cp_shipper"]);?></td>
                     </tr>
                     <tr>
                         <td>Destination</td>
@@ -124,10 +124,10 @@
                     <tbody>
                         <?php for($items = 0; $items<count($purchase_order[$a]["items"]); $items++):?>
                         <tr>
-                            <td><?php echo nl2br(get1Value("order_confirmation_item","nama_oc_item",array("id_oc_item" => $purchase_order[$a]["items"][$items]["id_oc_item"])));?></td>
-                            <td><?php echo nl2br($purchase_order[$a]["items"][$items]["nama_produk_vendor"]);?></td>
-                            <td valign = "middle"><?php echo number_format($purchase_order[$a]["items"][$items]["harga_item"]);?></td>
-                            <td valign = "middle"><?php echo $purchase_order[$a]["items"][$items]["jumlah_item"]." ".$purchase_order[$a]["items"][$items]["satuan_item"];?></td>
+                            <td><?php echo nl2br($purchase_order[$a]["items"][$items]["nama_oc_item"]);?></td>
+                            <td><?php echo nl2br($purchase_order[$a]["items"][$items]["nama_produk_vendor_po"]);?></td>
+                            <td valign = "middle"><?php echo number_format($purchase_order[$a]["items"][$items]["harga_item_po"],2);?></td>
+                            <td valign = "middle"><?php echo number_format($purchase_order[$a]["items"][$items]["jumlah_item_po"],2)." ".$purchase_order[$a]["items"][$items]["satuan_item_po"];?></td>
                         </tr>
                         <?php endfor;?>    
                     </tbody>

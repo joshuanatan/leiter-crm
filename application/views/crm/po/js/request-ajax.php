@@ -370,7 +370,7 @@ function getDetailHargaVendor(urutan){
         success:function(respond){
             $("#nama_produk_vendor"+urutan).val(respond["nama_produk_vendor"]);
             $("#harga_satuan_produk"+urutan).val(addCommas(respond["harga_produk"]));
-            $("#currency"+urutan).val(respond["mata_uang"]);
+            //$("#currency"+urutan).val(respond["mata_uang"]);
         } 
     });
 }

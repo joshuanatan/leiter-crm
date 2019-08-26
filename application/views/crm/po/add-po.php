@@ -75,7 +75,6 @@
                                             <th style = "width:18%">Nama Produk Vendor</th>
                                             <th style = "width:18%">Quantity</th>
                                             <th style = "width:18%">Selling Price</th>
-                                            <th style = "width:18%">Currency (From Vendor Price)</th>
                                             <th style = "width:18%">Vendor Price</th>
                                         </thead>
                                         <tbody>
@@ -98,7 +97,6 @@
 
                                                 <td><input type = "text" readonly id = "harga_jual_satuan_produk<?php echo $a;?>" class = "form-control" name = ""></td>
 
-                                                <td><input type = "text" readonly id = "currency<?php echo $a;?>" class = "form-control" name = ""></td>
 
                                                 <td><input type = "text" oninput = "commas('harga_satuan_produk<?php echo $a;?>')" id = "harga_satuan_produk<?php echo $a;?>" class = "form-control" name = "harga_satuan_produk<?php echo $a;?>"></td>
                                             </tr>
@@ -162,11 +160,12 @@
                             </div>
                             <br/>
                             <div class = "form-group">
-                                <a href = "<?php echo base_url();?>crm/po" class = "btn btn-outline btn-sm btn-primary">BACK</a>
                             </div>
                         </div>
                     </form>
                 </div>
+                
+                <a href = "<?php echo base_url();?>crm/po" class = "btn btn-outline btn-sm btn-primary">BACK</a>
             </div>
             <!-- End Example Tabs Left -->
         </div>
