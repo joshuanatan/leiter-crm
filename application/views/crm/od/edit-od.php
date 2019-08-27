@@ -45,17 +45,44 @@
                                 <div class = "form-group col-lg-12">
                                     <table class = "table table-stripped col-lg-12" style = "width:100%">
                                         <thead>
+                                            <th>Add</th>
+                                            <th>Delete</th>
                                             <th>Product Name</th>
                                             <th>Order Quantity</th>
                                             <th>Sent Quantity</th>
-                                            <th>Send Amount</th>
+                                            <th>Jumlah Item</th>
                                         </thead>
                                         <tbody id ="t1">
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                            <?php for($a = 0; $a<count($items); $a++):?>
+                                            <tr>
+                                                <input type = "hidden" name = "id_submit_od<?php echo $items[$a]["id_oc_item"];?>" value = "<?php echo $items[$a]["id_od_item"];?>">
+                                                <td>
+                                                    <div class = "checkbox-custom checkbox-primary">
+                                                        <input type = "checkbox" name = "checks[]" value = "<?php echo $items[$a]["id_oc_item"];?>" <?php if($items[$a]["id_od_item"] != "") echo "checked"; ?>>
+                                                        <label></label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <?php if($items[$a]["id_od_item"] != ""): ?>
+                                                    <div class = "checkbox-custom checkbox-primary">
+                                                        <input type = "checkbox" name = "delete[]" value = "<?php echo $items[$a]["id_od_item"];?>">
+                                                        <label></label>
+                                                    </div>
+                                                    <?php endif;?>
+                                                </td>
+                                                <td>
+                                                    <?php echo nl2br($items[$a]["nama_oc_item"]);?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $items[$a]["final_amount_oc"]." ".$items[$a]["satuan_produk_oc"];?>
+                                                </td>
+                                                <td><?php echo $items[$a]["delivered"]." ".$items[$a]["satuan_produk_oc"];;?>
+                                                </td>
+                                                <td>
+                                                    <input type = "number" value = "<?php echo $items[$a]["item_qty"];?>" class = "form-control" name = "jumlah_kirim<?php echo $items[$a]["id_oc_item"];?>">
+                                                </td>
+                                            </tr>
+                                        <?php endfor;?>
                                         </tbody>
                                     </table>
                                 </div>

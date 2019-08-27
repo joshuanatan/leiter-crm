@@ -54,10 +54,10 @@
                 </div>
                 <div class="modal-body">
                     <table class = "table table-bordered table-stripped">
-                    <?php for($b = 0 ; $b<count($od[$a]["od_item"]); $b++): ?>
+                    <?php for($b = 0 ; $b<count($od[$a]["items"]); $b++): ?>
                         <tr>
-                            <td><?php echo nl2br($od[$a]["od_item"][$b]["nama_produk"]);?></td>
-                            <td><?php echo $od[$a]["od_item"][$b]["item_qty"];?> <?php echo $od[$a]["od_item"][$b]["satuan_produk"];?></td>
+                            <td><?php echo nl2br($od[$a]["items"][$b]["nama_oc_item"]);?></td>
+                            <td><?php echo $od[$a]["items"][$b]["item_qty"];?> <?php echo $od[$a]["items"][$b]["satuan_produk"];?></td>
                         </tr>
                     <?php endfor;?>
                     </table>

@@ -160,10 +160,18 @@ class Od extends CI_Controller{
             "nama_perusahaan","id_perusahaan"
         );
         $result= selectRow("perusahaan",$where,$field);
-        
         $data["courier"] = $result->result_array(); 
 
-
+        $id_submit_oc = $data["od"][0]["id_submit_oc"];
+        $where = array(
+            "status_oc_item" => 0
+        );
+        $field = array(
+            "od_item_detail.id_od_item","od_item_detail.id_oc_item","nama_oc_item","item_qty","delivered","satuan_produk_oc","final_amount_oc"  
+        );
+        $result = $this->Mdod_item->getOdItem($where,$field,$id_submit_oc,$id_submit_od);
+        //echo $this->db->last_query();
+        $data["items"] = $result->result_array();
         $this->req();
         $this->load->view("crm/content-open");
         $this->load->view("crm/od/category-header");
@@ -182,6 +190,39 @@ class Od extends CI_Controller{
             "alamat_pengiriman" => $this->input->post("alamat_pengiriman"),
         );
         updateRow("od_core",$data,$where);
+
+        $checks = $this->input->post("checks");
+        $delete = $this->input->post("delete");
+        if($checks != ""){
+            foreach($checks as $checked){
+                $id_od_item = $this->input->post("id_submit_od".$checked);
+                if($id_od_item == ""){ /*insert baru [insert]*/
+                    $data = array(
+                        "id_submit_od" => $this->input->post("id_submit_od"),
+                        "id_oc_item" => $checked,
+                        "item_qty" => $this->input->post("jumlah_kirim".$checked)
+                    );
+                    insertRow("od_item",$data);
+                }
+                else{ /*sudah lama [update]*/
+                    $where = array(
+                        "id_od_item" => $id_od_item
+                    );
+                    $data = array(
+                        "item_qty" => $this->input->post("jumlah_kirim".$checked)
+                    );
+                    updateRow("od_item",$data,$where);
+                }
+            }
+        }
+        if($delete != ""){
+            foreach($delete as $deleted){
+                $where = array(
+                    "id_od_item" => $deleted
+                );
+                deleteRow("od_item",$where);
+            }
+        }
         redirect("crm/od/edit/".$this->input->post("id_submit_od"));
     }
     function odPdf($id_submit_od){ //sudah di tes
