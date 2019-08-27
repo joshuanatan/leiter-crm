@@ -17,7 +17,7 @@ class Oc extends CI_Controller{
         $where = array(
             "item_oc" => array(
                 "id_submit_oc" => $this->input->post("id_submit_oc"),
-                "status_oc_item" => 0
+                //"status_oc_item" => 0
             ),
             "od" => array(
                 "id_submit_oc" => $this->input->post("id_submit_oc")
