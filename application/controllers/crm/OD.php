@@ -143,24 +143,25 @@ class Od extends CI_Controller{
         redirect("crm/od");
     }
     public function edit($id_submit_od){ //sudah di tes
-        $where["od"] = array(
+        $where = array(
             "id_submit_od" => $id_submit_od
         );
-        $field["od"] = array(
-            "id_submit_od","id_submit_oc","no_od","id_courier","delivery_method","alamat_pengiriman","up_cp","date_od_add"
+        $field = array(
+            "id_submit_od","id_submit_oc","no_od","id_courier","delivery_method","alamat_pengiriman","up_cp","date_od_add","no_po_customer"
         );
-        $result["od"] = selectRow("od_core",$where["od"]);
-        $data["od"] = foreachResult($result["od"],$field["od"],$field["od"]);
-        $data["od"]["no_po_customer"] = get1Value("order_confirmation","no_po_customer",array("id_submit_oc" => $data["od"]["id_submit_oc"]));
-        $where["courier"] = array(
+        $result = selectRow("od_detail",$where,$field);
+        $data["od"] = $result->result_array();
+
+        $where = array(
             "status_perusahaan" => 0,
             "peran_perusahaan" => "SHIPPING"
         );
-        $result["courier"] = $this->Mdperusahaan->getListPerusahaan($where["courier"]);
-        $field["courier"] = array(
+        $field = array(
             "nama_perusahaan","id_perusahaan"
         );
-        $data["courier"] = foreachMultipleResult($result["courier"],$field["courier"],$field["courier"]); 
+        $result= selectRow("perusahaan",$where,$field);
+        
+        $data["courier"] = $result->result_array(); 
 
 
         $this->req();

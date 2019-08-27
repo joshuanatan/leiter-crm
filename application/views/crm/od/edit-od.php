@@ -13,21 +13,21 @@
                     <form action = "<?php echo base_url();?>crm/od/editOd" method = "post">    
                         <div class="tab-content">
                             <div class="tab-pane active" id="primaryData" role="tabpanel">
-                                <input type = "hidden" name = "id_submit_od" value = "<?php echo $od["id_submit_od"];?>">
+                                <input type = "hidden" name = "id_submit_od" value = "<?php echo $od[0]["id_submit_od"];?>">
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">No Order Delivery</h5>
-                                    <input type ="text" value = "<?php echo $od["no_od"];?>" name = "no_od" class = "form-control" readonly>
+                                    <input type ="text" value = "<?php echo $od[0]["no_od"];?>" name = "no_od" class = "form-control" readonly>
                                 </div>
                                 <div class = "form-group"> <!-- nanti bentuknya nomorquotation/versi -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Customer PO No.</h5> 
-                                    <input type ="text"  value = "<?php echo $od["no_po_customer"];?>" class = "form-control" readonly>
+                                    <input type ="text"  value = "<?php echo $od[0]["no_po_customer"];?>" class = "form-control" readonly>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Courier</h5>
                                     <select name = "courier" class = "form-control" data-plugin = "select2" id = "idcourier">
                                         <option selected>Choose Courier</option>
                                         <?php for($a = 0; $a<count($courier); $a++): ?>
-                                        <option <?php if($od["id_courier"] == $courier[$a]["id_perusahaan"]) echo "selected";?> value = "<?php echo $courier[$a]["id_perusahaan"];?>"><?php echo $courier[$a]["nama_perusahaan"];?></option>
+                                        <option <?php if($od[0]["id_courier"] == $courier[$a]["id_perusahaan"]) echo "selected";?> value = "<?php echo $courier[$a]["id_perusahaan"];?>"><?php echo $courier[$a]["nama_perusahaan"];?></option>
                                         <?php endfor;?>
                                     </select>
                                 </div>
@@ -35,8 +35,8 @@
                                     <h5 style = "color:darkgrey; opacity:0.8">Delivery Method</h5>
                                     <select data-plugin = "select2" name = "method" id = "method" class = "form-control namaCust">
                                         <option value = "SEA">SEA</option>
-                                        <option <?php if($od["delivery_method"] == "AIR") echo "selected";?> value = "AIR">AIR</option>
-                                        <option <?php if($od["delivery_method"] == "LAND") echo "selected";?> value = "LAND">LAND</option>
+                                        <option <?php if($od[0]["delivery_method"] == "AIR") echo "selected";?> value = "AIR">AIR</option>
+                                        <option <?php if($od[0]["delivery_method"] == "LAND") echo "selected";?> value = "LAND">LAND</option>
                                     </select>
                                 </div>
                             </div>
@@ -66,13 +66,13 @@
                                 <div class = "form-group col-lg-12">
                                     <div class = "form-group">
                                         <h5 style = "opacity:0.5">Up CP</h5>
-                                        <input type = "text" value = "<?php echo $od["up_cp"];?>" class = "form-control" name = "up_cp">
+                                        <input type = "text" value = "<?php echo $od[0]["up_cp"];?>" class = "form-control" name = "up_cp">
                                     </div>
                                 </div>
                                 <div class = "form-group col-lg-12">
                                     <div class = "form-group">
                                         <h5 style = "opacity:0.5">Alamat Pengiriman</h5>
-                                        <textarea class = "form-control" name = "alamat_pengiriman"><?php echo $od["alamat_pengiriman"];?></textarea>
+                                        <textarea class = "form-control" name = "alamat_pengiriman"><?php echo $od[0]["alamat_pengiriman"];?></textarea>
                                     </div> 
                                 </div>
                                 <div class = "form-group col-lg-12">
