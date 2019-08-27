@@ -31,26 +31,40 @@ class Mdorder_confirmation extends CI_Model{
         $this->db->order_by("id_submit_oc","DESC");
         return $this->db->get_where("order_confirmation",$where);
     }
-    public function getListOcForOd($where){
-        $this->db->join("order_confirmation_metode_pembayaran","order_confirmation_metode_pembayaran.id_submit_oc = order_confirmation.id_submit_oc","inner");
-        $this->db->where("(is_ada_transaksi = 1 or (is_ada_transaksi = 0 and status_bayar = 0))",NULL,FALSE); //ngecek pembayaran pertama apakah. 1. tidak ada transaksi atau 2. ada transaksi namun sudah lunas
-        $this->db->where("((is_ada_transaksi2 = 0 and trigger_pembayaran2 = 1 and status_bayar2 = 0) or (is_ada_transaksi2 = 0 and trigger_pembayaran2 = 2 ) or (is_ada_transaksi2 = 1))",NULL,FALSE);
-        //ngecek pembayaran kedua apakah 1. ada transaksi sebelum OD dan sudah bayar / 2. ada transaksi tapi setelah OD / 3. tidak ada transaksi kedua (DP 100%). Kalau dP 100% berarti balik ke kondisi 1.2 (ada transaksi namun sudah lunas)
-        return $this->db->get_where("order_confirmation",$where);
-        /*
-        SELECT * FROM `order_confirmation` INNER JOIN `order_confirmation_metode_pembayaran` ON `order_confirmation_metode_pembayaran`.`id_submit_oc` = `order_confirmation`.`id_submit_oc` WHERE (is_ada_transaksi = 1 or (is_ada_transaksi = 0 and status_bayar = 0)) AND ((is_ada_transaksi2 = 0 and trigger_pembayaran2 = 1 and status_bayar2 = 0) or (is_ada_transaksi2 = 0 and trigger_pembayaran2 = 2 ) or (is_ada_transaksi2 = 1)) AND `status_aktif_oc` = 0
+    public function getListOcForOd($where,$field){
+        $this->db->select($field);
+        $this->db->group_start();
 
-        (
-            is_ada_transaksi = 1 or //kalau gapake DP
-            (is_ada_transaksi = 0 and status_bayar = 0) //kalau pake DP dan sudah lunas
-        ) 
-        AND  //harus memenuhi keduanya
-        (
-            (is_ada_transaksi2 = 0 and trigger_pembayaran2 = 1 and status_bayar2 = 0) or //kalau ada pelunasan, sebelum OD, dan lunas
-            (is_ada_transaksi2 = 0 and trigger_pembayaran2 = 2 ) or //kalau ada pelunasan, setelah od
-            (is_ada_transaksi2 = 1) //kalau ga ada pelunasan
-        )
-        */
+            $this->db->group_start();
+                $this->db->where("is_ada_transaksi",0);
+                $this->db->where("status_bayar",0);
+            $this->db->group_end();
+
+            $this->db->or_where("is_ada_transaksi",1);
+        $this->db->group_end();
+
+        $this->db->group_start();
+            
+            /*pelunasan sebelum od [harus lunas]*/
+            $this->db->group_start();
+                $this->db->where("is_ada_transaksi2",0);
+                $this->db->where("trigger_pembayaran2",1);
+                $this->db->where("status_bayar2",0);
+            $this->db->group_end();
+
+            /*pelunasan setelah od*/
+            $this->db->or_group_start();
+                $this->db->where("is_ada_transaksi2", 0 );
+                $this->db->where("trigger_pembayaran2", 2);
+            $this->db->group_end();
+
+            /*tidak ada pelunasan, semua lunas di awal*/
+            $this->db->or_group_start();
+                $this->db->where("is_ada_transaksi2", 1);
+            $this->db->group_end();
+
+        $this->db->group_end();
+        return $this->db->get_where("metode_pembayaran_oc",$where);
     }
     /************************************************************* */
     

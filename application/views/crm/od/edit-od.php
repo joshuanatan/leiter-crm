@@ -6,6 +6,7 @@
                 <div class="nav-tabs-vertical" data-plugin="tabs">
                     <ul class="nav nav-tabs mr-25" role="tablist">
                         <li class="nav-item" role="presentation"><a class="nav-link active" data-toggle="tab" href="#primaryData" aria-controls="primaryData" role="tab">Primary Data</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#items" aria-controls="pengiriman" role="tab">Items</a></li>
                         <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#dokumen" aria-controls="pengiriman" role="tab">Dokumen</a></li>
 
                     </ul>
@@ -39,6 +40,26 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="tab-pane" id="items" role="tabpanel">
+                                
+                                <div class = "form-group col-lg-12">
+                                    <table class = "table table-stripped col-lg-12" style = "width:100%">
+                                        <thead>
+                                            <th>Product Name</th>
+                                            <th>Order Quantity</th>
+                                            <th>Sent Quantity</th>
+                                            <th>Send Amount</th>
+                                        </thead>
+                                        <tbody id ="t1">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                             <!-- fungsi -->
                             <div class="tab-pane" id="dokumen" role="tabpanel">
                                 
@@ -61,9 +82,9 @@
                                 </div>
                             </div>
                         </div>
-                        <a href = "<?php echo base_url();?>crm/od" class = "btn btn-primary btn-sm btn-outline">BACK</a>
                     </form>
                 </div>
+                <a href = "<?php echo base_url();?>crm/od" class = "btn btn-primary btn-sm btn-outline">BACK</a>
             </div>
             <!-- End Example Tabs Left -->
         </div>
