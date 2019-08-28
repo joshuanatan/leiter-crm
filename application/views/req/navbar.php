@@ -117,6 +117,7 @@
                                 </a>
                             </li>
                             <?php endif;?>
+                            <?php if(false):?>
                             <?php if(isExistsInTable("privilage",array("id_user" => $this->session->id_user, "id_menu" => "vendor")) == 0):?>
                             <li class="site-menu-item">
                                 <a class="animsition-link" href="<?php echo base_url();?>crm/vendor">
@@ -124,7 +125,7 @@
                                 </a>
                             </li>
                             <?php endif;?>
-                            
+                            <?php endif;?>
                             <?php if(isExistsInTable("privilage",array("id_user" => $this->session->id_user, "id_menu" => "quotation")) == 0):?>
                             <li class="site-menu-item">
                                 <a class="animsition-link" href="<?php echo base_url();?>crm/quotation">
