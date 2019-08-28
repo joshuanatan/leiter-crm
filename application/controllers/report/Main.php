@@ -11,6 +11,7 @@ class main extends CI_Controller{
         $this->load->view("plugin/form/form-css");
         $this->load->view("plugin/chart-widget/chart-widget-css");
         $this->load->view("plugin/chart-js/chart-js-css");
+        $this->load->view("plugin/wysiwyg/wysiwyg-css");
         $this->load->view("req/head-close");
         $this->load->view("report/report-open");
         $this->load->view("req/top-navbar");
@@ -155,7 +156,7 @@ class main extends CI_Controller{
         );
         $data["visit"] = foreachMultipleResult($result,$field,$field);
         for($a = 0; $a<count($data["visit"]); $a++){
-            $data["visit"][$a]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $data["visit"][$a]["id_perusahaan"]));
+            
             $where = array(
                 "id_submit_report" => $data["visit"][$a]["id_submit_report"],
                 "status_next_action" => 0
@@ -172,6 +173,7 @@ class main extends CI_Controller{
         $this->load->view("report/main/visit-report",$data);
         $this->load->view("report/content-close");
         $this->close();
+        $this->load->view("plugin/wysiwyg/wysiwyg-js");
     }
     public function insertVisitReport(){
         if($this->session->id_user == "") redirect("login/welcome");
@@ -259,5 +261,15 @@ class main extends CI_Controller{
         $split = explode(":",$data["visit"]["action_duration"]);
         $data["visit"]["action_duration"] = $split[0]." Jam ".$split[1]." Menit";
         $this->load->view("report/main/pdf-visit-report",$data);
+    }
+    public function testwysiwyg(){
+        $teks = $this->input->post("teks");
+        $data = array(
+            "konten" => $teks
+        );
+        insertRow("temp_wysiwyg",$data);
+        $result = selectRow("temp_wysiwyg",array(),"konten");
+        $hasil = $result->result_array();
+        echo $hasil[0]["konten"];
     }
 }
