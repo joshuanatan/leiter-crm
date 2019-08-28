@@ -4,21 +4,30 @@ class Welcome extends CI_Controller{
         parent::__construct();
         $this->load->model("Mduser");
         $this->load->model("Mdmenu");
+        $this->load->model("Mddashboard");
     }
     public function index(){
         if($this->session->id_user == "") redirect("login/welcome");
+        $year = date("Y");
+        $field = array(
+            "bulan_invoice","tahun_invoice","total"
+        );
+        $durasi = 3;
+        $where = array();
+        $result = $this->Mddashboard->getSalesMonthly($field,$where,$year,$durasi);
+        $data["penghasilan"] = $result->result_array();
         $this->load->view("req/head");
         $this->load->view("plugin/chart-js/chart-js-css");
         $this->load->view("req/head-close");
         $this->load->view("req/top-navbar");
         $this->load->view("req/navbar");
         /*--------------------------------------------------------*/
-        $this->load->view("welcome_message");
+        $this->load->view("dashboard/main");
         /*--------------------------------------------------------*/
         $this->load->view("req/script");
         $this->load->view("req/html-close");
         $this->load->view("plugin/chart-js/chart-js-js");
-        $this->load->view("welcome/js/chart-js");
+        $this->load->view("welcome/js/chart-js",$data);
     }
     public function detail(){
         $this->load->view("req/head");
