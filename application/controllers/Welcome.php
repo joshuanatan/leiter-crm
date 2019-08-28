@@ -26,6 +26,10 @@ class Welcome extends CI_Controller{
         $where = array();
         $result = $this->Mddashboard->getJumlahPo($field,$where,$year,$durasi);
         $data["po"] = $result->result_array();
+
+        $result = $this->Mddashboard->getCustomerOrder($year);
+        $data["customer_order"] = $result->result_array();
+        
         $this->load->view("req/head");
         $this->load->view("plugin/chart-js/chart-js-css");
         $this->load->view("req/head-close");
