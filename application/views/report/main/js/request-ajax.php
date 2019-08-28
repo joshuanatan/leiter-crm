@@ -7,8 +7,7 @@ function copy(id_source, id_target){
 <script>
 function getRecommendationPerusahaan(){
     
-    var teks = $("#backup").val();
-    var length = teks.length;
+    var teks = $("#namaperusahaan").val();
     if(teks != ""){
         $.ajax({
             url:"<?php echo base_url();?>interface/perusahaan/searchCustomerByName",
@@ -16,21 +15,19 @@ function getRecommendationPerusahaan(){
             dataType:"JSON",
             data:{nama_perusahaan:teks},
             success:function(respond){
+                var html = "";
                 if(respond.length != 0){
-                    $("#customerNotFound").css("display","none");
-                    $("#namaperusahaan").val(respond["nama_perusahaan"]);
-                    var sumber = document.getElementById("namaperusahaan");
-                    sumber.focus();
-                    sumber.setSelectionRange(length,respond["nama_perusahaan"].length);
-                    $("#id_perusahaan").val(respond["id_perusahaan"]);
+                    for(var a =0; a<respond.length; a++){
+                        html += "<option value = '"+respond[a]["id_perusahaan"]+"-"+respond[a]["id_cp"]+"'>"+respond[a]["nama_perusahaan"]+" "+respond[a]["nama_cp"]+"</option>";
+                    }
                 }
                 else{
-                    $("#customerNotFound").css("display","block");
+                    html = "<option>CUSTOMER TIDAK DITEMUKAN</option>";
                 }
+                $("#recommendationPerusahaan").html(html);
             }
         });
     }
     
 }
-
 </script>

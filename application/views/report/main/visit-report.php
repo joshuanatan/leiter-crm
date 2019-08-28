@@ -61,11 +61,13 @@
             </div>
             <form action = "<?php echo base_url();?>report/main/insertVisitReport" method = "POST" enctype = "multipart/form-data">
                 <div class = "modal-body">
+                    
                     <div class = "form-group">
-                        <h5 style = "opacity:0.5">Nama Perusahaan</h5>
-                        <input type = "text" name = "judul_report" class = "form-control" id = "namaperusahaan" oninput = "copy('namaperusahaan','backup');getRecommendationPerusahaan()">
-                        <input type = "hidden" id ="backup">
-                        <input type = "hidden" id = "id_perusahaan" name = "id_perusahaan">
+                        <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
+                        <span id = "customerNotFound" style = "color:red; display:none">CUSTOMER NOT FOUND</span>
+                        <input required type = "text" class = "form-control" oninput = "getRecommendationPerusahaan()" id = "namaperusahaan" placeholder="Ketik Perusahaan"> 
+                        <select class = "form-control" name = "id_perusahaan" id = "recommendationPerusahaan"></select>
+                            
                     </div>
                     <div class = "form-group">
                         <span style = "color:red; display:none" id = "customerNotFound">CUSTOMER NOT FOUND</span>
@@ -90,16 +92,17 @@
                     <div class = "row">
                         <div class = "form-group col-lg-6 col-sm-12">
                             <h5 style = "opacity:0.5">PIC (Ibu Abc / Bapak Def)</h5>
-                            <input type = "text" name = "action_pic" class = "form-control">
+                            <textarea name = "action_pic" class = "form-control"></textarea>
                         </div>
                         <div class = "form-group col-lg-6 col-sm-12">
                             <h5 style = "opacity:0.5">Jabatan PIC</h5>
-                            <input type = "text" name = "pic_position" class = "form-control">
+                            <textarea name = "pic_position" class = "form-control"></textarea>
                         </div>
                     </div>
                     <div class = "form-group">
-                        <h5 style = "opacity:0.5">Dialog</h5>
-                        <textarea class = "form-control" name = "action_conversation"></textarea>
+                        <h5 style = "opacity:0.5">Dialog</h5>        
+                        <div id="summernote" data-plugin="summernote">
+                        </div>
                         <input type = "file" name = "conversation_image">
                     </div>  
                     <div class = "form-group">
@@ -108,7 +111,7 @@
                     </div>  
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Conclusion</h5>
-                        <textarea class = "form-control" name = "action_conclusion"></textarea>
+                        <textarea data-plugin="summernote" class = "form-control" name = "action_conclusion"></textarea>
                     </div>  
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Percentage (Isi persennya saja)</h5>
@@ -185,3 +188,59 @@
     </div>
 </div>
 <?php endfor;?>
+<div class = "modal fade" id = "customerBaru">
+    <div class = "modal-dialog modal-xl">
+        <div class ="modal-content">
+            <div class = "modal-header">
+                <h4 class = "modal-title">TAMBAH CUSTOMER BARU</h4>
+            </div>
+            <form action = "<?php echo base_url();?>crm/request/insertNewCustomer" method = "POST">
+                <div class = "modal-body">
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Nama Perusahaan Customer</h5>
+                        <input type = "text" class = "form-control" name = "add_nama_customer">
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Alamat Invoice</h5>
+                        <textarea class = "form-control" name = "add_address_customer"></textarea>
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Alamat Pengiriman</h5>
+                        <textarea class = "form-control" name = "add_pengiriman_customer"></textarea>
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Segment</h5>
+                        <input type = "text" class = "form-control" name = "add_segment_customer">
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">PIC Customer</h5>
+                        <input type = "text" class = "form-control" name = "add_pic">
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Jenis Kelamin PIC</h5>
+                        <select class = "form-control" name = "add_jk_pic">
+                            <option value = "Mr">MR</option>
+                            <option value = "Ms">MS</option>
+                        </select>
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">Email PIC</h5>
+                        <input type = "text" class = "form-control" name = "add_email_pic">
+                    </div>
+                    <div class = "form-group">
+                        <h5 style = "opacity:0.5">No Handphone PIC</h5>
+                        <input type = "text" class = "form-control" name = "add_phone_pic">
+                    </div>
+                    <div class = "form-group">
+                        <button type = "submit" class = "btn btn-primary btn-outline btn-sm">SUBMIT</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<form action = "<?php echo base_url();?>report/main/testwysiwyg" method = "POST">
+    <textarea name = "teks" id="summernote" data-plugin="summernote">
+    </textarea>
+    <input type = "submit">
+</form>
