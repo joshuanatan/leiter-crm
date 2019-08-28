@@ -9,13 +9,23 @@ class Welcome extends CI_Controller{
     public function index(){
         if($this->session->id_user == "") redirect("login/welcome");
         $year = date("Y");
+        $durasi = 3;
+
         $field = array(
             "bulan_invoice","tahun_invoice","total"
         );
-        $durasi = 3;
         $where = array();
         $result = $this->Mddashboard->getSalesMonthly($field,$where,$year,$durasi);
         $data["penghasilan"] = $result->result_array();
+
+        $field = array(
+            "count(distinct(no_po_customer)) as total",
+            "bulan_oc",
+            "tahun_oc"
+        );
+        $where = array();
+        $result = $this->Mddashboard->getJumlahPo($field,$where,$year,$durasi);
+        $data["po"] = $result->result_array();
         $this->load->view("req/head");
         $this->load->view("plugin/chart-js/chart-js-css");
         $this->load->view("req/head-close");

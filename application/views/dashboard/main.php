@@ -21,7 +21,7 @@ $tahun = date("Y");
                     <div class="col-lg-12 col-xl-12">
                     <!-- Example Bar -->
                         <div class="example-wrap">
-                            <h4 class="example-title">RFQ/QUOTATION/OC 2019</h4>
+                            <h4 class="example-title">INCOMING PURCHASE ORDER <?php echo $tahun-0;?>-<?php echo $tahun-1;?>-<?php echo $tahun-2;?></h4>
                             <div class="example text-center">
                                 <canvas id="exampleChartjsBar2" style = "width:100%"></canvas>
                             </div>
