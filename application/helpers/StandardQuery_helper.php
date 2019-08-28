@@ -29,14 +29,17 @@ if ( ! function_exists('deleteRow')){
 }
 
 if ( ! function_exists('selectRow')){
-    function selectRow($table,$where,$field = "",$limit = "",$offset = "",$order = "", $order_direction = ""){
+    function selectRow($table,$where,$field = "",$limit = "",$offset = "",$order = "", $order_direction = "",$group_by = ""){
         $CI =& get_instance();
+        if($group_by != ""){
+            $CI->db->group_by($group_by);
+        }
         if($order != ""){
             if($order_direction != ""){
-                $this->db->order_by($order,$order_direction);
+                $CI->db->order_by($order,$order_direction);
             }
             else{
-                $this->db->order_by($order,'ASC');
+                $CI->db->order_by($order,'ASC');
             }
         }
         if($limit != ""){
