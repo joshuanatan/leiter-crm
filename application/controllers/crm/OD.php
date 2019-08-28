@@ -170,7 +170,6 @@ class Od extends CI_Controller{
             "od_item_detail.id_od_item","od_item_detail.id_oc_item","nama_oc_item","item_qty","delivered","satuan_produk_oc","final_amount_oc"  
         );
         $result = $this->Mdod_item->getOdItem($where,$field,$id_submit_oc,$id_submit_od);
-        //echo $this->db->last_query();
         $data["items"] = $result->result_array();
         $this->req();
         $this->load->view("crm/content-open");
