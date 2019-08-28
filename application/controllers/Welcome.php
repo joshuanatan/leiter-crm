@@ -41,28 +41,103 @@ class Welcome extends CI_Controller{
         $this->load->view("req/script");
         $this->load->view("req/html-close");
         $this->load->view("plugin/chart-js/chart-js-js");
-        $this->load->view("welcome/js/chart-js",$data);
+        $this->load->view("dashboard/js/main-js",$data);
     }
-    public function detail(){
+    public function finance(){
+        if($this->session->id_user == "") redirect("login/welcome");
+        $year = date("Y");
+        $field = array(
+            "sum(total_pembayaran) as cashflow"
+        );
+        $where = array(
+            "bulan_transaksi" => (int)date("m"),
+            "tahun_transaksi" => date("Y")
+        );
+        $result = selectRow("cashflow_overview",$where,$field);
+        $data["cashflow_balance"] = $result->result_array();
+        
+        $field = array(
+            "sum(total_pembayaran) as cashflow"
+        );
+        $where = array(
+            "bulan_transaksi" => (int)date("m"),
+            "tahun_transaksi" => date("Y"),
+            "total_pembayaran <" => 0
+        );
+        $result = selectRow("cashflow_overview",$where,$field);
+        $data["pengeluaran"] = $result->result_array();
+        
+        $field = array(
+            "sum(total_pembayaran) as cashflow"
+        );
+        $where = array(
+            "bulan_transaksi" => (int)date("m"),
+            "tahun_transaksi" => date("Y"),
+            "total_pembayaran >" => 0
+        );
+        $result = selectRow("cashflow_overview",$where,$field);
+        $data["pemasukan"] = $result->result_array();
+        
+        
+        $field = array(
+            "sum(total_pembayaran) as total_pembayaran"
+        );
+        $where = array(
+            "bulan_transaksi" => (int)date("m"),
+            "tahun_transaksi" => date("Y")
+        );
+        $result = selectRow("margin_overview",$where,$field);
+        $selisih = $result->result_array();
+        $field = array(
+            "sum(total_pembayaran) as total_pembayaran"
+        );
+        $where = array(
+            "bulan_transaksi" => (int)date("m"),
+            "tahun_transaksi" => date("Y"),
+            "total_pembayaran >" => 0
+        );
+        $result = selectRow("margin_overview",$where,$field);
+        $jual = $result->result_array();
+        $data["margin_overview"] = $selisih[0]["total_pembayaran"]/$jual[0]["total_pembayaran"]*100;
+
+        $field = array(
+            "sum(total_pembayaran) as total_pembayaran",
+            "bulan_transaksi",
+            "tahun_transaksi"
+        );
+        $where = array(
+            "tahun_transaksi " => $year,
+            "total_pembayaran >" => 0
+        );
+        $group_by = array(
+            "bulan_transaksi"
+        );
+        $result = selectRow("cashflow_overview",$where,$field,"","","","",$group_by);
+        $data["uang_masuk_bulanan"] = $result->result_array();
+
+        $where = array(
+            "tahun_transaksi " => $year,
+            "total_pembayaran <" => 0
+        );
+        $group_by = array(
+            "bulan_transaksi"
+        );
+        $result = selectRow("cashflow_overview",$where,$field,"","","","",$group_by);
+        $data["uang_keluar_bulanan"] = $result->result_array();
         $this->load->view("req/head");
-        $this->load->view("detail/css/detail-css");
+        $this->load->view("plugin/chart-js/chart-js-css");
+        $this->load->view("plugin/datatable/datatable-css");
         $this->load->view("req/head-close");
-        $this->load->view("detail/detail-open");
         $this->load->view("req/top-navbar");
         $this->load->view("req/navbar");
         /*--------------------------------------------------------*/
-        $this->load->view("detail/content-open");
-        $this->load->view("detail/employee/profile");
-        $this->load->view("detail/tab-open");
-        $this->load->view("detail/employee/tab-item");
-        $this->load->view("detail/employee/tab-content");
-        $this->load->view("detail/tab-close");
-        $this->load->view("detail/content-close");
+        $this->load->view("dashboard/finance",$data);
         /*--------------------------------------------------------*/
         $this->load->view("req/script");
-        $this->load->view("detail/js/detail-js");
-        $this->load->view("detail/detail-close");
         $this->load->view("req/html-close");
+        $this->load->view("plugin/chart-js/chart-js-js");
+        $this->load->view("dashboard/js/finance-js",$data);
+        $this->load->view("plugin/datatable/page-datatable-js");
     }
     public function register(){
         $name = array(
