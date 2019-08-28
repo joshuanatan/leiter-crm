@@ -19,11 +19,10 @@
         <div>
             <div>
                 <ul class="site-menu" data-plugin="menu">
-                <li class="site-menu-item has-sub">
+                <li class="site-menu-item">
                         <a href="<?php echo base_url();?>welcome">
-                            <i class="site-menu-icon wb-library" aria-hidden="true"></i>
+                            <i class="site-menu-icon wb-stats-bars" aria-hidden="true"></i>
                             <span class="site-menu-title">Dashboard</span>
-                            <span class="site-menu-arrow"></span>
                         </a>
                     </li>
                     <li class="site-menu-item has-sub">
