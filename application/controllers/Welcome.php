@@ -57,7 +57,8 @@ class Welcome extends CI_Controller{
             "nama_supplier","nama_shipper","no_po","requirement_date","destination","date_po_core_add","waktu_jatuh_tempo","id_submit_po"
         );
         $where = array(
-            "waktu_jatuh_tempo <= " => 5
+            "waktu_jatuh_tempo <= " => 5,
+            "status_aktif_po" => 0
         );
         $result = selectRow("po_jatuh_tempo",$where,$field);
         $data["po"] = $result->result_array();

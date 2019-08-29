@@ -31,4 +31,14 @@ where id_submit_quotation between 80 and 85;
 select * from quotation
 where tahun_quotation = 2019;
 
-select * from detail_finished_order_item
+select * from detail_finished_order_item;
+
+select count(id_submit_request) as jumlah_request_belom_quotation from price_request 
+where bulan_request = 8 and tahun_request = 2019
+and status_buat_quo = 1;
+
+select * from quotation
+where status_quotation = 0;
+
+select * from po_core;
+select * from po_detail;

@@ -24,7 +24,7 @@ class Po extends CI_Controller{
             "status_aktif_po" => 0
         );
         $field = array(
-            "id_submit_po","no_po","id_supplier","id_shipper","shipping_method","total_supplier_payment","id_submit_oc","requirement_date","destination","date_po_core_add","id_cp_supplier","id_cp_shipper","shipping_term","mata_uang_pembayaran","nama_supplier_po","nama_shipper_po","nama_cp_shipper","nama_cp_supplier","nama_perusahaan","nama_cp"
+            "id_submit_po","no_po","id_supplier","id_shipper","shipping_method","total_supplier_payment","id_submit_oc","requirement_date","destination","date_po_core_add","id_cp_supplier","id_cp_shipper","shipping_term","mata_uang_pembayaran","nama_supplier_po","nama_shipper_po","nama_cp_shipper","nama_cp_supplier","nama_perusahaan","nama_cp","status_selesai_po"
         );
         $result = selectRow("po_detail",$where,$field);
         $data["purchase_order"] = $result->result_array();
@@ -261,6 +261,16 @@ class Po extends CI_Controller{
         );
         $data = array(
             "status_aktif_po" => 1
+        );
+        updateRow("po_core",$data,$where);
+        redirect("crm/po");
+    }
+    public function done($id_submit_po){ //sudah di cek
+        $where = array(
+            "id_submit_po" => $id_submit_po
+        );
+        $data = array(
+            "status_selesai_po" => 0
         );
         updateRow("po_core",$data,$where);
         redirect("crm/po");

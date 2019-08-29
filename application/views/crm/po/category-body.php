@@ -19,8 +19,8 @@
                 <th>Shipper Firm</th>
                 <th>Destination</th>
                 <th>Requirement Date</th>
-                <th>Details</th>
-                <th>Actions</th>
+                <th style = "width:10%">Details</th>
+                <th style = "width:10%">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -39,6 +39,9 @@
                     <a target="_blank" href = "<?php echo base_url();?>crm/po/poPdf/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-primary btn-sm col-lg-12">CETAK</a>
                     <a href = "<?php echo base_url();?>crm/po/edit/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-primary btn-sm col-lg-12">EDIT</a>
                     <a href = "<?php echo base_url();?>crm/po/delete/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-danger btn-sm col-lg-12">DELETE</a>
+                    <?php if($purchase_order[$a]["status_selesai_po"] == 1):?>
+                    <a href = "<?php echo base_url();?>crm/po/done/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-success btn-sm col-lg-12">DONE</a>
+                    <?php endif;?>
                 </td>
             </tr>
             <?php endfor; ?>
