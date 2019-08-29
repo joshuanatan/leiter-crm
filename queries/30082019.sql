@@ -30,3 +30,5 @@ update quotation set bulan_quotation = '05'
 where id_submit_quotation between 80 and 85;
 select * from quotation
 where tahun_quotation = 2019;
+
+select * from detail_finished_order_item

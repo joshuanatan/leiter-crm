@@ -14,10 +14,9 @@ $tahun = date("Y");
                             </div>
                             <div class="counter counter-md counter text-right">
                                 <div class="counter-number-group">
-                                    <span class="counter-number" style = "font-size:18px">12</span><br/>
+                                    <span class="counter-number" style = "font-size:18px"><?php echo $rfq_no_quotation[0]["jumlah_request_belom_quotation"];?></span><br/>
                                     <span class="counter-number-related text-capitalize">Not-Quoted RFQ</span>
                                 </div>
-                                <div class="counter-label text-capitalize font-size-16"><?php echo date("M")."/".date("Y");?></div>
                             </div>
                         </div>
                     </div>
@@ -28,41 +27,13 @@ $tahun = date("Y");
                             </div>
                             <div class="counter counter-md counter text-right">
                                 <div class="counter-number-group">
-                                    <span class="counter-number" style = "font-size:18px">12%</span><br/>
+                                    <span class="counter-number" style = "font-size:18px"><?php echo $followup_quotation[0]["jumlah_quotation_followup"];?></span><br/>
                                     <span class="counter-number-related text-capitalize">Follow Up Quotation</span>
                                 </div>
-                                <div class="counter-label text-capitalize font-size-16"><?php echo date("M")."/".date("Y");?></div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3">
-                        <div class="card p-30 flex-row justify-content-between">
-                            <div class="white">
-                                <i class="icon icon-circle icon-2x wb-dropdown bg-red-600" aria-hidden="true"></i>
-                            </div>
-                            <div class="counter counter-md counter text-right">
-                                <div class="counter-number-group">
-                                    <span class="counter-number" style = "font-size:18px">12</span><br/>
-                                    <span class="counter-number-related text-capitalize">Overdue <br/>PO</span>
-                                </div>
-                                <div class="counter-label text-capitalize font-size-16"><?php echo date("M")."/".date("Y");?></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="card p-30 flex-row justify-content-between">
-                            <div class="white">
-                                <i class="icon icon-circle icon-2x wb-dropup bg-blue-600" aria-hidden="true"></i>
-                            </div>
-                            <div class="counter counter-md counter text-right">
-                                <div class="counter-number-group">
-                                    <span class="counter-number" style = "font-size:18px">12</span><br/>
-                                    <span class="counter-number-related text-capitalize">Quotation Win</span>
-                                </div>
-                                <div class="counter-label text-capitalize font-size-16"><?php echo date("M")."/".date("Y");?></div>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
                 <div class="row row-lg">
                     <div class="col-lg-12 col-xl-12">
@@ -86,16 +57,7 @@ $tahun = date("Y");
                         </div>
                     <!-- End Example Bar -->
                     </div>
-                    <div class="col-lg-12 col-xl-12">
-                    <!-- Example Bar -->
-                        <div class="example-wrap">
-                            <h4 class="example-title">TOP 10 CUSTOMER</h4>
-                            <div class="example text-center">
-                                <canvas id="exampleChartjsBar3" style = "width:100%"></canvas>
-                            </div>
-                        </div>
-                    <!-- End Example Bar -->
-                    </div>
+                    
                 </div>
                 <div class="row row-lg">
                     <div class="col-lg-12 col-xl-12">

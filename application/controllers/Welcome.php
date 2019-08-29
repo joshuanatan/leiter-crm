@@ -101,6 +101,27 @@ class Welcome extends CI_Controller{
         );
         $result = selectRow("order_detail",$where,$field,"","","","",$group_by);
         $data["win"] = $result->result_array();
+
+        $field = array(
+            "count(id_submit_request) as jumlah_request_belom_quotation"
+        );
+        $where = array(
+            "status_buat_quo" => 1,
+            "status_aktif_request" => 0
+        );
+        $result = selectRow("price_request",$where,$field);
+        $data["rfq_no_quotation"] = $result->result_array();
+
+        $field = array(
+            "count(id_submit_quotation) as jumlah_quotation_followup"
+        );
+        $where = array(
+            "status_quotation" => 0,
+            "status_aktif_quotation" => 0
+        );
+        $result = selectRow("quotation",$where,$field);
+        $data["followup_quotation"] = $result->result_array();
+
         $this->load->view("req/head");
         $this->load->view("plugin/chart-js/chart-js-css");
         $this->load->view("plugin/datatable/datatable-css");
