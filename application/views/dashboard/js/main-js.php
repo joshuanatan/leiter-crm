@@ -59,9 +59,7 @@
         var warna2 = ["rgba(186, 107, 99, .6)","rgba(245, 223, 218, .6)","rgba(117, 96, 99, .6)"];
         var counter = 0;
         var barChartData = {
-            labels: [
-                "January", "February", "March", "April", "May", "June", "July","Agst","September","November","December"
-            ],
+            labels: ["January", "February", "March", "April", "May", "June", "July","Agst","September","October","November","December"],
             datasets: [
                 {
                     label: <?php echo $tahun-0;?>,
@@ -341,9 +339,7 @@
         var warna2 = ["rgba(186, 107, 99, .6)","rgba(245, 223, 218, .6)","rgba(117, 96, 99, .6)"];
         var counter = 0;
         var barChartData = {
-            labels: [
-                "January", "February", "March", "April", "May", "June", "July","Agst","September","November","December"
-            ],
+            labels: ["January", "February", "March", "April", "May", "June", "July","Agst","September","October","November","December"],
             datasets: [
                 {
                     label: <?php echo $tahun-0;?>,

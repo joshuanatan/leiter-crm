@@ -124,6 +124,33 @@ class Welcome extends CI_Controller{
         );
         $result = selectRow("cashflow_overview",$where,$field,"","","","",$group_by);
         $data["uang_keluar_bulanan"] = $result->result_array();
+
+        $field = array(
+            "sum(total_pembayaran) as selisih,bulan_transaksi", "tahun_transaksi","bulan_transaksi"
+        );
+        $where = array(
+            "tahun_transaksi >=" => $year-2,
+            "total_pembayaran <" => 0  
+        );
+        $group_by = array(
+            "bulan_transaksi","tahun_transaksi"
+        );
+        $result = selectRow("margin_overview",$where,$field,"","","","",$group_by);
+        $data["selisih_untuk_margin"] = $result->result_array();
+
+        $field = array(
+            "sum(total_pembayaran) as jual,bulan_transaksi", "tahun_transaksi","bulan_transaksi"
+        );
+        $where = array(
+            "tahun_transaksi >=" => $year-2,
+            "total_pembayaran >" => 0  
+        );
+        $group_by = array(
+            "bulan_transaksi","tahun_transaksi"
+        );
+        $result = selectRow("margin_overview",$where,$field,"","","","",$group_by);
+        $data["jual_untuk_margin"] = $result->result_array();
+
         $this->load->view("req/head");
         $this->load->view("plugin/chart-js/chart-js-css");
         $this->load->view("plugin/datatable/datatable-css");
