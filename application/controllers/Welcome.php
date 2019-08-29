@@ -43,6 +43,79 @@ class Welcome extends CI_Controller{
         $this->load->view("plugin/chart-js/chart-js-js");
         $this->load->view("dashboard/js/main-js",$data);
     }
+    public function crm(){
+        $field = array(
+            "id_submit_quotation","no_quotation","total_quotation_price","dateline_quotation","date_quotation_add","waktu_jatuh_tempo","nama_perusahaan","dateline_quotation"
+        );
+        $where = array(
+            "waktu_jatuh_tempo <= " => 5
+        );
+        $result = selectRow("quotation_jatuh_tempo",$where,$field);
+        $data["quotation"] = $result->result_array();
+
+        $field = array(
+            "nama_supplier","nama_shipper","no_po","requirement_date","destination","date_po_core_add","waktu_jatuh_tempo","id_submit_po"
+        );
+        $where = array(
+            "waktu_jatuh_tempo <= " => 5
+        );
+        $result = selectRow("po_jatuh_tempo",$where,$field);
+        $data["po"] = $result->result_array();
+
+        $field = array(
+            "count(id_submit_request) as jumlah_rfq",
+            "bulan_request","tahun_request"
+        );
+        $where = array(
+            "status_aktif_request" => 0,
+            "tahun_request" => date("Y")
+        );
+        $group_by = array(
+            "bulan_request"
+        );
+        $result = selectRow("order_detail",$where,$field,"","","","",$group_by);
+        $data["rfq"] = $result->result_array();
+
+        $field = array(
+            "count(id_quotation) as quotation_loss", "bulan_quotation","tahun_quotation"
+        );
+        $where = array(
+            "tahun_quotation" => date("Y"),
+            "status_quotation" => 1
+        );
+        $group_by = array(
+            "bulan_quotation"
+        );
+        $result = selectRow("order_detail",$where,$field,"","","","",$group_by);
+        $data["loss"] = $result->result_array();
+
+        $field = array(
+            "count(id_quotation) as quotation_win", "bulan_quotation","tahun_quotation"
+        );
+        $where = array(
+            "tahun_quotation" => date("Y"),
+            "status_quotation" => 0
+        );
+        $group_by = array(
+            "bulan_quotation"
+        );
+        $result = selectRow("order_detail",$where,$field,"","","","",$group_by);
+        $data["win"] = $result->result_array();
+        $this->load->view("req/head");
+        $this->load->view("plugin/chart-js/chart-js-css");
+        $this->load->view("plugin/datatable/datatable-css");
+        $this->load->view("req/head-close");
+        $this->load->view("req/top-navbar");
+        $this->load->view("req/navbar");
+        /*--------------------------------------------------------*/
+        $this->load->view("dashboard/crm",$data);
+        /*--------------------------------------------------------*/
+        $this->load->view("req/script");
+        $this->load->view("req/html-close");
+        $this->load->view("plugin/chart-js/chart-js-js");
+        $this->load->view("dashboard/js/crm-js",$data);
+        $this->load->view("plugin/datatable/page-datatable-js");
+    }
     public function finance(){
         if($this->session->id_user == "") redirect("login/welcome");
         $year = date("Y");
@@ -234,6 +307,26 @@ class Welcome extends CI_Controller{
         );
         updateRow("tagihan",$data,$where);
         redirect("welcome/finance");
+    }
+    public function updateJatuhTempoPo(){
+        $where = array(
+            "id_submit_po" => $this->input->post("id_submit_po")
+        );
+        $data = array(
+            "requirement_date" => $this->input->post("updateTanggal".$this->input->post("id_submit_po"))
+        );
+        updateRow("po_core",$data,$where);
+        redirect("welcome/crm");
+    }
+    public function updateJatuhTempoQuotationCustomer(){
+        $where = array(
+            "id_submit_quotation" => $this->input->post("id_submit_quotation")
+        );
+        $data = array(
+            "dateline_quotation" => $this->input->post("updateTanggal".$this->input->post("id_submit_quotation"))
+        );
+        updateRow("quotation",$data,$where);
+        redirect("welcome/crm");
     }
 }
 ?>
