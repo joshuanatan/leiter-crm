@@ -151,6 +151,37 @@ class Welcome extends CI_Controller{
         $result = selectRow("margin_overview",$where,$field,"","","","",$group_by);
         $data["jual_untuk_margin"] = $result->result_array();
 
+        $field = array(
+            "no_invoice","no_po_customer","nominal_pembayaran","tipe_pembayaran","tgl_invoice_add","sisa_waktu","jatuh_tempo","id_submit_invoice"
+        );
+        $where = array(
+            "sisa_waktu <=" => 5
+        );
+        $result = selectRow("tagihan_customer",$where,$field);
+        $data["tagihan_customer"] = $result->result_array();
+
+        $field = array(
+            "no_invoice","no_refrence","total","peruntukan_tagihan","rekening_pembayaran","dateline_invoice","sisa_waktu","mata_uang","id_tagihan"
+        );
+        $where = array(
+            "sisa_waktu <=" => 5
+        );
+        $result = selectRow("tagihan_vendor",$where,$field);
+        $data["tagihan_vendor"] = $result->result_array();
+        for($a = 0; $a<count($data["tagihan_vendor"]); $a++){
+            switch($data["tagihan_vendor"][$a]["peruntukan_tagihan"]){
+                case "SUPPLIER":
+                $id_supplier = get1Value("po_core","id_supplier",array("no_po" => $data["tagihan_vendor"][$a]["no_refrence"]));
+                break;
+                case "SHIPPER":
+                $id_supplier = get1Value("po_core","id_shipper",array("no_po" => $data["tagihan_vendor"][$a]["no_refrence"]));
+                break;
+                case "COURIER":
+                $id_supplier = get1Value("od_core","id_courier",array("no_od" => $data["tagihan_vendor"][$a]["no_refrence"]));
+            }
+            $data["tagihan_vendor"][$a]["nama_target"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan"=>$id_supplier));
+        }
+
         $this->load->view("req/head");
         $this->load->view("plugin/chart-js/chart-js-css");
         $this->load->view("plugin/datatable/datatable-css");
@@ -183,6 +214,26 @@ class Welcome extends CI_Controller{
         $this->Mduser->insert($data);
         $this->session->res_msg = "Data Recorded";
         redirect("master/user/employee");
+    }
+    public function updateJatuhTempoInvoiceCustomer(){
+        $where = array(
+            "id_submit_invoice" => $this->input->post("id_submit_invoice")
+        );
+        $data = array(
+            "jatuh_tempo" => $this->input->post("updateTanggal".$this->input->post("id_submit_invoice"))
+        );
+        updateRow("invoice_core",$data,$where);
+        redirect("welcome/finance");
+    }
+    public function updateJatuhTempoTagihanVendor(){
+        $where = array(
+            "id_tagihan" => $this->input->post("id_tagihan")
+        );
+        $data = array(
+            "dateline_invoice" => $this->input->post("updateTanggal".$this->input->post("id_tagihan"))
+        );
+        updateRow("tagihan",$data,$where);
+        redirect("welcome/finance");
     }
 }
 ?>

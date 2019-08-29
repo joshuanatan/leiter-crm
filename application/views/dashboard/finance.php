@@ -94,16 +94,41 @@ $tahun = date("Y");
                             <h4 class="example-title">Invoice Customer Mendekati Jatuh Tempo</h4>
                             <table class = "table table-striped table-hover table-bordered" data-plugin = "DataTable">
                                 <thead>
-                                    <th>Test1</th>
-                                    <th>Test2</th>
-                                    <th>Test3</th>
+                                    <th>No Invoice</th>
+                                    <th>PO Customer No</th>
+                                    <th>Invoice Amount</th>
+                                    <th>Purpose</th>
+                                    <th>Tanggal Buat Invoice</th>
+                                    <th>Days Remaining</th>
+                                    <th>Tanggal Jatuh Tempo</th>
+                                    <th>Update</th>
                                 </thead>
                                 <tbody>
+                                    <?php for($a = 0; $a<count($tagihan_customer); $a++):?>
                                     <tr>
-                                        <td>Item1</td>
-                                        <td>Item2</td>
-                                        <td>Item3</td>
+                                        <td><?php echo $tagihan_customer[$a]["no_invoice"];?></td>
+                                        <td><?php echo $tagihan_customer[$a]["no_po_customer"];?></td>
+                                        <td><?php echo number_format($tagihan_customer[$a]["nominal_pembayaran"],2);?></td>
+                                        <td><?php echo $tagihan_customer[$a]["tipe_pembayaran"];?></td>
+                                        <td><?php $date = date_create($tagihan_customer[$a]["tgl_invoice_add"]); echo date_format($date,"d-m-Y");?></td>
+                                        <td>
+                                            <?php if($tagihan_customer[$a]["sisa_waktu"] < 0):?>
+                                            <button class = "btn col-lg-12 btn-danger btn-sm"><?php echo abs($tagihan_customer[$a]["sisa_waktu"]);?> Days</button>
+                                            <?php else:?>
+                                            <button class = "btn col-lg-12 btn-warning btn-sm"><?php echo abs($tagihan_customer[$a]["sisa_waktu"]);?> Days</button>
+                                            <?php endif;?>
+                                        </td>
+                                        <form action = "<?php echo base_url();?>welcome/updateJatuhTempoInvoiceCustomer" method = "POST">
+                                        <td>
+                                            <input type = "hidden" name = "id_submit_invoice" value = "<?php echo $tagihan_customer[$a]["id_submit_invoice"];?>">
+                                            <input type = "date" class = "form-control" name = "updateTanggal<?php echo $tagihan_customer[$a]["id_submit_invoice"]; ?>" value = "<?php echo $tagihan_customer[$a]["jatuh_tempo"];?>">
+                                        </td>
+                                        <td>
+                                            <button type = "submit" class = "btn btn-primary btn-sm col-lg-12">Extend</button>
+                                        </td>
+                                        </form>
                                     </tr>
+                                    <?php endfor;?>
                                 </tbody>
                             </table>
                         </div>
@@ -116,16 +141,44 @@ $tahun = date("Y");
                             <h4 class="example-title">Tagihan Vendor Mendekati Jatuh Tempo</h4>
                             <table class = "table table-striped table-hover table-bordered" data-plugin = "DataTable">
                                 <thead>
-                                    <th>Test1</th>
-                                    <th>Test2</th>
-                                    <th>Test3</th>
+                                    <th>No Invoice</th>
+                                    <th>No Refrence</th>
+                                    <th>Nama Perusahaan</th>
+                                    <th>Jumlah</th> 
+                                    <th>Purpose</th> 
+                                    <th>Rekening Pembayaran</th> 
+                                    <th>Currency</th>
+                                    <th>Days Remaining</th>
+                                    <th>Tanggal Jatuh Tempo</th>
+                                    <th>Update</th>
                                 </thead>
                                 <tbody>
+                                    <?php for($a = 0; $a<count($tagihan_vendor); $a++):?>
                                     <tr>
-                                        <td>Item1</td>
-                                        <td>Item2</td>
-                                        <td>Item3</td>
+                                        <td><?php echo $tagihan_vendor[$a]["no_invoice"];?></td>
+                                        <td><?php echo $tagihan_vendor[$a]["no_refrence"];?></td>
+                                        <td><?php echo $tagihan_vendor[$a]["nama_target"];?></td>
+                                        <td><?php echo number_format($tagihan_vendor[$a]["total"],2);?></td>
+                                        <td><?php echo $tagihan_vendor[$a]["peruntukan_tagihan"];?></td>
+                                        <td><?php echo $tagihan_vendor[$a]["rekening_pembayaran"];?></td>
+                                        <td><?php echo $tagihan_vendor[$a]["mata_uang"];?></td>
+                                        <td>
+                                            <?php if($tagihan_vendor[$a]["sisa_waktu"] < 0):?>
+                                            <button class = "btn col-lg-12 btn-danger btn-sm"><?php echo abs($tagihan_vendor[$a]["sisa_waktu"]);?> Days</button>
+                                            <?php else:?>
+                                            <button class = "btn col-lg-12 btn-warning btn-sm"><?php echo abs($tagihan_vendor[$a]["sisa_waktu"]);?> Days</button>
+                                            <?php endif;?>
+                                        </td>
+                                        <form action = "<?php echo base_url();?>welcome/updateJatuhTempoTagihanVendor" method = "POST">
+                                        <td>
+                                            <input type = "hidden" name = "id_tagihan" value = "<?php echo $tagihan_vendor[$a]["id_tagihan"];?>">
+                                            <input type = "date" class = "form-control" name = "updateTanggal<?php echo $tagihan_vendor[$a]["id_tagihan"];?>" value = "<?php echo $tagihan_vendor[$a]["dateline_invoice"];?>"></td>
+                                        <td>
+                                            <button type = "submit" class = "btn btn-primary btn-sm col-lg-12">EXTEND</button>
+                                        </td>
+                                        </form>
                                     </tr>
+                                    <?php endfor;?>
                                 </tbody>
                             </table>
                         </div>
