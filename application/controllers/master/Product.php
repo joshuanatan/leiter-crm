@@ -187,5 +187,84 @@ class Product extends CI_Controller{
         }
         echo json_encode($data);
     }
+    public function showTransaction($id_produk){
+        $where = array(
+            "status_aktif_oc" => 0,
+            "id_produk_oc" => $id_produk
+        );
+        $field = array(
+            "order_detail.id_submit_quotation","no_po_customer","no_oc","id_oc","bulan_oc","tahun_oc","order_detail.id_submit_oc","tgl_po_customer","total_oc_price","nama_perusahaan","nama_cp","no_quotation"
+        );
+        $result = $this->Mdproduk->showTransaction($where,$field);
+
+        $data["oc"]= $result->result_array();
+
+        for($a = 0; $a<count($data["oc"]);$a++){
+            
+            $where = array(
+                "id_submit_oc" => $data["oc"][$a]["id_submit_oc"]
+            );
+            $field = array(
+                "id_oc_item","nama_oc_item","final_amount_oc","satuan_produk_oc","final_selling_price_oc","status_oc_item"
+            );
+            $result = selectRow("order_item_detail",$where,$field);
+            $data["oc"][$a]["oc_item"] = $result->result_array();
+
+            $where = array(
+                "id_submit_oc" => $data["oc"][$a]["id_submit_oc"]
+            );
+            $field = array(
+                "persentase_pembayaran","nominal_pembayaran","trigger_pembayaran","status_bayar","is_ada_transaksi","persentase_pembayaran2","nominal_pembayaran2","trigger_pembayaran2","status_bayar2","is_ada_transaksi2","kurs"
+            );
+            $result = selectRow("order_confirmation_metode_pembayaran",$where,$field);
+            $data["oc"][$a]["metode_pembayaran"] = $result->result_array();
+
+            if($data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] == 1){
+                $data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] = "BEFORE ORDER DELIVERY";
+            }
+            else{
+                $data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] = "AFTER ORDER DELIVERY";
+            }
+            if($data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] == 1){
+                $data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] = "BEFORE ORDER DELIVERY";
+            }
+            else{
+                $data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] = "AFTER ORDER DELIVERY";
+            }
+
+        }
+        $where = array(
+            "status_aktif_oc" => 0,
+            "id_produk_oc" => $id_produk
+        );
+        $field = array(
+            "count(order_detail.id_submit_oc) as jumlah_transaksi"
+        );
+        $result = $this->Mdproduk->showTransaction($where,$field);
+        $result_array = $result->result_array();
+        $data["jumlah_transaksi"] = $result_array[0]["jumlah_transaksi"];
+        $this->load->view("req/head");
+        $this->load->view("plugin/datatable/datatable-css");
+        $this->load->view("plugin/breadcrumb/breadcrumb-css");
+        $this->load->view("plugin/modal/modal-css");
+        $this->load->view("plugin/form/form-css");
+        $this->load->view("plugin/toastr/css");
+        $this->load->view("req/head-close");
+        $this->load->view("master/master-open");
+        $this->load->view("req/top-navbar");
+        $this->load->view("req/navbar");
+        $this->load->view("master/content-open");
+        $this->load->view("master/product/category-header");
+        $this->load->view("master/product/transaction",$data);
+        $this->load->view("master/content-close");
+
+        $this->load->view("req/script");
+        $this->load->view("plugin/datatable/page-datatable-js");
+        $this->load->view("plugin/form/form-js");
+        $this->load->view("plugin/toastr/js");
+        $this->load->view("master/product/js/form-script");
+        $this->load->view("master/master-close");
+        $this->load->view("req/html-close");
+    }
 }
 ?>
