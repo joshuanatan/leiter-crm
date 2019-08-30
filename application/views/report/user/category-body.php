@@ -1,14 +1,5 @@
 
 <div class="panel-body col-lg-12">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="mb-15">
-                <button data-target="#TambahUser" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button">
-                    <i class="icon wb-plus" aria-hidden="true"></i> Add Employee
-                </button>
-            </div>
-        </div>
-    </div>
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin="dataTable" style = "width:100%">
         <thead>
             <tr>
@@ -39,7 +30,8 @@
                                         <input type = "hidden" name = "id_user" value = "<?php echo $user[$a]["id_user"];?>">
                                         <table class = "table table-stripped table-bordered" style = "width:100%" data-plugin = "dataTable">
                                             <thead>
-                                                <th>#</th>
+                                                <th>Add</th>
+                                                <th>Delete</th>
                                                 <th>KPI</th>
                                                 <th>TARGET</th>
                                             </thead>
@@ -47,8 +39,15 @@
                                                 <?php for($b = 0; $b<count($user[$a]["kpi"]); $b++): ?>
                                                 <tr>
                                                     <td>
+                                                        <input type = "hidden" name = "id_kpi_user<?php echo $b;?>" value = "<?php echo $user[$a]["kpi"][$b]["id_kpi_user"];?>">
                                                         <div class = "checkbox-custom checkbox-primary">
-                                                            <input type = "checkbox" value = "<?php echo $b;?>" name = "check[]" <?php if($user[$a]["kpi"][$b]["status_aktif_kpi"] == 0) echo "checked";?>>
+                                                            <input type = "checkbox" value = "<?php echo $b?>" name = "check[]" <?php if($user[$a]["kpi"][$b]["status_aktif_kpi"] == 0) echo "checked";?>>
+                                                            <label></label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class = "checkbox-custom checkbox-primary">
+                                                            <input type = "checkbox" value = "<?php echo $user[$a]["kpi"][$b]["id_kpi_user"];?>" name = "delete[]">
                                                             <label></label>
                                                         </div>
                                                     </td>
@@ -60,19 +59,22 @@
                                                     </td>
                                                 </tr>
                                                 <?php endfor;?>
-                                                <?php for($b = count($user[$a]["kpi"]); $b<10; $b++):?>
+                                                <?php for($b = count($user[$a]["kpi"]); $b<10; $b++): ?>
                                                 <tr>
                                                     <td>
-                                                        <div class ="checkbox-custom checkbox-primary">
-                                                            <input type = "checkbox" value = <?php echo $b;?> name = "check[]">
+                                                        <input type = "hidden" name = "id_kpi_user<?php echo $b;?>" value = "">
+                                                        <div class = "checkbox-custom checkbox-primary">
+                                                            <input type = "checkbox" value = "<?php echo $b?>" name = "check[]">
                                                             <label></label>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <input type = "text" class = "form-control" name = "kpi<?php echo $b;?>">
                                                     </td>
                                                     <td>
-                                                        <input type = "text" class = "form-control" name = "target<?php echo $b;?>">
+                                                        <input value = "" type = "text" class = "form-control" name = "kpi<?php echo $b;?>">
+                                                    </td>
+                                                    <td>
+                                                        <input value = "" type = "text" class = "form-control" name = "target<?php echo $b;?>">
                                                     </td>
                                                 </tr>
                                                 <?php endfor;?>
@@ -91,4 +93,5 @@
             <?php endfor; ?>
         </tbody>
     </table>
+    <a href = "<?php echo base_url();?>report/kpi" class = "btn btn-sm btn-primary">BACK</a>
 </div>
