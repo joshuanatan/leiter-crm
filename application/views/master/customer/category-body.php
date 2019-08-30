@@ -43,6 +43,8 @@
 
                     <a href = "<?php echo base_url();?>master/customer/delete/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-sm col-lg-12 btn-outline btn-danger"
                     data-toggle="tooltip">REMOVE</a>
+
+                    <a href = "<?php echo base_url();?>master/customer/showTransaction/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-sm col-lg-12 btn-outline btn-primary" data-toggle="tooltip">TRANSACTION</a>
                     
                 </td>
             </tr>
