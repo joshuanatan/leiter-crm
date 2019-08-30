@@ -28,38 +28,27 @@ class main extends CI_Controller{
         $this->load->view("req/html-close"); 
     }
     public function index(){
+        /*load detail kpi user*/
         /*ngambil kpi user yang udah diset buat orang yang lagi login*/
         $where = array(
-            "kpi_user" => array(
-                "id_user" => $this->session->id_user,
-                "status_aktif_kpi" => 0
-            ),
-            "kpi_report" => array(
-                "id_user_add" => $this->session->id_user,
-                "status_aktif_report" => 0
-            )
+            "id_user" => $this->session->id_user,
+            "status_aktif_kpi" => 0
         );
         $field = array(
-            "kpi_user" => array(
-                "id_user","kpi"
-            ),
-            "kpi_report" => array(
-                "id_report","tipe_report","pic_target","location","progress_percentage","report","tgl_report","judul_report","attachment","support_need","next_plan"
-            )
+            "id_user","kpi","id_kpi_user"
         );
-        $print = array(
-            "kpi_user" => array(
-                "id_user","kpi"
-            ),
-            "kpi_report" => array(
-                "id_report","tipe_report","pic_target","location","progress_percentage","report","tgl_report","judul_report","attachment","support_need","next_plan"
-            )
+        $result = selectRow("kpi_user",$where,$field);
+        $data["kpi_user"] = $result->result_array();
+
+        $where = array(
+            "id_user_add" => $this->session->id_user,
+            "status_aktif_report" => 0
         );
-        $result["kpi_user"] = selectRow("kpi_user",$where["kpi_user"]);
-        $data["kpi_user"] = foreachMultipleResult($result["kpi_user"],$field["kpi_user"],$print["kpi_user"]);
-        
-        $result["kpi_report"] = selectRow("report",$where["kpi_report"]);
-        $data["kpi_report"] = foreachMultipleResult($result["kpi_report"],$field["kpi_report"],$print["kpi_report"]);
+        $field = array(
+            "id_report","tipe_report","pic_target","location","progress_percentage","report","tgl_report","judul_report","attachment","support_need","next_plan","kpi","week_name"
+        );
+        $result = selectRow("detail_kpi_user",$where,$field);
+        $data["kpi_report"] = $result->result_array();
         
         $this->req();
         $this->load->view("report/content-open");
@@ -69,6 +58,11 @@ class main extends CI_Controller{
         $this->close();
     }
     public function insertReport(){
+        $where = array(
+            "tgl_mulai <= " => date("Y-m-d"), 
+            "tgl_selesai >= " => date("Y-m-d") 
+        );
+        $id_week = get1Value("report_weeks","id_weeks",$where);
         $config = array(
             "upload_path" => "./assets/dokumen/report/",
             "allowed_types" => "jpg|png|jpeg|gif|docx|doc|pdf|xls|xlsx"
@@ -90,7 +84,8 @@ class main extends CI_Controller{
             "attachment" => $fileData["file_name"],
             "support_need" => $this->input->post("support_need"),
             "id_user_add" => $this->session->id_user,
-            "next_plan" => $this->input->post("next_plan")
+            "next_plan" => $this->input->post("next_plan"),
+            "id_week" => $id_week
         );
         insertRow("report",$data);
         redirect("report/main");

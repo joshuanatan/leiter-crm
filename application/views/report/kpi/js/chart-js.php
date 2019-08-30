@@ -1,7 +1,29 @@
 <?php //print_r($kpi_graph);?>
-<?php $backgroundColor = array("rgba(178,34,34, .8)","rgba(4, 3, 86, .2)","rgba(124, 104, 238, .2)","rgba(30,144,254, .2)","rgba(137,205,250, .2)");?>
-<?php $borderColor = array("blue-grey","primary","primary","primary","primary");?>
-<?php $hoverBackgroundColor = array("rgba(178,34,34, 1)","rgba(4, 3, 86, .3)","rgba(124, 104, 238, .3)","rgba(30,144,254, .3)","rgba(137,205,250, .3)");?>
+<?php $backgroundColor = array(
+    "rgba(200, 247, 197, 1)",
+    "rgba(123, 239, 178, 1)",
+    "rgba(228, 241, 254, 1)",
+    "rgba(82, 179, 217, 1)",
+    "rgba(255, 148, 120, 1)",
+    "rgba(207, 0, 15, 1)"
+);?>
+<?php $hoverBackgroundColor = array(
+    "rgba(200, 247, 197, .8)",
+    "rgba(123, 239, 178, .8)",
+    "rgba(228, 241, 254, .8)",
+    "rgba(82, 179, 217, .8)",
+    "rgba(255, 148, 120, .8)",
+    "rgba(207, 0, 15, .8)"
+);?>
+<?php $borderColor = array(
+    "rgba(200, 247, 197, .6)",
+    "rgba(123, 239, 178, .6)",
+    "rgba(228, 241, 254, .6)",
+    "rgba(82, 179, 217, .6)",
+    "rgba(255, 148, 120, .6)",
+    "rgba(207, 0, 15, .6)"
+);?>
+
 
 <script>
 (function (global, factory) {
@@ -44,14 +66,24 @@
     })(this, function (_jquery, _Site) {
     "use strict";
     _jquery = babelHelpers.interopRequireDefault(_jquery);
+    <?php
+    $label_kpi = array();
+    for($a = 0; $a<count($week); $a++){
+        $label_kpi[$a] = $week[$a];
+    }
+    ?>
     (function () {
         var barChartData = {
-            <?php 
-            $kpi_label = array();
-            for($target = 0; $target<count($kpi_graph_support["target_kpi"]); $target++){
-                $kpi_label[$target] = $kpi_graph_support["target_kpi"][$target]["nama"];
-            }?>
-            labels: <?php echo json_encode($kpi_label);?>,
+            
+            labels: [
+                <?php for($a = 0; $a<count($week); $a++){
+                    echo '"'."Week ".$week[$a].'"';
+                    if($a+1 != count($week)){
+                        echo ",";
+                    }
+                }
+                ?>
+            ],
             datasets: 
             [
                 { /*Target*/
@@ -60,28 +92,35 @@
                     borderColor: Config.colors("<?php echo $borderColor[0];?>", 600),
                     hoverBackgroundColor: "<?php echo $hoverBackgroundColor[0];?>",
                     borderWidth: 2,
-                    <?php 
-                    $amount = array();
-                    for($target = 0; $target<count($kpi_graph_support["target_kpi"]); $target++){
-                        $amount[$target] = $kpi_graph_support["target_kpi"][$target]["target"];
-                    }?>
-                    data: <?php echo json_encode($amount);?> /*TARGET KPI1, TARGET KPI2, TARGET KPI3*/
+                    data: [
+                    <?php for($a = 0; $a<count($kpi_user); $a++){
+                        echo $kpi_user[$a]["target_kpi"];
+                        if($a+1 != count($kpi_user)){
+                            echo ",";
+                        }
+                    }
+                    ?>
+                    ] /*TARGET KPI1, TARGET KPI2, TARGET KPI3*/
                 }, 
                 
                 <?php for($week = 0; $week < count($kpi_graph); $week++):?>
                 { /*week 1- sekian*/
-                    label: "<?php echo $kpi_graph[$week]["nama_week"];?>",
+                    label: "Week <?php echo $detail["id_week"]-$week;?>",
                     backgroundColor: "<?php echo $backgroundColor[($week+1)];?>",
                     borderColor: Config.colors("<?php echo $borderColor[($week+1)];?>", 600),
                     hoverBackgroundColor: "<?php echo $hoverBackgroundColor[($week+1)];?>",
                     borderWidth: 2,
+                    data: [
                     <?php 
                     $amount = array();
-                    for($kpi = 0; $kpi<count($kpi_graph[$week]["kpi"]); $kpi++){
-                        $amount[$kpi] = $kpi_graph[$week]["kpi"][$kpi]["jumlah_report"];
+                    for($kpi = 0; $kpi<count($kpi_user); $kpi++){
+                        echo $kpi_graph[$week][$kpi]["report"];
+                        if($kpi+1 != count($kpi_user)){
+                            echo ",";
+                        }
                     }
                     ?>
-                    data: <?php echo json_encode($amount);?> /*TARGET KPI1, TARGET KPI2, TARGET KPI3*/
+                    ]
                 }, 
                 <?php endfor;?>
             ]

@@ -1,7 +1,7 @@
 <div class="panel-body col-lg-12">
     <div class="row">
         <div class = "col-lg-12">
-            <h3>KPI - <?php echo strtoupper($kpi_detail["nama_user"]);?> - <?php echo strtoupper($kpi_detail["week"]); ?></h3>
+            <h3>KPI - <?php echo strtoupper($detail["nama_user"]);?> - <?php echo strtoupper($detail["week_name"]); ?></h3>
         </div>
     </div>
     <hr/>
@@ -42,7 +42,7 @@
             </thead>
             <tbody>
                 <?php for($b = 0; $b<count($report); $b++):?>
-                <?php if($report[$b]["tipe_report"] == $kpi_user[$a]["kpi"]):?>
+                <?php if($report[$b]["tipe_report"] == $kpi_user[$a]["id_kpi_user"]):?>
                 <tr>
                     <td><?php echo $report[$b]["id_report"];?></td>
                     <td><?php echo $report[$b]["tgl_report"];?></td>

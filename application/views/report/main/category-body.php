@@ -11,6 +11,7 @@
         <thead>
             <tr>
                 <th>ID Report</th> <!-- nanti ini keisi waktu nambahin OC-->
+                <th>Week</th>
                 <th>Report Type</th>
                 <th>PIC Target</th>
                 <th>Report</th>
@@ -23,7 +24,8 @@
             <?php for($a = 0; $a<count($kpi_report);$a++):?>
             <tr>
                 <td><?php echo $kpi_report[$a]["id_report"];?></td>
-                <td><?php echo $kpi_report[$a]["tipe_report"];?></td>
+                <td><?php echo $kpi_report[$a]["week_name"];?></td>
+                <td><?php echo $kpi_report[$a]["kpi"];?></td>
                 <td><?php echo $kpi_report[$a]["pic_target"];?></td>
                 <td><?php echo $kpi_report[$a]["report"];?></td>
                 <td><?php echo $kpi_report[$a]["next_plan"];?></td>
@@ -150,7 +152,7 @@
                         <h5 style = "opacity:0.5">Report Type</h5>
                         <select name = "tipe_report" class = "form-control">
                             <?php for($a = 0; $a<count($kpi_user);$a++):?>
-                            <option value = "<?php echo $kpi_user[$a]["kpi"];?>"><?php echo $kpi_user[$a]["kpi"];?></option>
+                            <option value = "<?php echo $kpi_user[$a]["id_kpi_user"];?>"><?php echo $kpi_user[$a]["kpi"];?></option>
                             <?php endfor;?>
                         </select>
                     </div>
