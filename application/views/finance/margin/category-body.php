@@ -3,6 +3,7 @@
     <div class="row">
     </div>
     <div class = "row">
+        <!--
         <div class = "form-group col-lg-3">
             <h5>Search Text</h5>
             <h5></h5>
@@ -24,8 +25,9 @@
                 <?php endfor;?>
             </select>
         </div>
+-->
     </div>
-    <table class="table table-bordered table-hover table-striped w-full" cellspacing="0">
+    <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
                 <th>Customer PO No</th> <!-- nanti ini keisi waktu nambahin OC-->
@@ -51,6 +53,7 @@
             <?php endfor;?>
         </tbody>
     </table>
+    <!--
     <nav aria-label="...">
         <ul class="pagination">
             <?php for($a =0; $a<$total; $a++):?>
@@ -60,4 +63,5 @@
             <?php endfor;?>
         </ul>
     </nav>
+-->
 </div>

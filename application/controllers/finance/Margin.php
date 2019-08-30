@@ -155,6 +155,34 @@ class Margin extends CI_Controller{
         );
         updateRow("item_margin",$data,$where);
     }
+    public function transaksitambahan(){
+        $config["upload_path"] = './assets/dokumen/invoice/';
+        $config["allowed_types"] = 'pdf|docx|doc|xls|xlsx|png|jpg|jpeg';
+        $this->load->library("upload",$config);
+        $doc_data = array();
+        if($this->upload->do_upload("attachment")){
+            $doc_data = $this->upload->data();
+        }
+        else $doc_data = array("file_name" => "-");
+        $data = array(
+            "id_pembayaran" => getMaxId("tambahan_transaksi","id_pembayaran",array()),
+            "no_refrence" => $this->input->post("no_refrence"),
+            "peruntukan_tagihan" => $this->input->post("peruntukan_tagihan"),
+            "id_submit_oc" => $this->input->post("id_submit_oc"),
+            "subject_pembayaran" => $this->input->post("subject_pembayaran"),
+            "tgl_bayar" => $this->input->post("tgl_bayar"),
+            "attachment" => $doc_data["file_name"],
+            "notes_pembayaran" => "-",
+            "nominal_pembayaran" => splitterMoney($this->input->post("nominal_pembayaran"),","),
+            "kurs_pembayaran" => splitterMoney($this->input->post("kurs_pembayaran"),","),
+            "mata_uang_pembayaran" => $this->input->post("mata_uang_pembayaran"),
+            "total_pembayaran" => splitterMoney($this->input->post("nominal_pembayaran"),",")*splitterMoney($this->input->post("kurs_pembayaran"),","),
+            "metode_pembayaran" => $this->input->post("metode_pembayaran"),
+            "status_transaksi" => $this->input->post("status_pembayaran"),
+        );
+        insertRow("tambahan_transaksi",$data);
+        redirect("finance/margin/detail/".$this->input->post("id_submit_oc"));
+    }
 }
 
 ?>
