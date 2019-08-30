@@ -43,6 +43,81 @@ class Welcome extends CI_Controller{
         $this->load->view("plugin/chart-js/chart-js-js");
         $this->load->view("dashboard/js/main-js",$data);
     }
+    public function user(){
+        if($this->session->id_user == "") redirect("login/welcome");
+        $year = date("Y");
+        $durasi = 3;
+        $last_sunday = tanggalDariHariTerdekat("sunday",date("Y-m-d"));
+        $tanggal_senin_mingguan = tambahHariKeTanggal($last_sunday,1,"day");
+        $tanggal_hari_ini = date("Y-m-d"); 
+        $field = array(
+            "id_kpi_user","kpi","target_kpi"
+        );  
+        $where = array(
+            "id_user" => $this->session->id_user,
+            "status_aktif_kpi" => 0
+        );
+        $result = selectRow("kpi_user",$where,$field);
+        $data["kpi"] = $result->result_array();
+        
+        $where = array(
+            "id_user_add" => $this->session->id_user
+        );
+        $constraint = array(
+            "awal" => $tanggal_senin_mingguan,
+            "akhir" => $tanggal_hari_ini
+        );
+        $field = array(
+            "count(id_report) as jumlah_report","tipe_report"
+        );
+        $group_by = array(
+            "tipe_report"
+        );
+        $result = selectRowBetweenDates("report","tgl_report",$constraint,$where,$field,$group_by);
+        $data["report"] = $result->result_array();
+
+        $where = array(
+            "month(tgl_reimburse_add)" => date("m"),
+            "year(tgl_reimburse_add)" => date("Y"),
+            "id_user_add" => $this->session->id_user,
+            "status_paid" => 0
+        );
+        $field = array(
+            "sum(nominal_reimburse) as total_reimburse_terima",
+            "count(id_reimburse) as jumlah_reimburse_terima"
+        );
+        $result = selectRow("reimburse",$where,$field);
+        $result_array = $result->result_array();
+        $data["total_reimburse_terima"] = $result_array[0]["total_reimburse_terima"];
+        $data["jumlah_reimburse_terima"] = $result_array[0]["jumlah_reimburse_terima"];
+
+        $where = array(
+            "month(tgl_reimburse_add)" => date("m"),
+            "year(tgl_reimburse_add)" => date("Y"),
+            "id_user_add" => $this->session->id_user,
+            "status_paid" => 1
+        );
+        $field = array(
+            "sum(nominal_reimburse) as total_reimburse_tunggu",
+            "count(id_reimburse) as jumlah_reimburse_tunggu",
+        );
+        $result = selectRow("reimburse",$where,$field);
+        $result_array = $result->result_array();
+        $data["total_reimburse_tunggu"] = $result_array[0]["total_reimburse_tunggu"];
+        $data["jumlah_reimburse_tunggu"] = $result_array[0]["jumlah_reimburse_tunggu"];
+        $this->load->view("req/head");
+        $this->load->view("plugin/chart-js/chart-js-css");
+        $this->load->view("req/head-close");
+        $this->load->view("req/top-navbar");
+        $this->load->view("req/navbar");
+        /*--------------------------------------------------------*/
+        $this->load->view("dashboard/user",$data);
+        /*--------------------------------------------------------*/
+        $this->load->view("req/script");
+        $this->load->view("req/html-close");
+        $this->load->view("plugin/chart-js/chart-js-js");
+        $this->load->view("dashboard/js/user-js",$data);
+    }
     public function crm(){
         $field = array(
             "id_submit_quotation","no_quotation","total_quotation_price","dateline_quotation","date_quotation_add","waktu_jatuh_tempo","nama_perusahaan","dateline_quotation"
