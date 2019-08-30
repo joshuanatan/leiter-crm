@@ -16,3 +16,5 @@ inner join user on user.id_user = report.id_user_add
 where status_aktif_report = 0
 
 select * from detail_kpi_user;
+
+show columns from report_weeks

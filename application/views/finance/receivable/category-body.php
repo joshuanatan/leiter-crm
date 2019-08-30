@@ -34,7 +34,7 @@
                     <?php if($invoice[$a]["status_lunas"] == 1):?>
                     <a href = "<?php echo base_url();?>finance/receivable/delete/<?php echo $invoice[$a]["id_submit_invoice"];?>" class="btn btn-outline btn-danger btn-sm"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
-                    <a href = "<?php echo base_url();?>finance/receivable/edit/1" class = "btn btn-sm btn-primary btn-outline">EDIT</a>
+                    <a href = "<?php echo base_url();?>finance/receivable/edit/<?php echo $invoice[$a]["id_submit_invoice"];?>" class = "btn btn-sm btn-primary btn-outline">EDIT</a>
                     <button class = "btn btn-primary btn-sm btn-outline" type="button" data-toggle = "modal" data-target="#pay<?php echo $a;?>">PAY</button>
                     
                     <?php else:?>

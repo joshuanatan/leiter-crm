@@ -138,6 +138,8 @@
                                     <table data-plugin = "dataTable" class = "table table-stripped col-lg-12" style = "width:100%;">
                                         <thead>
                                             <th>#</th>
+                                            <th>No Box</th>
+                                            <th>Jumlah Box</th>
                                             <th>Berat Bersih</th>
                                             <th>Berat Kotor</th>
                                             <th>Dimensi (P * L * T satuan)</th>
