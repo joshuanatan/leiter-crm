@@ -116,8 +116,14 @@ if ( ! function_exists('getTotal')){
     }
 }
 if(! function_exists('selectRowBetweenDates')){
-    function selectRowBetweenDates($table,$kolom_tgl,$constraint,$where){
+    function selectRowBetweenDates($table,$kolom_tgl,$constraint,$where,$field = "",$group_by = ""){
         $CI =& get_instance();
+        if($field != ""){
+            $CI->db->select($field);
+        }
+        if($group_by != ""){
+            $CI->db->group_by($group_by);
+        }
         $CI->db->where("$kolom_tgl between '".$constraint["awal"]."' and '".$constraint["akhir"]."' ");
         return $CI->db->get_where($table,$where);
     }
