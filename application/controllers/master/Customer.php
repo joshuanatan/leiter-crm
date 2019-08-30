@@ -8,7 +8,6 @@ class Customer extends CI_Controller{
     }
     /*page*/
     public function index(){ //sudah di cek
-        //echo date("Y-m-d",strtotime("last week monday",strtotime(date("Y-m-d"))));
         if($this->session->id_user == "") redirect("login/welcome");
         $this->load->view("req/head");
         $this->load->view("plugin/datatable/datatable-css");
