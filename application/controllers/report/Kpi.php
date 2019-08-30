@@ -27,34 +27,41 @@ class Kpi extends CI_Controller{
         $this->load->view("req/html-close"); 
     }
     public function index(){
+        /*skenarionya, kan page ini dibuka hari senin / setelahnya*/
+        /*insert new week otomatis tiap buka page kpi*/
+        $minggu_terdekat = tanggalDariHariTerdekat("sunday",date("Y-m-d"));
         $where = array(
-            "week" => array(
-                "tahun" => date("Y")
-            )
-        );  
+            "tgl_mulai" => tambahHariKeTanggal($minggu_terdekat,1,"day"),
+            "tgl_selesai" => tambahHariKeTanggal($minggu_terdekat,5,"day"),
+        );
+        if(isExistsInTable("report_weeks",$where) == 1){
+            $data = array(
+                "id_weeks" => getMaxId("report_weeks","id_weeks",array("tahun" => date("Y"))),
+                "tahun" => date("Y"),
+                "tgl_mulai" => tambahHariKeTanggal($minggu_terdekat,1,"day"),
+                "tgl_selesai" => tambahHariKeTanggal($minggu_terdekat,5,"day"),
+            );
+            insertRow("report_weeks",$data);
+        }
+        $where = array(
+            "tahun" => date("Y")
+        );
         $field = array(
-            "week" => array(
-                "id_weeks","tgl_mulai","tgl_selesai"
-            ),
-            "employee" => array(
-                "id_user","nama_user"
-            )
+            "id_weeks","tgl_mulai","tgl_selesai"
         );
-        $print = array(
-            "week" => array(
-                "id_weeks","tgl_mulai","tgl_selesai"
-            ),
-            "employee" => array(
-                "id_user","nama_user"
-            )
+        $result = selectRow("report_weeks",$where,$field);
+        $data["week"] = $result->result_array();
+
+        $where = array(
+            "status_user" => 0
         );
-        $result["week"] = selectRow("report_weeks",$where["week"]);
-        $result["employee"] = selectRow("user",array("status_user" => 0));
-        $data = array(
-            "maxId" => getMaxId("report_weeks","id_weeks",array("tahun" => date("Y"))),
-            "week" => foreachMultipleResult($result["week"],$field["week"],$print["week"]),
-            "employee" => foreachMultipleResult($result["employee"],$field["employee"],$print["employee"])
+        $field = array(
+            "id_user","nama_user"
         );
+        $result = selectRow("user",$where,$field);
+        $data["employee"] = $result->result_array();
+
+        $data["maxId"] = getMaxId("report_weeks","id_weeks",array("tahun" => date("Y")));
         
         $this->req();
         $this->load->view("report/content-open");
@@ -88,10 +95,10 @@ class Kpi extends CI_Controller{
             );
             $result["kpi"] = selectRow("kpi_user",$where["kpi"]);
             $field["kpi"] = array(
-                "kpi","target_kpi","status_aktif_kpi"
+                "kpi","target_kpi","status_aktif_kpi","id_kpi_user"
             );
             $print["kpi"] = array(
-                "kpi","target_kpi","status_aktif_kpi"
+                "kpi","target_kpi","status_aktif_kpi","id_kpi_user"
             );
             $data["user"][$a]["kpi"] = foreachMultipleResult($result["kpi"], $field["kpi"],$print["kpi"]);
         }
@@ -213,31 +220,50 @@ class Kpi extends CI_Controller{
     public function insertKpi(){
         /*hapus yang sudah ada dulu*/
         /*delete semua kpi yang orang ini*/
-        $where = array(
-            "id_user" => $this->input->post("id_user"),
-        );
-        deleteRow("kpi_user",$where);
-
-
         $checks = $this->input->post("check");
-        for($a = 0; $a<10; $a++){
-            /*kasih 1 ke semua elemen array*/
-            $status[$a] = 1;
-        }
-        foreach($checks as $a){
-            /*dari depan juga pake start 0, yang indexnya ada disini, dijadiin aktif*/
-            $status[$a] = 0;
+        $delete = $this->input->post("delete");
+        
+        if($checks != ""){
             
+            foreach($checks as $checked){
+                //echo $checked;
+                $where = array(
+                    "id_kpi_user" => $this->input->post("id_kpi_user".$checked)
+                );
+                if(isExistsInTable("kpi_user",$where) == 0){
+                    $where = array(
+                        "id_kpi_user" => $this->input->post("id_kpi_user".$checked)
+                    );
+                    $data = array(
+                        "kpi" => $this->input->post("kpi".$checked),
+                        "target_kpi" => $this->input->post("target".$checked),
+                    );
+                    updateRow("kpi_user",$data,$where);
+                }
+                else{ //kalau belom ad di db pasti kosong gak sih
+                    //echo $checked."else";
+                    $data = array(
+                        "id_kpi_user" => getMaxId("kpi_user","id_kpi_user",array()),
+                        "id_user" => $this->input->post("id_user"),
+                        "kpi" => $this->input->post("kpi".$checked),
+                        "target_kpi" => $this->input->post("target".$checked),
+                        "status_aktif_kpi" => 0
+                    );
+                    insertRow("kpi_user",$data);
+                }
+            }
         }
-        /*insert aja semua yang tertulis*/
-        for($a = 0; $a<10; $a++){
-            $data = array(
-                "id_user" => $this->input->post("id_user"),
-                "kpi" => $this->input->post("kpi".$a),
-                "target_kpi" => $this->input->post("target".$a),
-                "status_aktif_kpi" => $status[$a]
-            );
-            insertRow("kpi_user",$data);
+        if($delete != ""){
+            foreach($delete as $deleted){
+                $where = array(
+                    "id_kpi_user" => $deleted
+                );
+                $data = array(
+                    "kpi" => "",
+                    "target_kpi" => 0,
+                );
+                updateRow("kpi_user",$data,$where);
+            }
         }
         redirect("report/kpi/user");
         /*aktif non aktif, ikut centang*/
