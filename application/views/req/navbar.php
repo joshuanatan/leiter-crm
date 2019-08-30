@@ -19,11 +19,36 @@
         <div>
             <div>
                 <ul class="site-menu" data-plugin="menu">
-                <li class="site-menu-item">
-                        <a href="<?php echo base_url();?>welcome">
-                            <i class="site-menu-icon wb-stats-bars" aria-hidden="true"></i>
+                    <li class="site-menu-item has-sub">
+                        <a href="javascript:void(0)">
+                            <i class="site-menu-icon wb-graph-up" aria-hidden="true"></i>
                             <span class="site-menu-title">Dashboard</span>
+                            <span class="site-menu-arrow"></span>
                         </a>
+                        <ul class="site-menu-sub">
+                            <?php //if(isExistsInTable("privilage",array("id_user" => $this->session->id_user, "id_menu" => "product")) == 0):?>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="<?php echo base_url();?>welcome">
+                                    <span class="site-menu-title">Main</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="<?php echo base_url();?>welcome/finance">
+                                    <span class="site-menu-title">Finance</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="<?php echo base_url();?>welcome/crm">
+                                    <span class="site-menu-title">CRM</span>
+                                </a>
+                            </li>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="<?php echo base_url();?>welcome/user">
+                                    <span class="site-menu-title">User</span>
+                                </a>
+                            </li>
+                            <?php //endif;?>
+                        </ul>
                     </li>
                     <li class="site-menu-item has-sub">
                         <a href="javascript:void(0)">
