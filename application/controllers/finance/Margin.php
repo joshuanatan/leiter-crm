@@ -79,8 +79,27 @@ class Margin extends CI_Controller{
         $where = array(
             "id_submit_oc" => $id_oc
         );
-        $result = $this->Mdmargin_calculation->selectTransaksiOc($where);
+        $field = array(
+            "id_pembayaran","total_pembayaran","no_invoice","id_submit_oc","status_transaksi","total_pembayaran","tgl_bayar","subject_pembayaran","is_lain_lain","flow_transaksi"
+        );
+        $result = selectRow("list_transaksi_per_oc",$where,$field);
         $data["pembayaran"] = $result->result_array();
+        
+        $where = array(
+            "id_submit_oc" => $id_oc
+        );
+        $field = array(
+            "sum(total_pembayaran) as selisih"
+        );
+        $selisih = getTotal("list_transaksi_per_oc","total_pembayaran",$where);
+        $where = array(
+            "id_submit_oc" => $id_oc,
+            "total_pembayaran > " => 0 
+        );
+        $masuk = getTotal("list_transaksi_per_oc","total_pembayaran",$where);
+        $data["selisih"] = $selisih;
+        $data["masuk"] = $masuk;
+        $data["margin"] = ($selisih/$masuk)*100;
         $this->req();
         $this->load->view("finance/content-open");
         $this->load->view("finance/margin/category-header");
@@ -181,6 +200,13 @@ class Margin extends CI_Controller{
             "status_transaksi" => $this->input->post("status_pembayaran"),
         );
         insertRow("tambahan_transaksi",$data);
+        redirect("finance/margin/detail/".$this->input->post("id_submit_oc"));
+    }
+    public function removelainlain(){
+        $where = array(
+            "id_pembayaran" => $this->input->post("id_pembayaran")
+        );
+        deleteRow("tambahan_transaksi",$where);
         redirect("finance/margin/detail/".$this->input->post("id_submit_oc"));
     }
 }

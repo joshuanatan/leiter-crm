@@ -5,30 +5,56 @@
             <br/><br/>
         </div>
     </div>
-    <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
+    <table class="table table-bordered table-hover table-striped w-full" cellspacing="0">
         <thead>
             <tr>
                 <th>No Invoice</th>
-                <th>No Refrensi</th>
-                <th>Pihak Terlibat</th>
+                <th>Subject Transaksi</th>
                 <th>Total</th>
-                <th>Mata Uang</th>
-                <th>Kurs Pembayaran</th>
-                <th>Total (Rupiah)</th>
+                <th>Tanggal Transaksi</th>
+                <th>Subject Pembayaran</th>
+                <th>Flow Transaksi</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             <?php for($a = 0; $a<count($pembayaran); $a++):?>
             <tr>
                 <td><?php echo $pembayaran[$a]["no_invoice"];?></td>
-                <td><?php echo $pembayaran[$a]["no_refrence"];?></td>
-                <td><?php echo $pembayaran[$a]["peruntukan_tagihan"];?></td>
-                <td><?php echo number_format($pembayaran[$a]["total"]);?></td>
-                <td><?php echo strtoupper($pembayaran[$a]["mata_uang"]);?></td>
-                <td><?php echo number_format($pembayaran[$a]["kurs_pembayaran"]);?></td>
-                <td><?php echo number_format($pembayaran[$a]["kurs_pembayaran"]*$pembayaran[$a]["total"]);?></td>
+                <td><?php echo $pembayaran[$a]["status_transaksi"];?></td>
+                <td><?php echo number_format($pembayaran[$a]["total_pembayaran"],2);?></td>
+                <td><?php echo $pembayaran[$a]["tgl_bayar"];?></td>
+                <td><?php echo $pembayaran[$a]["subject_pembayaran"];?></td>
+                <td>
+                    <?php 
+                    if($pembayaran[$a]["flow_transaksi"] == 0){
+                        echo "MASUK";
+                    }
+                    else echo "KELUAR";
+                    ?>
+                </td>
+                <td>
+                    <?php if($pembayaran[$a]["is_lain_lain"] == 0):?>
+                    <button data-toggle ="modal" data-target = "#hapus<?php echo $a;?>" class = "btn btn-sm btn-danger">REMOVE</a>
+                    <?php endif;?>
+                </td>
             </tr>
             <?php endfor;?>
+            <tr>
+                <td colspan = "4"></td>
+                <td>Selisih</td>
+                <td colspan = "2"><?php echo number_format($selisih,2);?></td>
+            </tr>
+            <tr>
+                <td colspan = "4"></td>
+                <td>Uang Masuk</td>
+                <td colspan = "2"><?php echo number_format($masuk,2);?></td>
+            </tr>
+            <tr>
+                <td colspan = "4"></td>
+                <td>Margin</td>
+                <td colspan = "2"><?php echo number_format($margin,2);?>%</td>
+            </tr>
         </tbody>
     </table>
     <a href = "<?php echo base_url();?>finance/margin" class = "btn btn-sm btn-primary">BACK</a>
@@ -106,3 +132,25 @@
         </div>
     </div>
 </div>
+
+<?php for($a = 0; $a<count($pembayaran); $a++):?>
+<div class = "modal fade" id = "hapus<?php echo $a;?>">
+    <div class = "modal-dialog modal-xl">
+        <div class = "modal-content">
+            <div class = "modal-header">
+                <h4 class = "modal-title">Konfirmasi Hapus</h4>
+            </div>
+            <div class ="modal-body">
+                <h5>Apakah Yakin akan menghapus transaksi dengan nomor refrensi <?php echo $pembayaran[$a]["no_invoice"];?>?</h5>
+                <form action = "<?php echo base_url();?>finance/margin/removelainlain" method = "POST" enctype = "multipart/form-data">
+                    <input type = "hidden" name = "id_pembayaran" value = "<?php echo $pembayaran[$a]["id_pembayaran"];?>">
+                    <input type = "hidden" name = "id_submit_oc" value = "<?php echo $pembayaran[$a]["id_submit_oc"];?>">
+                    <div class = "form-group">
+                        <button type = "submit" class = "btn btn-danger col-lg-2 btn-sm">REMOVE</button>
+                    </div>
+            </form>
+                </div>
+        </div>
+    </div>
+</div>
+<?php endfor;?>

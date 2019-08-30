@@ -291,5 +291,50 @@ order_detail.*
 from invoice_core
 inner join order_detail on order_detail.id_submit_oc = invoice_core.id_submit_oc
 inner join order_confirmation_metode_pembayaran as metode_pembayaran on metode_pembayaran.id_submit_oc = order_detail.id_submit_oc
-where status_aktif_invoice = 0
+where status_aktif_invoice = 0;
+
+alter table invoice_packaging_box
+modify column berat_bersih double(10,2);
+
+alter table invoice_packaging_box
+modify column berat_kotor double(10,2);
+
+create view list_transaksi_per_oc as
+select 
+id_pembayaran,
+pembayaran_customer.nominal_pembayaran*pembayaran_customer.kurs_pembayaran as total_pembayaran,
+no_invoice,
+invoice_core.id_submit_oc,
+"Pembayaran Customer" as status_transaksi
+from pembayaran_customer /*ambil id_refrensi as id-oc*/
+inner join invoice_core on invoice_core.id_submit_invoice = pembayaran_customer.id_refrensi
+inner join order_detail on order_detail.id_submit_oc = invoice_core.id_submit_oc
+union
+select 
+id_pembayaran,
+pembayaran.nominal_pembayaran*pembayaran.kurs_pembayaran*-1 as total_pembayaran,
+no_po,
+po_core.id_submit_oc,
+"Pembayaran Supplier dan Shipper" as status_transaksi
+from pembayaran
+inner join tagihan on tagihan.id_tagihan = pembayaran.id_refrensi
+inner join po_core on po_core.no_po = tagihan.no_refrence
+union
+select 
+id_pembayaran,
+pembayaran.nominal_pembayaran*pembayaran.kurs_pembayaran*-1 as total_pembayaran,
+no_od,
+od_core.id_submit_oc,
+"Pembayaran Courier" as status_transaksi
+from pembayaran
+inner join tagihan on tagihan.id_tagihan = pembayaran.id_refrensi
+inner join od_core on od_core.no_od = tagihan.no_refrence
+union
+select 
+id_pembayaran,
+if(status_transaksi = 0, nominal_pembayaran*kurs_pembayaran,nominal_pembayaran*kurs_pembayaran*-1) as total_pembayaran,
+no_refrence,
+id_submit_oc,
+"Lain-lain" as status_transaksi
+from tambahan_transaksi
 
