@@ -28,7 +28,7 @@
                 <th style = "width:25%">Product Description</th>
                 <th style = "width:10%">Product UOM</th>
                 <th style = "width:30%">Product Image</th>
-                <th style = "width:15%">Actions</th>
+                <th style = "width:10%">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -45,7 +45,7 @@
                 </td>
                 <td class="actions">
                     
-                    <button data-target="#editItem<?php echo $produk[$a]["id_produk"];?>" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
+                    <button data-target="#editItem<?php echo $produk[$a]["id_produk"];?>" data-toggle="modal" type="button" class="btn btn-outline btn-primary btn-sm col-lg-12" type="button">EDIT</button>
                     <div class="modal fade" id="editItem<?php echo $produk[$a]["id_produk"];?>" aria-hidden="true" aria-labelledby="AddCatalog" role="dialog" tabindex="-1">
                         <div class="modal-dialog modal-simple modal-center">
                             <div class="modal-content">
@@ -87,8 +87,10 @@
                         </div>
                     </div>
 
-                    <a href = "<?php echo base_url();?>master/product/delete/<?php echo $produk[$a]["id_produk"];?>" class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
+                    <a href = "<?php echo base_url();?>master/product/delete/<?php echo $produk[$a]["id_produk"];?>" class="btn btn-outline btn-danger col-lg-12 btn-sm" 
+                    data-toggle="tooltip">DELETE</a>
+                    <a href = "<?php echo base_url();?>master/product/showTransaction/<?php echo $produk[$a]["id_produk"];?>" class="btn btn-outline btn-primary col-lg-12 btn-sm" 
+                    data-toggle="tooltip">TRANSACTION</a>
                     
                 </td>
             </tr>
@@ -142,3 +144,4 @@
         </div>
     </div>
 </div>
+

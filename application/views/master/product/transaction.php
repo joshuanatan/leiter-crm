@@ -44,7 +44,7 @@
             ?>
         </tbody>
     </table>
-    <a href = "<?php echo base_url();?>master/customer" class = "btn btn-primary btn-sm">BACK</a>
+    <a href = "<?php echo base_url();?>master/product" class = "btn btn-primary btn-sm">BACK</a>
 </div>
 
 <?php for($a = 0 ; $a<count($oc); $a++): ?>
