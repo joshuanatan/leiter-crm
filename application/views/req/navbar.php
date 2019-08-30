@@ -26,28 +26,34 @@
                             <span class="site-menu-arrow"></span>
                         </a>
                         <ul class="site-menu-sub">
-                            <?php //if(isExistsInTable("privilage",array("id_user" => $this->session->id_user, "id_menu" => "product")) == 0):?>
+                            <?php if(isExistsInTable("privilage",array("id_user" => $this->session->id_user, "id_menu" => "main_dashboard")) == 0):?>
                             <li class="site-menu-item">
                                 <a class="animsition-link" href="<?php echo base_url();?>welcome">
                                     <span class="site-menu-title">Main</span>
                                 </a>
                             </li>
+                            <?php endif;?>
+                            <?php if(isExistsInTable("privilage",array("id_user" => $this->session->id_user, "id_menu" => "finance_dashboard")) == 0):?>
                             <li class="site-menu-item">
                                 <a class="animsition-link" href="<?php echo base_url();?>welcome/finance">
                                     <span class="site-menu-title">Finance</span>
                                 </a>
                             </li>
+                            <?php endif;?>
+                            <?php if(isExistsInTable("privilage",array("id_user" => $this->session->id_user, "id_menu" => "crm_dashboard")) == 0):?>
                             <li class="site-menu-item">
                                 <a class="animsition-link" href="<?php echo base_url();?>welcome/crm">
                                     <span class="site-menu-title">CRM</span>
                                 </a>
                             </li>
+                            <?php endif;?>
+                            <?php if(isExistsInTable("privilage",array("id_user" => $this->session->id_user, "id_menu" => "user_dashboard")) == 0):?>
                             <li class="site-menu-item">
                                 <a class="animsition-link" href="<?php echo base_url();?>welcome/user">
                                     <span class="site-menu-title">User</span>
                                 </a>
                             </li>
-                            <?php //endif;?>
+                            <?php endif;?>
                         </ul>
                     </li>
                     <li class="site-menu-item has-sub">
