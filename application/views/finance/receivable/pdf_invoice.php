@@ -105,8 +105,8 @@
                             <td>'.$no.'</td>
                             <td>'.nl2br($baris).'</td>
                             <td style="text-align:center;line-height:'.$line_height.'px">'.number_format($ss->final_amount).' '.$ss->satuan_produk .'</td>
-                            <td style="text-align:right;line-height:'.$line_height.'px">'.number_format($ss->final_selling_price).'</td>
-                            <td style="text-align:right;line-height:'.$line_height.'px">'.number_format($ss->final_amount *$ss->final_selling_price).'</td>
+                            <td style="text-align:right;line-height:'.$line_height.'px">'.number_format($ss->final_selling_price,2).'</td>
+                            <td style="text-align:right;line-height:'.$line_height.'px">'.number_format($ss->final_amount *$ss->final_selling_price,2).'</td>
                         </tr>';
 
                         $total=$total+($ss->final_amount * $ss->final_selling_price);
@@ -118,19 +118,19 @@
                         <td></td>
                         <td></td>
                         <td colspan="2">Total Sebelum PPN</td>
-                        <td style="text-align:right">'.number_format($total).'</td>
+                        <td style="text-align:right">'.number_format($total,2).'</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td></td>
                         <td colspan="2">PPN 10%</td>
-                        <td style="text-align:right">'.number_format(0.1*$total).'</td>
+                        <td style="text-align:right">'.number_format(0.1*$total,2).'</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td></td>
                         <td colspan="2" style="background-color: rgb(198, 224, 180); font-weight:bold">TOTAL</td>
-                        <td  style="background-color: rgb(198, 224, 180); font-weight:bold; text-align:right">'.number_format($total+(0.1*$total)).'</td>
+                        <td  style="background-color: rgb(198, 224, 180); font-weight:bold; text-align:right">'.number_format($total+(0.1*$total),2).'</td>
                     </tr>
             </table>
             <br>
@@ -146,7 +146,7 @@
                 </tr>
                 <tr>
                     <td>Total</td>
-                    <td>: IDR '.number_format($total+(0.1*$total)).'</td>
+                    <td>: IDR '.number_format($total+(0.1*$total),2).'</td>
                 </tr>
                 <tr>
                     <td>Rekening Pembayaran</td>
@@ -212,15 +212,14 @@
             <br>
             <br>
             <br>
-            <table>
+            <table style = "width:500px">
                 <tr>
-                    <td></td>
+                <td></td>
                     <td style="text-align:center">
                         Jakarta, '.tanggalCantik(date("Y/m/d",strtotime($inv->tgl_invoice_add))).'
                     </td>
                 </tr>
                 <tr>
-                    <td></td>
                     <td style="text-align:center">
                         <br>
                         <br>
@@ -228,7 +227,16 @@
                         <br>
                         <br>
                         <br>
-                        <br>'.ucwords($this->session->nama_user).'
+                        <br>Teguh Budianto
+                    </td>
+                    <td style="text-align:center">
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>Robert Cau
                     </td>
                 </tr>
             </table>

@@ -299,13 +299,18 @@ modify column berat_bersih double(10,2);
 alter table invoice_packaging_box
 modify column berat_kotor double(10,2);
 
+drop view if exists list_transaksi_per_oc;
 create view list_transaksi_per_oc as
 select 
 id_pembayaran,
 pembayaran_customer.nominal_pembayaran*pembayaran_customer.kurs_pembayaran as total_pembayaran,
 no_invoice,
 invoice_core.id_submit_oc,
-"Pembayaran Customer" as status_transaksi
+pembayaran_customer.tgl_bayar,
+pembayaran_customer.subject_pembayaran,
+"Pembayaran Customer" as status_transaksi,
+"1" as is_lain_lain,
+"0" as flow_transaksi
 from pembayaran_customer /*ambil id_refrensi as id-oc*/
 inner join invoice_core on invoice_core.id_submit_invoice = pembayaran_customer.id_refrensi
 inner join order_detail on order_detail.id_submit_oc = invoice_core.id_submit_oc
@@ -315,7 +320,11 @@ id_pembayaran,
 pembayaran.nominal_pembayaran*pembayaran.kurs_pembayaran*-1 as total_pembayaran,
 no_po,
 po_core.id_submit_oc,
-"Pembayaran Supplier dan Shipper" as status_transaksi
+pembayaran.tgl_bayar,
+pembayaran.subject_pembayaran,
+"Pembayaran Supplier dan Shipper" as status_transaksi,
+"1" as is_lain_lain,
+"1" as flow_transaksi
 from pembayaran
 inner join tagihan on tagihan.id_tagihan = pembayaran.id_refrensi
 inner join po_core on po_core.no_po = tagihan.no_refrence
@@ -325,7 +334,11 @@ id_pembayaran,
 pembayaran.nominal_pembayaran*pembayaran.kurs_pembayaran*-1 as total_pembayaran,
 no_od,
 od_core.id_submit_oc,
-"Pembayaran Courier" as status_transaksi
+pembayaran.tgl_bayar,
+pembayaran.subject_pembayaran,
+"Pembayaran Courier" as status_transaksi,
+"1" as is_lain_lain,
+"1" as flow_transaksi
 from pembayaran
 inner join tagihan on tagihan.id_tagihan = pembayaran.id_refrensi
 inner join od_core on od_core.no_od = tagihan.no_refrence
@@ -335,6 +348,10 @@ id_pembayaran,
 if(status_transaksi = 0, nominal_pembayaran*kurs_pembayaran,nominal_pembayaran*kurs_pembayaran*-1) as total_pembayaran,
 no_refrence,
 id_submit_oc,
-"Lain-lain" as status_transaksi
+tambahan_transaksi.tgl_bayar,
+tambahan_transaksi.subject_pembayaran,
+"Lain-lain" as status_transaksi,
+"0" as is_lain_lain,
+tambahan_transaksi.status_transaksi as flow_transaksi
 from tambahan_transaksi
 
