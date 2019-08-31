@@ -297,9 +297,7 @@ class main extends CI_Controller{
 
             foreach($checks as $checked){
                 $id_submit_attachment = $this->input->post("id_submit_attachment".$checked);
-                echo "id_submit_attachment ".$id_submit_attachment;
                 if($id_submit_attachment != ""){
-                    echo "masuk id_submit_attachment";
                     if($this->upload->do_upload('upload'.$checked)){ /*kalau ada yang dicentang dan diupload*/
                         $uploadData = $this->upload->data();
                         $filename = $uploadData['file_name'];
