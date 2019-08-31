@@ -155,6 +155,22 @@ class Pph23 extends CI_Controller{
         updateRow("tax",$data,$where);
         redirect("finance/tax/pph23/detail/".$this->input->post("bulan_pajak")."/".$this->input->post("tahun_pajak"));
     }
+    public function excel($bulan_pajak,$tahun_pajak){
+        $where = array(
+            "jenis_pajak" => "PPH",
+            "status_aktif_pajak" => 0,
+            "bulan_pajak" => $bulan_pajak,
+            "tahun_pajak" => $tahun_pajak
+        );
+        $field = array(
+            "no_faktur_pajak","jumlah_pajak","id_refrensi"
+        );
+        $result = selectRow("tax",$where,$field);
+        $data["tax"] = $result->result_array();
+        $data["bulan_pajak"] = $bulan_pajak;
+        $data["tahun_pajak"] = $tahun_pajak;
+        $this->load->view("finance/tax/pph23/excel-output",$data);
+    }
 }
 
 ?>
