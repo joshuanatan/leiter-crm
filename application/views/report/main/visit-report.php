@@ -12,6 +12,7 @@
         <thead>
             <tr>
                 <th>ID Report</th> <!-- nanti ini keisi waktu nambahin OC-->
+                <th>Jenis Report</th>
                 <th>Nama Perusahaan</th>
                 <th>PIC Target</th>
                 <th>Location / Duration</th>
@@ -28,8 +29,15 @@
             <?php for($a = 0; $a<count($visit);$a++):?>
             <tr>
                 <td><?php echo $visit[$a]["id_submit_report"];?></td>
+                <td>
+                    <?php if($visit[$a]["jenis_report"] == 0):?>
+                    <button type = "button" class = "btn btn-primary btn-sm">VISIT REPORT</button>
+                    <?php else:?>
+                    <button type = "button" class = "btn btn-warning btn-sm">CALL REPORT</button>
+                    <?php endif;?>
+                </td>
                 <td><?php echo $visit[$a]["nama_perusahaan"];?></td>
-                <td><?php echo $visit[$a]["action_pic"];?> - (<?php echo $visit[$a]["pic_position"];?>)</td>
+                <td><?php echo nl2br($visit[$a]["action_pic"]);?></td>
                 <td>
                     <?php echo ucwords($visit[$a]["action_location"]);?> <br/>
                     <?php $split = explode(":",$visit[$a]["action_duration"]);echo $split[0] ." Jam ". $split[1]. " Menit";?>
@@ -43,7 +51,7 @@
                     <button class = "btn btn-primary btn-outline btn-sm" data-target = "#detailReport<?php echo $a;?>" data-toggle = "modal">DETAIL</button>
                 </td>
                 <td>
-                    <button class = "col-lg-12 btn btn-primary btn-outline btn-sm" data-target = "#editReport<?php echo $a;?>" data-toggle = "modal">EDIT</button>
+                    <a href = "<?php echo base_url();?>report/main/editVisitCallReport/<?php echo $visit[$a]["id_submit_report"];?>" class = "col-lg-12 btn btn-primary btn-outline btn-sm">EDIT</a>
                     <a href = "<?php echo base_url();?>report/main/removeVisitReport/<?php echo $visit[$a]["id_submit_report"];?>" class = "col-lg-12 btn btn-danger btn-outline btn-sm">REMOVE</a> 
                     <a target = "_blank" href = "<?php echo base_url();?>report/main/pdfVisitReport/<?php echo $visit[$a]["id_submit_report"];?>" class = "col-lg-12 btn btn-primary btn-outline btn-sm">PDF</a> 
                     
@@ -57,11 +65,17 @@
     <div class = "modal-dialog modal-lg">
         <div class = "modal-content">
             <div class = "modal-header">
-                <h4 class = "modal-title">CREATE VISIT REPORT</h4>
+                <h4 class = "modal-title">CREATE VISIT/CALL REPORT</h4>
             </div>
-            <form action = "<?php echo base_url();?>report/main/insertVisitReport" method = "POST" enctype = "multipart/form-data">
+            <form action = "<?php echo base_url();?>report/main/insertVisitCallReport" method = "POST" enctype = "multipart/form-data">
                 <div class = "modal-body">
-                    
+                    <div class = "form-group">
+                        <h5>Report Type</h5>
+                        <select class = "form-control" data-plugin = "select2" name = "jenis_report">
+                            <option value = "0">VISIT REPORT</option>
+                            <option value = "1">CALL REPORT</option>
+                        </select>
+                    </div>
                     <div class = "form-group">
                         <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
                         <span id = "customerNotFound" style = "color:red; display:none">CUSTOMER NOT FOUND</span>
@@ -75,7 +89,7 @@
                     </div>
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Visit Date</h5>
-                        <input type = "date" name = "action_date" class = "form-control">
+                        <input type = "date" name = "action_date" class = "form-control col-lg-3 col-md-12">
                     </div>
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Location</h5>
@@ -90,20 +104,21 @@
                         <input type = "text" name = "action_purpose" class = "form-control">
                     </div>
                     <div class = "row">
-                        <div class = "form-group col-lg-6 col-sm-12">
-                            <h5 style = "opacity:0.5">PIC (Ibu Abc / Bapak Def)</h5>
-                            <textarea name = "action_pic" class = "form-control"></textarea>
+                        <div class = "form-group col-lg-12 col-sm-12">
+                            <h5 style = "opacity:0.5">PIC & Jabatan </h5>
+                            <textarea name = "action_pic" class = "form-control" placeholder = "1. Ibu Abc (Marketing)"></textarea>
                         </div>
+                        <?php if(false):?>
                         <div class = "form-group col-lg-6 col-sm-12">
                             <h5 style = "opacity:0.5">Jabatan PIC</h5>
                             <textarea name = "pic_position" class = "form-control"></textarea>
                         </div>
+                        <?php endif;?>
                     </div>
                     <div class = "form-group">
-                        <h5 style = "opacity:0.5">Dialog</h5>        
-                        <div id="summernote" data-plugin="summernote">
-                        </div>
-                        <input type = "file" name = "conversation_image">
+                        <h5 style = "opacity:0.5">Dialog</h5> 
+                        <textarea class = "form-control" name = "conversation"></textarea>
+                        <input type = "file" name = "conversation_image[]" multiple>
                     </div>  
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Potential Machine</h5>
@@ -111,7 +126,7 @@
                     </div>  
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Conclusion</h5>
-                        <textarea data-plugin="summernote" class = "form-control" name = "action_conclusion"></textarea>
+                        <textarea class = "form-control" name = "action_conclusion"></textarea>
                     </div>  
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Percentage (Isi persennya saja)</h5>
@@ -124,22 +139,7 @@
                             <th>PIC</th>
                         </thead>
                         <tbody>
-                            <?php for($a = 0; $a<10; $a++):?>
-                            <tr>
-                                <td>
-                                    <div class = "checkbox-custom checkbox-primary">
-                                        <input type = "checkbox" name = "checks[]" value = "<?php echo $a;?>">
-                                        <label></label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <input type = "text" name = "remarks<?php echo $a;?>" class = "form-control">
-                                </td>
-                                <td>
-                                    <input type = "text" name = "pic<?php echo $a;?>" class = "form-control">
-                                </td>
-                            </tr>
-                            <?php endfor;?>
+                            
                         </tbody>
                     </table>
                     <div class = "form-group">
@@ -148,10 +148,10 @@
                     </div>  
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Follow Up Date</h5>
-                        <input type = "date" name = "followup_date" class = "form-control">
+                        <input type = "date" name = "followup_date" class = "form-control col-md-12 col-lg-3">
                     </div>
                     <div class = "form-group">
-                        <button class = "btn btn-primary btn-ouline col-lg-3">SUBMIT</button>
+                        <button class = "btn btn-primary btn-ouline">SUBMIT</button>
                     </div>
                 </div>
             </form>
@@ -176,8 +176,8 @@
                     <tbody>
                         <?php for($b = 0; $b<count($visit[$a]["next_action"]); $b++):?>
                         <tr>
-                            <td><?php echo $visit[$a]["next_action"][$b]["remarks"];?></td>
-                            <td><?php echo $visit[$a]["next_action"][$b]["pic"];?></td>
+                            <td><?php echo nl2br($visit[$a]["next_action"][$b]["remarks"]);?></td>
+                            <td><?php echo nl2br($visit[$a]["next_action"][$b]["pic"]);?></td>
                             <td><a href = "#" class = "btn btn-danger btn-sm">DELETE</a></td>
                         </tr>
                         <?php endfor;?>
@@ -239,8 +239,3 @@
         </div>
     </div>
 </div>
-<form action = "<?php echo base_url();?>report/main/testwysiwyg" method = "POST">
-    <textarea name = "teks" id="summernote" data-plugin="summernote">
-    </textarea>
-    <input type = "submit">
-</form>

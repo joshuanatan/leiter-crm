@@ -1,3 +1,4 @@
+/* live 31/08/2019 */
 create view cashflow_overview as 
 select 
 date(tgl_bayar) as tanggal_transaksi,

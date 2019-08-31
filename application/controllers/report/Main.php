@@ -140,16 +140,17 @@ class main extends CI_Controller{
         redirect("report/main");
     }
 
-    public function visit(){ /*nampilin visit report yang udah di submit oleh orang yang lagi login*/
+    public function report(){ /*nampilin visit report yang udah di submit oleh orang yang lagi login*/
         $where = array(
             "id_user_add" => $this->session->id_user,
-            "jenis_report" => 1
+            "status_aktif_report" => 0
         );
-        $result = selectRow("visit_call_report",$where);
         $field = array(
-            "id_submit_report", "action_date", "id_perusahaan", "action_location", "action_duration", "action_purpose", "action_pic", "pic_position", "action_conversation", "potential_machine", "action_conclusion", "action_percentage_order", "support_need", "followup_date", "id_user_add", "tgl_report_add", "status_aktif_report", "status_cetak_report", "jenis_report","conversation_image"
+            "id_submit_report", "action_date", "id_perusahaan", "action_location", "action_duration", "action_purpose", "action_pic", "action_conversation", "potential_machine", "action_conclusion", "action_percentage_order", "support_need", "followup_date", "id_user_add", "tgl_report_add", "status_aktif_report", "status_cetak_report", "jenis_report","conversation_image","nama_perusahaan","jenis_report"
         );
-        $data["visit"] = foreachMultipleResult($result,$field,$field);
+        
+        $result = selectRow("detail_visit_call_report",$where,$field);
+        $data["visit"] = $result->result_array();
         for($a = 0; $a<count($data["visit"]); $a++){
             
             $where = array(
@@ -170,20 +171,8 @@ class main extends CI_Controller{
         $this->close();
         $this->load->view("plugin/wysiwyg/wysiwyg-js");
     }
-    public function insertVisitReport(){
+    public function insertVisitCallReport(){
         if($this->session->id_user == "") redirect("login/welcome");
-
-        $config['upload_path']          = './assets/report/visit/';
-        $config['allowed_types']        = 'gif|jpg|png';
-        $this->load->library('upload', $config);
-        
-        if($this->upload->do_upload("conversation_image")){
-            $data = array('upload_data' => $this->upload->data());
-            $fileName = $data["upload_data"]["file_name"];
-        }
-        else{
-            $fileName = "-";
-        }
         $data = array(
             "id_perusahaan" => $this->input->post("id_perusahaan") ,
             "action_date" => $this->input->post("action_date") ,
@@ -192,15 +181,15 @@ class main extends CI_Controller{
             "action_purpose" => $this->input->post("action_purpose") ,
             "action_pic" => $this->input->post("action_pic") ,
             "pic_position" => $this->input->post("pic_position") ,
-            "action_conversation" => $this->input->post("action_conversation") ,
-            "conversation_image" => $fileName,
+            "action_conversation" => $this->input->post("conversation") ,
+            "conversation_image" => "-",
             "potential_machine" => $this->input->post("potential_machine") ,
             "action_conclusion" => $this->input->post("action_conclusion") ,
             "action_percentage_order" => $this->input->post("action_percentage_order") ,
             "support_need" => $this->input->post("support_need") ,
             "followup_date" => $this->input->post("followup_date") ,
             "id_user_add" => $this->session->id_user,
-            "jenis_report" => 1
+            "jenis_report" => $this->input->post("jenis_report")
         );
         $id_submit_report = insertRow("visit_call_report",$data);
 
@@ -213,10 +202,172 @@ class main extends CI_Controller{
             );
             insertRow("visit_call_report_next_action",$data);
         }
-        redirect("report/main/visit");
+        $countfiles = count($_FILES['conversation_image']['name']);
+        for($i=0;$i<$countfiles;$i++){
+   
+            if(!empty($_FILES['conversation_image']['name'][$i])){
+                $_FILES['file']['name'] = $_FILES['conversation_image']['name'][$i];
+                $_FILES['file']['type'] = $_FILES['conversation_image']['type'][$i];
+                $_FILES['file']['tmp_name'] = $_FILES['conversation_image']['tmp_name'][$i];
+                $_FILES['file']['error'] = $_FILES['conversation_image']['error'][$i];
+                $_FILES['file']['size'] = $_FILES['conversation_image']['size'][$i];
+        
+                $config['upload_path'] = './assets/report/visit/';
+                $config['allowed_types'] = 'gif|jpg|png|pdf';
+                $config['file_name'] = $_FILES['conversation_image']['name'][$i];
+    
+                //Load upload library
+                $this->load->library('upload',$config); 
+    
+                // File upload
+                if($this->upload->do_upload('file')){
+                // Get data about the file
+                    $uploadData = $this->upload->data();
+                    $filename = $uploadData['file_name'];
+                    $data = array(
+                        //"id_submit_attachment" => "", //auto increment
+                        "attachment" => $filename,
+                        "id_submit_report" => $id_submit_report
+                    );
+                    insertRow("visit_call_report_attachment",$data);
+                }
+            }
+        }
+        redirect("report/main/report");
+    }
+    public function editVisitCallReport($id_submit_report){
+        $where = array(
+            "id_submit_report" => $id_submit_report
+        );
+        $field = array(
+            "action_date","id_perusahaan","action_location","action_duration","action_purpose","action_pic","pic_position","action_conversation","potential_machine","action_conclusion","action_percentage_order","support_need","followup_date","jenis_report","nama_perusahaan","tgl_report_add","id_submit_report"
+        );
+        $result = selectRow("detail_visit_call_report",$where,$field);
+        $data["report"] = $result->result_array();
+ 
+        $field = array(
+            "id_submit_attachment","attachment","id_submit_report"
+        );
+        $result = selectRow("visit_call_report_attachment",$where,$field);
+        $data["attachment"] = $result->result_array();
+        $field = array(
+            "id_submit_next_action","remarks","pic","id_submit_report","status_next_action",
+        );
+        $result = selectRow("visit_call_report_next_action",$where,$field);
+        $data["next_action"] = $result->result_array();
+
+        $this->req();
+        $this->load->view("report/content-open");
+        $this->load->view("report/main/category-header");
+        $this->load->view("report/main/edit-visit-call-report",$data);
+        $this->load->view("report/content-close");
+        $this->close();
     }
     public function updateVisitReport(){
+        $where = array(
+            "id_submit_report" => $this->input->post("id_submit_report")
+        );
+        $data = array(
+            "id_perusahaan" => $this->input->post("id_perusahaan"),
+            "action_date" => $this->input->post("action_date"),
+            "action_location" => $this->input->post("action_location"),
+            "action_duration" => $this->input->post("action_duration"),
+            "action_purpose" => $this->input->post("action_purpose"),
+            "action_pic" => $this->input->post("action_pic"),
+            "pic_position" => $this->input->post("pic_position"),
+            "action_conversation" => $this->input->post("conversation"),
+            "potential_machine" => $this->input->post("potential_machine"),
+            "action_conclusion" => $this->input->post("action_conclusion"),
+            "action_percentage_order" => $this->input->post("action_percentage_order"),
+            "support_need" => $this->input->post("support_need"),
+            "followup_date" => $this->input->post("followup_date"),
+            "jenis_report" => $this->input->post("jenis_report")
+        );
+        updateRow("visit_call_report",$data,$where);
 
+        $checks = $this->input->post("checks");
+        $delete = $this->input->post("delete");
+        if($checks != ""){
+            $config['upload_path'] = './assets/report/visit/';
+            $config['allowed_types'] = 'gif|jpg|png|pdf';
+
+            $this->load->library('upload',$config); 
+
+            foreach($checks as $checked){
+                $id_submit_attachment = $this->input->post("id_submit_attachment".$checked);
+                echo "id_submit_attachment ".$id_submit_attachment;
+                if($id_submit_attachment != ""){
+                    echo "masuk id_submit_attachment";
+                    if($this->upload->do_upload('upload'.$checked)){ /*kalau ada yang dicentang dan diupload*/
+                        $uploadData = $this->upload->data();
+                        $filename = $uploadData['file_name'];
+                        
+                        $where = array(
+                            "id_submit_attachment" => $id_submit_attachment
+                        );
+                        $data = array(
+                            "attachment" => $filename,
+                        );
+                        updateRow("visit_call_report_attachment",$data,$where);
+                    }
+                }
+                else{
+                    if($this->upload->do_upload('upload'.$checked)){ /*kalau ada yang dicentang dan diupload*/
+                        $uploadData = $this->upload->data();
+                        $filename = $uploadData['file_name'];
+                        $data = array(
+                            "attachment" => $filename,
+                            "id_submit_report" => $this->input->post("id_submit_report")
+                        );
+                        insertRow("visit_call_report_attachment",$data);
+                    }
+                }
+            }
+        }
+        if($delete != ""){
+            foreach($delete as $deleted){
+                $where = array(
+                    "id_submit_attachment" => $deleted
+                );
+                deleteRow("visit_call_report_attachment",$where);
+            }
+        }
+
+        $checks = $this->input->post("checks_next_action");
+        $delete = $this->input->post("delete_next_action");
+        if($checks != ""){
+            foreach($checks as $checked){
+                $id_submit_next_action = $this->input->post("id_submit_next_action".$checked);
+                if($id_submit_next_action != ""){
+                    $where = array(
+                        "id_submit_next_action" => $id_submit_next_action
+                    );
+                    $data = array(
+                        "remarks" => $this->input->post("remarks".$checked),
+                        "pic" => $this->input->post("pic".$checked),
+                    );
+                    updateRow("visit_call_report_next_action",$data,$where);
+                }
+                else{
+                    $data = array(
+                        "remarks" => $this->input->post("remarks".$checked),
+                        "pic" => $this->input->post("pic".$checked),
+                        "id_submit_report" => $this->input->post("id_submit_report"),
+                        "status_next_action" => 0
+                    );
+                    insertRow("visit_call_report_next_action",$data);
+                }
+            }
+        }
+        if($delete != ""){
+            foreach($delete as $deleted){
+                $where = array(
+                    "id_submit_next_action" => $deleted
+                );
+                deleteRow("visit_call_report_next_action",$where);
+            }
+        }
+        redirect("report/main/editVisitCallReport/".$this->input->post("id_submit_report"));
     }
     public function removeVisitReport($id_submit_report){
         $where = array(
@@ -226,45 +377,46 @@ class main extends CI_Controller{
             "status_aktif_report" => 1
         );
         updateRow("visit_call_report",$data,$where);
-        redirect("report/main/visit");
+        redirect("report/main/report");
     }
     public function pdfVisitReport($id_submit_report){
         $where = array(
             "id_submit_report" => $id_submit_report
         );
-        $result = selectRow("visit_call_report",$where);
         $field = array(
-            "id_submit_report", "action_date", "id_perusahaan", "action_location", "action_duration", "action_purpose", "action_pic", "pic_position", "action_conversation", "potential_machine", "action_conclusion", "action_percentage_order", "support_need", "followup_date", "id_user_add", "tgl_report_add", "status_aktif_report", "status_cetak_report", "jenis_report","conversation_image"
+            "id_submit_report", "action_date", "id_perusahaan", "action_location", "action_duration", "action_purpose", "action_pic", "pic_position", "action_conversation", "potential_machine", "action_conclusion", "action_percentage_order", "support_need", "followup_date", "id_user_add", "tgl_report_add", "status_aktif_report", "status_cetak_report", "jenis_report","conversation_image","nama_perusahaan"
         );
-        $data["visit"] = foreachResult($result,$field,$field);
-        $data["visit"]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $data["visit"]["id_perusahaan"]));
+        
+        $result = selectRow("detail_visit_call_report",$where,$field);
+        $data["visit"] = $result->result_array();
+        
         $where = array(
-            "id_submit_report" => $data["visit"]["id_submit_report"],
+            "id_submit_report" => $id_submit_report,
             "status_next_action" => 0
         );  
-        $result = selectRow("visit_call_report_next_action",$where);
         $field = array(
             "id_submit_next_action","remarks","pic","status_next_action"
-        );  
-        $data["visit"]["next_action"] = foreachMultipleResult($result,$field,$field);
-        $data["visit"]["sales_name"] = get1Value("user","nama_user",array("id_user" => $data["visit"]["id_user_add"]));
-
-        $date = date_create($data["visit"]["action_date"]);
-        $data["visit"]["action_date"] = date_format($date,"D d-m-Y");
-        $date = date_create($data["visit"]["followup_date"]);
-        $data["visit"]["followup_date"] = date_format($date,"D d-m-Y");
-        $split = explode(":",$data["visit"]["action_duration"]);
-        $data["visit"]["action_duration"] = $split[0]." Jam ".$split[1]." Menit";
-        $this->load->view("report/main/pdf-visit-report",$data);
-    }
-    public function testwysiwyg(){
-        $teks = $this->input->post("teks");
-        $data = array(
-            "konten" => $teks
         );
-        insertRow("temp_wysiwyg",$data);
-        $result = selectRow("temp_wysiwyg",array(),"konten");
-        $hasil = $result->result_array();
-        echo $hasil[0]["konten"];
+        $result = selectRow("visit_call_report_next_action",$where,$field);  
+
+        $data["next_action"] = $result->result_array();
+        $data["visit"]["sales_name"] = get1Value("user","nama_user",array("id_user" => $data["visit"][0]["id_user_add"]));
+
+        $date = date_create($data["visit"][0]["action_date"]);
+        $data["visit"]["action_date"] = date_format($date,"D d-m-Y");
+        $date = date_create($data["visit"][0]["followup_date"]);
+        $data["visit"]["followup_date"] = date_format($date,"D d-m-Y");
+        $split = explode(":",$data["visit"][0]["action_duration"]);
+        $data["visit"]["action_duration"] = $split[0]." Jam ".$split[1]." Menit";
+
+        $where = array(
+            "id_submit_report" => $id_submit_report
+        );
+        $field = array(
+            "attachment"
+        );
+        $result = selectRow("visit_call_report_attachment",$where,$field);
+        $data["attachment"] = $result->result_array();
+        $this->load->view("report/main/pdf-visit-report",$data);
     }
 }
