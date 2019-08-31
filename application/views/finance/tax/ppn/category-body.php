@@ -1,5 +1,5 @@
 <div class="panel-body col-lg-12">
-    <form action = "<?php echo base_url();?>finance/tax/ppn/detail" method = "POST">
+    <form action = "<?php echo base_url();?>finance/tax/ppn/report" method = "POST">
         <div class="row">
             <div class = "col-lg-5">
                 <div class = "form-group">
@@ -48,7 +48,7 @@
         <tbody>
             <?php for($a = 0; $a<count($tax); $a++):?>
             <tr>
-                <form action = "<?php echo base_url();?>finance/tax/ppn/insertFaktur" method = "POST" enctype="multipart/form-data">
+                <form action = "<?php echo base_url();?>finance/tax/pph23/insertFaktur" method = "POST" enctype="multipart/form-data">
                     <input type = "hidden" name = "id_tax" value = "<?php echo $tax[$a]["id_tax"];?>">
                     <td><?php echo number_format($tax[$a]["jumlah_pajak"],2);?></td>
                     <td><?php echo $tax[$a]["id_refrensi"];?></td>

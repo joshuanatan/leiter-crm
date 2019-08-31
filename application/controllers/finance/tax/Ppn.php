@@ -71,16 +71,20 @@ class Ppn extends CI_Controller{
             $fileData = $this->upload->data();
             $data = array(
                 "no_faktur_pajak" => $this->input->post("no_faktur_pajak"),
-                "attachment" => $fileData["file_name"]
+                "attachment" => $fileData["file_name"],
+                "bulan_pajak" => $this->input->post("bulan_pajak"),
+                "tahun_pajak" => $this->input->post("tahun_pajak")
             );
         }
         else{
             $data = array(
                 "no_faktur_pajak" => $this->input->post("no_faktur_pajak"),
+                "bulan_pajak" => $this->input->post("bulan_pajak"),
+                "tahun_pajak" => $this->input->post("tahun_pajak")
             );
         }
         updateRow("tax",$data,$where);
-        redirect("finance/tax/ppn/detail");
+        redirect("finance/tax/ppn/detail/".$this->input->post("bulan_pajak")."/".$this->input->post("tahun_pajak"));
     }
     public function insertFaktur(){
         $where = array(
@@ -108,14 +112,38 @@ class Ppn extends CI_Controller{
         updateRow("tax",$data,$where);
         redirect("finance/tax/ppn");
     }
-    public function detail(){
+    public function report(){
+        $bulan_pajak = $this->input->post("bulan_pajak");
+        $tahun_pajak = $this->input->post("tahun_pajak");
+        redirect("finance/tax/ppn/detail/".$bulan_pajak."/".$tahun_pajak);
+    }
+    public function detail($bulan_pajak,$tahun_pajak){
+        $data = array(
+            "bulan" => array(
+                "01" => "JANUARI",
+                "02" => "FEBRUARI",
+                "03" => "MARET",
+                "04" => "APRIL",
+                "05" => "MEI",
+                "06" => "JUNI",
+                "07" => "JULI",
+                "08" => "AGUSTUS",
+                "09" => "SEPTEMBER",
+                "10" => "OKTOBER",
+                "11" => "NOVEMBER",
+                "12" => "DESEMBER"
+            ),
+            "tahun" => array(
+                date("Y")
+            )
+        );
         $where = array(
-            "bulan_pajak" => $this->input->post("bulan_pajak"),
-            "tahun_pajak" => $this->input->post("tahun_pajak"),
+            "bulan_pajak" => $bulan_pajak,
+            "tahun_pajak" => $tahun_pajak,
             "jenis_pajak" => "PPN",
         );
         $field = array(
-            "id_tax","jumlah_pajak","tipe_pajak","jenis_pajak","id_refrensi","status_aktif_pajak","is_pib","attachment","no_faktur_pajak"
+            "id_tax","jumlah_pajak","tipe_pajak","jenis_pajak","id_refrensi","status_aktif_pajak","is_pib","attachment","no_faktur_pajak","tahun_pajak","bulan_pajak"
         );
         $result = selectRow("final_tax",$where,$field);
         $data["tax"] = $result->result_array();

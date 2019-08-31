@@ -92,6 +92,19 @@ for($a =0; $a<count($tax); $a++){
                                     <hr/>
                                     <form action = "<?php echo base_url();?>finance/tax/ppn/updateFaktur" method = "POST" enctype="multipart/form-data">
                                         <input name = "id_tax" type = "hidden" value = "<?php echo $tax[$a]["id_tax"];?>">
+                                        
+                                        <div class = "form-group">
+                                            <h5 style = "opacity:0.5">BULAN FAKTUR</h5>
+                                            <select name = "bulan_pajak" class = "form-control">
+                                                <?php foreach($bulan as $key=>$value):?>
+                                                <option value = "<?php echo $key;?>" <?php if($tax[$a]["bulan_pajak"] == $key) echo "selected"; ?>><?php echo $value;?></option>
+                                                <?php endforeach;?>
+                                            </select>
+                                        </div>
+                                        <div class = "form-group">
+                                            <h5 style = "opacity:0.5">TAHUN FAKTUR</h5>
+                                            <input class = "form-control" type = "text" name = "tahun_pajak" value = "<?php echo $tax[$a]["tahun_pajak"];?>" required>
+                                        </div>
                                         <div class = "form-group">
                                             <h5 style = "opacity:0.5">NOMOR FAKTUR</h5>
                                             <input class = "form-control" type = "text" name = "no_faktur_pajak" value = "<?php echo $tax[$a]["no_faktur_pajak"];?>" required>
