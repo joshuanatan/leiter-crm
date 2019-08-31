@@ -87,13 +87,14 @@
                                     <?php endif;?>
                                 </div>
                                 <div class = "form-group">
-                                    <button class = "col-lg-2 btn btn-primary btn-outline btn-sm">SUBMIT</button>
-                                    <a href = "<?php echo base_url();?>finance/payable/index" class = "col-lg-2 btn btn-outline btn-primary btn-sm">BACK</a>
+                                    <button class = "btn btn-primary btn-sm">SUBMIT</button>
+                                    
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
+                <a href = "<?php echo base_url();?>finance/payable/index" class = "btn btn-primary btn-sm">BACK</a>
             </div>
             <!-- End Example Tabs Left -->
         </div>
