@@ -3,46 +3,6 @@ class Ppn extends CI_Controller{
     public function __construct(){
         parent::__construct();
     }
-    public function index(){
-        //$this->session->unset_userdata('bulan_pajak');
-        //$this->session->unset_userdata('tahun_pajak');
-        $data = array(
-            "bulan" => array(
-                "01" => "JANUARI",
-                "02" => "FEBRUARI",
-                "03" => "MARET",
-                "04" => "APRIL",
-                "05" => "MEI",
-                "06" => "JUNI",
-                "07" => "JULI",
-                "08" => "AGUSTUS",
-                "09" => "SEPTEMBER",
-                "10" => "OKTOBER",
-                "11" => "NOVEMBER",
-                "12" => "DESEMBER"
-            ),
-            "tahun" => array(
-                "2019"
-            )
-        );
-        $where = array(
-            "jenis_pajak" => "PPN",
-            "is_pib" => 1,
-            "no_faktur_pajak" => null
-        );
-        $field = array(
-            "id_tax","jumlah_pajak","id_refrensi"
-        );
-        $result = selectRow("tax",$where,$field);
-        $data["tax"] = $result->result_array();
-        $this->req();
-        $this->load->view("finance/content-open");
-        $this->load->view("finance/tax/ppn/category-header");
-        $this->load->view("finance/tax/ppn/category-body",$data);
-        $this->load->view("finance/content-close");
-        $this->close();
-    }
-    
     public function req(){
         $this->load->view("req/head");
         $this->load->view("plugin/datatable/datatable-css");
@@ -63,23 +23,64 @@ class Ppn extends CI_Controller{
         $this->load->view("finance/finance-close");
         $this->load->view("req/html-close"); 
     }
-    public function detail(){
+    public function index(){
+        $data = array(
+            "bulan" => array(
+                "01" => "JANUARI",
+                "02" => "FEBRUARI",
+                "03" => "MARET",
+                "04" => "APRIL",
+                "05" => "MEI",
+                "06" => "JUNI",
+                "07" => "JULI",
+                "08" => "AGUSTUS",
+                "09" => "SEPTEMBER",
+                "10" => "OKTOBER",
+                "11" => "NOVEMBER",
+                "12" => "DESEMBER"
+            ),
+            "tahun" => array(
+                date("Y")
+            )
+        );
         $where = array(
-            //"bulan_pajak" => $this->session->bulan_pajak,
-            //"tahun_pajak" => $this->session->tahun_pajak,
             "jenis_pajak" => "PPN",
+            "is_pib" => 1,
+            "no_faktur_pajak" => null
         );
         $field = array(
-            "id_tax","jumlah_pajak","tipe_pajak","jenis_pajak","id_refrensi","status_aktif_pajak","is_pib","attachment","no_faktur_pajak"
+            "id_tax","jumlah_pajak","id_refrensi"
         );
-        $result = selectRow("final_tax",$where,$field);
+        $result = selectRow("tax",$where,$field);
         $data["tax"] = $result->result_array();
         $this->req();
         $this->load->view("finance/content-open");
         $this->load->view("finance/tax/ppn/category-header");
-        $this->load->view("finance/tax/ppn/detail-ppn",$data);
+        $this->load->view("finance/tax/ppn/category-body",$data);
         $this->load->view("finance/content-close");
         $this->close();
+    }
+    public function updateFaktur(){
+        $where = array(
+            "id_tax" => $this->input->post("id_tax")
+        );
+        $config["upload_path"] = "./assets/dokumen/ppn/";
+        $config["allowed_types"] = "png|jpg|jpeg|pdf|gif";
+        $this->load->library("upload",$config);
+        if($this->upload->do_upload("attachment")){
+            $fileData = $this->upload->data();
+            $data = array(
+                "no_faktur_pajak" => $this->input->post("no_faktur_pajak"),
+                "attachment" => $fileData["file_name"]
+            );
+        }
+        else{
+            $data = array(
+                "no_faktur_pajak" => $this->input->post("no_faktur_pajak"),
+            );
+        }
+        updateRow("tax",$data,$where);
+        redirect("finance/tax/ppn/detail");
     }
     public function insertFaktur(){
         $where = array(
@@ -105,31 +106,25 @@ class Ppn extends CI_Controller{
             "attachment" => $fileData["file_name"]
         );
         updateRow("tax",$data,$where);
-        echo "BERHASIL MENGUPDATE, SILAHKAN MENGGUNAKAN LINK DIBAWAH INI UNTUK KEMBALI";
-        echo "SILAHKAN MENGGUNAKAN LINK INI UNTUK KEMBALI <a href = '".base_url()."finance/tax/ppn'>REDIRECT</a>";
         redirect("finance/tax/ppn");
     }
-    public function updateFaktur(){
+    public function detail(){
         $where = array(
-            "id_tax" => $this->input->post("id_tax")
+            "bulan_pajak" => $this->input->post("bulan_pajak"),
+            "tahun_pajak" => $this->input->post("tahun_pajak"),
+            "jenis_pajak" => "PPN",
         );
-        $config["upload_path"] = "./assets/dokumen/ppn/";
-        $config["allowed_types"] = "png|jpg|jpeg|pdf|gif";
-        $this->load->library("upload",$config);
-        if($this->upload->do_upload("attachment")){
-            $fileData = $this->upload->data();
-            $data = array(
-                "no_faktur_pajak" => $this->input->post("no_faktur_pajak"),
-                "attachment" => $fileData["file_name"]
-            );
-        }
-        else{
-            $data = array(
-                "no_faktur_pajak" => $this->input->post("no_faktur_pajak"),
-            );
-        }
-        updateRow("tax",$data,$where);
-        redirect("finance/tax/ppn/detail");
+        $field = array(
+            "id_tax","jumlah_pajak","tipe_pajak","jenis_pajak","id_refrensi","status_aktif_pajak","is_pib","attachment","no_faktur_pajak"
+        );
+        $result = selectRow("final_tax",$where,$field);
+        $data["tax"] = $result->result_array();
+        $this->req();
+        $this->load->view("finance/content-open");
+        $this->load->view("finance/tax/ppn/category-header");
+        $this->load->view("finance/tax/ppn/detail-ppn",$data);
+        $this->load->view("finance/content-close");
+        $this->close();
     }
 }
-?>  
+?>
