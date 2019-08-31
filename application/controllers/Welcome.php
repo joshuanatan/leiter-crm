@@ -294,7 +294,6 @@ class Welcome extends CI_Controller{
         );
         $result = selectRow("cashflow_overview",$where,$field,"","","","",$group_by);
         $data["uang_keluar_bulanan"] = $result->result_array();
-
         $field = array(
             "sum(total_pembayaran) as selisih,bulan_transaksi", "tahun_transaksi","bulan_transaksi"
         );

@@ -30,6 +30,7 @@
     for($a = 0; $a<count($uang_keluar_bulanan); $a++){
         $uang_keluar[$uang_keluar_bulanan[$a]["bulan_transaksi"]-1] = abs($uang_keluar_bulanan[$a]["total_pembayaran"]);
     }
+    print_r($uang_keluar_bulanan);
     ?>
     (function () {
         var barChartData = {
