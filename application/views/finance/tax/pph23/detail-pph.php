@@ -75,6 +75,8 @@
     </table>
     <div class = "form-group">
         <a href = "<?php echo base_url();?>finance/tax/pph23" class = "btn btn-primary btn-sm">BACK</a>
+        <?php if(count($tax) > 0):?>
         <a target = "_blank" href = "<?php echo base_url();?>finance/tax/pph23/excel/<?php echo $tax[0]["bulan_pajak"];?>/<?php echo $tax[0]["tahun_pajak"];?>" class = "btn btn-success btn-sm">EXCEL</a>
+        <?php endif;?>
     </div>
 </div>
