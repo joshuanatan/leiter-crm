@@ -89,7 +89,7 @@
                 { /*Target*/
                     label: "TARGET",
                     backgroundColor: "<?php echo $backgroundColor[0];?>",
-                    borderColor: Config.colors("<?php echo $borderColor[0];?>", 600),
+                    borderColor: "<?php echo $borderColor[0];?>",
                     hoverBackgroundColor: "<?php echo $hoverBackgroundColor[0];?>",
                     borderWidth: 2,
                     data: [
@@ -107,7 +107,7 @@
                 { /*week 1- sekian*/
                     label: "Week <?php echo $detail["id_week"]-$week;?>",
                     backgroundColor: "<?php echo $backgroundColor[($week+1)];?>",
-                    borderColor: Config.colors("<?php echo $borderColor[($week+1)];?>", 600),
+                    borderColor: "<?php echo $borderColor[($week+1)];?>",
                     hoverBackgroundColor: "<?php echo $hoverBackgroundColor[($week+1)];?>",
                     borderWidth: 2,
                     data: [
