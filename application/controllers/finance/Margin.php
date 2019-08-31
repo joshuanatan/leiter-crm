@@ -99,7 +99,10 @@ class Margin extends CI_Controller{
         $masuk = getTotal("list_transaksi_per_oc","total_pembayaran",$where);
         $data["selisih"] = $selisih;
         $data["masuk"] = $masuk;
-        $data["margin"] = ($selisih/$masuk)*100;
+        if($masuk != 0){
+            $data["margin"] = ($selisih/$masuk)*100;
+        }
+        else $data["margin"] = 0;
         $this->req();
         $this->load->view("finance/content-open");
         $this->load->view("finance/margin/category-header");
