@@ -194,13 +194,15 @@ class main extends CI_Controller{
         $id_submit_report = insertRow("visit_call_report",$data);
 
         $checks = $this->input->post("checks");
-        foreach($checks as $checked){
-            $data = array(
-                "remarks" => $this->input->post("remarks".$checked),
-                "pic" => $this->input->post("pic".$checked),
-                "id_submit_report" => $id_submit_report
-            );
-            insertRow("visit_call_report_next_action",$data);
+        if($checks != ""){
+            foreach($checks as $checked){
+                $data = array(
+                    "remarks" => $this->input->post("remarks".$checked),
+                    "pic" => $this->input->post("pic".$checked),
+                    "id_submit_report" => $id_submit_report
+                );
+                insertRow("visit_call_report_next_action",$data);
+            }
         }
         $countfiles = count($_FILES['conversation_image']['name']);
         for($i=0;$i<$countfiles;$i++){

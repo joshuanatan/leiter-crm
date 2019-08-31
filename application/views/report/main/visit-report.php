@@ -139,7 +139,22 @@
                             <th>PIC</th>
                         </thead>
                         <tbody>
-                            
+                            <?php for($a = 0; $a<10; $a++):?>
+                            <tr>
+                                <td>
+                                    <div class = "checkbox-custom checkbox-primary">
+                                        <input name = "checks[]" type = "checkbox" value = "<?php echo $a;?>">
+                                        <label></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <textarea class = "form-control" name = "remarks<?php echo $a;?>"></textarea>
+                                </td>
+                                <td>
+                                    <textarea class = "form-control" name = "pic<?php echo $a;?>"></textarea>
+                                </td>
+                            </tr>
+                            <?php endfor;?>
                         </tbody>
                     </table>
                     <div class = "form-group">
