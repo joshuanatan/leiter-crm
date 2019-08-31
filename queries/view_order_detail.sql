@@ -22,6 +22,7 @@ select
     price_request.date_request_delete AS date_request_delete,
     quotation.id_submit_quotation AS id_submit_quotation,
     quotation.id_quotation AS id_quotation,
+    quotation.loss_cause as loss_cause,
     quotation.bulan_quotation AS bulan_quotation,
     quotation.tahun_quotation AS tahun_quotation,
     quotation.versi_quotation AS versi_quotation,

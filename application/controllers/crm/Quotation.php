@@ -57,7 +57,7 @@ class Quotation extends CI_Controller{
             "status_aktif_quotation" => 0
         );
         $field = array(
-            "id_submit_quotation","versi_quotation","no_quotation","id_request","status_quotation","date_quotation_add","total_quotation_price","hal_quotation","durasi_pengiriman_quotation","franco","durasi_pembayaran_quotation","alamat_perusahaan","nama_perusahaan","nama_cp","up_cp_quotation","no_request"
+            "id_submit_quotation","versi_quotation","no_quotation","id_request","status_quotation","date_quotation_add","total_quotation_price","hal_quotation","durasi_pengiriman_quotation","franco","durasi_pembayaran_quotation","alamat_perusahaan","nama_perusahaan","nama_cp","up_cp_quotation","no_request","loss_cause"
         );
         $result = selectRow("order_detail",$where,$field);
         $data["quotation"] = $result->result_array();
@@ -1108,7 +1108,8 @@ class Quotation extends CI_Controller{
     
     public function loss($id_submit_quotation){ //sudah di cek
         $data = array(
-            "status_quotation" => 1
+            "status_quotation" => 1,
+            "loss_cause" => $this->input->post("loss_cause")
         );
         $where = array(
             "id_submit_quotation" => $id_submit_quotation

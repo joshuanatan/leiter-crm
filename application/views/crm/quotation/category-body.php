@@ -66,9 +66,9 @@
                     <a href = "<?php echo base_url();?>crm/quotation/revision/<?php echo $quotation[$a]["id_submit_quotation"];?>" class="btn btn-outline btn-sm col-lg-12 btn-primary" data-content="Do Revision Here" data-trigger="hover" data-toggle="popover">REVISION</a>
 
                     <a href = "<?php echo base_url();?>crm/quotation/accepted/<?php echo $quotation[$a]["id_submit_quotation"];?>" class="btn btn-outline btn-sm col-lg-12 btn-success" data-content="Proceed to Order Confirmation" data-trigger="hover" data-toggle="popover">WIN</a>
-                    <a href = "<?php echo base_url();?>crm/quotation/loss/<?php echo $quotation[$a]["id_submit_quotation"];?>" class="btn btn-outline btn-sm col-lg-12 btn-danger" data-content="Quotation Loss" data-trigger="hover" data-toggle="popover">LOSS</a> 
-                    <a href = "<?php echo base_url();?>crm/quotation/remove/<?php echo $quotation[$a]["id_submit_quotation"];?>" class="btn btn-outline btn-sm col-lg-12 btn-danger" data-content="Delete Quotation" data-trigger="hover" data-toggle="popover">REMOVE</a> 
-                    
+					<button type = "button" data-toggle = "modal" data-target = "#lossCause<?php echo $a;?>" class="btn btn-outline btn-sm col-lg-12 btn-danger" data-content="Quotation Loss" data-trigger="hover" data-toggle="popover">LOSS</button> 
+					
+                    <a href = "" class="btn btn-outline btn-sm col-lg-12 btn-danger" data-content="Delete Quotation" data-trigger="hover" data-toggle="popover">REMOVE</a> 
                 </td>
 				
 				
@@ -77,7 +77,7 @@
         </tbody>
     </table>
 </div>
-<?php for($a = 0 ; $a<count($quotation);$a++){ ?> 
+<?php for($a = 0 ; $a<count($quotation);$a++): ?> 
 <div class = "modal fade" id = "detailQuotation<?php echo $a;?>">
 	<div class = "modal-dialog modal-lg">
 		<div class = "modal-content">
@@ -206,7 +206,27 @@
 	</div>
 </div>		
 
-<?php } ?>
+<div class = "modal fade" id = "lossCause<?php echo $a;?>">
+	<div class = "modal-dialog modal-lg">
+		<div class = "modal-content">
+			<div class = "modal-header">
+				<h4 class = "modal-title">QUOTATION LOSS REASON <?php echo $quotation[$a]["no_quotation"];?></h4>
+			</div>
+			<div class = "modal-body">
+				<form action = "<?php echo base_url();?>crm/quotation/loss/<?php echo $quotation[$a]["id_submit_quotation"];?>" method = "POST">
+					<div class = "form-group">
+						<h5>Why is the Quotation Loss ? :(</h5>
+						<textarea class = "form-control" name = "loss_cause"><?php echo $quotation[$a]["loss_cause"];?></textarea>
+					</div>
+					<div class = "form-group">
+						<button type = "submit" class = "btn btn-danger btn-sm">CONFIRM LOSS</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<?php endfor; ?>
 <div class = "modal fade" id = "createQuotation">
 	<div class = "modal-dialog">
 		<div class = "modal-content">
@@ -234,3 +254,7 @@
 		</div>
 	</div>
 </div>
+
+<?php for($a = 0; $a<count($quotation); $a++):?>
+
+<?php endfor;?>
