@@ -144,6 +144,7 @@ class Kpi extends CI_Controller{
         $this->close();
         
         $week = $id_weeks;
+        $data["kpi_graph"] = array();
         for($a = 0; $a<5; $a++){ /*week 5*/
             for($kpi = 0; $kpi<count($data["kpi_user"]); $kpi++){
                 $where = array(
