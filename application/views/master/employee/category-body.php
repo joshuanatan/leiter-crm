@@ -17,7 +17,7 @@
                 <th>User Email</th>
                 <th>User Phone</th>
                 <th>User Type</th>
-                <th>Action</th>
+                <th style = "width:5%">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -30,11 +30,11 @@
                 <td><?php echo $employee[$a]["jenis_user"];?></td>
                 <td class="actions">
                     
-                    <button type="button" data-target = "#DetailUser<?php echo $employee[$a]["id_user"];?>" data-toggle="modal" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" data-content="Detail Profile" data-trigger="hover" data-toggle="popover" aria-hidden="true"></i></button>
+                    <button type="button" data-target = "#DetailUser<?php echo $employee[$a]["id_user"];?>" data-toggle="modal" class="btn btn-outline btn-primary col-lg-12 btn-sm" type="button">EDIT</button>
 
-                    <a href = "<?php echo base_url();?>master/user/employee/delete/<?php echo $employee[$a]["id_user"];?>" class="btn btn-outline btn-danger" data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
+                    <a href = "<?php echo base_url();?>master/user/employee/delete/<?php echo $employee[$a]["id_user"];?>" class="btn btn-outline btn-danger col-lg-12 btn-sm" data-toggle="tooltip">DELETE</a>
                     
-                    <button class="btn btn-outline btn-success" data-toggle="modal" data-target="#Privilege<?php echo $employee[$a]["id_user"];?>"><i class="icon wb-eye" aria-hidden="true"></i></button>
+                    <button class="btn btn-outline btn-success col-lg-12 btn-sm" data-toggle="modal" data-target="#Privilege<?php echo $employee[$a]["id_user"];?>">PRIVILEGE</button>
                 </td>
             </tr>
             <!-- here goes modal -->
@@ -92,156 +92,954 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="Privilege<?php echo $employee[$a]["id_user"];?>" aria-hidden="true" aria-labelledby="Privilege" role="dialog" tabindex="-1">
-                <div class="modal-dialog modal-simple">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                            <h4 class="modal-title" id="exampleModalTabs">EMPLOYEE PRIVILEGE</h4>
-                        </div>
-
-                        <ul class="nav nav-tabs nav-tabs-line" role="tablist">
-                            <li class="nav-item" role="presentation"><a class="nav-link active" data-toggle="tab"  href="#primaryData<?php echo $employee[$a]["id_user"];?>"  aria-controls="primaryData<?php echo $employee[$a]["id_user"];?>" role="tab">Primary Data</a></li>
-                        </ul>
-                        <div class="modal-body">
-                            
-                            <form action = "<?php echo base_url();?>master/user/employee/editprivilege/<?php echo $employee[$a]["id_user"];?>" method = "post">
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="privilege<?php echo $employee[$a]["id_user"];?>" role="tabpanel">
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "main_dashboard")) == 0) echo "checked"; ?> value = "main_dashboard">
-                                            <label><?php echo strtoupper("Dashboard Main") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "crm_dashboard")) == 0) echo "checked"; ?> value = "crm_dashboard">
-                                            <label><?php echo strtoupper("Dashboard Order Processing") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "finance_dashboard")) == 0) echo "checked"; ?> value = "finance_dashboard">
-                                            <label><?php echo strtoupper("Dashboard Finance") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "user_dashboard")) == 0) echo "checked"; ?> value = "user_dashboard">
-                                            <label><?php echo strtoupper("Dashboard Personal") ?></label>
-                                        </div>
-                                        <hr/>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "product")) == 0) echo "checked"; ?> value = "product">
-                                            <label><?php echo strtoupper("product") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "customer")) == 0) echo "checked"; ?> value = "customer">
-                                            <label><?php echo strtoupper("customer") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "uom")) == 0) echo "checked"; ?> value = "uom">
-                                            <label><?php echo strtoupper("uom") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "expanses")) == 0) echo "checked"; ?> value = "expanses">
-                                            <label><?php echo strtoupper("expanses") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "supplier")) == 0) echo "checked"; ?> value = "supplier">
-                                            <label><?php echo strtoupper("supplier") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "shipping")) == 0) echo "checked"; ?> value = "shipping">
-                                            <label><?php echo strtoupper("shipping") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "user")) == 0) echo "checked"; ?> value = "user">
-                                            <label><?php echo strtoupper("user") ?></label>
-                                        </div>
-                                        <hr/>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "rfq")) == 0) echo "checked"; ?> value = "rfq">
-                                            <label><?php echo strtoupper("rfq") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "quotation")) == 0) echo "checked"; ?> value = "quotation">
-                                            <label><?php echo strtoupper("quotation") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "oc")) == 0) echo "checked"; ?> value = "oc">
-                                            <label><?php echo strtoupper("oc") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "po")) == 0) echo "checked"; ?> value = "po">
-                                            <label><?php echo strtoupper("po") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "od")) == 0) echo "checked"; ?> value = "od">
-                                            <label><?php echo strtoupper("od") ?></label>
-                                        </div>
-                                        <hr/>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "receivable")) == 0) echo "checked"; ?> value = "receivable">
-                                            <label><?php echo strtoupper("receivable") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "payable")) == 0) echo "checked"; ?> value = "payable">
-                                            <label><?php echo strtoupper("payable") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "reimburse")) == 0) echo "checked"; ?> value = "reimburse">
-                                            <label><?php echo strtoupper("reimburse") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "margin")) == 0) echo "checked"; ?> value = "margin">
-                                            <label><?php echo strtoupper("margin") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "ppn")) == 0) echo "checked"; ?> value = "ppn">
-                                            <label><?php echo strtoupper("ppn") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "pph23")) == 0) echo "checked"; ?> value = "pph23">
-                                            <label><?php echo strtoupper("pph23") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "pib")) == 0) echo "checked"; ?> value = "pib">
-                                            <label><?php echo strtoupper("pib") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "petty")) == 0) echo "checked"; ?> value = "petty">
-                                            <label><?php echo strtoupper("petty") ?></label>
-                                        </div>
-                                        <hr/>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "kpi")) == 0) echo "checked"; ?> value = "kpi">
-                                            <label><?php echo strtoupper("kpi") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "report")) == 0) echo "checked"; ?> value = "report">
-                                            <label><?php echo strtoupper("report") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "visit")) == 0) echo "checked"; ?> value = "visit">
-                                            <label><?php echo strtoupper("Visit Report") ?></label>
-                                        </div>
-                                        <div class = "checkbox-custom checkbox-primary">
-                                            <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "call")) == 0) echo "checked"; ?> value = "call">
-                                            <label><?php echo strtoupper("Call Report") ?></label>
-                                        </div>
-                                        <div class = "form-group">
-                                            <button type = "submit" class = "btn btn-primary btn-outline col-lg-2 col-md-12">SUBMIT</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <!-- End Modal -->
             <?php endfor; ?>
         </tbody>
     </table>
 </div>
 
+
+
+<?php for($a = 0; $a<count($employee);$a++): ?> 
+<div class="modal fade" id="Privilege<?php echo $employee[$a]["id_user"];?>" aria-hidden="true" aria-labelledby="Privilege" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-simple modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="exampleModalTabs">EMPLOYEE PRIVILEGE</h4>
+            </div>
+
+            <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+                <li class="nav-item" role="presentation"><a class="nav-link active" data-toggle="tab"  href="#primaryData<?php echo $employee[$a]["id_user"];?>"  aria-controls="primaryData<?php echo $employee[$a]["id_user"];?>" role="tab">Primary Data</a></li>
+            </ul>
+            <div class="modal-body">
+                
+                <form action = "<?php echo base_url();?>master/user/employee/editprivilege/<?php echo $employee[$a]["id_user"];?>" method = "post">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="privilege<?php echo $employee[$a]["id_user"];?>" role="tabpanel">
+                            <table class = "table table-striped table-hover table-bordered">
+                                <thead>
+                                    <th>Subject</th>
+                                    <th>Menu Access</th>
+                                    <th>Create</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                    <th>View</th>
+                                    <th>View All</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><?php echo strtoupper("Dashboard Main") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "main_dashboard")) == 0) echo "checked"; ?> value = "main_dashboard">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("Dashboard Order Processing") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "crm_dashboard")) == 0) echo "checked"; ?> value = "crm_dashboard">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("Dashboard Finance") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "finance_dashboard")) == 0) echo "checked"; ?> value = "finance_dashboard">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("Dashboard Personal") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "user_dashboard")) == 0) echo "checked"; ?> value = "user_dashboard">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("product") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "product")) == 0) echo "checked"; ?> value = "product">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_product")) == 0) echo "checked"; ?> value = "insert_product">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "update_product")) == 0) echo "checked"; ?> value = "update_product">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_product")) == 0) echo "checked"; ?> value = "delete_product">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_product")) == 0) echo "checked"; ?> value = "view_created_product">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_product")) == 0) echo "checked"; ?> value = "view_all_product">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("customer") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "customer")) == 0) echo "checked"; ?> value = "customer">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_customer")) == 0) echo "checked"; ?> value = "insert_customer">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_customer")) == 0) echo "checked"; ?> value = "edit_customer">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_customer")) == 0) echo "checked"; ?> value = "delete_customer">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_customer")) == 0) echo "checked"; ?> value = "view_created_customer">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_customer")) == 0) echo "checked"; ?> value = "view_all_customer">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php if(false):?>
+                                    <tr>
+                                        <td><?php echo strtoupper("uom") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "uom")) == 0) echo "checked"; ?> value = "uom">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_uom")) == 0) echo "checked"; ?> value = "insert_uom">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_uom")) == 0) echo "checked"; ?> value = "edit_uom">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_uom")) == 0) echo "checked"; ?> value = "delete_uom">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_uom")) == 0) echo "checked"; ?> value = "view_created_uom">
+                                                <label></label>
+                                            </div>
+                                        </td>                                        
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_uom")) == 0) echo "checked"; ?> value = "view_all_uom">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php endif;?>
+                                    <tr>
+                                        <td><?php echo strtoupper("expanses") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "expanses")) == 0) echo "checked"; ?> value = "expanses">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_expanses")) == 0) echo "checked"; ?> value = "insert_expanses">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_expanses")) == 0) echo "checked"; ?> value = "edit_expanses">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_expanses")) == 0) echo "checked"; ?> value = "delete_expanses">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_expanses")) == 0) echo "checked"; ?> value = "view_created_expanses">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_expanses")) == 0) echo "checked"; ?> value = "view_all_expanses">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("supplier") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "supplier")) == 0) echo "checked"; ?> value = "supplier">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_supplier")) == 0) echo "checked"; ?> value = "insert_supplier">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_supplier")) == 0) echo "checked"; ?> value = "edit_supplier">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_supplier")) == 0) echo "checked"; ?> value = "delete_supplier">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_supplier")) == 0) echo "checked"; ?> value = "view_created_supplier">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_supplier")) == 0) echo "checked"; ?> value = "view_all_supplier">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("shipping") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "shipping")) == 0) echo "checked"; ?> value = "shipping">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_shipping")) == 0) echo "checked"; ?> value = "insert_shipping">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_shipping")) == 0) echo "checked"; ?> value = "edit_shipping">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_shipping")) == 0) echo "checked"; ?> value = "delete_shipping">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_shipping")) == 0) echo "checked"; ?> value = "view_created_shipping">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_shipping")) == 0) echo "checked"; ?> value = "view_all_shipping">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("user") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "user")) == 0) echo "checked"; ?> value = "user">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_user")) == 0) echo "checked"; ?> value = "insert_user">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_user")) == 0) echo "checked"; ?> value = "edit_user">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_user")) == 0) echo "checked"; ?> value = "delete_user">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_user")) == 0) echo "checked"; ?> value = "view_created_user">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_user")) == 0) echo "checked"; ?> value = "view_all_user">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("rfq") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "rfq")) == 0) echo "checked"; ?> value = "rfq">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_rfq")) == 0) echo "checked"; ?> value = "insert_rfq">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_rfq")) == 0) echo "checked"; ?> value = "edit_rfq">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_rfq")) == 0) echo "checked"; ?> value = "delete_rfq">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_rfq")) == 0) echo "checked"; ?> value = "view_created_rfq">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_rfq")) == 0) echo "checked"; ?> value = "view_all_rfq">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("quotation") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "quotation")) == 0) echo "checked"; ?> value = "quotation">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_quotation")) == 0) echo "checked"; ?> value = "insert_quotation">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_quotation")) == 0) echo "checked"; ?> value = "edit_quotation">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_quotation")) == 0) echo "checked"; ?> value = "delete_quotation">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_quotation")) == 0) echo "checked"; ?> value = "view_created_quotation">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_al_quotation")) == 0) echo "checked"; ?> value = "view_al_quotation">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("oc") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "oc")) == 0) echo "checked"; ?> value = "oc">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_oc")) == 0) echo "checked"; ?> value = "insert_oc">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_oc")) == 0) echo "checked"; ?> value = "edit_oc">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_oc")) == 0) echo "checked"; ?> value = "delete_oc">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_oc")) == 0) echo "checked"; ?> value = "view_created_oc">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_oc")) == 0) echo "checked"; ?> value = "view_all_oc">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("po") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "po")) == 0) echo "checked"; ?> value = "po">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_po")) == 0) echo "checked"; ?> value = "insert_po">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_po")) == 0) echo "checked"; ?> value = "edit_po">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_po")) == 0) echo "checked"; ?> value = "delete_po">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_po")) == 0) echo "checked"; ?> value = "view_created_po">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_po")) == 0) echo "checked"; ?> value = "view_all_po">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("od") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "od")) == 0) echo "checked"; ?> value = "od">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_od")) == 0) echo "checked"; ?> value = "insert_od">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_od")) == 0) echo "checked"; ?> value = "edit_od">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_od")) == 0) echo "checked"; ?> value = "delete_od">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_od")) == 0) echo "checked"; ?> value = "view_created_od">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_od")) == 0) echo "checked"; ?> value = "view_all_od">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("receivable") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "receivable")) == 0) echo "checked"; ?> value = "receivable">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_receivable")) == 0) echo "checked"; ?> value = "insert_receivable">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_receivable")) == 0) echo "checked"; ?> value = "edit_receivable">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_receivable")) == 0) echo "checked"; ?> value = "delete_receivable">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_receivable")) == 0) echo "checked"; ?> value = "view_created_receivable">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_receivable")) == 0) echo "checked"; ?> value = "view_all_receivable">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("payable") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "payable")) == 0) echo "checked"; ?> value = "payable">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_payable")) == 0) echo "checked"; ?> value = "insert_payable">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_payable")) == 0) echo "checked"; ?> value = "edit_payable">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_payable")) == 0) echo "checked"; ?> value = "delete_payable">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_payable")) == 0) echo "checked"; ?> value = "view_created_payable">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_payable")) == 0) echo "checked"; ?> value = "view_all_payable">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("reimburse") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "reimburse")) == 0) echo "checked"; ?> value = "reimburse">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_reimburse")) == 0) echo "checked"; ?> value = "insert_reimburse">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_reimburse")) == 0) echo "checked"; ?> value = "edit_reimburse">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_reimburse")) == 0) echo "checked"; ?> value = "delete_reimburse">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_reimburse")) == 0) echo "checked"; ?> value = "view_created_reimburse">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_reimburse")) == 0) echo "checked"; ?> value = "view_all_reimburse">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("margin") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "margin")) == 0) echo "checked"; ?> value = "margin">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_margin")) == 0) echo "checked"; ?> value = "insert_margin">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_margin")) == 0) echo "checked"; ?> value = "edit_margin">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_margin")) == 0) echo "checked"; ?> value = "delete_margin">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td></td>
+                                         <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("ppn") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "ppn")) == 0) echo "checked"; ?> value = "ppn">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("pph23") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "pph23")) == 0) echo "checked"; ?> value = "pph23">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("pib") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "pib")) == 0) echo "checked"; ?> value = "pib">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_pib")) == 0) echo "checked"; ?> value = "insert_pib">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_pib")) == 0) echo "checked"; ?> value = "edit_pib">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_pib")) == 0) echo "checked"; ?> value = "delete_pib">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_pib")) == 0) echo "checked"; ?> value = "view_created_pib">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_pib")) == 0) echo "checked"; ?> value = "view_all_pib">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("petty") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "petty")) == 0) echo "checked"; ?> value = "petty">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_petty")) == 0) echo "checked"; ?> value = "insert_petty">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_petty")) == 0) echo "checked"; ?> value = "edit_petty">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_petty")) == 0) echo "checked"; ?> value = "delete_petty">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_petty")) == 0) echo "checked"; ?> value = "view_created_petty">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_petty")) == 0) echo "checked"; ?> value = "view_all_petty">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("kpi") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "kpi")) == 0) echo "checked"; ?> value = "kpi">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_kpi")) == 0) echo "checked"; ?> value = "insert_kpi">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_kpi")) == 0) echo "checked"; ?> value = "edit_kpi">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_kpi")) == 0) echo "checked"; ?> value = "delete_kpi">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_kpi")) == 0) echo "checked"; ?> value = "view_created_kpi">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_kpi")) == 0) echo "checked"; ?> value = "view_all_kpi">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("report") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "report")) == 0) echo "checked"; ?> value = "report">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_report")) == 0) echo "checked"; ?> value = "insert_report">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_report")) == 0) echo "checked"; ?> value = "edit_report">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_report")) == 0) echo "checked"; ?> value = "delete_report">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_report")) == 0) echo "checked"; ?> value = "view_created_report">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_report")) == 0) echo "checked"; ?> value = "view_all_report">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("Visit/Call") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "visit")) == 0) echo "checked"; ?> value = "visit">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_visit")) == 0) echo "checked"; ?> value = "insert_visit">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_visit")) == 0) echo "checked"; ?> value = "edit_visit">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_visit")) == 0) echo "checked"; ?> value = "delete_visit">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_created_visit")) == 0) echo "checked"; ?> value = "view_created_visit">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_visit")) == 0) echo "checked"; ?> value = "view_all_visit">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <hr/>
+                            <div class = "form-group">
+                                <button type = "submit" class = "btn btn-primary btn-outline col-lg-2 col-md-12">SUBMIT</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endfor; ?>
 <!-- add user modal -->
 <div class="modal fade" id="TambahUser" aria-hidden="true" aria-labelledby="DaftarUser" role="dialog" tabindex="-1">
     <div class="modal-dialog modal-simple">
