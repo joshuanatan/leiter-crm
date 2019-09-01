@@ -21,8 +21,19 @@ class Po extends CI_Controller{
     public function index(){
         if($this->session->id_user == "") redirect("login/welcome");
         $where = array(
-            "status_aktif_po" => 0
+            "id_user_add_po" => -999
         );
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_po")) == 0){
+            $where = array(
+                "status_aktif_po" => 0,
+                "id_user_add_po" => $this->session->id_user
+            );
+        }
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_po")) == 0){
+            $where = array(
+                "status_aktif_po" => 0,
+            );
+        }
         $field = array(
             "id_submit_po","no_po","id_supplier","id_shipper","shipping_method","total_supplier_payment","id_submit_oc","requirement_date","destination","date_po_core_add","id_cp_supplier","id_cp_shipper","shipping_term","mata_uang_pembayaran","nama_supplier_po","nama_shipper_po","nama_cp_shipper","nama_cp_supplier","nama_perusahaan","nama_cp","status_selesai_po"
         );

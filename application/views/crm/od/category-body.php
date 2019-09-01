@@ -1,5 +1,6 @@
 
 <div class="panel-body col-lg-12">
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_od")) == 0):?>
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
@@ -9,6 +10,7 @@
             </div>
         </div>
     </div>
+<?php endif;?>
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin="dataTable">
         <thead>
             <tr>
@@ -32,8 +34,12 @@
                 <td><?php echo $od[$a]["date_od_add"];?></td>
                 <td class="actions">
                     <a href="<?php echo base_url();?>crm/od/odPdf/<?php echo $od[$a]["id_submit_od"];?>" target="_blank" class="btn btn-primary btn-outline btn-sm">CETAK</a>
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_od")) == 0):?>
                     <a href = "<?php echo base_url();?>crm/od/edit/<?php echo $od[$a]["id_submit_od"];?>" class = "btn btn-primary btn-sm btn-outline">EDIT</a>
+                    <?php endif;?>
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_od")) == 0):?>
                     <a href = "<?php echo base_url();?>crm/od/remove/<?php echo $od[$a]["id_submit_od"];?>" class = "btn btn-danger btn-sm btn-outline">REMOVE</a>
+                    <?php endif;?>
                 </td>
                 
             </tr>

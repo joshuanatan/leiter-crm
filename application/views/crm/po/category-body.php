@@ -1,4 +1,5 @@
 <div class="panel-body col-lg-12">
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_po")) == 0):?>
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
@@ -10,6 +11,7 @@
             </div>
         </div>
     </div>
+<?php endif;?>
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <!-- List OC yang sudah di selesaikan -->
         <thead>
@@ -37,8 +39,12 @@
                 </td>
                 <td class="actions">
                     <a target="_blank" href = "<?php echo base_url();?>crm/po/poPdf/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-primary btn-sm col-lg-12">CETAK</a>
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_po")) == 0):?>
                     <a href = "<?php echo base_url();?>crm/po/edit/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-primary btn-sm col-lg-12">EDIT</a>
+                    <?php endif;?>
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_po")) == 0):?>
                     <a href = "<?php echo base_url();?>crm/po/delete/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-danger btn-sm col-lg-12">DELETE</a>
+                    <?php endif;?>
                     <?php if($purchase_order[$a]["status_selesai_po"] == 1):?>
                     <a href = "<?php echo base_url();?>crm/po/done/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-success btn-sm col-lg-12">DONE</a>
                     <?php endif;?>

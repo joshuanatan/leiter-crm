@@ -23,8 +23,19 @@ class Od extends CI_Controller{
     public function index(){
         if($this->session->id_user == "") redirect("login/welcome");
         $where = array(
-            "status_od" => 0
+            "id_user_add_od" => -999
         );
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_od")) == 0){
+            $where = array(
+                "status_od" => 0,
+                "id_user_add_od" => $this->session->id_user
+            );
+        }
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_od")) == 0){
+            $where = array(
+                "status_od" => 0
+            );
+        }
         $field = array(
             "id_submit_od","id_submit_oc","no_od","id_courier","delivery_method","alamat_pengiriman","up_cp","date_od_add","nama_perusahaan","nama_cp","nama_courier","no_po_customer"
         );
