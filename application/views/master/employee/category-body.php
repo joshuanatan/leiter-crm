@@ -1,14 +1,14 @@
 
 <div class="panel-body col-lg-12">
+    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_user")) == 0):?>
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-            <button data-target="#TambahUser" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button">
-                <i class="icon wb-plus" aria-hidden="true"></i> Add Employee
-            </button>
+                <button data-target="#TambahUser" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button">Add Employee</button>
             </div>
         </div>
     </div>
+    <?php endif;?>
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin="dataTable">
         <thead>
             <tr>
@@ -29,15 +29,20 @@
                 <td><?php echo $employee[$a]["nohp_user"];?></td>
                 <td><?php echo $employee[$a]["jenis_user"];?></td>
                 <td class="actions">
-                    
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_user")) == 0):?>
                     <button type="button" data-target = "#DetailUser<?php echo $employee[$a]["id_user"];?>" data-toggle="modal" class="btn btn-outline btn-primary col-lg-12 btn-sm" type="button">EDIT</button>
+                    <?php endif;?>
 
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_user")) == 0):?>
                     <a href = "<?php echo base_url();?>master/user/employee/delete/<?php echo $employee[$a]["id_user"];?>" class="btn btn-outline btn-danger col-lg-12 btn-sm" data-toggle="tooltip">DELETE</a>
-                    
+                    <?php endif;?>
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_user")) == 0):?>
                     <button class="btn btn-outline btn-success col-lg-12 btn-sm" data-toggle="modal" data-target="#Privilege<?php echo $employee[$a]["id_user"];?>">PRIVILEGE</button>
+                    <?php endif;?>
                 </td>
             </tr>
             <!-- here goes modal -->
+            <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_user")) == 0):?>
             <div class="modal fade" id="DetailUser<?php echo $employee[$a]["id_user"];?>" aria-hidden="true" aria-labelledby="DaftarUser" role="dialog" tabindex="-1">
                 <div class="modal-dialog modal-simple">
                     <div class="modal-content">
@@ -91,7 +96,7 @@
                     </div>
                 </div>
             </div>
-
+            <?php endif;?>
             <!-- End Modal -->
             <?php endfor; ?>
         </tbody>
@@ -99,7 +104,7 @@
 </div>
 
 
-
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_user")) == 0):?>
 <?php for($a = 0; $a<count($employee);$a++): ?> 
 <div class="modal fade" id="Privilege<?php echo $employee[$a]["id_user"];?>" aria-hidden="true" aria-labelledby="Privilege" role="dialog" tabindex="-1">
     <div class="modal-dialog modal-simple modal-lg">
@@ -1040,7 +1045,10 @@
     </div>
 </div>
 <?php endfor; ?>
+<?php endif;?>
 <!-- add user modal -->
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_user")) == 0)
+:?>
 <div class="modal fade" id="TambahUser" aria-hidden="true" aria-labelledby="DaftarUser" role="dialog" tabindex="-1">
     <div class="modal-dialog modal-simple">
         <div class="modal-content">
@@ -1135,5 +1143,6 @@
         </div>
     </div>
 </div>
+<?php endif;?>
 <!-- end add employee modal -->
 
