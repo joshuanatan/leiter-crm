@@ -1,4 +1,5 @@
 <div class="panel-body col-lg-12">
+    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_customer")) == 0):?>
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
@@ -8,6 +9,7 @@
             </div>
         </div>
     </div>
+    <?php endif;?>
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
@@ -33,17 +35,21 @@
                 <td><?php echo nl2br($perusahaan[$a]["alamat_pengiriman"]);?></td>
                 <td><?php echo $perusahaan[$a]["notelp_perusahaan"];?></td>
                 <td><?php echo $perusahaan[$a]["nofax_perusahaan"];?></td>
-                <td><?php echo $cp[$a]["nama_cp"];?></td>
-                <td><?php echo $cp[$a]["email_cp"]."<br/>".$cp[$a]["nohp_cp"];?></td>
+                <td><?php echo $perusahaan[$a]["cp"][0]["nama_cp"];?></td>
+                <td><?php echo $perusahaan[$a]["cp"][0]["email_cp"]."<br/>".$perusahaan[$a]["cp"][0]["nohp_cp"];?></td>
                 <td class="actions">
+                    
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_customer")) == 0):?>
+
                     <a href = "<?php echo base_url();?>master/customer/contact/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-sm col-lg-12 btn-outline btn-success"
                     data-toggle="tooltip">PIC</a>
-                    
                     <a href = "<?php echo base_url();?>master/customer/edit/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-sm col-lg-12 btn-outline btn-primary" >EDIT</a>
 
+                    <?php endif;?>
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_customer")) == 0):?>
                     <a href = "<?php echo base_url();?>master/customer/delete/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-sm col-lg-12 btn-outline btn-danger"
                     data-toggle="tooltip">REMOVE</a>
-
+                    <?php endif;?>
                     <a href = "<?php echo base_url();?>master/customer/showTransaction/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-sm col-lg-12 btn-outline btn-primary" data-toggle="tooltip">TRANSACTION</a>
                     
                 </td>

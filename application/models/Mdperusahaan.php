@@ -1,10 +1,16 @@
 <?php
 class Mdperusahaan extends CI_Model{
-    public function select($data){
+    public function select($where,$field = "",$limit = ""){
+        if($field != ""){
+            $this->db->select($field);
+        }
+        if($limit != ""){
+            $this->db->limit($limit);
+        }
         $this->db->join("contact_person","contact_person.id_perusahaan = perusahaan.id_perusahaan","inner");
         $this->db->group_by("perusahaan.id_perusahaan");
         $this->db->order_by("nama_perusahaan","ASC");
-        return $this->db->get_where("perusahaan",$data);
+        return $this->db->get_where("perusahaan",$where);
     }
     public function insert($data){
         $this->db->insert("perusahaan",$data);

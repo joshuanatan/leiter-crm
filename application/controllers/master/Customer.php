@@ -22,50 +22,45 @@ class Customer extends CI_Controller{
         /*--------------------------------------------------------*/
         $this->load->view("master/content-open");
         $this->load->view("master/customer/category-header");
+
+
         $where = array(
-            "perusahaan" => array(
+            "id_user_add" => -999
+        );
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_customer")) == 0){
+            $where = array(
+                "peran_perusahaan" => "CUSTOMER",
+                "perusahaan.status_perusahaan" => 0,
+                "contact_person.status_cp" => 0,
+                "perusahaan.id_user_add" => $this->session->id_user
+            );
+        }
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_customer")) == 0){
+            $where = array(
                 "peran_perusahaan" => "CUSTOMER",
                 "perusahaan.status_perusahaan" => 0,
                 "contact_person.status_cp" => 0
-            ),
-            "no_urut" => array(
-                "peran_perusahaan" => "CUSTOMER",
-                "status_perusahaan" => 0
-            )
-        );
-        $result = array(
-            "perusahaan" => $this->Mdperusahaan->select($where["perusahaan"]),
-        );
-        $data["perusahaan"] = array();
-        $counter = 0;
-        foreach($result["perusahaan"]->result() as $a){
-            $data["perusahaan"][$counter] = array(
-                "id_perusahaan" => $a->id_perusahaan,
-                "no_urut" => $a->no_urut,
-                "nama_perusahaan" => $a->nama_perusahaan,
-                "jenis_perusahaan" => $a->jenis_perusahaan,
-                "alamat_perusahaan" => $a->alamat_perusahaan,
-                "alamat_pengiriman" => $a->alamat_pengiriman,
-                "notelp_perusahaan" => $a->notelp_perusahaan,
-                "nofax_perusahaan" => $a->nofax_perusahaan
             );
-            $where["cp"] = array(
-                "id_perusahaan" => $a->id_perusahaan,
+        }
+        $field = array(
+            "perusahaan.id_perusahaan","no_urut","nama_perusahaan","jenis_perusahaan","alamat_perusahaan","alamat_pengiriman","notelp_perusahaan","nofax_perusahaan"
+        );
+        $result = $this->Mdperusahaan->select($where,$field,10);
+        $data["perusahaan"] = $result->result_array();
+
+        for($a = 0; $a<count($data["perusahaan"]); $a++){
+            
+            $where = array(
+                "id_perusahaan" => $data["perusahaan"][$a]["id_perusahaan"],
                 "status_cp" => 0
             );
-            $result["cp"] = $this->Mdcontact_person->select($where["cp"]);
-            foreach($result["cp"]->result() as $b){
-                $data["cp"][$counter] = array(
-                    "nama_cp" => $b->nama_cp,
-                    "email_cp" => $b->email_cp,
-                    "nohp_cp" => $b->nohp_cp
-                );
-                break;
-            }
-            
-            $counter++;
+            $field = array(
+                "nama_cp","email_cp","nohp_cp"
+            );
+            $result = selectRow("contact_person",$where,$field);
+            $data["perusahaan"][$a]["cp"] = $result->result_array();
         }
-        $data["maxId"] = getMaxId("perusahaan","no_urut",$where["no_urut"]);
+        $data["maxId"] = getMaxId("perusahaan","no_urut",array("peran_perusahaan" => "customer","status_perusahaan" => 0));
         $this->load->view("master/customer/category-body",$data);
         $this->load->view("master/content-close");
         /*--------------------------------------------------------*/
