@@ -1,4 +1,5 @@
 <div class="panel-body col-lg-12">
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_oc")) == 0):?>
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
@@ -11,6 +12,7 @@
             </div>
         </div>
     </div>
+<?php endif;?>
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
@@ -42,10 +44,12 @@
                 </td>
                 <td class="actions">
                     <a href = "<?php echo base_url();?>crm/oc/ocPdf/<?php echo $oc[$a]["id_submit_oc"];?>" class="btn btn-outline btn-sm btn-primary col-lg-12" target="_blank">CETAK</a>
-
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_oc")) == 0):?>
                     <a href = "<?php echo base_url();?>crm/oc/edit/<?php echo $oc[$a]["id_submit_oc"];?>" class = "btn btn-outline btn-sm btn-primary col-lg-12">EDIT</a>
-
+                    <?php endif;?>
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_oc")) == 0):?>
                     <a href = "<?php echo base_url();?>crm/oc/delete/<?php echo $oc[$a]["id_submit_oc"];?>" class="btn btn-outline btn-danger btn-sm col-lg-12" data-content="Delete OC" data-trigger="hover" data-toggle="popover">DELETE</a> 
+                    <?php endif;?>
                     
                 </td>
             </tr>     

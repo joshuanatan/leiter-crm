@@ -38,11 +38,23 @@ class Oc extends CI_Controller{
         if($this->session->id_user == "") redirect("login/welcome");
         $this->session->id_submit_quotation = "";
         $where = array(
-            "status_aktif_oc" => 0
+            "id_user_add_oc" => -999
         );
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_oc")) == 0){
+            $where = array(
+                "status_aktif_oc" => 0,
+                "id_user_add_oc" => $this->session->id_user
+            );
+        }
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_oc")) == 0){
+            $where = array(
+                "status_aktif_oc" => 0
+            );
+        }
         $field = array(
             "id_submit_quotation","no_po_customer","no_oc","id_oc","bulan_oc","tahun_oc","id_submit_oc","tgl_po_customer","total_oc_price","nama_perusahaan","nama_cp","no_quotation"
         );
+    
         $result = selectRow("order_detail",$where,$field);
 
         $data["oc"]= $result->result_array();
