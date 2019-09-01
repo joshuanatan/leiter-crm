@@ -20,42 +20,37 @@ class Product extends CI_Controller{
         $this->load->view("master/master-open");
         $this->load->view("req/top-navbar");
         $this->load->view("req/navbar");
+
         $where = array(
-            "produk" => array(
+            "id_user_add" => 999
+        );
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_product")) == 0){
+            $where = array(
+                "status_produk" => 0,
+                "id_user_add" => $this->session->id_user
+            );
+        }
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_product")) == 0){
+            $where = array(
                 "status_produk" => 0
-            ),
-            "satuan" => array(
-                "status_satuan" => 0
-            ),
-        );
-        $result = array(
-            "produk" => $this->Mdproduk->select($where["produk"]),
-            "satuan" => $this->Mdsatuan->select($where["satuan"])
-        );
-        $data = array(
-            "produk" => array(),
-            "satuan" => array()
-        );
-        $counter = 0 ;
-        foreach($result["produk"]->result() as $a){
-            $data["produk"][$counter] = array(
-                "id_produk" => $a->id_produk,
-                "bn_produk" => $a->bn_produk,
-                "nama_produk" => "-",
-                "satuan_produk" => $a->satuan_produk,
-                "deskripsi_produk" => $a->deskripsi_produk,
-                "gambar_produk" => $a->gambar_produk,
             );
-            $counter++;
         }
-        $counter = 0 ; 
-        foreach($result["satuan"]->result() as $a){
-            $data["satuan"][$counter] = array(
-                "id_satuan" => $a->id_satuan,
-                "nama_satuan" => $a->nama_satuan,
-            );
-            $counter++;
-        }
+        $field = array(
+            "id_produk","bn_produk","satuan_produk","deskripsi_produk","gambar_produk"
+        );
+        //$result = selectRow("produk",$where,$field,10);
+        $result = selectRow("produk",$where,$field);
+        $data["produk"] = $result->result_array();
+
+        $where = array(
+            "status_satuan" => 0
+        );
+        $field = array(
+            "id_satuan","nama_satuan"
+        );
+        $result = selectRow("satuan",$where,$field);
+        $data["satuan"] = $result->result_array();
+        
         $this->load->view("master/content-open");
         $this->load->view("master/product/category-header");
         $this->load->view("master/product/category-body",$data);

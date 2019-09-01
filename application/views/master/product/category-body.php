@@ -11,15 +11,15 @@
 </div>
 <?php endif;?>
 <div class="panel-body col-lg-12">
+    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_product")) == 0):?>
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-            <button data-target="#AddCatalog" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button">
-                <i class="icon wb-plus" aria-hidden="true"></i> Add Catalog
-            </button>
+            <button data-target="#AddCatalog" data-toggle="modal" type="button" class="btn btn-sm btn-outline btn-primary" type="button">Add Catalog</button>
             </div>
         </div>
     </div>
+    <?php endif;?>
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
@@ -28,7 +28,7 @@
                 <th style = "width:25%">Product Description</th>
                 <th style = "width:10%">Product UOM</th>
                 <th style = "width:30%">Product Image</th>
-                <th style = "width:10%">Actions</th>
+                <th style = "width:5%">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -44,8 +44,10 @@
                     <?php endif;?>
                 </td>
                 <td class="actions">
-                    
+               
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "update_product")) == 0):?>
                     <button data-target="#editItem<?php echo $produk[$a]["id_produk"];?>" data-toggle="modal" type="button" class="btn btn-outline btn-primary btn-sm col-lg-12" type="button">EDIT</button>
+
                     <div class="modal fade" id="editItem<?php echo $produk[$a]["id_produk"];?>" aria-hidden="true" aria-labelledby="AddCatalog" role="dialog" tabindex="-1">
                         <div class="modal-dialog modal-simple modal-center">
                             <div class="modal-content">
@@ -86,9 +88,13 @@
                             </div>
                         </div>
                     </div>
+                    <?php endif;?>
 
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_product")) == 0):?>
                     <a href = "<?php echo base_url();?>master/product/delete/<?php echo $produk[$a]["id_produk"];?>" class="btn btn-outline btn-danger col-lg-12 btn-sm" 
                     data-toggle="tooltip">DELETE</a>
+                    <?php endif;?>
+
                     <a href = "<?php echo base_url();?>master/product/showTransaction/<?php echo $produk[$a]["id_produk"];?>" class="btn btn-outline btn-primary col-lg-12 btn-sm" 
                     data-toggle="tooltip">TRANSACTION</a>
                     
