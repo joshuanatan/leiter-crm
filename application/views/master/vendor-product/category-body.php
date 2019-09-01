@@ -50,6 +50,7 @@
         </tbody>
     </table>
 </div>
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_supplier")) == 0):?>
 <div class="modal fade" id="AddSupplier" aria-hidden="true" aria-labelledby="DaftarUser" role="dialog" tabindex="-1">
     <div class="modal-dialog modal-simple">
         <div class="modal-content">
@@ -121,3 +122,4 @@
         </div>
     </div>
 </div>
+<?php endif;?>

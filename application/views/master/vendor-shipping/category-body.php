@@ -1,5 +1,5 @@
 <div class="panel-body col-lg-12">
-    <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_shipping")) == 0):?>
+    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_shipping")) == 0):?>
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
@@ -32,13 +32,13 @@
                 <td><?php echo $perusahaan[$a]["nama_cp"];?></td>
                 <td><?php echo $perusahaan[$a]["email_cp"]."<br/>".$perusahaan[$a]["nohp_cp"];?></td>
                 <td class="actions">
-                    <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "edit_shipping")) == 0):?>
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_shipping")) == 0):?>
                     <a href = "<?php echo base_url();?>master/vendor/shipping/contact/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-sm col-lg-12 btn-outline btn-success"
                     data-toggle="tooltip">PIC</a>
                     
                     <a href = "<?php echo base_url();?>master/vendor/shipping/edit/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-sm col-lg-12 btn-outline btn-primary" >EDIT</a>
                     <?php endif;?>
-                    <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_shipping")) == 0):?>
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_shipping")) == 0):?>
                     <a href = "<?php echo base_url();?>master/vendor/shipping/delete/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-sm col-lg-12 btn-outline btn-danger"
                     data-toggle="tooltip">REMOVE</a>
                     <?php endif;?>
@@ -49,6 +49,7 @@
         </tbody>
     </table>
 </div>
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_shipping")) == 0):?>
 <div class="modal fade" id="AddSupplier" aria-hidden="true" aria-labelledby="DaftarUser" role="dialog" tabindex="-1">
     <div class="modal-dialog modal-simple">
         <div class="modal-content">
@@ -120,3 +121,4 @@
         </div>
     </div>
 </div>
+<?php endif;?>
