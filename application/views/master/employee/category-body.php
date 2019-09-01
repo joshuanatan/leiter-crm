@@ -1030,7 +1030,7 @@
                             </table>
                             <hr/>
                             <div class = "form-group">
-                                <button type = "submit" class = "btn btn-primary btn-outline col-lg-2 col-md-12">SUBMIT</button>
+                                <button type = "submit" class = "btn btn-primary btn-sm">SUBMIT</button>
                             </div>
                         </div>
                     </div>
