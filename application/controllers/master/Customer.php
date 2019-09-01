@@ -45,7 +45,7 @@ class Customer extends CI_Controller{
         $field = array(
             "perusahaan.id_perusahaan","no_urut","nama_perusahaan","jenis_perusahaan","alamat_perusahaan","alamat_pengiriman","notelp_perusahaan","nofax_perusahaan"
         );
-        $result = $this->Mdperusahaan->select($where,$field,10);
+        $result = $this->Mdperusahaan->select($where,$field);
         $data["perusahaan"] = $result->result_array();
 
         for($a = 0; $a<count($data["perusahaan"]); $a++){
