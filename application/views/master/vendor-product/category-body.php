@@ -1,4 +1,5 @@
 <div class="panel-body col-lg-12">
+    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_supplier")) == 0):?>
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
@@ -8,6 +9,7 @@
             </div>
         </div>
     </div>
+    <?php endif;?>
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
@@ -30,13 +32,17 @@
                 <td><?php echo $perusahaan[$a]["nama_cp"];?></td>
                 <td><?php echo $perusahaan[$a]["email_cp"]."<br/>".$perusahaan[$a]["nohp_cp"];?></td>
                 <td class="actions">
+                    
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_supplier")) == 0):?>
                     <a href = "<?php echo base_url();?>master/vendor/product/contact/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-sm col-lg-12 btn-outline btn-success"
                     data-toggle="tooltip">PIC</a>
                     
                     <a href = "<?php echo base_url();?>master/vendor/product/edit/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-sm col-lg-12 btn-outline btn-primary" >EDIT</a>
-
+                    <?php endif;?>
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_supplier")) == 0):?>
                     <a href = "<?php echo base_url();?>master/vendor/product/delete/<?php echo $perusahaan[$a]["id_perusahaan"];?>" class="btn btn-sm col-lg-12 btn-outline btn-danger"
                     data-toggle="tooltip">REMOVE</a>
+                    <?php endif;?>
                     
                 </td>
             </tr>
