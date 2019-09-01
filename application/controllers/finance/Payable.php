@@ -25,24 +25,25 @@ class Payable extends CI_Controller{
     }
     public function index(){ 
         if($this->session->id_user == "") redirect("login/welcome");//sudah di cek
-        $where = array(
-            "tagihan" => array(
+        $where["tagihan"] = array(
+            "id_user_add" => -999
+        );
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_payable")) == 0){
+            $where["tagihan"] = array(
+                "status_aktif_invoice" => 0,
+                "id_user_add" => $this->session->id_user
+            );
+        }
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_payable")) == 0){
+            $where["tagihan"] = array(
                 "status_aktif_invoice" => 0
-            )
+            );
+        }
+        $field["tagihan"] = array(
+            "id_tagihan","no_invoice","no_refrence","peruntukan_tagihan","total","rekening_pembayaran","status_lunas","notes_tagihan","attachment","mata_uang","dateline_invoice","ppn","pph"   
         );
-        $field = array(
-            "tagihan" => array(
-                "id_tagihan","no_invoice","no_refrence","peruntukan_tagihan","total","rekening_pembayaran","status_lunas","notes_tagihan","attachment","mata_uang","dateline_invoice","ppn","pph"
-            )
-            
-        );
-        $print = array(
-            "tagihan" => array(
-                "id_tagihan","no_invoice","no_refrence","peruntukan_tagihan","total","rekening","status_lunas","notes","attachment","mata_uang","dateline_invoice","ppn","pph"
-                )
-        );
-        $result["tagihan"] = selectRow("tagihan",$where["tagihan"]);
-        $data["tagihan"] = foreachMultipleResult(($result["tagihan"]),$field["tagihan"],$print["tagihan"]);
+        $result = selectRow("tagihan",$where["tagihan"],$field["tagihan"]);
+        $data["tagihan"] = $result->result_array();
         for($a = 0; $a<count($data["tagihan"]);$a++){
             $id_supplier = "";
             switch($data["tagihan"][$a]["peruntukan_tagihan"]){
@@ -64,11 +65,8 @@ class Payable extends CI_Controller{
                 $field["pembayaran"] = array(
                     "id_pembayaran","subject_pembayaran","tgl_bayar","attachment","notes_pembayaran","nominal_pembayaran","kurs_pembayaran","mata_uang_pembayaran","total_pembayaran","metode_pembayaran"
                 );
-                $print["pembayaran"] = array(
-                    "id_pembayaran","subject_pembayaran","tgl_bayar","attachment","notes_pembayaran","nominal_pembayaran","kurs_pembayaran","mata_uang_pembayaran","total_pembayaran","metode_pembayaran"
-                );
-                $result["pembayaran"] = selectRow("pembayaran",$where["pembayaran"]);
-                $data["tagihan"][$a]["pembayaran"] = foreachResult($result["pembayaran"],$field["pembayaran"],$print["pembayaran"]);
+                $result = selectRow("pembayaran",$where["pembayaran"],$field["pembayaran"]);
+                $data["tagihan"][$a]["pembayaran"] = $result->result_array();
                 
             }
         }

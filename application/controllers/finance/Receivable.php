@@ -32,15 +32,24 @@ class Receivable extends CI_Controller{
     public function index(){
         if($this->session->id_user == "") redirect("login/welcome");
         $where = array(
-            "invoice" => array(
+            "invoice_core.id_user_add" => -999
+        );
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_receivable")) == 0){
+            $where = array(
+                "status_aktif_invoice" => 0,
+                "invoice_core.id_user_add" => $this->session->id_user
+            );
+        }
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_receivable")) == 0){
+            $where = array(
                 "status_aktif_invoice" => 0
-            )
+            );
+        }
+        $field = array(
+            "id_submit_invoice","no_invoice","invoice_core.id_submit_oc","id_submit_od","nominal_pembayaran","tipe_invoice","kurs_pembayaran","mata_uang","is_ppn","ppn","invoice_core.franco","att","alamat_penagihan","status_lunas","jatuh_tempo","no_rekening","jumlah_box","berat_bersih","berat_kotor","dimensi","no_oc","no_po_customer"
         );
-        $field["invoice"] = array(
-            "id_submit_invoice","no_invoice","id_submit_oc","id_submit_od","nominal_pembayaran","tipe_invoice","kurs_pembayaran","mata_uang","is_ppn","ppn","franco","att","alamat_penagihan","status_lunas","jatuh_tempo","no_rekening","jumlah_box","berat_bersih","berat_kotor","dimensi"
-        );
-        $result["invoice"] = $this->Mdinvoice_core->getListInvoice($where["invoice"]);
-        $data["invoice"] = foreachMultipleResult($result["invoice"],$field["invoice"],$field["invoice"]);
+        $result = $this->Mdinvoice_core->getListInvoice($where,$field);
+        $data["invoice"] = $result->result_array();
         for($a = 0; $a<count($data["invoice"]); $a++){
             switch($data["invoice"][$a]["tipe_invoice"]){
                 case 1:
@@ -53,9 +62,6 @@ class Receivable extends CI_Controller{
                 $data["invoice"][$a]["purpose"] = "PELUNASAN (BER-DP)";
                 break;
             }
-            $data["invoice"][$a]["no_oc"] = get1Value("order_confirmation","no_oc",array("id_submit_oc" => $data["invoice"][$a]["id_submit_oc"]));
-            $data["invoice"][$a]["no_po_customer"] = get1Value("order_confirmation","no_po_customer",array("id_submit_oc" => $data["invoice"][$a]["id_submit_oc"]));
-            
         }
         $this->req();
         $this->load->view("finance/content-open");

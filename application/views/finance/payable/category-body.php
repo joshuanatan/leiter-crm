@@ -1,4 +1,5 @@
 <div class="panel-body col-lg-12">
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_payable")) == 0):?>
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
@@ -8,6 +9,7 @@
             </div>
         </div>
     </div>
+<?php endif;?>
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
@@ -40,7 +42,7 @@
                     <?php endif;?>
                 </td>
                 <td><?php $date = date_create($tagihan[$a]["dateline_invoice"]); echo date_format($date,"D, d-m-Y");?></td>
-                <td><?php echo $tagihan[$a]["rekening"];?></td>
+                <td><?php echo $tagihan[$a]["rekening_pembayaran"];?></td>
                 <td>
                     <button type = "button" class = "btn btn-outline btn-sm btn-primary " data-target ="#notes<?php echo $a;?>" data-toggle = "modal">NOTES</button>
                     <div class = "modal fade" id ="notes<?php echo $a;?>">
@@ -79,12 +81,23 @@
                     <?php endif;?>
                 </td>
                 <td>
-                    <?php if($tagihan[$a]["status_lunas"] == 1):?>
-                    <button style = "width:100%" class = "btn btn-primary col-lg-12 btn-sm btn-outline" type="button" data-toggle = "modal" data-target="#pay<?php echo $tagihan[$a]["id_tagihan"];?>">PAY</button>
-                    <a style = "width:100%" href = "<?php echo base_url();?>finance/payable/edit/<?php echo $tagihan[$a]["id_tagihan"];?>" class = "btn btn-sm btn-primary col-lg-12 btn-outline">EDIT</a>
-                    <a style = "width:100%" href = "<?php echo base_url();?>finance/payable/remove/<?php echo $tagihan[$a]["id_tagihan"];?>" class = "btn btn-sm btn-danger col-lg-12 btn-outline">REMOVE</a>
+                    <?php if($tagihan[$a]["status_lunas"] == 1):?> 
                     
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_payable")) == 0):?>
+                    <button style = "width:100%" class = "btn btn-primary col-lg-12 btn-sm btn-outline" type="button" data-toggle = "modal" data-target="#pay<?php echo $tagihan[$a]["id_tagihan"];?>">PAY</button>
                     <?php endif;?>
+
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_payable")) == 0):?>
+                    <a style = "width:100%" href = "<?php echo base_url();?>finance/payable/edit/<?php echo $tagihan[$a]["id_tagihan"];?>" class = "btn btn-sm btn-primary col-lg-12 btn-outline">EDIT</a>
+                    <?php endif;?>
+
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_payable")) == 0):?>
+                    <a style = "width:100%" href = "<?php echo base_url();?>finance/payable/remove/<?php echo $tagihan[$a]["id_tagihan"];?>" class = "btn btn-sm btn-danger col-lg-12 btn-outline">REMOVE</a>
+                    <?php endif;?>
+
+                    <?php endif;?>
+                    
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_payable")) == 0):?>
                     <div class = "modal fade" id = "pay<?php echo $tagihan[$a]["id_tagihan"];?>">
                         <div class = "modal-dialog modal-xl">
                             <form action = "<?php echo base_url();?>finance/payable/pay/<?php echo $tagihan[$a]["id_tagihan"];?>" method = "POST" enctype = "multipart/form-data">
@@ -144,6 +157,8 @@
                             </form>
                         </div>
                     </div>
+                    <?php endif;?>
+
                     <?php if($tagihan[$a]["status_lunas"] == 0):?>
                     <button class = "btn btn-primary col-lg-12 btn-sm btn-outline" style = "width:100%" type="button" data-toggle = "modal" data-target="#detailPayment<?php echo $a;?>">DETAIL</button> <!-- muncul hanya saat uda pernah ada pembayaran -->
                     <div class = "modal fade" id = "detailPayment<?php echo $a;?>">
@@ -157,35 +172,35 @@
                                     <div class ="modal-body">
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">Payment Date</h5>
-                                            <input type = "text" class = "form-control" readonly value = "<?php $date = date_create($tagihan[$a]["pembayaran"]["tgl_bayar"]); echo date_format($date,"D d-m-Y");?>">
+                                            <input type = "text" class = "form-control" readonly value = "<?php $date = date_create($tagihan[$a]["pembayaran"][0]["tgl_bayar"]); echo date_format($date,"D d-m-Y");?>">
                                         </div>
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">Payment Amount</h5>
-                                            <input type = "text" class = "form-control" readonly value = "<?php echo number_format($tagihan[$a]["pembayaran"]["nominal_pembayaran"]);?>">
+                                            <input type = "text" class = "form-control" readonly value = "<?php echo number_format($tagihan[$a]["pembayaran"][0]["nominal_pembayaran"]);?>">
                                         </div>
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">Rate</h5>
-                                            <input type = "text" class = "form-control" readonly value = "<?php echo number_format($tagihan[$a]["pembayaran"]["kurs_pembayaran"]);?>">
+                                            <input type = "text" class = "form-control" readonly value = "<?php echo number_format($tagihan[$a]["pembayaran"][0]["kurs_pembayaran"]);?>">
                                         </div>
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">Currency</h5>
-                                            <input type = "text" class = "form-control" readonly value = "<?php echo $tagihan[$a]["pembayaran"]["mata_uang_pembayaran"];?>">
+                                            <input type = "text" class = "form-control" readonly value = "<?php echo $tagihan[$a]["pembayaran"][0]["mata_uang_pembayaran"];?>">
                                         </div>
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">Total Payment</h5>
-                                            <input type = "text" class = "form-control" readonly value = "<?php echo number_format($tagihan[$a]["pembayaran"]["total_pembayaran"]);?>">
+                                            <input type = "text" class = "form-control" readonly value = "<?php echo number_format($tagihan[$a]["pembayaran"][0]["total_pembayaran"]);?>">
                                         </div>
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">Payment Method</h5>
-                                            <input type = "text" class = "form-control" readonly value = "<?php if($tagihan[$a]["pembayaran"]["metode_pembayaran"] == 0) echo "TRANSFER"; else echo "CASH";?>">
+                                            <input type = "text" class = "form-control" readonly value = "<?php if($tagihan[$a]["pembayaran"][0]["metode_pembayaran"] == 0) echo "TRANSFER"; else echo "CASH";?>">
                                         </div>
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">Notes</h5>
-                                            <textarea class = "form-control" readonly readonly ><?php echo $tagihan[$a]["pembayaran"]["notes_pembayaran"];?></textarea>
+                                            <textarea class = "form-control" readonly readonly ><?php echo $tagihan[$a]["pembayaran"][0]["notes_pembayaran"];?></textarea>
                                         </div>
                                         <div class = "form-group">
                                             <h5 class = "opacity:0.5">Attachment</h5>
-                                            <a href = "<?php echo base_url();?>assets/dokumen/buktibayar/<?php echo $tagihan[$a]["pembayaran"]["attachment"];?>" target = "_blank" class = "btn btn-outline btn-primary btn-sm">DOCUMENT</a>
+                                            <a href = "<?php echo base_url();?>assets/dokumen/buktibayar/<?php echo $tagihan[$a]["pembayaran"][0]["attachment"];?>" target = "_blank" class = "btn btn-outline btn-primary btn-sm">DOCUMENT</a>
                                         </div>
                                     </div>
                                     <div class = "modal-footer">

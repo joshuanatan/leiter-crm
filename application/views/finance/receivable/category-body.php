@@ -1,4 +1,5 @@
 <div class="panel-body col-lg-12">
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_receivable")) == 0):?>
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
@@ -11,6 +12,7 @@
             </div>
         </div>
     </div>
+<?php endif;?>
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
@@ -30,13 +32,21 @@
                 <td><?php echo number_format($invoice[$a]["nominal_pembayaran"],2,".",",");?></td>
                 <td><?php echo $invoice[$a]["purpose"];?></td>
                 <td class="actions">
-                <a href = "<?php echo base_url();?>finance/receivable/invoicePdf/<?php echo $invoice[$a]["id_submit_invoice"];?>" class = "btn btn-sm btn-primary btn-outline" target="_blank">CETAK</a>
+                    <a href = "<?php echo base_url();?>finance/receivable/invoicePdf/<?php echo $invoice[$a]["id_submit_invoice"];?>" class = "btn btn-sm btn-primary btn-outline" target="_blank">CETAK</a>
                     <?php if($invoice[$a]["status_lunas"] == 1):?>
+                    
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_receivable")) == 0):?>
                     <a href = "<?php echo base_url();?>finance/receivable/delete/<?php echo $invoice[$a]["id_submit_invoice"];?>" class="btn btn-outline btn-danger btn-sm"
                     data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
+                    <?php endif;?>
+
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_receivable")) == 0):?>
                     <a href = "<?php echo base_url();?>finance/receivable/edit/<?php echo $invoice[$a]["id_submit_invoice"];?>" class = "btn btn-sm btn-primary btn-outline">EDIT</a>
+                    <?php endif;?>
+
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_receivable")) == 0):?>
                     <button class = "btn btn-primary btn-sm btn-outline" type="button" data-toggle = "modal" data-target="#pay<?php echo $a;?>">PAY</button>
-                    
+                    <?php endif;?>
                     <?php else:?>
                     <button class = "btn btn-success btn-outline btn-sm">PAID</button>
                     <?php endif;?>
@@ -46,7 +56,7 @@
         </tbody>
     </table>
 </div>
-
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_receivable")) == 0):?>
 <?php for($a = 0 ; $a<count($invoice); $a++): ?>
 <div class = "modal fade" id = "pay<?php echo $a;?>">
     <div class = "modal-dialog modal-xl">
@@ -107,3 +117,4 @@
     </div>
 </div>
 <?php endfor;?>
+<?php endif;?>
