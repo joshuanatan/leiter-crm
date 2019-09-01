@@ -1,13 +1,14 @@
 <div class="panel-body col-lg-12">
+	<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_quotation")) == 0):?>
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-            <button type = "button" data-toggle = "modal" data-target = "#createQuotation" class="btn btn-outline btn-primary">
-                <i class="icon wb-plus" aria-hidden="true"></i> Create Quotation
-            </button>
+				<button type = "button" data-toggle = "modal" data-target = "#createQuotation" class="btn btn-outline btn-primary">Create Quotation
+				</button>
             </div>
         </div>
-    </div>
+	</div>
+	<?php endif;?>
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
@@ -58,17 +59,25 @@
 					<button type = "button" class = "btn btn-primary btn-outline btn-sm col-lg-12" data-toggle = "modal" data-target = "#detailPembayaran<?php echo $a;?>">DETAIL PAYMENT</button>
 				</td>
                 <td class="actions">
-                    
+					<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_quotation")) == 0):?>
                     <a href = "<?php echo base_url();?>crm/quotation/edit/<?php echo $quotation[$a]["id_submit_quotation"];?>" class="btn btn-outline btn-sm col-lg-12 btn-primary">EDIT</a>
-
+					<?php endif;?>
+					
 					<a href="<?php echo base_url()?>crm/quotation/quoPdf/<?php echo $quotation[$a]["id_submit_quotation"];?>" target="_blank" class="btn btn-primary btn-outline btn-sm col-lg-12">CETAK</a>
 						
+					<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_quotation")) == 0):?>
                     <a href = "<?php echo base_url();?>crm/quotation/revision/<?php echo $quotation[$a]["id_submit_quotation"];?>" class="btn btn-outline btn-sm col-lg-12 btn-primary" data-content="Do Revision Here" data-trigger="hover" data-toggle="popover">REVISION</a>
+					<?php endif;?>
 
-                    <a href = "<?php echo base_url();?>crm/quotation/accepted/<?php echo $quotation[$a]["id_submit_quotation"];?>" class="btn btn-outline btn-sm col-lg-12 btn-success" data-content="Proceed to Order Confirmation" data-trigger="hover" data-toggle="popover">WIN</a>
-					<button type = "button" data-toggle = "modal" data-target = "#lossCause<?php echo $a;?>" class="btn btn-outline btn-sm col-lg-12 btn-danger" data-content="Quotation Loss" data-trigger="hover" data-toggle="popover">LOSS</button> 
+					<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_quotation")) == 0):?>
+					<a href = "<?php echo base_url();?>crm/quotation/accepted/<?php echo $quotation[$a]["id_submit_quotation"];?>" class="btn btn-outline btn-sm col-lg-12 btn-success" data-content="Proceed to Order Confirmation" data-trigger="hover" data-toggle="popover">WIN</a>
 					
-                    <a href = "" class="btn btn-outline btn-sm col-lg-12 btn-danger" data-content="Delete Quotation" data-trigger="hover" data-toggle="popover">REMOVE</a> 
+					<button type = "button" data-toggle = "modal" data-target = "#lossCause<?php echo $a;?>" class="btn btn-outline btn-sm col-lg-12 btn-danger" data-content="Quotation Loss" data-trigger="hover" data-toggle="popover">LOSS</button> 
+					<?php endif;?>
+
+					<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_quotation")) == 0):?>
+					<a href = "" class="btn btn-outline btn-sm col-lg-12 btn-danger" data-content="Delete Quotation" data-trigger="hover" data-toggle="popover">REMOVE</a> 
+					<?php endif;?>
                 </td>
 				
 				

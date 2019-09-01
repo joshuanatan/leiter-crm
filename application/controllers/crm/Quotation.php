@@ -45,8 +45,9 @@ class Quotation extends CI_Controller{
         $where = array(
             "price_request.status_request" => 3, /*ngambil yang sudah kasih harga vendor */
             "status_buat_quo" => 1,
-            "untuk_stock" => 1
+            "untuk_stock" => 1,
         );
+        
         $field = array(
             "id_submit_request","no_request"
         );
@@ -54,8 +55,19 @@ class Quotation extends CI_Controller{
         $data["request"] = $result->result_array();
 
         $where = array(
-            "status_aktif_quotation" => 0
+            "id_user_add_quotation" => -999
         );
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_quotation")) == 0){
+            $where = array(
+                "status_aktif_quotation" => 0,
+                "id_user_add_quotation" => $this->session->id_user
+            );
+        }
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_quotation")) == 0){
+        $where = array(
+                "status_aktif_quotation" => 0
+            );
+        }
         $field = array(
             "id_submit_quotation","versi_quotation","no_quotation","id_request","status_quotation","date_quotation_add","total_quotation_price","hal_quotation","durasi_pengiriman_quotation","franco","durasi_pembayaran_quotation","alamat_perusahaan","nama_perusahaan","nama_cp","up_cp_quotation","no_request","loss_cause"
         );

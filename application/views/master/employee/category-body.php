@@ -540,7 +540,7 @@
                                         </td>
                                          <td>
                                             <div class = "checkbox-custom checkbox-primary">
-                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_al_quotation")) == 0) echo "checked"; ?> value = "view_al_quotation">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "view_all_quotation")) == 0) echo "checked"; ?> value = "view_al_quotation">
                                                 <label></label>
                                             </div>
                                         </td>

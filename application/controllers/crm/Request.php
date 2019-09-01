@@ -33,24 +33,27 @@ class Request extends CI_Controller{
         $this->req();
 
         $where = array(
-            "id_user_add" => "-999"
+            "id_user_add_request" => "-999"
         );
         if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_rfq")) == 0){
             $where = array(
-                "price_request.status_aktif_request" => 0,
-                "id_user_add" => $this->session->id_user
+                "order_detail.status_aktif_request" => 0,
+                "id_user_add_request" => $this->session->id_user
             );
         }
         if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_rfq")) == 0){
             $where = array(
-                "price_request.status_aktif_request" => 0,
+                "order_detail.status_aktif_request" => 0,
                 
             );
         }
         $field = array(
             "id_request","no_request","id_perusahaan","id_cp","franco","bulan_request","tahun_request","status_request","tgl_dateline_request","id_submit_request","date_request_edit","nama_perusahaan","nama_cp"
         );
-        $result = selectRow("order_detail",$where,$field);
+        $group_by = array(
+            "id_submit_request"
+        );
+        $result = selectRow("order_detail",$where,$field,"","","","",$group_by);
         $data["request"] = $result->result_array();
 
         

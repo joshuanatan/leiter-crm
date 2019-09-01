@@ -32,7 +32,7 @@
                 <td><?php echo ucwords($request[$a]["nama_cp"]);?></td>
                 <td><?php echo ucwords($request[$a]["franco"]);?></td>
                 <td><?php echo $request[$a]["jumlah"]." Items";?></td>
-                <td><?php $date = date_create($request[$a]["dateline"]); echo date_format($date,"d-m-Y") ?></td>
+                <td><?php $date = date_create($request[$a]["tgl_dateline_request"]); echo date_format($date,"d-m-Y") ?></td>
                 <td>
                     <button class ="btn btn-primary btn-outline btn-sm" data-target = "#detailRequest<?php echo $a;?>" data-toggle = "modal">DETAIL</button>
                     <div class = "modal fade" id = "detailRequest<?php echo $a;?>">
