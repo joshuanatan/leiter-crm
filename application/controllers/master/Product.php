@@ -22,7 +22,7 @@ class Product extends CI_Controller{
         $this->load->view("req/navbar");
 
         $where = array(
-            "id_user_add" => 999
+            "id_user_add" => -999
         );
         if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_product")) == 0){
             $where = array(
