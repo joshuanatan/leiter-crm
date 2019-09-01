@@ -18,18 +18,24 @@ class expanses extends CI_Controller{
     public function index(){
         if($this->session->id_user == "") redirect("login/welcome");
         $where = array(
-            "finance_type" => array(
-                "status_type" => 0
-            )
+            "id_user_add" => -999
         );
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_expanses")) == 0){
+            $where = array(
+                "status_type" => 0,
+                "id_user_add" => $this->session->id_user
+            );
+        }
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_expanses")) == 0){
+            $where = array(
+                "status_type" => 0,
+            );
+        }
         $field = array(
             "id_type","is_patent","name_type","kode_type","status_type"
         );
-        $print = array(
-            "id_type","is_patent","name_type","kode_type","status_type"
-        );
-        $result["finance_type"] = selectRow("finance_usage_type",$where["finance_type"]);
-        $data["finance_type"] = foreachMultipleResult($result["finance_type"],$field,$print);
+        $result = selectRow("finance_usage_type",$where,$field);
+        $data["finance_type"] = $result->result_array();
         
         $this->req();
         $this->load->view("master/content-open");

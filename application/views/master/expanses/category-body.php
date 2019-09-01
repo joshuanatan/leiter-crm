@@ -1,13 +1,13 @@
 <div class="panel-body col-lg-12">
+    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_expanses")) == 0):?>
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-            <button data-target="#addItem" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button">
-                <i class="icon wb-plus" aria-hidden="true"></i> Add Finance Report Category
-            </button>
+                <button data-target="#addItem" data-toggle="modal" type="button" class="btn btn-outline btn-primary btn-sm" type="button"> Add Finance Report Category </button>
             </div>
         </div>
     </div>
+    <?php endif;?>
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
@@ -15,7 +15,7 @@
                 <th>Type Code</th> <!-- bank / cash -->
                 <th>Type Name</th> <!-- income / expanses -->
                 <th>Type Status</th>
-                <th>Actions</th>
+                <th style = "width:5%">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -34,10 +34,13 @@
                 <td class="actions">
                     <?php if($finance_type[$a]["is_patent"] == 1):?>
 
-                    <button data-target="#editModal<?php echo $a;?>" data-toggle="modal" type="button" class="btn btn-outline btn-primary" type="button"><i class="icon wb-edit" aria-hidden="true"></i></button>
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_expanses")) == 0):?>
+                    <button data-target="#editModal<?php echo $a;?>" data-toggle="modal" type="button" class="btn btn-outline btn-primary btn-sm col-lg-12" type="button">EDIT</button>
+                    <?php endif;?>
                     
-                    <a href = "<?php echo base_url();?>master/expanses/delete/<?php echo $finance_type[$a]["id_type"];?>" class="btn btn-outline btn-danger"
-                    data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_expanses")) == 0):?>
+                    <a href = "<?php echo base_url();?>master/expanses/delete/<?php echo $finance_type[$a]["id_type"];?>" class="btn btn-outline btn-danger btn-sm col-lg-12" data-toggle="tooltip">DELETE</a>
+                    <?php endif;?>
 
                     <?php endif;?>
 
