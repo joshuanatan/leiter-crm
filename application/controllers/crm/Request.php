@@ -31,44 +31,41 @@ class Request extends CI_Controller{
     public function index(){ 
         if($this->session->id_user == "") redirect("login/welcome");//sudah di cek
         $this->req();
-        $where = array(
-            "price_request" => array(
-                "price_request.status_aktif_request" => 0,
-            ),
-        );
-        $field = array(
-            "request" => array(
-                "id_request","no_request","id_perusahaan","id_cp","franco","bulan_request","tahun_request","status_request","tgl_dateline_request","id_submit_request","date_request_edit"
-            ),
-            "items" => array(
-                "nama_produk","jumlah_produk","notes_produk","file","satuan_produk"
-            )
-        );
-        $print = array(
-            "request" => array(
-                "id_request","no_request","id_perusahaan","id_cp","franco","bulan_request","tahun_request","status_request","dateline","id_submit_request","date_request_edit"
-            ),
-            "items" => array(
-                "nama_produk","jumlah_produk","notes_produk","file","satuan_produk"
-            )
-        );
-        $result["request"] = $this->Mdprice_request->getListPriceRequest($where["price_request"]); //load list request
-        $data["request"] = foreachMultipleResult($result["request"],$field["request"],$print["request"]); //ngebuka foreach list request
 
-        //muterin list request
+        $where = array(
+            "id_user_add" => "-999"
+        );
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_rfq")) == 0){
+            $where = array(
+                "price_request.status_aktif_request" => 0,
+                "id_user_add" => $this->session->id_user
+            );
+        }
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_rfq")) == 0){
+            $where = array(
+                "price_request.status_aktif_request" => 0,
+                
+            );
+        }
+        $field = array(
+            "id_request","no_request","id_perusahaan","id_cp","franco","bulan_request","tahun_request","status_request","tgl_dateline_request","id_submit_request","date_request_edit","nama_perusahaan","nama_cp"
+        );
+        $result = selectRow("order_detail",$where,$field);
+        $data["request"] = $result->result_array();
+
+        
         for($a = 0; $a<count($data["request"]); $a++){ 
 
-            $data["request"][$a]["nama_perusahaan"] = get1Value("perusahaan","nama_perusahaan",array("id_perusahaan"=>$data["request"][$a]["id_perusahaan"]));
-            $data["request"][$a]["nama_cp"] = get1Value("contact_person","nama_cp", array("id_cp" => $data["request"][$a]["id_cp"]));
+            $data["request"][$a]["jumlah"] = getAmount("price_request_item","id_request_item",array("id_submit_request" => $data["request"][$a]["id_submit_request"],"status_request_item" => 0));
 
-            $data["request"][$a]["jumlah"] = getAmount("price_request_item","id_request_item",array(
-                "id_submit_request" => $data["request"][$a]["id_submit_request"],"status_request_item" => 0));
-
-            /*ngeload item*/
-            $resultItem = selectRow("price_request_item",array("id_submit_request" => $data["request"][$a]["id_submit_request"]));
-            $items = foreachMultipleResult($resultItem,$field["items"],$print["items"]);
-            
-            $data["request"][$a]["items"] = $items;
+            $where = array(
+                "id_submit_request" => $data["request"][$a]["id_submit_request"]
+            );
+            $field = array(
+                "nama_produk","jumlah_produk","notes_produk","file","satuan_produk"
+            );
+            $result = selectRow("price_request_item",$where,$field);
+            $data["request"][$a]["items"] = $result->result_array();
         }
 
         $this->load->view("crm/content-open");

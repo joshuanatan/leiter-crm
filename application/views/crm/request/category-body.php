@@ -2,9 +2,11 @@
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-            <a href = "<?php echo base_url();?>crm/request/add" class="btn btn-outline btn-primary">
-                <i class="icon wb-plus" aria-hidden="true"></i> Add RFQ
-            </a>
+                <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_rfq")) == 0):?>
+                <a href = "<?php echo base_url();?>crm/request/add" class="btn btn-sm btn-outline btn-primary">
+                    Add RFQ
+                </a>
+                <?php endif;?>
             </div>
         </div>
     </div>
@@ -19,7 +21,7 @@
                 <th>Dateline</th>
                 <th>Detail Item</th>
                 <th>Last Edit</th>
-                <th>Actions</th>
+                <th style = "width:5%">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -76,13 +78,16 @@
                 </td>
                 <td class="actions">
                     
-                    <?php if($request[$a]["status_request"] == 0):?>
-                    <a href = "<?php echo base_url();?>crm/request/edit/<?php echo $request[$a]["id_submit_request"];?>" class="btn btn-outline btn-primary btn-sm"><i class="icon wb-edit" aria-hidden="true"></i></a>
-
-                    <a href = "<?php echo base_url();?>crm/request/delete/<?php echo $request[$a]["id_submit_request"];?>" class="btn btn-outline btn-danger btn-sm" data-toggle="tooltip"><i class="icon wb-trash" aria-hidden="true"></i></a>
+                <?php if($request[$a]["status_request"] == 0):?>
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_rfq")) == 0):?>
+                    <a href = "<?php echo base_url();?>crm/request/edit/<?php echo $request[$a]["id_submit_request"];?>" class="btn btn-outline btn-primary btn-sm col-lg-12">EDIT</a>
                     
-                    <a href = "<?php echo base_url();?>crm/request/confirm/<?php echo $request[$a]["id_submit_request"];?>" class="btn btn-outline btn-success btn-sm"
-                    data-toggle="tooltip"><i class="icon wb-check" aria-hidden="true"></i></a>
+                    <?php endif;?>
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_rfq")) == 0):?>
+                    <a href = "<?php echo base_url();?>crm/request/delete/<?php echo $request[$a]["id_submit_request"];?>" class="btn btn-outline btn-danger btn-sm col-lg-12" data-toggle="tooltip">DELETE</a>
+                    <?php endif;?>
+                    <a href = "<?php echo base_url();?>crm/request/confirm/<?php echo $request[$a]["id_submit_request"];?>" class="btn btn-outline btn-success btn-sm col-lg-12"
+                    data-toggle="tooltip">CONFIRM</a>
                     <?php endif;?>
                     
                 </td>
