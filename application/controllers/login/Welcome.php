@@ -32,7 +32,7 @@ class Welcome extends CI_Controller{
             $this->session->id_user = $a->id_user;
             redirect("welcome");
         }
-        redirect("login/welcome");
+        redirect("login/welcome/user");
     }
     public function logout(){
         redirect("login/welcome/index");
