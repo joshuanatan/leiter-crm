@@ -1,5 +1,5 @@
 <div class="panel-body col-lg-12">
-<?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_margin")) == 0):?>
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_margin")) == 0):?>
     <div class = "row">
         <div class = "col-lg-12">
             <button type = "button" class = "btn btn-sm btn-primary" data-toggle = "modal" data-target = "#transaksiTambahan">Transaksi Tambahan</button>
@@ -36,7 +36,7 @@
                     ?>
                 </td>
                 <td>
-                <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_margin")) == 0):?>
+                <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_margin")) == 0):?>
                     <?php if($pembayaran[$a]["is_lain_lain"] == 0):?>
                     <button data-toggle ="modal" data-target = "#hapus<?php echo $a;?>" class = "btn btn-sm btn-danger">REMOVE</a>
                     <?php endif;?>
