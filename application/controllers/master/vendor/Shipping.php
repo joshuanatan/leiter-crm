@@ -20,14 +20,14 @@ class Shipping extends CI_Controller{
         $this->load->view("req/navbar");
         /* ------------------------------------------------ */
         $where = array(
-            "id_user_add" => -999
+            "perusahaan.id_user_add" => -999
         );
         if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_shipping")) == 0){
             $where = array(
                 "peran_perusahaan" => "SHIPPING",
                 "perusahaan.status_perusahaan" => 0,
                 "contact_person.status_cp" => 0,
-                "id_user_add" => $this->session->id_user
+                "perusahaan.id_user_add" => $this->session->id_user
             );
         }         
         if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_shipping")) == 0){
