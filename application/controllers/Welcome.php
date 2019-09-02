@@ -268,8 +268,10 @@ class Welcome extends CI_Controller{
         );
         $result = selectRow("margin_overview",$where,$field);
         $jual = $result->result_array();
-        $data["margin_overview"] = $selisih[0]["total_pembayaran"]/$jual[0]["total_pembayaran"]*100;
-
+        $data["margin_overview"] = 0;
+        if($jual[0]["total_pembayaran"] > 0){
+            $data["margin_overview"] = $selisih[0]["total_pembayaran"]/$jual[0]["total_pembayaran"]*100;
+        }
         $field = array(
             "sum(total_pembayaran) as total_pembayaran",
             "bulan_transaksi",

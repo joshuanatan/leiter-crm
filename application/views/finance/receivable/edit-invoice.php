@@ -80,6 +80,10 @@
                                     <h5 style = "color:darkgrey; opacity:0.8">Rekening Pembayaran</h5>
                                     <input name = "no_rekening" id = "no_rekening" type ="text" value = "<?php echo $invoice[0]["no_rekening"];?>" class = "form-control namaCust">
                                 </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Sign Off</h5>
+                                    <input name = "sign_off" id = "sign_off" type ="text" value = "<?php echo $invoice[0]["sign_off"];?>" class = "form-control namaCust">
+                                </div>
                             </div>
                             <div class="tab-pane" id="box" role="tabpanel">
                                 <div class = "form-group col-lg-12 method2" id="boxes">

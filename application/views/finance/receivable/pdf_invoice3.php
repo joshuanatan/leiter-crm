@@ -233,13 +233,7 @@
                 </tr>
                 <tr>
                     <td style="text-align:center">
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>Teguh Budianto
+                        
                     </td>
                     <td style="text-align:center">
                         <br>
@@ -248,7 +242,7 @@
                         <br>
                         <br>
                         <br>
-                        <br>Robert Cau
+                        <br>'.$inv->sign_off.'
                     </td>
                 </tr>
             </table>

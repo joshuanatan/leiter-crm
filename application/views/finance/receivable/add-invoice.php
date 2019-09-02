@@ -129,6 +129,12 @@
                                     <h5 style = "color:darkgrey; opacity:0.8">Rekening Pembayaran</h5>
                                     <input name = "no_rekening" id = "no_rekening" type ="text" value = "489O-335-581" class = "form-control namaCust">
                                 </div>
+                                
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Sign Off</h5>
+                                    <input name = "sign_off" id = "sign_off" type ="text" value = "Teguh Budiaryanto" class = "form-control namaCust">
+                                </div>
+
                                 <div class = "form-group">
                                     <a href = "<?php echo base_url();?>finance/receivable" class = "btn btn-sm btn-primary btn-outline col-lg-2">BACK</a>
                                 </div>

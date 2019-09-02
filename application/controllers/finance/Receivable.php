@@ -321,6 +321,7 @@ class Receivable extends CI_Controller{
             "jatuh_tempo" =>  $this->input->post("jatuh_tempo"),
             "nominal_pembayaran" =>  splitterMoney($this->input->post("nominal_pembayaran"),",")+$jumlah_ppn,
             "no_rekening" => $this->input->post("no_rekening"), 
+            "sign_off" => $this->input->post("sign_off"), 
             "jumlah_box" => 0,
             "berat_bersih" => 0,
             "berat_kotor" => 0,
@@ -386,7 +387,7 @@ class Receivable extends CI_Controller{
             "id_submit_invoice" => $id_submit_invoice
         );
         $field = array(
-            "no_invoice","id_submit_oc","no_oc","no_po_customer","nama_perusahaan","nama_cp","franco_invoice","nominal_invoice","total_oc_price","att","jatuh_tempo","durasi_pembayaran","alamat_penagihan","tipe_invoice","id_submit_invoice","is_ppn","no_rekening"
+            "no_invoice","id_submit_oc","no_oc","no_po_customer","nama_perusahaan","nama_cp","franco_invoice","nominal_invoice","total_oc_price","att","jatuh_tempo","durasi_pembayaran","alamat_penagihan","tipe_invoice","id_submit_invoice","is_ppn","no_rekening","sign_off"
         );
         $result = selectRow("detail_invoice",$where,$field);
         $data["invoice"] = $result->result_array();
@@ -569,6 +570,7 @@ class Receivable extends CI_Controller{
             "jatuh_tempo" =>  $this->input->post("jatuh_tempo"),
             "nominal_pembayaran" =>  splitterMoney($this->input->post("nominal_pembayaran"),",")+$jumlah_ppn,
             "no_rekening" => $this->input->post("no_rekening"), 
+            "sign_off" => $this->input->post("sign_off"), 
             "jumlah_box" => 0,
             "berat_bersih" => 0,
             "berat_kotor" => 0,
