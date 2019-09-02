@@ -25,7 +25,7 @@ class Customer extends CI_Controller{
 
 
         $where = array(
-            "id_user_add" => -999
+            "perusahaan.id_user_add" => -999
         );
         if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_customer")) == 0){
             $where = array(

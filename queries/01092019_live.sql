@@ -1,3 +1,4 @@
+/* live 02/09/2019*/
 drop view if exists po_detail;
 create view po_detail as 
 select 
