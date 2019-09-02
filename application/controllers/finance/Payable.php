@@ -26,12 +26,12 @@ class Payable extends CI_Controller{
     public function index(){ 
         if($this->session->id_user == "") redirect("login/welcome");//sudah di cek
         $where["tagihan"] = array(
-            "id_user_add" => -999
+            "tagihan.id_user_add" => -999
         );
         if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_payable")) == 0){
             $where["tagihan"] = array(
                 "status_aktif_invoice" => 0,
-                "id_user_add" => $this->session->id_user
+                "tagihan.id_user_add" => $this->session->id_user
             );
         }
         if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_payable")) == 0){
