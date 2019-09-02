@@ -1,10 +1,12 @@
 <div class="panel-body col-lg-12">
+<?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "insert_margin")) == 0):?>
     <div class = "row">
         <div class = "col-lg-12">
             <button type = "button" class = "btn btn-sm btn-primary" data-toggle = "modal" data-target = "#transaksiTambahan">Transaksi Tambahan</button>
             <br/><br/>
         </div>
     </div>
+<?php endif;?>
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0">
         <thead>
             <tr>
@@ -34,9 +36,11 @@
                     ?>
                 </td>
                 <td>
+                <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "delete_margin")) == 0):?>
                     <?php if($pembayaran[$a]["is_lain_lain"] == 0):?>
                     <button data-toggle ="modal" data-target = "#hapus<?php echo $a;?>" class = "btn btn-sm btn-danger">REMOVE</a>
                     <?php endif;?>
+                <?php endif;?>
                 </td>
             </tr>
             <?php endfor;?>
@@ -64,7 +68,7 @@
     <div class = "modal-dialog modal-xl">
         <div class = "modal-content">
             <div class = "modal-header">
-                <h4 class = "modal-title">DO PAYMENT</h4>
+                <h4 class = "modal-title">TRANSAKSI TAMBAHAN</h4>
             </div>
             <div class ="modal-body">
                 <form action = "<?php echo base_url();?>finance/margin/transaksitambahan" method = "POST" enctype = "multipart/form-data">

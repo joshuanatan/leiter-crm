@@ -30,10 +30,12 @@ class main extends CI_Controller{
     public function index(){
         /*load detail kpi user*/
         /*ngambil kpi user yang udah diset buat orang yang lagi login*/
+        
         $where = array(
             "id_user" => $this->session->id_user,
             "status_aktif_kpi" => 0
         );
+        
         $field = array(
             "id_user","kpi","id_kpi_user"
         );
@@ -41,9 +43,19 @@ class main extends CI_Controller{
         $data["kpi_user"] = $result->result_array();
 
         $where = array(
-            "id_user_add" => $this->session->id_user,
-            "status_aktif_report" => 0
+            "id_user_add" => -999
         );
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_report")) == 0){
+            $where = array(
+                "id_user_add" => $this->session->id_user,
+                "status_aktif_report" => 0
+            );
+        }
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_report")) == 0){
+            $where = array(
+                "status_aktif_report" => 0
+            );
+        }
         $field = array(
             "id_report","tipe_report","pic_target","location","progress_percentage","report","tgl_report","judul_report","attachment","support_need","next_plan","kpi","week_name"
         );
@@ -142,9 +154,19 @@ class main extends CI_Controller{
 
     public function report(){ /*nampilin visit report yang udah di submit oleh orang yang lagi login*/
         $where = array(
-            "id_user_add" => $this->session->id_user,
-            "status_aktif_report" => 0
+            "id_user_add" => -999
         );
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_visit")) == 0){
+            $where = array(
+                "id_user_add" => $this->session->id_user,
+                "status_aktif_report" => 0
+            );
+        }
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_visit")) == 0){
+            $where = array(
+                "status_aktif_report" => 0
+            );
+        }
         $field = array(
             "id_submit_report", "action_date", "id_perusahaan", "action_location", "action_duration", "action_purpose", "action_pic", "action_conversation", "potential_machine", "action_conclusion", "action_percentage_order", "support_need", "followup_date", "id_user_add", "tgl_report_add", "status_aktif_report", "status_cetak_report", "jenis_report","conversation_image","nama_perusahaan","jenis_report"
         );

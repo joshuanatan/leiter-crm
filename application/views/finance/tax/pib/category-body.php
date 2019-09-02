@@ -1,13 +1,14 @@
 <div class="panel-body col-lg-12">
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_pib")) == 0):?>
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-            <button type = "button" data-toggle = "modal" data-target = "#insertPib" href = "<?php echo base_url();?>finance/reimburse/insert" class="btn btn-outline btn-primary">
-                <i class="icon wb-plus" aria-hidden="true"></i> Insert PIB
+            <button type = "button" data-toggle = "modal" data-target = "#insertPib" href = "<?php echo base_url();?>finance/reimburse/insert" class="btn btn-outline btn-primary btn-sm">Insert PIB
             </button>
             </div>
         </div>
     </div>
+<?php endif;?>
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
@@ -43,9 +44,15 @@
                 </td>
                 <td>
                     
-
-                    <?php if($pib[$a]["status_bayar_pib"] == 1):?> 
+                <?php if($pib[$a]["status_bayar_pib"] == 1):?> 
+                <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_pib")) == 0):?>
                     <button class = "btn btn-sm btn-primary btn-outline col-lg-12" data-toggle = "modal" data-target = "#pay<?php echo $a;?>">PAY</button>
+                    <?php endif;?>
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_pib")) == 0):?>
+                    <a class = "btn btn-danger btn-sm col-lg-12 btn-outline" href = "<?php echo base_url();?>finance/tax/pib/remove/<?php echo $pib[$a]["id_pib"];?>">REMOVE</a>
+<?php endif;?>
+                
+                <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_pib")) == 0):?>
                     <button class = "btn btn-sm btn-primary btn-outline col-lg-12" data-toggle = "modal" data-target = "#edit<?php echo $a;?>">EDIT</button>
                     <div class = "modal fade" id ="edit<?php echo $a;?>">
                         <div class = "modal-dialog modal-xl">
@@ -101,6 +108,7 @@
                             </div>
                         </div>
                     </div>
+                      <?php endif;?>
                     <div class = "modal fade" id ="pay<?php echo $a;?>">
                         <div class = "modal-dialog modal-xl">
                             <div class = "modal-content">

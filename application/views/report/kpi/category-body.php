@@ -2,9 +2,9 @@
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-                <button type="button" data-target = "#insertweek" data-toggle = "modal" class = "btn btn-primary btn-outline">Insert Week
+                <button type="button" data-target = "#insertweek" data-toggle = "modal" class = "btn btn-sm btn-primary btn-outline">Insert Week
                 </button>
-                <a href = "<?php echo base_url();?>report/kpi/user" class = "btn btn-outline btn-primary">Set Target</a>
+                <a href = "<?php echo base_url();?>report/kpi/user" class = "btn btn-sm btn-outline btn-primary">Set Target</a>
                 
             </div>
         </div>
@@ -25,7 +25,7 @@
                 <td><?php echo $week[$a]["tgl_mulai"];?></td>
                 <td><?php echo $week[$a]["tgl_selesai"];?></td>
                 <td>
-                    <button type = "button" class = "btn btn-outline btn-primary" data-target = "#weeklyReport<?php echo $a;?>" data-toggle = "modal">Reports</button>
+                    <button type = "button" class = "btn btn-outline btn-primary btn-sm" data-target = "#weeklyReport<?php echo $a;?>" data-toggle = "modal">Reports</button>
                     <div class = "modal fade" id = "weeklyReport<?php echo $a;?>">
                         <div class = "modal-xl modal-dialog">
                             <form action = "<?php echo base_url();?>report/kpi/weekly/<?php echo $week[$a]["id_weeks"];?>" method = "POST">

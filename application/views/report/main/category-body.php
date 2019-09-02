@@ -1,12 +1,14 @@
 <div class="panel-body col-lg-12">
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_report")) == 0):?>
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-                <button type="button" data-target = "#createReport" data-toggle = "modal" class = "btn btn-primary btn-outline">Create Report
+                <button type="button" data-target = "#createReport" data-toggle = "modal" class = "btn btn-primary btn-outline btn-sm">Create Report
                 </button>
             </div>
         </div>
     </div>
+<?php endif;?>
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
@@ -71,7 +73,9 @@
                     </div>
                 </td>
                 <td>
+                <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_report")) == 0):?>
                     <button class = "btn btn-primary btn-outline btn-sm" data-target = "#editReport<?php echo $a;?>" data-toggle = "modal">EDIT</button>
+
                     <div class = "modal fade" id = "editReport<?php echo $a;?>">
                         <div class = "modal-dialog modal-xl">
                             <div class = "modal-content">
@@ -129,13 +133,17 @@
                             </div>
                         </div>
                     </div>
+                    <?php endif;?>
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_report")) == 0):?>
                     <a href = "<?php echo base_url();?>report/main/remove/<?php echo $kpi_report[$a]["id_report"];?>" class = "btn btn-danger btn-outline btn-sm">REMOVE</a> 
+                    <?php endif;?>
                 </td>
             </tr>
             <?php endfor;?>
         </tbody>
     </table>
 </div>
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_report")) == 0):?>
 <div class = "modal fade" id = "createReport">
     <div class = "modal-dialog modal-xl">
         <div class = "modal-content">
@@ -192,3 +200,4 @@
         </div>
     </div>
 </div>
+<?php endif;?>

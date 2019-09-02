@@ -1,9 +1,10 @@
 <div class="panel-body col-lg-12">
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_petty")) == 0):?>
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-                <button class="btn btn-outline btn-primary" data-toggle = "modal" data-target = "#insertPetty">
-                    <i class="icon wb-plus" aria-hidden="true"></i> Insert Petty Transaction
+                <button class="btn btn-outline btn-primary btn-sm" data-toggle = "modal" data-target = "#insertPetty">
+                    Insert Petty Transaction
                 </button>
                 <!--<button class="btn btn-outline btn-primary" data-toggle = "modal" data-target = "#addPetty">
                     <i class="icon wb-plus" aria-hidden="true"></i> Recharge Petty
@@ -11,6 +12,7 @@
             </div>
         </div>
     </div>
+<?php endif;?>
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
@@ -23,7 +25,7 @@
                 <th>Expanses Type</th> <!-- ini yang harus di bayarkan --> 
                 <th>Notes</th> <!-- catetan aja seperti nomor rekening, dsb -->
                 <th>Bon</th>
-                <th>Action</th>
+                <th style = "width:10%">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -45,9 +47,8 @@
                     <?php endif;?>
                 </td>
                 <td>
-                    <a href = "<?php echo base_url();?>finance/petty/remove/<?php echo $petty[$a]["id_transaksi_petty"];?>" class = "btn btn-sm btn-primary btn-outline">REMOVE</a> <!-- yang remove requester dan finance-->
-
-                    <button class = "btn btn-primary btn-sm btn-outline" type="button" data-toggle = "modal" data-target="#edit<?php echo $a;?>">EDIT</button> <!-- acceptance dari finance -->
+                <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_petty")) == 0):?>
+                    <button class = "btn btn-primary btn-sm btn-outline col-lg-12" type="button" data-toggle = "modal" data-target="#edit<?php echo $a;?>">EDIT</button> <!-- acceptance dari finance -->
                     <div class = "modal fade" id = "edit<?php echo $a;?>">
                         <div class = "modal-dialog modal-xl">
                             <div class = "modal-content">
@@ -95,12 +96,17 @@
                             </div>
                         </div>
                     </div>
+<?php endif;?>
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_petty")) == 0):?>
+                    <a href = "<?php echo base_url();?>finance/petty/remove/<?php echo $petty[$a]["id_transaksi_petty"];?>" class = "btn btn-sm btn-danger btn-outline col-lg-12">REMOVE</a> <!-- yang remove requester dan finance-->
+<?php endif;?>
                 </td>
             </tr>
             <?php endfor;?>
         </tbody>
     </table>
 </div>
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_petty")) == 0):?>
 <div class = "modal fade" id = "insertPetty">
     <div class = "modal-dialog modal-xl">
         <div class = "modal-content">
@@ -149,6 +155,7 @@
         </div>
     </div>
 </div>
+<?php endif;?>
 <div class = "modal fade" id = "addPettys">
     <div class = "modal-dialog modal-xl">
         <div class = "modal-content">

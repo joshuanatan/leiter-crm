@@ -1,5 +1,6 @@
 
 <div class="panel-body col-lg-12">
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_visit")) == 0):?>
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
@@ -8,6 +9,7 @@
             </div>
         </div>
     </div>
+<?php endif;?>
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
@@ -51,8 +53,12 @@
                     <button class = "btn btn-primary btn-outline btn-sm" data-target = "#detailReport<?php echo $a;?>" data-toggle = "modal">DETAIL</button>
                 </td>
                 <td>
+                <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_visit")) == 0):?>
                     <a href = "<?php echo base_url();?>report/main/editVisitCallReport/<?php echo $visit[$a]["id_submit_report"];?>" class = "col-lg-12 btn btn-primary btn-outline btn-sm">EDIT</a>
+<?php endif;?>
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_visit")) == 0):?>
                     <a href = "<?php echo base_url();?>report/main/removeVisitReport/<?php echo $visit[$a]["id_submit_report"];?>" class = "col-lg-12 btn btn-danger btn-outline btn-sm">REMOVE</a> 
+<?php endif;?>
                     <a target = "_blank" href = "<?php echo base_url();?>report/main/pdfVisitReport/<?php echo $visit[$a]["id_submit_report"];?>" class = "col-lg-12 btn btn-primary btn-outline btn-sm">PDF</a> 
                     
                 </td>
@@ -61,6 +67,7 @@
         </tbody>
     </table>
 </div>
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_visit")) == 0):?>
 <div class = "modal fade" id = "createReport">
     <div class = "modal-dialog modal-lg">
         <div class = "modal-content">
@@ -173,6 +180,7 @@
         </div>
     </div>
 </div>
+<?php endif;?>
 
 <?php for($a = 0; $a<count($visit);$a++):?>
 <div class = "modal fade" id = "nextAction<?php echo $a;?>">
@@ -203,6 +211,7 @@
     </div>
 </div>
 <?php endfor;?>
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_visit")) == 0):?>
 <div class = "modal fade" id = "customerBaru">
     <div class = "modal-dialog modal-xl">
         <div class ="modal-content">
@@ -254,3 +263,4 @@
         </div>
     </div>
 </div>
+<?php endif;?>

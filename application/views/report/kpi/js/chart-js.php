@@ -76,9 +76,9 @@
         var barChartData = {
             
             labels: [
-                <?php for($a = 0; $a<count($week); $a++){
-                    echo '"'."Week ".$week[$a].'"';
-                    if($a+1 != count($week)){
+                <?php for($a = 0; $a<count($kpi_user); $a++){
+                    echo '"'.$kpi_user[$a]["kpi"].'"';
+                    if($a+1 != count($kpi_user)){
                         echo ",";
                     }
                 }

@@ -106,6 +106,6 @@
     </div>
     <?php endfor;?>
     <div class = "form-group">
-        <a href = "<?php echo base_url();?>report/kpi" class = "btn btn-primary btn-outline btn-sm col-lg-2">BACK</a>
+        <a href = "<?php echo base_url();?>report/kpi" class = "btn btn-primary btn-sm">BACK</a>
     </div>
 </div>

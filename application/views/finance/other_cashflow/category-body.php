@@ -1,34 +1,16 @@
 <div class="panel-body col-lg-12">
+<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_margin")) == 0):?>
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
                 <button class="btn btn-outline btn-primary btn-sm" data-toggle = "modal" data-target = "#insertPetty">
                     <i class="icon wb-plus" aria-hidden="true"></i> Insert Transaction
                 </button>
-                <!--<button class="btn btn-outline btn-primary" data-toggle = "modal" data-target = "#addPetty">
-                    <i class="icon wb-plus" aria-hidden="true"></i> Recharge Petty
-                </button>-->
             </div>
         </div>
     </div>
-    <!--
-    <div class = "row">
-        <div class = "form-group col-lg-3">
-            <h5>Search Text</h5>
-            <h5></h5>
-            <input type = "text" class = "form-control" oninput = "">
-        </div>
-        <div class = "form-group col-lg-3">
-            <h5>Search By</h5>
-            <select class = "form-control" oninput = ""></select>
-        </div>
-        <div class = "form-group col-lg-3">
-            <h5>Sort By</h5>
-            <select class = "form-control"></select>
-        </div>
-    </div>
--->
-    <table class="table table-bordered table-hover table-striped w-full" cellspacing="0">
+<?php endif;?>
+    <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
         <thead>
             <tr>
                 <th>Subject Transaksi</th>
@@ -56,22 +38,17 @@
                 <td><?php echo ucwords($cashflow[$a]["nama_user"]);?></td>
                 <td><?php $date = date_create($cashflow[$a]["tgl_input_transaksi"]); echo date_format($date, "D d-m-Y");?></td>
                 <td>
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_margin")) == 0):?>
                     <button type = "button" class = "btn btn-primary btn-sm col-lg-12" data-toggle="modal" data-target = "#editCashflow<?php echo $a;?>">EDIT</button>
+                    <?php endif;?>
+                    <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_margin")) == 0):?>
                     <button type = "button" class = "btn btn-danger btn-sm col-lg-12" data-toggle="modal" data-target = "#konfirmasiDelete<?php echo $a;?>"> DELETE</button>
+                    <?php endif;?>
                 </td>
             </tr>
             <?php endfor;?>
         </tbody>
     </table>
-    <nav aria-label="...">
-        <ul class="pagination">
-            <?php for($a =0; $a<$count_page; $a++):?>
-            <li class="page-item <?php if(($a+1) == $page) echo "active"; ?>">
-                <a class="page-link" href="<?php echo base_url();?>finance/othercashflow/page/<?php echo ($a+1);?>"><?php echo $a+1;?></a>
-            </li>
-            <?php endfor;?>
-        </ul>
-    </nav>
 </div>
 <div class = "modal fade" id = "insertPetty">
     <div class = "modal-dialog modal-xl">
