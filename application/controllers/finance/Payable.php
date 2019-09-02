@@ -145,6 +145,7 @@ class Payable extends CI_Controller{
             "attachment" => $doc_data["file_name"],
             "dateline_invoice" => $this->input->post("dateline"),
             "status_lunas"=> 1,
+            "id_user_add" => $this->session->id_user
         );
         insertRow("tagihan",$data);
         redirect("finance/payable");
