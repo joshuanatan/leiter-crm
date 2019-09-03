@@ -505,11 +505,43 @@ class Po extends CI_Controller{
         }
         redirect("crm/po/stock");
     }
-    public function deletePoStock(){
-
+    public function deletePoStock($id_submit_po){ //sudah di cek
+        $where = array(
+            "id_submit_po" => $id_submit_po
+        );
+        $data = array(
+            "status_aktif_po" => 1
+        );
+        updateRow("po_core",$data,$where);
+        redirect("crm/po/stock");
     }
-    public function donePoStock(){
-
+    public function donePoStock($id_submit_po){ //sudah di cek
+        $where = array(
+            "id_submit_po" => $id_submit_po
+        );
+        $data = array(
+            "status_selesai_po" => 0
+        );
+        updateRow("po_core",$data,$where);
+        redirect("crm/po/stock");
+    }
+    function poStockPdf($id_submit_po){ //sudah di cek
+        $where = array(
+            "id_submit_po" => $id_submit_po,
+        );
+        $this->load->model('M_pdf_po');
+        $purchaseorder = $this->M_pdf_po->selectPo($where);
+        $vendorr= $this->M_pdf_po->selectVendor($where);
+        $custt= $this->M_pdf_po->selectCust($where);
+        $barangg= $this->M_pdf_po->selectStockPoItem($where);
+        $data = array(
+            "purchaseorder"=>$purchaseorder,
+            "vendor"=>$vendorr,
+            "customer"=>$custt,
+            "barang"=>$barangg,
+            "mata_uang" => get1Value("po_core","mata_uang_pembayaran",array("id_submit_po" => $id_submit_po)),
+        );
+        $this->load->view('crm/po/pdf_po_stock',$data);
     }
 
 }

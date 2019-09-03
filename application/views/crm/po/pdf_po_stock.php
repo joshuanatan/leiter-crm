@@ -40,23 +40,9 @@
         <br><br>
         <table>
             <tr>
-                <td style="font-weight:bold; font-size:10pt; width:165px">PT Leiter Indonesia</td>
+                <td style="font-weight:bold; font-size:10pt; width:200px">PT Leiter Indonesia</td>
                 <td style="font-size:9pt; width:45px">VENDOR:</td>
-                <td style="font-weight:bold; font-size:10pt; width:150px">';
                 
-                foreach($vendor->result() as $x){
-                    $content=$content.$x->nama_perusahaan;
-                }
-                
-                $content=$content.'</td>
-                <td style="font-size:9pt; width:40px">SHIP TO:</td>
-                <td style="font-weight:bold; font-size:10pt; width:165px">';
-                
-                foreach($customer->result() as $y){
-                    $content=$content.$y->nama_perusahaan;
-                }
-                
-                $content=$content.'</td>
             </tr>
             <tr>
                 <td style="font-size:9pt; width:165px">Ruko Prominence Alam Sutera F38/53-55
@@ -95,29 +81,7 @@
 
                 <td style="font-size:9pt"></td>
 
-                <td style="font-size:9pt;width:165px">';
                 
-                foreach($customer->result() as $y){
-                    $content=$content.nl2br($y->alamat_perusahaan);
-                }
-                
-                $content=$content.'
-                <br>Tel: ';
-                
-                foreach($customer->result() as $y){
-                    $content=$content.$y->notelp_perusahaan;
-                }
-                
-                $content=$content.'
-                <br>Attn: ';
-                
-                foreach($customer->result() as $y){
-                    $content=$content.$y->up_cp;
-                }
-                
-                $content=$content.'
-
-                </td>
             </tr>
         </table>
 <br><br>

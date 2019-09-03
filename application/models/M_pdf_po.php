@@ -16,5 +16,11 @@ class M_pdf_po extends CI_Model{
     function selectBarang($where){
         return $this->db->query("select * from po_core join po_item on po_core.id_submit_po = po_item.id_submit_po WHERE po_core.id_submit_po = " . $where['id_submit_po']);
     }
+    function selectStockPoItem($where){
+        $where = array(
+            "id_submit_po" => $where["id_submit_po"]
+        );
+        return $this->db->get_where("po_stock_item_detail",$where);
+    }
 }
 ?>

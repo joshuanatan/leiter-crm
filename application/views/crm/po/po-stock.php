@@ -34,21 +34,22 @@
                     <button class = "btn btn-primary btn-sm col-lg-12 btn-outline" type = "button" data-toggle = "modal" data-target = "#detailItem<?php echo $a;?>">DETAIL ITEM</button>
                 </td>
                 <td class="actions">
-                    <a target="_blank" href = "<?php echo base_url();?>crm/po/poPdf/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-primary btn-sm col-lg-12">CETAK</a>
+                    <a target="_blank" href = "<?php echo base_url();?>crm/po/poStockPdf/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-primary btn-sm col-lg-12">CETAK</a>
                     <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_po")) == 0):?>
                     <a href = "<?php echo base_url();?>crm/po/editPoStock/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-primary btn-sm col-lg-12">EDIT</a>
                     <?php endif;?>
                     <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_po")) == 0):?>
-                    <a href = "<?php echo base_url();?>crm/po/delete/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-danger btn-sm col-lg-12">DELETE</a>
+                    <a href = "<?php echo base_url();?>crm/po/deletePoStock/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-danger btn-sm col-lg-12">DELETE</a>
                     <?php endif;?>
                     <?php if($purchase_order[$a]["status_selesai_po"] == 1):?>
-                    <a href = "<?php echo base_url();?>crm/po/done/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-success btn-sm col-lg-12">DONE</a>
+                    <a href = "<?php echo base_url();?>crm/po/donePoStock/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-success btn-sm col-lg-12">DONE</a>
                     <?php endif;?>
                 </td>
             </tr>
             <?php endfor; ?>
         </tbody>
     </table>
+    <a href = "<?php echo base_url();?>crm/po" class = "btn btn-primary btn-sm">BACK</a>
 </div>
 
 
