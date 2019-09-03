@@ -29,8 +29,14 @@ if ( ! function_exists('deleteRow')){
 }
 
 if ( ! function_exists('selectRow')){
-    function selectRow($table,$where,$field = "",$limit = "",$offset = "",$order = "", $order_direction = "",$group_by = ""){
+    function selectRow($table,$where,$field = "",$limit = "",$offset = "",$order = "", $order_direction = "",$group_by = "",$like = "",$or_like = ""){
         $CI =& get_instance();
+        if($like != ""){
+            $CI->db->like($like);
+        }
+        if($or_like != ""){
+            $CI->db->or_like($or_like);
+        }
         if($group_by != ""){
             $CI->db->group_by($group_by);
         }

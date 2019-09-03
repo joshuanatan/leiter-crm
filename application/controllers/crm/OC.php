@@ -36,80 +36,9 @@ class Oc extends CI_Controller{
     /*page*/
     public function index(){
         if($this->session->id_user == "") redirect("login/welcome");
-        $this->session->id_submit_quotation = "";
-        $where = array(
-            "id_user_add_oc" => -999
-        );
-        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_oc")) == 0){
-            $where = array(
-                "status_aktif_oc" => 0,
-                "id_user_add_oc" => $this->session->id_user
-            );
-        }
-        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_oc")) == 0){
-            $where = array(
-                "status_aktif_oc" => 0
-            );
-        }
-        $field = array(
-            "id_submit_quotation","no_po_customer","no_oc","id_oc","bulan_oc","tahun_oc","id_submit_oc","tgl_po_customer","total_oc_price","nama_perusahaan","nama_cp","no_quotation"
-        );
-    
-        $result = selectRow("order_detail",$where,$field);
-
-        $data["oc"]= $result->result_array();
-
-        for($a = 0; $a<count($data["oc"]);$a++){
-            
-            $where = array(
-                "id_submit_oc" => $data["oc"][$a]["id_submit_oc"]
-            );
-            $field = array(
-                "id_oc_item","nama_oc_item","final_amount_oc","satuan_produk_oc","final_selling_price_oc","status_oc_item"
-            );
-            $result = selectRow("order_item_detail",$where,$field);
-            $data["oc"][$a]["oc_item"] = $result->result_array();
-
-            $where = array(
-                "id_submit_oc" => $data["oc"][$a]["id_submit_oc"]
-            );
-            $field = array(
-                "persentase_pembayaran","nominal_pembayaran","trigger_pembayaran","status_bayar","is_ada_transaksi","persentase_pembayaran2","nominal_pembayaran2","trigger_pembayaran2","status_bayar2","is_ada_transaksi2","kurs"
-            );
-            $result = selectRow("order_confirmation_metode_pembayaran",$where,$field);
-            $data["oc"][$a]["metode_pembayaran"] = $result->result_array();
-
-            if($data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] == 1){
-                $data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] = "BEFORE ORDER DELIVERY";
-            }
-            else{
-                $data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] = "AFTER ORDER DELIVERY";
-            }
-            if($data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] == 1){
-                $data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] = "BEFORE ORDER DELIVERY";
-            }
-            else{
-                $data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] = "AFTER ORDER DELIVERY";
-            }
-
-        }
-        /*pop up quotation*/
-        $where = array(
-            "status_quotation" => 2,
-            "status_aktif_quotation" => 0
-        );
-        $field = array(
-            "no_quotation","nama_perusahaan","nama_cp","id_submit_quotation"
-        );
-        $result = selectRow("order_detail",$where,$field);
-        $data["quotation"] = $result->result_array();
-        $this->req();
-        $this->load->view("crm/content-open");
-        $this->load->view("crm/oc/category-header");
-        $this->load->view("crm/oc/category-body",$data);
-        $this->load->view("crm/content-close");
-        $this->close();
+        redirect("crm/oc/page/1");
     }
+    
     public function create(){ //sudah di cek 
         if($this->session->id_user == ""){
             redirect("welcome");
@@ -326,7 +255,7 @@ class Oc extends CI_Controller{
         updateRow("order_confirmation_metode_pembayaran",$data["pembayaran"],$where["main"]);
         /*end metode pembayaran*/
         //$this->session->set_flashdata("invalid","[DATA TIDAK ADA YANG DIUPDATE] Mohon menunggu, sedang dalam masa percobaan");
-        redirect("crm/oc");
+        redirect("crm/oc/page/".$this->session->page);
     }   
     public function openDataEntry(){
         $where = array(
@@ -630,7 +559,7 @@ class Oc extends CI_Controller{
             );
             insertRow("quotation_metode_pembayaran",$data);
         }
-        redirect("crm/oc");
+        redirect("crm/oc/page/".$this->session->page);
     }   
     public function insertoc(){ //sudah di cek
         /*insert ke oc tanpa total_oc_price*/
@@ -745,7 +674,7 @@ class Oc extends CI_Controller{
         
         /*end metode pembayaran*/
         $this->Mdorder_confirmation->createOrderConfirmation($data["oc"],$data["items"],$data["metode_pembayaran"]);
-        redirect("crm/oc");
+        redirect("crm/oc/page/".$this->session->page);
     }   
     public function delete($id_submit_oc){ //sudah di cek
         $where = array(
@@ -755,7 +684,7 @@ class Oc extends CI_Controller{
             "status_aktif_oc" => 1
         );
         updateRow("order_confirmation",$data,$where);
-        redirect("crm/oc");
+        redirect("crm/oc/page/".$this->session->page);
     }
     public function accepted($id_submit_oc){
         $where = array(
@@ -765,7 +694,7 @@ class Oc extends CI_Controller{
             "status_oc" => 2
         );
         updateRow("order_confirmation",$data,$where);
-        redirect("crm/oc");
+        redirect("crm/oc/page/".$this->session->page);
     }
     function ocPdf($id_submit_oc){ //sudah di cek   
         $where=array(
@@ -785,6 +714,190 @@ class Oc extends CI_Controller{
             "metodebayar"=>$metodebayar,
         );
         $this->load->view('crm/oc/pdf_oc',$data);
+    }
+    /******** DATA TABLE SECTION *********8 */
+    public function search(){
+        $search = $this->input->post("search");
+        if($search != ""){ //ini kalau di refresh pas di search
+            
+
+            $data["numbers"] = array(1,2,3,4,5);
+            $data["prev"] = 1;
+            $data["search"] = 0;
+            $where = array(
+                "id_user_add_oc" => -999
+            );
+            if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_oc")) == 0){
+                $where = array(
+                    "status_aktif_oc" => 0,
+                    "id_user_add_oc" => $this->session->id_user
+                );
+            }
+            if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_oc")) == 0){
+                $where = array(
+                    "status_aktif_oc" => 0
+                );
+            }
+            $field = array(
+                "id_submit_quotation","no_po_customer","no_oc","id_oc","bulan_oc","tahun_oc","id_submit_oc","tgl_po_customer","total_oc_price","nama_perusahaan","nama_cp","no_quotation"
+            );
+            $like = array(
+                "no_oc" => $search,
+                "no_quotation" => $search,
+                "nama_perusahaan" => $search,
+                "no_po_customer" => $search,
+                "tgl_po_customer" => $search
+            );
+            $result = $this->Mdorder_confirmation->searchTable($where,$field,$like,"id_submit_oc","DESC");
+            $data["oc"]= $result->result_array();
+    
+            for($a = 0; $a<count($data["oc"]);$a++){
+                
+                $where = array(
+                    "id_submit_oc" => $data["oc"][$a]["id_submit_oc"]
+                );
+                $field = array(
+                    "id_oc_item","nama_oc_item","final_amount_oc","satuan_produk_oc","final_selling_price_oc","status_oc_item"
+                );
+                $result = selectRow("order_item_detail",$where,$field);
+                $data["oc"][$a]["oc_item"] = $result->result_array();
+    
+                $where = array(
+                    "id_submit_oc" => $data["oc"][$a]["id_submit_oc"]
+                );
+                $field = array(
+                    "persentase_pembayaran","nominal_pembayaran","trigger_pembayaran","status_bayar","is_ada_transaksi","persentase_pembayaran2","nominal_pembayaran2","trigger_pembayaran2","status_bayar2","is_ada_transaksi2","kurs"
+                );
+                $result = selectRow("order_confirmation_metode_pembayaran",$where,$field);
+                $data["oc"][$a]["metode_pembayaran"] = $result->result_array();
+    
+                if($data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] == 1){
+                    $data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] = "BEFORE ORDER DELIVERY";
+                }
+                else{
+                    $data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] = "AFTER ORDER DELIVERY";
+                }
+                if($data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] == 1){
+                    $data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] = "BEFORE ORDER DELIVERY";
+                }
+                else{
+                    $data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] = "AFTER ORDER DELIVERY";
+                }
+                $this->session->set_flashdata("is_search",0);
+            }
+            /*pop up quotation*/
+            $where = array(
+                "status_quotation" => 2,
+                "status_aktif_quotation" => 0
+            );
+            $field = array(
+                "no_quotation","nama_perusahaan","nama_cp","id_submit_quotation"
+            );
+            $result = selectRow("order_detail",$where,$field);
+            $data["quotation"] = $result->result_array();
+            $this->req();
+            $this->load->view("crm/content-open");
+            $this->load->view("crm/oc/category-header");
+            $this->load->view("crm/oc/category-body",$data);
+            $this->load->view("crm/content-close");
+            $this->close();
+        }
+        else{
+            redirect("crm/oc/page/1");
+        }
+    }
+    public function page($i){
+        $this->session->page = $i;
+        $limit = 3;
+        $offset = 3*($i-1);
+        $a = 0;
+        
+        if($i <= 3){
+            $data["numbers"] = array(1,2,3,4,5);
+            $data["prev"] = 1;
+            $data["search"] = 1;
+        }
+        else{
+            for($a = 0; $a<5; $a++){
+                $data["numbers"][$a] = $i+$a-2;
+                $data["prev"] = 0;
+                $data["search"] = 1;
+            }
+        }
+        $this->session->id_submit_quotation = "";
+        $where = array(
+            "id_user_add_oc" => -999
+        );
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_oc")) == 0){
+            $where = array(
+                "status_aktif_oc" => 0,
+                "id_user_add_oc" => $this->session->id_user
+            );
+        }
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_oc")) == 0){
+            $where = array(
+                "status_aktif_oc" => 0
+            );
+        }
+        $field = array(
+            "id_submit_quotation","no_po_customer","no_oc","id_oc","bulan_oc","tahun_oc","id_submit_oc","tgl_po_customer","total_oc_price","nama_perusahaan","nama_cp","no_quotation"
+        );
+    
+        $result = selectRow("order_detail",$where,$field,$limit,$offset,"tgl_po_customer","DESC");
+
+        $data["oc"]= $result->result_array();
+
+        for($a = 0; $a<count($data["oc"]);$a++){
+            
+            $where = array(
+                "id_submit_oc" => $data["oc"][$a]["id_submit_oc"]
+            );
+            $field = array(
+                "id_oc_item","nama_oc_item","final_amount_oc","satuan_produk_oc","final_selling_price_oc","status_oc_item"
+            );
+            $result = selectRow("order_item_detail",$where,$field);
+            $data["oc"][$a]["oc_item"] = $result->result_array();
+
+            $where = array(
+                "id_submit_oc" => $data["oc"][$a]["id_submit_oc"]
+            );
+            $field = array(
+                "persentase_pembayaran","nominal_pembayaran","trigger_pembayaran","status_bayar","is_ada_transaksi","persentase_pembayaran2","nominal_pembayaran2","trigger_pembayaran2","status_bayar2","is_ada_transaksi2","kurs"
+            );
+            $result = selectRow("order_confirmation_metode_pembayaran",$where,$field);
+            $data["oc"][$a]["metode_pembayaran"] = $result->result_array();
+
+            if($data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] == 1){
+                $data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] = "BEFORE ORDER DELIVERY";
+            }
+            else{
+                $data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] = "AFTER ORDER DELIVERY";
+            }
+            if($data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] == 1){
+                $data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] = "BEFORE ORDER DELIVERY";
+            }
+            else{
+                $data["oc"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] = "AFTER ORDER DELIVERY";
+            }
+
+        }
+        /*pop up quotation*/
+        $where = array(
+            "status_quotation" => 2,
+            "status_aktif_quotation" => 0
+        );
+        $field = array(
+            "no_quotation","nama_perusahaan","nama_cp","id_submit_quotation"
+        );
+        $result = selectRow("order_detail",$where,$field);
+        $data["quotation"] = $result->result_array();
+        $this->req();
+        $this->load->view("crm/content-open");
+        $this->load->view("crm/oc/category-header");
+        $this->load->view("crm/oc/category-body",$data);
+        $this->load->view("crm/content-close");
+        $this->close();
+        $this->load->view("crm/oc/js/server-side-datatable");
     }
 }
 ?>

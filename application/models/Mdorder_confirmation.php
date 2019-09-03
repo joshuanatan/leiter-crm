@@ -1,5 +1,11 @@
 <?php
 class Mdorder_confirmation extends CI_Model{
+
+    var $table = 'tbl_user'; //nama tabel dari database
+    var $column_order = array(null, 'user_nama','user_email','user_alamat'); //field yang ada di table user
+    var $column_search = array('user_nama','user_email','user_alamat'); //field yang diizin untuk pencarian 
+    var $order = array('user_id' => 'asc'); // default order 
+
     public function select($where){
         $this->db->join("quotation","quotation.id_quo = order_confirmation.id_quotation and quotation.versi_quo = order_confirmation.versi_quotation","inner");
         $this->db->join("contact_person","contact_person.id_cp = quotation.id_cp","inner");
@@ -93,5 +99,17 @@ class Mdorder_confirmation extends CI_Model{
             updateRow("quotation",$data,$where);
             $this->db->trans_commit();
         }
+    }
+    /******** Data Table ****** */
+    public function searchTable($where,$field,$like,$order_by,$direction){
+        $this->db->select($field);
+        $this->db->group_start();
+        $this->db->where($where);
+        $this->db->group_end();
+        $this->db->group_start();
+        $this->db->or_like($like);
+        $this->db->group_end();
+        $this->db->order_by($order_by,$direction);
+        return $this->db->get("order_detail");
     }
 }

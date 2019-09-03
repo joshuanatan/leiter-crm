@@ -182,7 +182,7 @@
                     </form>
                 </div>
             </div>
-            <a href = "<?php echo base_url();?>crm/oc" class = "btn btn-primary btn-sm">BACK</a>
+            <a href = "<?php echo base_url();?>crm/oc/page/<?php echo $this->session->page;?>" class = "btn btn-primary btn-outline btn-sm">BACK</a>
             <!-- End Example Tabs Left -->
         </div>
     </div>
