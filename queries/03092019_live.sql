@@ -1,3 +1,4 @@
+/*done 03/09/2019 */
 create view po_stock as 
 select 
 po_core.*,

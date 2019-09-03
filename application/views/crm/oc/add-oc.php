@@ -66,7 +66,7 @@
                                                 <td>
                                                     <span id = "produkNotFound<?php echo $a;?>" style = "color:red; display:none">PRODUCT NOT FOUND</span>
                                                     <input placeholder = "search item here..." type = "text" class = "form-control" id = "namaproduk<?php echo $a;?>" oninput = "searchProdukByName('<?php echo $a;?>')">
-                                                    <select class = "form-control" id = "similarProduk<?php echo $a;?>" name = "id_produk<?php echo $items[$a]["id_quotation_item"];?>">
+                                                    <select data-plugin = "select2" class = "form-control" id = "similarProduk<?php echo $a;?>" name = "id_produk<?php echo $items[$a]["id_quotation_item"];?>">
                                                         <option value = "0"></option>
                                                     </select>
                                                 </td>

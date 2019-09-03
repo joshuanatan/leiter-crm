@@ -161,7 +161,7 @@ function getRecommendationProduk(baris){
             url:"<?php echo base_url();?>interface/produk/searchProdukByName",
             type:"POST",
             dataType:"JSON",
-            data:{nama_produk:teks},
+            data:{deskripsi_produk:teks},
             success:function(respond){
                 if(respond.length != 0){
                     var html = "";
@@ -188,7 +188,7 @@ function searchProdukByName(baris){
             url:"<?php echo base_url();?>interface/produk/searchProdukByName",
             type:"POST",
             dataType:"JSON",
-            data:{nama_produk:teks},
+            data:{deskripsi_produk:teks},
             success:function(respond){
                 if(respond.length != 0){
                     var html = "";
