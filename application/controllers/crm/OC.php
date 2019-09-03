@@ -252,6 +252,10 @@ class Oc extends CI_Controller{
             "is_ada_transaksi2" => $is_ada_transaksi2,
             "kurs" => $this->input->post("mata_uang_pembayaran")
         );
+        
+        $where["main"] = array(
+            "id_submit_oc" => $this->input->post("id_submit_oc")
+        );
         updateRow("order_confirmation_metode_pembayaran",$data["pembayaran"],$where["main"]);
         /*end metode pembayaran*/
         //$this->session->set_flashdata("invalid","[DATA TIDAK ADA YANG DIUPDATE] Mohon menunggu, sedang dalam masa percobaan");
