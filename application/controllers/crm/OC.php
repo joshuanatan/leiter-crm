@@ -897,7 +897,6 @@ class Oc extends CI_Controller{
         $this->load->view("crm/oc/category-body",$data);
         $this->load->view("crm/content-close");
         $this->close();
-        $this->load->view("crm/oc/js/server-side-datatable");
     }
 }
 ?>
