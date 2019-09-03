@@ -808,8 +808,8 @@ class Oc extends CI_Controller{
     }
     public function page($i){
         $this->session->page = $i;
-        $limit = 3;
-        $offset = 3*($i-1);
+        $limit = 10;
+        $offset = 10*($i-1);
         $a = 0;
         
         if($i <= 3){
