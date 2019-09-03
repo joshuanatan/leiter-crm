@@ -122,5 +122,10 @@ order_detail.*
 from invoice_core
 inner join order_detail on order_detail.id_submit_oc = invoice_core.id_submit_oc
 inner join order_confirmation_metode_pembayaran as metode_pembayaran on metode_pembayaran.id_submit_oc = order_detail.id_submit_oc
-where status_aktif_invoice = 0
+where status_aktif_invoice = 0;
 
+alter table visit_call_report 
+modify column action_conclusion text;
+
+alter table tagihan
+add id_user_add int(11)

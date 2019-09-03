@@ -3,8 +3,7 @@
     <div class="row">
         <div class="col-md-6">
             <div class="mb-15">
-                <a class = "btn btn-primary btn-outline btn-sm" href = "<?php echo base_url();?>crm/po/create">Create Purchase Order</a>
-                <a class = "btn btn-primary btn-outline btn-sm" href = "<?php echo base_url();?>crm/po/stock">Stock Purchase Order</a>
+                <a class = "btn btn-primary btn-outline btn-sm" href = "<?php echo base_url();?>crm/po/createPoStock">Create Stock Purchase Order</a>
             </div>
         </div>
     </div>
@@ -26,8 +25,8 @@
             <?php for($a = 0; $a<count($purchase_order);$a++): ?>
             <tr class="gradeA">
                 <td><?php echo $purchase_order[$a]["no_po"];?></td>
-                <td><?php echo strtoupper($purchase_order[$a]["nama_supplier_po"]);?></td>
-                <td><?php echo strtoupper($purchase_order[$a]["nama_shipper_po"]);?></td>
+                <td><?php echo strtoupper($purchase_order[$a]["nama_supplier"]);?></td>
+                <td><?php echo strtoupper($purchase_order[$a]["nama_shipper"]);?></td>
                 <td><?php echo $purchase_order[$a]["destination"];?></td>
                 <td><?php $date = date_create($purchase_order[$a]["requirement_date"]); echo date_format($date,"D, M d, Y");?></td>
                 <td>
@@ -37,7 +36,7 @@
                 <td class="actions">
                     <a target="_blank" href = "<?php echo base_url();?>crm/po/poPdf/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-primary btn-sm col-lg-12">CETAK</a>
                     <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "edit_po")) == 0):?>
-                    <a href = "<?php echo base_url();?>crm/po/edit/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-primary btn-sm col-lg-12">EDIT</a>
+                    <a href = "<?php echo base_url();?>crm/po/editPoStock/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-primary btn-sm col-lg-12">EDIT</a>
                     <?php endif;?>
                     <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_po")) == 0):?>
                     <a href = "<?php echo base_url();?>crm/po/delete/<?php echo $purchase_order[$a]["id_submit_po"];?>" class = "btn btn-outline btn-danger btn-sm col-lg-12">DELETE</a>
@@ -72,7 +71,7 @@
                     </tr>
                     <tr>
                         <td>Nama Supplier</td>
-                        <td><?php echo ucwords($purchase_order[$a]["nama_supplier_po"]);?></td>
+                        <td><?php echo ucwords($purchase_order[$a]["nama_supplier"]);?></td>
                     </tr>
                     <tr>
                         <td>PIC Supplier</td>
@@ -80,7 +79,7 @@
                     </tr>
                     <tr>
                         <td>Nama Shipper</td>
-                        <td><?php echo ucwords($purchase_order[$a]["nama_shipper_po"]);?></td>
+                        <td><?php echo ucwords($purchase_order[$a]["nama_shipper"]);?></td>
                     </tr>
                     <tr>
                         <td>PIC Shipper</td>
@@ -130,10 +129,10 @@
                     <tbody>
                         <?php for($items = 0; $items<count($purchase_order[$a]["items"]); $items++):?>
                         <tr>
-                            <td><?php echo nl2br($purchase_order[$a]["items"][$items]["nama_oc_item"]);?></td>
-                            <td><?php echo nl2br($purchase_order[$a]["items"][$items]["nama_produk_vendor_po"]);?></td>
-                            <td valign = "middle"><?php echo number_format($purchase_order[$a]["items"][$items]["harga_item_po"],2);?></td>
-                            <td valign = "middle"><?php echo number_format($purchase_order[$a]["items"][$items]["jumlah_item_po"],2)." ".$purchase_order[$a]["items"][$items]["satuan_item_po"];?></td>
+                            <td><?php echo nl2br($purchase_order[$a]["items"][$items]["deskripsi_produk"]);?></td>
+                            <td><?php echo nl2br($purchase_order[$a]["items"][$items]["nama_produk_vendor"]);?></td>
+                            <td valign = "middle"><?php echo number_format($purchase_order[$a]["items"][$items]["harga_item"],2);?></td>
+                            <td valign = "middle"><?php echo number_format($purchase_order[$a]["items"][$items]["jumlah_item"],2)." ".$purchase_order[$a]["items"][$items]["satuan_item"];?></td>
                         </tr>
                         <?php endfor;?>    
                     </tbody>

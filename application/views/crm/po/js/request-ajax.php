@@ -376,3 +376,49 @@ function getDetailHargaVendor(urutan){
 }
 
 </script>
+
+<script>
+function getRecommendationProduk(baris){
+    var teks = $("#namaproduk"+baris).val();
+    console.log(teks);
+    if(teks != ""){
+        $.ajax({
+            url:"<?php echo base_url();?>interface/produk/searchProdukByName",
+            type:"POST",
+            dataType:"JSON",
+            data:{deskripsi_produk:teks},
+            success:function(respond){
+                if(respond.length != 0){
+                    var html = "";
+                    for(var a = 0; a<respond.length; a++){
+                        html += "<option value = '"+respond[a]["id_produk"]+"'>"+respond[a]["deskripsi_produk"]+"</option>";
+                    }
+                }
+                else{
+                    var html = "<option value = '0'>PRODUK TIDAK DITEMUKAN</option>"
+                }
+                $("#similarProduk"+baris).empty();
+                $("#similarProduk"+baris).html(html);
+                $("#jumlah_produk"+baris).val(" "+respond[0]["satuan_produk"]);
+            }
+        });
+    }
+    
+}
+</script>
+<script>
+function getSatuanProduk(baris){
+    var id_produk = $("#similarProduk"+baris).val();
+    console.log(id_produk);
+    $.ajax({
+        url:"<?php echo base_url();?>interface/produk/searchProdukById",
+        type:"POST",
+        dataType:"JSON",
+        data:{id_produk:id_produk},
+        success:function(respond){
+            console.log(respond[0]["satuan_produk"]);
+            $("#jumlah_produk"+baris).val(" "+respond[0]["satuan_produk"]);
+        }
+    });
+}
+</script>

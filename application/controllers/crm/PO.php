@@ -128,18 +128,20 @@ class Po extends CI_Controller{
         );
         $id_submit_po = insertRow("po_core",$data);
         $checks = $this->input->post("checks");
-        foreach($checks as $checked){ /*bkin PO dari yang di centang aja*/
-            $jumlah = $this->input->post("jumlah_produk".$checked);
-            $split = explode(" ",$jumlah);
-            $data = array(
-                "id_submit_po" => $id_submit_po,
-                "nama_produk_vendor" => $this->input->post("nama_produk_vendor".$checked),
-                "harga_item" => splitterMoney($this->input->post("harga_satuan_produk".$checked),","),
-                "jumlah_item" => $split[0],
-                "satuan_item" => $split[1],
-                "id_oc_item" => $this->input->post("id_oc_item".$checked)
-            );
-            insertRow("po_item",$data);
+        if($checks != ""){
+            foreach($checks as $checked){ /*bkin PO dari yang di centang aja*/
+                $jumlah = $this->input->post("jumlah_produk".$checked);
+                $split = explode(" ",$jumlah);
+                $data = array(
+                    "id_submit_po" => $id_submit_po,
+                    "nama_produk_vendor" => $this->input->post("nama_produk_vendor".$checked),
+                    "harga_item" => splitterMoney($this->input->post("harga_satuan_produk".$checked),","),
+                    "jumlah_item" => $split[0],
+                    "satuan_item" => $split[1],
+                    "id_oc_item" => $this->input->post("id_oc_item".$checked)
+                );
+                insertRow("po_item",$data);
+            }
         }
         redirect("crm/po");
     }
@@ -286,5 +288,229 @@ class Po extends CI_Controller{
         updateRow("po_core",$data,$where);
         redirect("crm/po");
     }
+    public function stock(){
+        if($this->session->id_user == "") redirect("login/welcome");
+        $where = array(
+            "id_user_add_po" => -999
+        );
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_po")) == 0){
+            $where = array(
+                //"status_aktif_po" => 0, //udah ada di view, mau diliat apakah efektif apa enggak
+                //"id_submit_oc" => -1, //udah ada di view, mau diliat apakah efektif apa enggak
+                "id_user_add_po" => $this->session->id_user
+            );
+        }
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_po")) == 0){
+            $where = array(
+                //"status_aktif_po" => 0,
+                "id_submit_oc" => -1,
+            );
+        }
+        $field = array(
+            "id_submit_po","no_po","id_supplier","id_shipper","shipping_method","total_supplier_payment","id_submit_oc","requirement_date","destination","date_po_core_add","id_cp_supplier","id_cp_shipper","shipping_term","mata_uang_pembayaran","nama_supplier","nama_shipper","nama_cp_shipper","nama_cp_supplier","status_selesai_po"
+        );
+        $result = selectRow("po_stock",$where,$field);
+        $data["purchase_order"] = $result->result_array();
+        for($a = 0; $a<count($data["purchase_order"]); $a++){
+            
+            $where = array(
+                "id_submit_po" => $data["purchase_order"][$a]["id_submit_po"]
+            );
+            $field = array(
+                "nama_produk_vendor","harga_item","jumlah_item","satuan_item","id_produk","deskripsi_produk"
+            );
+            $result = selectRow("po_stock_item_detail",$where,$field);
+            $data["purchase_order"][$a]["items"] = $result->result_array();
+        }
+        $this->req();
+        $this->load->view("crm/content-open");
+        $this->load->view("crm/po/category-header");
+        $this->load->view("crm/po/po-stock",$data);
+        $this->load->view("crm/content-close");
+        $this->close();
+    }
+    public function createPoStock(){
+        $data["maxId"] = getMaxId("po_core","id_po",array("bulan_po" => date("m"), "tahun_po" => date("Y"),"status_aktif_po" => 0));
+
+        $field["perusahaan"] = array(
+            "nama_perusahaan","id_perusahaan"
+        );
+        $where["supplier"] = array(
+            "status_perusahaan" => 0,
+            "peran_perusahaan" => "PRODUK"
+        );
+        $result["supplier"] = selectRow("perusahaan",$where["supplier"],$field["perusahaan"]);
+        $data["supplier"] = $result["supplier"]->result_array();
+
+        $where["shipper"] = array(
+            "status_perusahaan" => 0,
+            "peran_perusahaan" => "SHIPPING"
+        );
+        $result["shipper"] = selectRow("perusahaan",$where["shipper"],$field["perusahaan"]);
+        $data["shipper"] = $result["shipper"]->result_array();
+        $this->req();
+        $this->load->view("crm/content-open");
+        $this->load->view("crm/po/category-header");
+        $this->load->view("crm/po/add-po-stock",$data);
+        $this->load->view("crm/content-close");
+        $this->close();
+    }
+    public function insertPoStock(){
+        $data = array(
+            "id_submit_oc" => -1,
+            "id_po" => getMaxId("po_core","id_po",array("bulan_po" => date("m"), "tahun_po" => date("Y"),"status_aktif_po" => 0)), //fail 1 try
+            "bulan_po" => date("m"),
+            "tahun_po" => date("Y"),
+            "no_po" => $this->input->post("no_po"),
+            "id_supplier" => $this->input->post("id_supplier"),
+            "id_cp_supplier" => $this->input->post("id_cp_supplier"),
+            "id_shipper" => $this->input->post("id_shipper"),
+            "id_cp_shipper" => $this->input->post("id_cp_shipper"),
+            "shipping_method" => $this->input->post("shipping_method"),
+            "shipping_term" => $this->input->post("shipping_term"),
+            "requirement_date" => $this->input->post("requirement_date"),
+            "destination" => $this->input->post("destination"),
+            "total_supplier_payment" => 0,
+            "mata_uang_pembayaran" => $this->input->post("mata_uang_pembayaran"),
+            "id_user_add" => $this->session->id_user
+        );
+        $id_submit_po = insertRow("po_core",$data);
+        $checks = $this->input->post("checks");
+        if($checks != ""){
+            foreach($checks as $checked){ /*bkin PO dari yang di centang aja*/
+                $jumlah = $this->input->post("jumlah_produk".$checked);
+                $split = explode(" ",$jumlah);
+                $data = array(
+                    "id_submit_po" => $id_submit_po,
+                    "nama_produk_vendor" => $this->input->post("nama_produk_vendor".$checked),
+                    "harga_item" => splitterMoney($this->input->post("harga_satuan_produk".$checked),","),
+                    "jumlah_item" => $split[0],
+                    "satuan_item" => $split[1],
+                    "id_produk" => $this->input->post("id_produk_item".$checked)
+                );
+                insertRow("po_stock_item",$data);
+            }
+        }
+        redirect("crm/po/stock");
+    }
+    public function editPoStock($id_submit_po){
+        $where = array(
+            "id_submit_po" => $id_submit_po
+        );
+        $field = array(
+            "id_submit_po","no_po","id_supplier","id_cp_supplier","id_shipper","id_cp_shipper","shipping_method","shipping_term","requirement_date","destination","nama_supplier","alamat_supplier","notelp_supplier","nofax_supplier","nama_shipper","alamat_shipper","notelp_shipper","nofax_shipper","nama_cp_shipper","nama_cp_supplier","mata_uang_pembayaran"      
+        );
+        $result = selectRow("po_stock", $where,$field);
+        $data["po_core"] = $result->result_array();
+        
+        
+        /*load list supplier*/
+        
+        $field = array(
+            "nama_perusahaan","id_perusahaan","peran_perusahaan"
+        );
+        $where = array(
+            "status_perusahaan" => 0
+        );
+        $result = selectRow("perusahaan",$where,$field);
+        $data["supplier"] = $result->result_array();
+        /*end load list supplier*/
+
+        $field = array(
+            "nama_cp","id_cp"
+        );
+        /*load list supplier*/
+        $where = array(
+            "status_cp" => 0
+        );
+        $result = selectRow("contact_person",$where,$field);
+        $data["contact_person"] = $result->result_array();
+        /*end load list supplier*/
+
+        /*load item dari oc*/
+        $field = array(
+           "id_po_item","id_produk","nama_produk_vendor","harga_item","jumlah_item","satuan_item","deskripsi_produk","satuan_produk"
+        );
+        $where = array(
+            "id_submit_po" => $data["po_core"][0]["id_submit_po"],
+        );
+        $result = selectRow("po_stock_item_detail",$where,$field);
+        $data["items"] = $result->result_array();
+
+        $this->req();
+        $this->load->view("crm/content-open");
+        $this->load->view("crm/po/category-header");
+        $this->load->view("crm/po/edit-po-stock",$data);
+        $this->load->view("crm/content-close");
+        $this->close();
+    }
+    public function updatePoStock(){
+        $where = array(
+            "id_submit_po" => $this->input->post("id_submit_po")
+        );
+        $data = array(
+            "id_supplier" => $this->input->post("id_supplier"),
+            "id_cp_supplier" => $this->input->post("id_cp_supplier"),
+            "id_shipper" => $this->input->post("id_shipper"),
+            "id_cp_shipper" => $this->input->post("id_cp_shipper"),
+            "shipping_method" => $this->input->post("shipping_method"),
+            "shipping_term" => $this->input->post("shipping_term"),
+            "requirement_date" => $this->input->post("requirement_date"),
+            "destination" => $this->input->post("destination"),
+            "mata_uang_pembayaran" => $this->input->post("mata_uang_pembayaran"),
+        );
+        $id_submit_po = updateRow("po_core",$data,$where);
+        $checks = $this->input->post("checks");
+        if($checks != ""){
+            foreach($checks as $checked){ /*bkin PO dari yang di centang aja*/
+                if($this->input->post("id_po_item".$checked) != ""){
+                    $where = array(
+                        "id_po_item" => $this->input->post("id_po_item".$checked)
+                    );
+                    $jumlah = $this->input->post("jumlah_produk".$checked);
+                    $split = explode(" ",$jumlah);
+                    $data = array(
+                        "nama_produk_vendor" => $this->input->post("nama_produk_vendor".$checked),
+                        "harga_item" => splitterMoney($this->input->post("harga_satuan_produk".$checked),","),
+                        "jumlah_item" => $split[0],
+                        "satuan_item" => $split[1],
+                        "id_produk" => $this->input->post("id_produk_item".$checked)
+                    );
+                    updateRow("po_stock_item",$data,$where);
+                }
+                else{
+                    $jumlah = $this->input->post("jumlah_produk".$checked);
+                    $split = explode(" ",$jumlah);
+                    $data = array(
+                        "id_submit_po" => $this->input->post("id_submit_po"),
+                        "nama_produk_vendor" => $this->input->post("nama_produk_vendor".$checked),
+                        "harga_item" => splitterMoney($this->input->post("harga_satuan_produk".$checked),","),
+                        "jumlah_item" => $split[0],
+                        "satuan_item" => $split[1],
+                        "id_produk" => $this->input->post("id_produk_item".$checked)
+                    );
+                    insertRow("po_stock_item",$data);
+                }
+                
+            }
+        }
+        $delete = $this->input->post("delete");
+        if($delete != ""){
+            foreach($delete as $deleted){
+                $where = array(
+                    "id_po_item" => $deleted
+                );
+                deleteRow("po_stock_item",$where);
+            }
+        }
+        redirect("crm/po/stock");
+    }
+    public function deletePoStock(){
+
+    }
+    public function donePoStock(){
+
+    }
+
 }
 ?>

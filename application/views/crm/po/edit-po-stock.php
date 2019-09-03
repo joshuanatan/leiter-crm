@@ -13,25 +13,13 @@
                         
 
                     </ul>
-                    <form action = "<?php echo base_url();?>crm/po/editPo" method = "post">    
+                    <form action = "<?php echo base_url();?>crm/po/updatePoStock" method = "post">    
                         <div class="tab-content">
                             <div class="tab-pane active" id="primaryData" role="tabpanel">
-                            <input type = "hidden" name = "id_submit_po" value = "<?php echo $po_core[0]["id_submit_po"];?>">
-                               <div class = "form-group">
-                                    <h5 style = "opacity:0.5">No PO Customer</h5>
-                                    <input type = "text" value = "<?php echo $po_core[0]["no_po_customer"] ?>" class = "form-control" readonly>
-                                </div>
+                                <input type = "hidden" name = "id_submit_po" value = "<?php echo $po_core[0]["id_submit_po"];?>">
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">No PO</h5>
                                     <input type = "text" value = "<?php echo $po_core[0]["no_po"] ?>" class = "form-control" id = "no_po" readonly>
-                                </div>
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
-                                    <input type ="text" id = "nama_perusahaan" value = "<?php echo $po_core[0]["nama_perusahaan"] ?>" class = "form-control perusahaanCust" readonly>
-                                </div>
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Nama Customer</h5>
-                                    <input name = "" id = "namaCust" type ="text" value = "<?php echo $po_core[0]["nama_cp"] ?>" class = "form-control namaCust" readonly>
                                 </div>
                             </div>
                             <!-- fungsi -->
@@ -57,16 +45,16 @@
                                     </div>
                                     <div class = "form-group col-lg-2">
                                         <h5 style = "opacity:0.5">Phone</h5>
-                                        <input type = "text" id = "phone_supplier" readonly class = "form-control" value = "<?php echo $po_core[0]["notelp_shipper_po"];?>">
+                                        <input type = "text" id = "phone_supplier" readonly class = "form-control" value = "<?php echo $po_core[0]["notelp_shipper"];?>">
                                     </div>
                                     <div class = "form-group col-lg-2">
                                         <h5 style = "opacity:0.5">Fax</h5>
-                                        <input type = "text" id = "fax_supplier" readonly class = "form-control" value = "<?php echo $po_core[0]["nofax_shipper_po"];?>">
+                                        <input type = "text" id = "fax_supplier" readonly class = "form-control" value = "<?php echo $po_core[0]["nofax_shipper"];?>">
                                     </div>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">Address</h5>
-                                    <textarea readonly id = "alamat_supplier" class = "form-control"><?php echo $po_core[0]["alamat_supplier_po"];?></textarea>
+                                    <textarea readonly id = "alamat_supplier" class = "form-control"><?php echo $po_core[0]["alamat_supplier"];?></textarea>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">Currency</h5>
@@ -79,17 +67,17 @@
                                             <th>Delete</th>
                                             <th style = "width:18%">Nama Produk Leiter</th>
                                             <th style = "width:18%">Nama Produk Vendor</th>
-                                            <th style = "width:18%">OC Qty</th>
                                             <th style = "width:18%">Quantity</th>
-                                            <th style = "width:18%">Selling Price</th>
                                             <th style = "width:18%">Vendor Price</th>
                                         </thead>
                                         <tbody>
-                                            <?php for($a = 0; $a<count($items); $a++):?>
+                                            <?php for($a = 0; $a<10; $a++):?>
+                                            <?php if($a < count($items)):?>
                                             <tr>
                                                 <td>
+                                                    <input type = "hidden" name = "id_po_item<?php echo $a;?>" value = "<?php echo $items[$a]["id_po_item"];?>">
                                                     <div class = "checkbox-custom checkbox-primary">
-                                                        <input name = "checks[]" value = "<?php echo $items[$a]["id_oc_item"];?>" type = "checkbox" <?php if($items[$a]["id_po_item"] != "") echo "checked"; ?>>
+                                                        <input name = "checks[]" value = "<?php echo $a;?>" type = "checkbox" checked>
                                                         <label></label>
                                                     </div>
                                                 </td>
@@ -102,28 +90,49 @@
                                                     <?php endif;?>
                                                 </td>
                                                 <td>
-                                                    <?php echo nl2br($items[$a]["nama_oc_item"]);?>
+                                                    <input type = "text" class = "form-control" oninput = "getRecommendationProduk(<?php echo $a;?>)" id = "namaproduk<?php echo $a;?>">
+                                                    <hr/>
+                                                    <select data-plugin = "select2" id = "similarProduk<?php echo $a;?>" class = "form-control" onchange = "getSatuanProduk(<?php echo $a;?>)" name = "id_produk_item<?php echo $a;?>">
+                                                    <option value = "<?php echo $items[$a]["id_produk"];?>"><?php echo $items[$a]["deskripsi_produk"];?></option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <textarea rows = "4" class = "form-control" name = "nama_produk_vendor<?php echo $a;?>" ><?php if($items[$a]["nama_produk_vendor"] != "") echo $items[$a]["nama_produk_vendor"]; else echo "-";?></textarea>
+                                                </td>
+                                                <td>
+                                                    <input type = "text" class = "form-control" name = "jumlah_produk<?php echo $a;?>" value = "<?php echo $items[$a]["jumlah_item"];?> <?php echo $items[$a]["satuan_item"];?>">
                                                 </td>
 
                                                 <td>
-                                                    <textarea rows = "4" class = "form-control" name = "nama_produk_vendor<?php echo $items[$a]["id_oc_item"];?>" ><?php if($items[$a]["nama_produk_vendor"] != "") echo $items[$a]["nama_produk_vendor"]; else echo "-";?></textarea>
-                                                </td>
-
-                                                <td>
-                                                    <?php echo $items[$a]["final_amount_oc"];?> <?php echo $items[$a]["satuan_produk_oc"];?>
-                                                </td>
-
-                                                <td>
-                                                    <input type = "text" class = "form-control" name = "jumlah_produk<?php echo $items[$a]["id_oc_item"];?>" value = "<?php echo $items[$a]["jumlah_item"];?> <?php echo $items[$a]["satuan_item"];?>">
-                                                </td>
-
-                                                <td><?php echo number_format($items[$a]["final_selling_price_oc"],2);?></td>
-
-                                                <td>
-                                                    <input type = "text" oninput = "commas('harga_satuan_produk<?php echo $a;?>')" id = "harga_satuan_produk<?php echo $a;?>" class = "form-control" name = "harga_satuan_produk<?php echo $items[$a]["id_oc_item"];?>" value = "<?php echo number_format($items[$a]["harga_item"]);?>">
+                                                    <input type = "text" oninput = "commas('harga_satuan_produk<?php echo $a;?>')" id = "harga_satuan_produk<?php echo $a;?>" class = "form-control" name = "harga_satuan_produk<?php echo $a;?>" value = "<?php echo number_format($items[$a]["harga_item"]);?>">
                                                 </td>
                                             
                                             </tr>
+                                            <?php else:?>
+                                            <tr>
+                                                <td>
+                                                    <input type = "hidden" name = "id_po_item<?php echo $a;?>" value = "">
+                                                    <div class = "checkbox-custom checkbox-primary">
+                                                        <input onclick = "getDetailHargaVendor(<?php echo $a;?>)" type = "checkbox" name = "checks[]" value = "<?php echo $a;?>">
+                                                        <label></label>
+                                                    </div>
+                                                </td>
+                                                <td></td>
+
+                                                <td>
+                                                    <input type = "text" class = "form-control" oninput = "getRecommendationProduk(<?php echo $a;?>)" id = "namaproduk<?php echo $a;?>">
+                                                    <hr/>
+                                                    <select data-plugin = "select2" id = "similarProduk<?php echo $a;?>" class = "form-control" onchange = "getSatuanProduk(<?php echo $a;?>)" name = "id_produk_item<?php echo $a;?>">
+                                                    </select>
+                                                </td>
+                                                <td><textarea rows = "4" id = "nama_produk_vendor<?php echo $a;?>" class = "form-control" name = "nama_produk_vendor<?php echo $a;?>" ></textarea></td>
+
+                                                <td><input type = "text" id = "jumlah_produk<?php echo $a;?>" class = "form-control" name = "jumlah_produk<?php echo $a;?>"></td>
+
+                                                <td><input type = "text" oninput = "commas('harga_satuan_produk<?php echo $a;?>')" id = "harga_satuan_produk<?php echo $a;?>" class = "form-control" name = "harga_satuan_produk<?php echo $a;?>"></td>
+                                            
+                                            </tr>
+                                            <?php endif;?>
                                             <?php endfor;?>
                                         </tbody>
                                     </table>
@@ -150,16 +159,16 @@
                                     </div>
                                     <div class = "form-group col-lg-2">
                                         <h5 style = "opacity:0.5">Phone</h5>
-                                        <input type = "text" id = "phone_shipper" readonly class = "form-control" value = "<?php echo $po_core[0]["notelp_shipper_po"];?>">
+                                        <input type = "text" id = "phone_shipper" readonly class = "form-control" value = "<?php echo $po_core[0]["notelp_shipper"];?>">
                                     </div>
                                     <div class = "form-group col-lg-2">
                                         <h5 style = "opacity:0.5">Fax</h5>
-                                        <input type = "text" id = "fax_shipper" readonly class = "form-control" value = "<?php echo $po_core[0]["nofax_shipper_po"];?>">
+                                        <input type = "text" id = "fax_shipper" readonly class = "form-control" value = "<?php echo $po_core[0]["nofax_shipper"];?>">
                                     </div>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">Address</h5>
-                                    <textarea readonly id = "alamat_shipper" class = "form-control"><?php echo $po_core[0]["alamat_shipper_po"];?></textarea>
+                                    <textarea readonly id = "alamat_shipper" class = "form-control"><?php echo $po_core[0]["alamat_shipper"];?></textarea>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">Shipping Method</h5>
@@ -187,8 +196,8 @@
                             </div>
                         </div>
                     </form>
-                    <a href = "<?php echo base_url();?>crm/po" class = "btn btn-outline btn-primary btn-sm">BACK</a>
                 </div>
+                <a href = "<?php echo base_url();?>crm/po/stock" class = "btn btn-outline btn-primary btn-sm">BACK</a>
             </div>
             <!-- End Example Tabs Left -->
         </div>

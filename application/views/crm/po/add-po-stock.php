@@ -1,33 +1,159 @@
 <div class="panel-body col-lg-12">
-    <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
-        <!-- List OC yang sudah di selesaikan -->
-        <thead>
-            <tr>
-                <th>Price Request ID</th>
-                <th>Dateline</th>
-                <th>Items Remaining</th>
-                <th>Requested By</th>
-                <th>Request Date</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="gradeA">
-                <?php for($a = 0 ; $a<count($price_request); $a++): ?>
-                <td><?php echo $price_request[$a]["id_request"];?></td>
-                <td><?php echo $price_request[$a]["tgl_dateline_request"];?></td>
-                <td><?php if($price_request[$a]["items_ordered"][1] != 0) echo $price_request[$a]["items_ordered"][1]." Items Remaining"; else echo "Ready to Order";?> </td> <!--jumlah item yang ga ada di PO Item -->
-                <td><?php echo $price_request[$a]["nama_user"];?></td>
-                <td><?php $date = date_create($price_request[$a]["date_request_add"]); echo date_format($date,"d/m/Y H:i:s");?></td>
-                <td class="actions">
-                    <a href = "<?php if($price_request[$a]["already_setting"] == 1){ echo base_url();?>crm/po/settingstock/<?php echo $price_request[$a]["id_request"];} else echo "#";?>" class = "btn btn-outline btn-success" data-content="Setting PO" data-trigger="hover" data-toggle="popover"><i class = "icon wb-menu" data-toggle="modal" aria-hidden="true"></i></a>
+    <div class="row row-lg">
+        <div class="col-xl-12">
+            <!-- Example Tabs Left -->
+            <div class="example-wrap">
+                <div class="nav-tabs-vertical" data-plugin="tabs">
+                    <ul class="nav nav-tabs mr-25" role="tablist">
+                        <li class="nav-item" role="presentation"><a class="nav-link active" data-toggle="tab" href="#primaryData" aria-controls="primaryData" role="tab">Primary Data</a></li>
+                        <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#items" aria-controls="pengiriman" role="tab">Supplier & Items</a></li>
 
-                    <?php if($price_request[$a]["already_setting"] == 0){ ?><a href = "<?php echo base_url();?>crm/po/generate/<?php echo $price_request[$a]["id_po_setting"];?>" class = "btn btn-outline btn-primary" data-content="Generate PO" data-trigger="hover" data-toggle="popover"><i class = "icon fa fa-briefcase" data-toggle="modal" aria-hidden="true"></i></a><?php } ?>
-                </td>
+                        <li class="nav-item" role="presentation"><a class="nav-link" data-toggle="tab" href="#shipper" aria-controls="produksi" role="tab">Shipper</a></li>
+                        
+
+                    </ul>
+                    <form action = "<?php echo base_url();?>crm/po/insertPoStock" method = "post">    
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="primaryData" role="tabpanel">
+                                <input type = "hidden" name = "id_po" value = "<?php echo $maxId;?>">
+                                <div class = "form-group">
+                                    <h5 style = "opacity:0.5">No PO</h5>
+                                    <input value = "LI-<?php echo sprintf("%03d",$maxId);?>/PO/<?php echo bulanRomawi(date("m"));?>/<?php echo date("Y");?>" type = "text" class = "form-control" id = "no_po" name = "no_po">
+                                </div>
+                            </div><!-- fungsi -->
+                            <div class="tab-pane" id="items" role="tabpanel">
+                                <div class = "row">
+                                    <div class = "form-group col-lg-4">
+                                        <h5 style = "opacity:0.5">Supplier</h5>
+                                        <select class = "form-control" name = "id_supplier" id = "id_supplier" data-plugin = "select2" onchange = "getDetailSupplier()">
+                                        <option>Choose Supplier</option>
+                                            <?php for($sup = 0; $sup<count($supplier);$sup++):?>
+                                            <option value = "<?php echo $supplier[$sup]["id_perusahaan"];?>"><?php echo $supplier[$sup]["nama_perusahaan"];?></option>
+                                            <?php endfor;?>
+                                        </select>
+                                    </div>
+                                    <div class = "form-group col-lg-4">
+                                        <h5 style = "opacity:0.5">PIC Supplier</h5>
+                                        <select class = "form-control" name = "id_cp_supplier" id = "id_pic_supplier">
+                                        
+                                        </select>
+                                    </div>
+                                    <div class = "form-group col-lg-2">
+                                        <h5 style = "opacity:0.5">Phone</h5>
+                                        <input type = "text" id = "phone_supplier" readonly class = "form-control">
+                                    </div>
+                                    <div class = "form-group col-lg-2">
+                                        <h5 style = "opacity:0.5">Fax</h5>
+                                        <input type = "text" id = "fax_supplier" readonly class = "form-control">
+                                    </div>
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "opacity:0.5">Address</h5>
+                                    <textarea readonly class = "form-control" id = "alamat_supplier"></textarea>
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "opacity:0.5">Currency</h5>
+                                    <input type = "text" id = "mata_uang_pembayaran" name = "mata_uang_pembayaran" class = "form-control">
+                                </div>
+                                <div class = "form-group">
+                                    <table class = "table table-bordered table-stripped" style = "Width:100%" data-plugin = "dataTable">
+                                        <thead>
+                                            <th style = "width:5%">#</th>
+                                            <th style = "width:18%">Nama Produk Leiter</th>
+                                            <th style = "width:18%">Nama Produk Vendor</th>
+                                            <th style = "width:18%">Quantity</th>
+                                            <th style = "width:18%">Vendor Price</th>
+                                        </thead>
+                                        <tbody>
+                                            <?php for($a = 0; $a<15; $a++):?>
+                                            <tr>
+                                                <td>
+                                                    <div class = "checkbox-custom checkbox-primary">
+                                                        <input onclick = "getDetailHargaVendor(<?php echo $a;?>)" type = "checkbox" name = "checks[]" value = "<?php echo $a;?>">
+                                                        <label></label>
+                                                    </div>
+                                                </td>
+
+                                                <td>
+                                                    <input type = "text" class = "form-control" oninput = "getRecommendationProduk(<?php echo $a;?>)" id = "namaproduk<?php echo $a;?>">
+                                                    <hr/>
+                                                    <select data-plugin = "select2" id = "similarProduk<?php echo $a;?>" class = "form-control" onchange = "getSatuanProduk(<?php echo $a;?>)" name = "id_produk_item<?php echo $a;?>">
+                                                    </select>
+                                                </td>
+                                                <td><textarea rows = "4" id = "nama_produk_vendor<?php echo $a;?>" class = "form-control" name = "nama_produk_vendor<?php echo $a;?>" ></textarea></td>
+
+                                                <td><input type = "text" id = "jumlah_produk<?php echo $a;?>" class = "form-control" name = "jumlah_produk<?php echo $a;?>"></td>
+
+                                                <td><input type = "text" oninput = "commas('harga_satuan_produk<?php echo $a;?>')" id = "harga_satuan_produk<?php echo $a;?>" class = "form-control" name = "harga_satuan_produk<?php echo $a;?>"></td>
+                                            </tr>
+                                            <?php endfor;?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="shipper" role="tabpanel">
+                                
+                                <div class = "row">
+                                    <div class = "form-group col-lg-4">
+                                        <h5 style = "opacity:0.5">Shipper</h5>
+                                        <select class = "form-control" name = "id_shipper" data-plugin = "select2" onchange = "getDetailShipper()" id = "id_shipper">
+                                        <option>Choose Shipper</option>
+                                            <?php for($sup = 0; $sup<count($shipper);$sup++):?>
+                                            <option value = "<?php echo $shipper[$sup]["id_perusahaan"];?>"><?php echo $shipper[$sup]["nama_perusahaan"];?></option>
+                                            <?php endfor;?>
+                                        </select>
+                                    </div>
+                                    <div class = "form-group col-lg-4">
+                                        <h5 style = "opacity:0.5">PIC Shipper</h5>
+                                        <select class = "form-control" name = "id_cp_shipper" id = "id_pic_shipper"></select>
+                                    </div>
+                                    <div class = "form-group col-lg-2">
+                                        <h5 style = "opacity:0.5">Phone</h5>
+                                        <input type = "text" id = "phone_shipper" readonly class = "form-control">
+                                    </div>
+                                    <div class = "form-group col-lg-2">
+                                        <h5 style = "opacity:0.5">Fax</h5>
+                                        <input type = "text" id = "fax_shipper" readonly class = "form-control">
+                                    </div>
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "opacity:0.5">Address</h5>
+                                    <textarea readonly id = "alamat_shipper" class = "form-control"></textarea>
+                                </div>  
+                                <div class = "form-group">
+                                    <h5 style = "opacity:0.5">Shipping Method</h5>
+                                    <select class = "form-control" name = "shipping_method" data-plugin = "select2">
+                                        <option value = "SEA">SEA</option>
+                                        <option value = "AIR">AIR</option>
+                                        <option value = "LAND">LAND</option>
+                                    </select>
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "opacity:0.5">Shipping Term</h5>
+                                    <input type = "text" class = "form-control" name = "shipping_term">
+                                </div>
+                                <div class = "row">
+                                    <div class = "form-group col-lg-4">
+                                        <h5 style = "opacity:0.5">Requirement Date</h5>
+                                        <input type = "date" class = "form-control" name = "requirement_date">
+                                    </div>
+                                    <div class = "form-group col-lg-4">
+                                        <h5 style = "opacity:0.5">Destination</h5>
+                                        <input type = "text" class = "form-control" name = "destination">
+                                    </div>
+                                </div>
+                                <button class = "btn btn-primary btn-outline btn-sm">SUBMIT</button>
+                            </div>
+                            <br/>
+                            <div class = "form-group">
+                            </div>
+                        </div>
+                    </form>
+                </div>
                 
-                <?php endfor;?>
-            </tr>
-        </tbody>
-    </table>
-    <a href = "<?php echo base_url();?>crm/po" class = "btn btn-primary btn-outline col-lg-2">BACK</a>
+                <a href = "<?php echo base_url();?>crm/po/stock" class = "btn btn-outline btn-sm btn-primary">BACK</a>
+            </div>
+            <!-- End Example Tabs Left -->
+        </div>
+    </div>
 </div>
