@@ -1,7 +1,7 @@
 <div class="panel-body col-lg-12">
 <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_oc")) == 0):?>
     <div class="row">
-        <div class="col-lg-6 col-md-12">
+        <div class="col-lg-3 col-md-12">
             <div class="mb-15">
                 <button data-toggle = "modal" data-target = "#createOc" class="btn btn-outline btn-primary btn-sm">
                     <i class="icon wb-plus" aria-hidden="true"></i> Create Order Confirmation
@@ -11,15 +11,39 @@
                 </a>
             </div>
         </div>
-        <div class = "col-lg-6 col-md-12">
+        <div class="col-lg-5 col-md-12">
+            <div class="mb-15">
+                <form action = "<?php echo base_url();?>crm/oc/sort" method = "post">
+                    <div class = "row">
+                        <div class = "form-group col-lg-6 col-md-12">
+                            <select class = "form-control" data-plugin = "select2" name = "order_by">
+                                <?php for($a = 0; $a<count($search); $a++):?>
+                                <option value = "<?php echo $search[$a];?>" <?php if($this->session->order_by == $search[$a]) echo "selected";?> ><?php echo ucwords($search_print[$a]);?></option>
+                                <?php endfor;?>
+                            </select>
+                        </div>
+                        <div class = "form-group col-lg-2 col-md-12">
+                            <select class = "form-control" name = "order_direction">
+                                <option value = "ASC">A-Z</option>
+                                <option value = "DESC" <?php if($this->session->order_direction == "DESC") echo "selected"; ?>>Z-A</option>
+                            </select>
+                        </div>
+                        <div class = "form-group col-lg-4 col-md-12">
+                            <button type = "submit" class = "btn btn-primary btn-sm">SORT TABLE</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class = "col-lg-4 col-md-12">
             <form action = "<?php echo base_url();?>crm/oc/search" method = "post">
                 <div class = "row">
-                    <div class = "form-group col-lg-8 col-md-12">
-                        <input name = "search" type = "text" placeholder = "Search Everything About OC...." class = "form-control">
+                    <div class = "form-group col-lg-6 col-md-12">
+                        <input name = "search" value = "<?php echo $this->session->search;?>" type = "text" placeholder = "Search Everything About OC...." class = "form-control">
                     </div>
-                    <div class = "form-group col-lg-4 col-md-12">
+                    <div class = "form-group col-lg-6 col-md-12">
                         <button type = "submit" class = "btn btn-primary btn-sm">SEARCH</button>
-                        <a href = "<?php echo base_url();?>crm/oc/page/1" class = "btn btn-primary btn-sm">REMOVE FILTER</a>
+                        <a href = "<?php echo base_url();?>crm/oc/removeFilter" class = "btn btn-primary btn-sm">REMOVE FILTER</a>
                     </div>
                 </div>
             </form>
