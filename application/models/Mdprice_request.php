@@ -40,5 +40,23 @@ class Mdprice_request extends CI_Model{
         $this->db->order_by("date_request_add","DESC");
         return $this->db->get_where("price_request",$where); /*bisa jadi di pilih per segment atau yang tidak permanen dsb*/
     }
+    /*********** Data Table ***********/
+    public function getDataTable($where,$field,$or_like = "",$order_by,$direction,$limit,$offset,$group_by){
+        $this->db->limit($limit);
+        $this->db->offset($offset);
+        $this->db->select($field);
+
+        $this->db->group_start();
+        $this->db->where($where);
+        $this->db->group_end();
+        if($or_like != ""){
+            $this->db->group_start();
+            $this->db->or_like($or_like);
+            $this->db->group_end();
+        }
+        $this->db->group_by($group_by);
+        $this->db->order_by($order_by,$direction);
+        return $this->db->get("order_detail");
+    }
 }
 ?>

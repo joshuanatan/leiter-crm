@@ -29,53 +29,10 @@ class Request extends CI_Controller{
         $this->load->view("req/html-close");
     }
     public function index(){ 
+        $this->session->page = 1;
         if($this->session->id_user == "") redirect("login/welcome");//sudah di cek
-        $this->req();
-
-        $where = array(
-            "id_user_add_request" => "-999"
-        );
-        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_rfq")) == 0){
-            $where = array(
-                "order_detail.status_aktif_request" => 0,
-                "id_user_add_request" => $this->session->id_user
-            );
-        }
-        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_rfq")) == 0){
-            $where = array(
-                "order_detail.status_aktif_request" => 0,
-                
-            );
-        }
-        $field = array(
-            "id_request","no_request","id_perusahaan","id_cp","franco","bulan_request","tahun_request","status_request","tgl_dateline_request","id_submit_request","date_request_edit","nama_perusahaan","nama_cp"
-        );
-        $group_by = array(
-            "id_submit_request"
-        );
-        $result = selectRow("order_detail",$where,$field,"","","","",$group_by);
-        $data["request"] = $result->result_array();
-
-        
-        for($a = 0; $a<count($data["request"]); $a++){ 
-
-            $data["request"][$a]["jumlah"] = getAmount("price_request_item","id_request_item",array("id_submit_request" => $data["request"][$a]["id_submit_request"],"status_request_item" => 0));
-
-            $where = array(
-                "id_submit_request" => $data["request"][$a]["id_submit_request"]
-            );
-            $field = array(
-                "nama_produk","jumlah_produk","notes_produk","file","satuan_produk"
-            );
-            $result = selectRow("price_request_item",$where,$field);
-            $data["request"][$a]["items"] = $result->result_array();
-        }
-
-        $this->load->view("crm/content-open");
-        $this->load->view("crm/request/category-header");
-        $this->load->view("crm/request/category-body",$data);
-        $this->load->view("crm/content-close");
-        $this->close();
+        $this->removeFilter();
+        redirect("crm/request/page/".$this->session->page);
     }
     public function add(){ //sudah di cek
         $where = array(
@@ -461,6 +418,126 @@ class Request extends CI_Controller{
         );
         insertRow("contact_person",$data);
         redirect("crm/request/add");
+    }
+    /******** DATA TABLE SECTION *********8 */
+    public function sort(){
+        $this->session->order_by = $this->input->post("order_by");
+        $this->session->order_direction = $this->input->post("order_direction");
+        redirect("crm/request/page/".$this->session->page);
+    }
+    public function search(){
+        $search = $this->input->post("search");
+        $this->session->search = $search;
+        redirect("crm/request/page/".$this->session->page);
+    }
+    /**
+     * ini yang diganti tinggal search, search_print, field, cara cari datanya
+     */
+    public function page($i){
+        /*page data*/
+        $this->session->page = $i;
+        $limit = 10;
+        $offset = 10*($i-1);
+        if($i <= 3){
+            $data["numbers"] = array(1,2,3,4,5);
+            $data["prev"] = 1;
+            $data["search"] = 1;
+        }
+        else{
+            for($a = 0; $a<5; $a++){
+                $data["numbers"][$a] = $i+$a-2;
+                $data["prev"] = 0;
+                $data["search"] = 1;
+            }
+        }
+        $data["search"] = array(
+            "no_request","franco","tgl_dateline_request","date_request_edit","nama_perusahaan","nama_cp",
+        );
+        $data["search_print"] = array(
+            "no request","franco","tgl dateline request","tanggal edit","nama perusahaan","nama cp",
+        );
+        /*end page data*/
+
+        /*form condition*/
+        if($this->session->search != ""){
+            $or_like = array(
+                "no_po_customer" => $this->session->search,
+                "no_oc" => $this->session->search,
+                "no_quotation" => $this->session->search,
+                "nama_perusahaan" => $this->session->search,
+                "nama_cp" => $this->session->search,
+                "tgl_po_customer" => $this->session->search,
+                "total_oc_price" => $this->session->search
+            );
+        }
+        else{
+            $or_like = "";
+        }
+        if($this->session->order_by != ""){
+            $order_by = $this->session->order_by;
+        }
+        else{
+            $order_by = "tgl_po_customer";
+        }
+        if($this->session->order_direction != ""){
+            $direction = $this->session->order_direction;
+        }
+        else{
+            $direction = "DESC";
+        }
+        /*end form condition*/
+
+        /*ganti bawah ini*/
+        $where = array(
+            "id_user_add_request" => "-999"
+        );
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_rfq")) == 0){
+            $where = array(
+                "order_detail.status_aktif_request" => 0,
+                "id_user_add_request" => $this->session->id_user
+            );
+        }
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_rfq")) == 0){
+            $where = array(
+                "order_detail.status_aktif_request" => 0,
+                
+            );
+        }
+        $field = array(
+            "id_request","no_request","id_perusahaan","id_cp","franco","bulan_request","tahun_request","status_request","tgl_dateline_request","id_submit_request","date_request_edit","nama_perusahaan","nama_cp"
+        );
+        $group_by = array(
+            "id_submit_request"
+        );
+        $result = $this->Mdprice_request->getDataTable($where,$field,$or_like,$order_by,$direction,$limit,$offset,$group_by);
+        $data["request"] = $result->result_array();
+
+        
+        for($a = 0; $a<count($data["request"]); $a++){ 
+
+            $data["request"][$a]["jumlah"] = getAmount("price_request_item","id_request_item",array("id_submit_request" => $data["request"][$a]["id_submit_request"],"status_request_item" => 0));
+
+            $where = array(
+                "id_submit_request" => $data["request"][$a]["id_submit_request"]
+            );
+            $field = array(
+                "nama_produk","jumlah_produk","notes_produk","file","satuan_produk"
+            );
+            $result = selectRow("price_request_item",$where,$field);
+            $data["request"][$a]["items"] = $result->result_array();
+        }
+        $this->req();
+        $this->load->view("crm/content-open");
+        $this->load->view("crm/request/category-header");
+        $this->load->view("crm/request/category-body",$data);
+        $this->load->view("crm/content-close");
+        $this->close();
+    }
+    public function removeFilter(){
+        $this->session->unset_userdata("order_by");
+        $this->session->unset_userdata("order_direction");
+        $this->session->unset_userdata("search");
+        redirect("crm/request/page/".$this->session->page);
     }
 }
 ?>
