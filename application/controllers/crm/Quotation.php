@@ -1335,6 +1335,7 @@ class Quotation extends CI_Controller{
         );
         $result = selectRow("order_detail",$where,$field);
         $data["price_request"] = $result->result_array();
+        $data["jumlah_semua_data"] = getAmount("quotation","id_submit_quotation",array("status_aktif_quotation" => 0));
         $this->req();
         $this->load->view("crm/content-open");
         $this->load->view("crm/quotation/category-header");

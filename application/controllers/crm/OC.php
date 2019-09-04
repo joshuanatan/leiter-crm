@@ -848,6 +848,7 @@ class Oc extends CI_Controller{
         $data["search_print"] = array(
             "no po customer","no oc","no quotation","nama perusahaan","nama cp","tgl po customer","total oc price"
         );
+        $data["jumlah_semua_data"] = getAmount("order_confirmation","id_submit_oc",array("status_aktif_oc" => 0));
         $this->req();
         $this->load->view("crm/content-open");
         $this->load->view("crm/oc/category-header");

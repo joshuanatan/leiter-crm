@@ -47,6 +47,7 @@
         </div>
 	</div>
 	<?php endif;?>
+    <h5><?php echo $jumlah_semua_data." Total Records";?></h5>
     <table class="table table-bordered table-hover table-striped w-full" cellspacing="0">
         <thead>
             <tr>
