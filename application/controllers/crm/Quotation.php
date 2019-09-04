@@ -35,10 +35,11 @@ class Quotation extends CI_Controller{
     }
     /*page*/
     public function index(){ 
+        $this->session->page = 1;
         if($this->session->id_user == "") redirect("login/welcome");//sudah di cek
         $this->session->unset_userdata("id_submit_request");
         $this->removeFilter();
-        redirect("crm/quotation/page/1");
+        redirect("crm/quotation/page/".$this->session->page);
     }
     public function create(){ //sudah di cek
         if($this->session->id_user == ""){

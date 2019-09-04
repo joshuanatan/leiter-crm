@@ -35,10 +35,11 @@ class Oc extends CI_Controller{
     }
     /*page*/
     public function index(){
+        $this->session->page = 1;
         if($this->session->id_user == "") redirect("login/welcome");
         $this->session->unset_userdata("id_submit_quotation"); //setelah insert oc yang butuh id quotation
         $this->removeFilter();
-        redirect("crm/oc/page/1");
+        redirect("crm/oc/page/".$this->session->page);
     }
     
     public function create(){ //sudah di cek 
