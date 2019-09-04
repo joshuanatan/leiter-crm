@@ -36,91 +36,9 @@ class Quotation extends CI_Controller{
     /*page*/
     public function index(){ 
         if($this->session->id_user == "") redirect("login/welcome");//sudah di cek
-        $this->session->id_submit_request = "";
-        $where = array(
-            "status_aktif_quotation" => 0
-        );
-        $data["quotation_id"] = getMaxId("quotation","id_quotation",array("status_aktif_quotation" => 0,"bulan_quotation" => date("m"), "tahun_quotation" => date("Y")));
-        
-        $where = array(
-            "price_request.status_request" => 3, /*ngambil yang sudah kasih harga vendor */
-            "status_buat_quo" => 1,
-            "untuk_stock" => 1,
-        );
-        
-        $field = array(
-            "id_submit_request","no_request"
-        );
-        $result = selectRow("price_request",$where,$field);
-        $data["request"] = $result->result_array();
-
-        $where = array(
-            "id_user_add_quotation" => -999
-        );
-        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_quotation")) == 0){
-            $where = array(
-                "status_aktif_quotation" => 0,
-                "id_user_add_quotation" => $this->session->id_user
-            );
-        }
-        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_quotation")) == 0){
-        $where = array(
-                "status_aktif_quotation" => 0
-            );
-        }
-        $field = array(
-            "id_submit_quotation","versi_quotation","no_quotation","id_request","status_quotation","date_quotation_add","total_quotation_price","hal_quotation","durasi_pengiriman_quotation","franco","durasi_pembayaran_quotation","alamat_perusahaan","nama_perusahaan","nama_cp","up_cp_quotation","no_request","loss_cause"
-        );
-        $result = selectRow("order_detail",$where,$field);
-        $data["quotation"] = $result->result_array();
-        for($a = 0; $a<count($data["quotation"]); $a++){
-
-            $where = array(
-                "id_submit_quotation" => $data["quotation"][$a]["id_submit_quotation"]
-            );
-
-            $field = array(
-                "nama_produk_leiter","attachment_quotation","harga_produk_shipping","harga_produk_vendor","harga_produk_courier","vendor_price_rate_vendor","vendor_price_rate_shipping","attachment_quotation","vendor_price_rate_courier","item_amount_quotation","satuan_produk_quotation","selling_price_quotation","margin_price_quotation","nama_shipper","nama_vendor","nama_courier"
-            );
-            $result = selectRow("order_item_detail",$where,$field);
-            
-            $data["quotation"][$a]["jumlah_quotation_item"] = $result->num_rows();
-            $data["quotation"][$a]["quotation_item"] = $result->result_array();
-
-
-            $field = array(
-                "persentase_pembayaran","nominal_pembayaran","trigger_pembayaran","is_ada_transaksi","persentase_pembayaran2","nominal_pembayaran2","trigger_pembayaran2","is_ada_transaksi2","kurs"
-            );
-            $result = selectRow("quotation_metode_pembayaran",$where,$field);
-            $data["quotation"][$a]["metode_pembayaran"] = $result->result_array();
-            if($data["quotation"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] == 1){
-                $data["quotation"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] = "BEFORE ORDER DELIVERY";
-            }
-            else{
-                $data["quotation"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] = "AFTER ORDER DELIVERY";
-            }
-            if($data["quotation"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] == 1){
-                $data["quotation"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] = "BEFORE ORDER DELIVERY";
-            }
-            else{
-                $data["quotation"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] = "AFTER ORDER DELIVERY";
-            }
-        }
-        $field = array(
-            "no_request","id_submit_request","nama_perusahaan","nama_cp"
-        );
-        $where = array(
-            "status_buat_quo" => 1,
-            "status_aktif_request" => 0,
-        );
-        $result = selectRow("list_price_request",$where,$field);
-        $data["price_request"] = $result->result_array();
-        $this->req();
-        $this->load->view("crm/content-open");
-        $this->load->view("crm/quotation/category-header");
-        $this->load->view("crm/quotation/category-body",$data);
-        $this->load->view("crm/content-close");
-        $this->close();
+        $this->session->unset_userdata("id_submit_request");
+        $this->removeFilter();
+        redirect("crm/quotation/page/1");
     }
     public function create(){ //sudah di cek
         if($this->session->id_user == ""){
@@ -1270,6 +1188,166 @@ class Quotation extends CI_Controller{
         redirect("crm/quotation/edit/".$this->input->post("id_submit_quotation"));
     }
     /*deprecated*/
+    /******** DATA TABLE SECTION *********8 */
+    public function sort(){
+        $this->session->order_by = $this->input->post("order_by");
+        $this->session->order_direction = $this->input->post("order_direction");
+        redirect("crm/quotation/page/".$this->session->page);
+    }
+    public function search(){
+        $search = $this->input->post("search");
+        $this->session->search = $search;
+        redirect("crm/quotation/page/".$this->session->page);
+    }
+    /**
+     * ini yang diganti tinggal search, search_print, field, cara cari datanya
+     */
+    public function page($i){
+        /*page data*/
+        $this->session->page = $i;
+        $limit = 10;
+        $offset = 10*($i-1);
+        if($i <= 3){
+            $data["numbers"] = array(1,2,3,4,5);
+            $data["prev"] = 1;
+            $data["search"] = 1;
+        }
+        else{
+            for($a = 0; $a<5; $a++){
+                $data["numbers"][$a] = $i+$a-2;
+                $data["prev"] = 0;
+                $data["search"] = 1;
+            }
+        }
+        $data["search"] = array(
+            "no_quotation","date_quotation_add","total_quotation_price","nama_perusahaan","nama_cp"
+        );
+        $data["search_print"] = array(
+            "no quotation","Tanggal Buat Quotation","total harga quotation","nama perusahaan","nama contact person"
+        );
+        /*end page data*/
+
+        /*form condition*/
+        if($this->session->search != ""){
+            $or_like = array(
+                "no_po_customer" => $this->session->search,
+                "no_oc" => $this->session->search,
+                "no_quotation" => $this->session->search,
+                "nama_perusahaan" => $this->session->search,
+                "nama_cp" => $this->session->search,
+                "tgl_po_customer" => $this->session->search,
+                "total_oc_price" => $this->session->search
+            );
+        }
+        else{
+            $or_like = "";
+        }
+        if($this->session->order_by != ""){
+            $order_by = $this->session->order_by;
+        }
+        else{
+            $order_by = "tgl_po_customer";
+        }
+        if($this->session->order_direction != ""){
+            $direction = $this->session->order_direction;
+        }
+        else{
+            $direction = "DESC";
+        }
+        /*end form condition*/
+
+        /*ganti bawah ini*/
+        $where = array(
+            "status_aktif_quotation" => 0
+        );
+        $data["quotation_id"] = getMaxId("quotation","id_quotation",array("status_aktif_quotation" => 0,"bulan_quotation" => date("m"), "tahun_quotation" => date("Y")));
+        
+        $where = array(
+            "price_request.status_request" => 3, /*ngambil yang sudah kasih harga vendor */
+            "status_buat_quo" => 1,
+            "untuk_stock" => 1,
+        );
+        
+        $field = array(
+            "id_submit_request","no_request"
+        );
+        $result = selectRow("price_request",$where,$field);
+        $data["request"] = $result->result_array();
+
+        $where = array(
+            "id_user_add_quotation" => -999
+        );
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_created_quotation")) == 0){
+            $where = array(
+                "status_aktif_quotation" => 0,
+                "id_user_add_quotation" => $this->session->id_user
+            );
+        }
+        if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "view_all_quotation")) == 0){
+        $where = array(
+                "status_aktif_quotation" => 0
+            );
+        }
+        $field = array(
+            "id_submit_quotation","versi_quotation","no_quotation","id_request","status_quotation","date_quotation_add","total_quotation_price","hal_quotation","durasi_pengiriman_quotation","franco","durasi_pembayaran_quotation","alamat_perusahaan","nama_perusahaan","nama_cp","up_cp_quotation","no_request","loss_cause"
+        );
+        $result = $this->Mdquotation->getDataTable($where,$field,$or_like,$order_by,$direction,$limit,$offset);
+        $data["quotation"] = $result->result_array();
+        for($a = 0; $a<count($data["quotation"]); $a++){
+
+            $where = array(
+                "id_submit_quotation" => $data["quotation"][$a]["id_submit_quotation"]
+            );
+
+            $field = array(
+                "nama_produk_leiter","attachment_quotation","harga_produk_shipping","harga_produk_vendor","harga_produk_courier","vendor_price_rate_vendor","vendor_price_rate_shipping","attachment_quotation","vendor_price_rate_courier","item_amount_quotation","satuan_produk_quotation","selling_price_quotation","margin_price_quotation","nama_shipper","nama_vendor","nama_courier"
+            );
+            $result = selectRow("order_item_detail",$where,$field);
+            
+            $data["quotation"][$a]["jumlah_quotation_item"] = $result->num_rows();
+            $data["quotation"][$a]["quotation_item"] = $result->result_array();
+
+
+            $field = array(
+                "persentase_pembayaran","nominal_pembayaran","trigger_pembayaran","is_ada_transaksi","persentase_pembayaran2","nominal_pembayaran2","trigger_pembayaran2","is_ada_transaksi2","kurs"
+            );
+            $result = selectRow("quotation_metode_pembayaran",$where,$field);
+            $data["quotation"][$a]["metode_pembayaran"] = $result->result_array();
+            if($data["quotation"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] == 1){
+                $data["quotation"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] = "BEFORE ORDER DELIVERY";
+            }
+            else{
+                $data["quotation"][$a]["metode_pembayaran"][0]["trigger_pembayaran"] = "AFTER ORDER DELIVERY";
+            }
+            if($data["quotation"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] == 1){
+                $data["quotation"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] = "BEFORE ORDER DELIVERY";
+            }
+            else{
+                $data["quotation"][$a]["metode_pembayaran"][0]["trigger_pembayaran2"] = "AFTER ORDER DELIVERY";
+            }
+        }
+        $field = array(
+            "no_request","id_submit_request","nama_perusahaan","nama_cp"
+        );
+        $where = array(
+            "status_buat_quo" => 1,
+            "status_aktif_request" => 0,
+        );
+        $result = selectRow("order_detail",$where,$field);
+        $data["price_request"] = $result->result_array();
+        $this->req();
+        $this->load->view("crm/content-open");
+        $this->load->view("crm/quotation/category-header");
+        $this->load->view("crm/quotation/category-body",$data);
+        $this->load->view("crm/content-close");
+        $this->close();
+    }
+    public function removeFilter(){
+        $this->session->unset_userdata("order_by");
+        $this->session->unset_userdata("order_direction");
+        $this->session->unset_userdata("search");
+        redirect("crm/quotation/page/".$this->session->page);
+    }
 
 }
 ?>

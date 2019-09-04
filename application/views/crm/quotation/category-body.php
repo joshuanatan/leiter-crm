@@ -1,15 +1,53 @@
+
 <div class="panel-body col-lg-12">
 	<?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "insert_quotation")) == 0):?>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-3">
             <div class="mb-15">
-				<button type = "button" data-toggle = "modal" data-target = "#createQuotation" class="btn btn-outline btn-primary">Create Quotation
+				<button type = "button" data-toggle = "modal" data-target = "#createQuotation" class="btn btn-outline btn-primary btn-sm">Create Quotation
 				</button>
             </div>
+		</div>
+		<div class="col-lg-5 col-md-12">
+            <div class="mb-15">
+                <form action = "<?php echo base_url();?>crm/quotation/sort" method = "post">
+                    <div class = "row">
+                        <div class = "form-group col-lg-6 col-md-12">
+                            <select class = "form-control" data-plugin = "select2" name = "order_by">
+                                <?php for($a = 0; $a<count($search); $a++):?>
+                                <option value = "<?php echo $search[$a];?>" <?php if($this->session->order_by == $search[$a]) echo "selected";?> ><?php echo ucwords($search_print[$a]);?></option>
+                                <?php endfor;?>
+                            </select>
+                        </div>
+                        <div class = "form-group col-lg-2 col-md-12">
+                            <select class = "form-control" name = "order_direction">
+                                <option value = "ASC">A-Z</option>
+                                <option value = "DESC" <?php if($this->session->order_direction == "DESC") echo "selected"; ?>>Z-A</option>
+                            </select>
+                        </div>
+                        <div class = "form-group col-lg-4 col-md-12">
+                            <button type = "submit" class = "btn btn-primary btn-sm">SORT TABLE</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class = "col-lg-4 col-md-12">
+            <form action = "<?php echo base_url();?>crm/quotation/search" method = "post">
+                <div class = "row">
+                    <div class = "form-group col-lg-6 col-md-12">
+                        <input name = "search" value = "<?php echo $this->session->search;?>" type = "text" placeholder = "Search Everything About Quotation...." class = "form-control">
+                    </div>
+                    <div class = "form-group col-lg-6 col-md-12">
+                        <button type = "submit" class = "btn btn-primary btn-sm">SEARCH</button>
+                        <a href = "<?php echo base_url();?>crm/quotation/removeFilter" class = "btn btn-primary btn-sm">REMOVE FILTER</a>
+                    </div>
+                </div>
+            </form>
         </div>
 	</div>
 	<?php endif;?>
-    <table class="table table-bordered table-hover table-striped w-full" cellspacing="0" data-plugin = "dataTable">
+    <table class="table table-bordered table-hover table-striped w-full" cellspacing="0">
         <thead>
             <tr>
                 <th style = "width:13%">No Quotation</th>
@@ -84,7 +122,26 @@
             </tr>
             <?php } ?>
         </tbody>
-    </table>
+	</table>
+	<?php if($search != 0):?>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
+            <?php if($numbers[0] -1 >= 0):?>
+            <li class="page-item <?php if($prev == 1) echo "disabled";?>">
+                <a class="page-link" href="<?php echo base_url();?>crm/quotation/page/<?php echo $numbers[0]-1;?>" tabindex="-1">Previous</a>
+            </li>
+            <?php endif;?>
+            <?php for($a = 0; $a<count($numbers);$a++):?>
+            <?php if($numbers[$a] > 0):?>
+            <li class="page-item <?php if($this->session->page == $numbers[$a]) echo "active"; ?>"><a class="page-link" href="<?php echo base_url();?>crm/quotation/page/<?php echo $numbers[$a];?>"><?php echo $numbers[$a];?></a></li>
+            <?php endif;?>
+            <?php endfor;?>
+            <li class="page-item">
+                <a class="page-link" href="<?php echo base_url();?>crm/quotation/page/<?php echo $numbers[4]+5;?>">Next</a>
+            </li>
+        </ul>
+    </nav>
+    <?php endif;?>
 </div>
 <?php for($a = 0 ; $a<count($quotation);$a++): ?> 
 <div class = "modal fade" id = "detailQuotation<?php echo $a;?>">

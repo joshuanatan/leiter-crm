@@ -36,6 +36,8 @@ class Oc extends CI_Controller{
     /*page*/
     public function index(){
         if($this->session->id_user == "") redirect("login/welcome");
+        $this->session->unset_userdata("id_submit_quotation"); //setelah insert oc yang butuh id quotation
+        $this->removeFilter();
         redirect("crm/oc/page/1");
     }
     
@@ -731,10 +733,8 @@ class Oc extends CI_Controller{
         redirect("crm/oc/page/".$this->session->page);
     }
     public function page($i){
-        $this->session->unset_userdata("id_submit_quotation"); //gaktau buat apaa tapi ada
-        if($this->session->page == ""){
-            $this->session->page = $i;
-        }
+        $this->session->page = $i;
+        
         $limit = 10;
         $offset = 10*($i-1);
         
