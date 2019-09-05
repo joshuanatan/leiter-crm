@@ -433,7 +433,7 @@ class Quotation extends CI_Controller{
             "status_buat_quo" => "0"
         );
         updateRow("price_request",$data["price_request"],$where["price_request"]);
-        redirect("crm/quotation");
+        redirect("crm/quotation/page/".$this->session->page);
     }
     public function insertrevision(){ //sudah di cek
         $data["quotation"] = array(
@@ -518,7 +518,7 @@ class Quotation extends CI_Controller{
             "kurs" => $this->input->post("mata_uang_pembayaran"),
         );
         insertRow("quotation_metode_pembayaran",$pembayaran);
-        redirect("crm/quotation");
+        redirect("crm/quotation/page/".$this->session->page);
     }
     public function insertrevision_v2(){ //sudah di cek
         /*insert data quotation*/
@@ -712,7 +712,7 @@ class Quotation extends CI_Controller{
             "status_buat_quo" => "0"
         );
         updateRow("price_request",$data["price_request"],$where["price_request"]);
-        redirect("crm/quotation");
+        redirect("crm/quotation/page/".$this->session->page);
     }
     public function editquotation_v2(){
         $where = array(
@@ -1034,7 +1034,7 @@ class Quotation extends CI_Controller{
         );
         updateRow("quotation_metode_pembayaran",$pembayaran,$where);
         
-        redirect("crm/quotation");
+        redirect("crm/quotation/page/".$this->session->page);
     }
     
     public function loss($id_submit_quotation){ //sudah di cek
@@ -1046,7 +1046,7 @@ class Quotation extends CI_Controller{
             "id_submit_quotation" => $id_submit_quotation
         );
         updateRow("quotation",$data,$where);
-        redirect("crm/quotation");
+        redirect("crm/quotation/page/".$this->session->page);
     }
     public function accepted($id_submit_quotation){ //sudah di cek
         $data = array(
@@ -1056,7 +1056,7 @@ class Quotation extends CI_Controller{
             "id_submit_quotation" => $id_submit_quotation
         );
         updateRow("quotation",$data,$where);
-        redirect("crm/quotation");
+        redirect("crm/quotation/page/".$this->session->page);
         
     }
     public function remove($id_submit_quotation){ //sudah di cek
@@ -1075,7 +1075,7 @@ class Quotation extends CI_Controller{
             "id_submit_request" => $id_submit_request
         );
         updateRow("price_request",$data,$where);
-        redirect("crm/quotation");
+        redirect("crm/quotation/page/".$this->session->page);
     }
     function quoPdf($id_submit_quotation){ //sudah di cek
         $where = array(

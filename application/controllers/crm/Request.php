@@ -244,7 +244,7 @@ class Request extends CI_Controller{
             }
             insertRow("price_request_item",$data);
         }
-        redirect("crm/request");
+        redirect("crm/request/page/".$this->session->page);
     }
     public function update(){ //sudah di cek
         $where = array(            
@@ -377,7 +377,7 @@ class Request extends CI_Controller{
                 insertRow("price_request_item",$data);
             }
         }
-        redirect("crm/request");
+        redirect("crm/request/page/".$this->session->page);
     }
     public function delete($id_submit_request){ //sudah di cek
         $where = array(
@@ -387,7 +387,7 @@ class Request extends CI_Controller{
             "status_aktif_request" => 1
         );
         updateRow("price_request",$data,$where);
-        redirect("crm/request");
+        redirect("crm/request/page/".$this->session->page);
     }
     public function confirm($id_submit_request){ //sudah di cek
         $where = array(
@@ -397,7 +397,7 @@ class Request extends CI_Controller{
             "status_request" => 3
         );
         updateRow("price_request",$data,$where);
-        redirect("crm/request");
+        redirect("crm/request/page/".$this->session->page);
     }
     public function insertNewCustomer(){ //sudah di cek
         $data = array(
