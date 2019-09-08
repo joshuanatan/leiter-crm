@@ -1052,6 +1052,20 @@
                                             </div>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><?php echo strtoupper("order history") ?></td>
+                                        <td>
+                                            <div class = "checkbox-custom checkbox-primary">
+                                                <input type = "checkbox" name = "privileges[]" <?php if(isExistsInTable("privilage", array("id_user" => $employee[$a]["id_user"],"id_menu" => "history")) == 0) echo "checked"; ?> value = "history">
+                                                <label></label>
+                                            </div>
+                                        </td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                         <td></td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <hr/>

@@ -304,14 +304,30 @@
                                 <span class="site-menu-title">Report</span>
                                 </a>
                             </li>
-<?php endif;?>
+                            <?php endif;?>
                             <?php if(isExistsInTable("privilage",array("id_user" => $this->session->id_user, "id_menu" => "visit")) == 0):?>
                             <li class="site-menu-item">
                                 <a class="animsition-link" href="<?php echo base_url();?>report/main/report">
                                 <span class="site-menu-title">Visit/Call</span>
                                 </a>
                             </li>
-<?php endif;?>
+                            <?php endif;?>
+                        </ul>
+                    </li>
+                    <li class="site-menu-item has-sub">
+                        <a href="javascript:void(0)">
+                            <i class="site-menu-icon wb-book" aria-hidden="true"></i>
+                            <span class="site-menu-title">History</span>
+                            <span class="site-menu-arrow"></span>
+                        </a>
+                        <ul class="site-menu-sub">
+                            <?php if(isExistsInTable("privilage",array("id_user" => $this->session->id_user, "id_menu" => "history")) == 0):?>
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="<?php echo base_url();?>history/order">
+                                <span class="site-menu-title">Order History</span>
+                                </a>
+                            </li>
+                            <?php endif;?>
                         </ul>
                     </li>
                 </ul> 
