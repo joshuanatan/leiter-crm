@@ -124,16 +124,16 @@
                     </div>
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Dialog</h5> 
-                        <textarea class = "form-control" name = "conversation"></textarea>
+                        <textarea class = "form-control" name = "conversation" rows = 30></textarea>
                         <input type = "file" name = "conversation_image[]" multiple>
                     </div>  
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Potential Machine</h5>
-                        <textarea class = "form-control" name = "potential_machine"></textarea>
+                        <textarea class = "form-control" name = "potential_machine" rows = 10></textarea>
                     </div>  
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Conclusion</h5>
-                        <textarea class = "form-control" name = "action_conclusion"></textarea>
+                        <textarea class = "form-control" name = "action_conclusion" rows = 30></textarea>
                     </div>  
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Percentage (Isi persennya saja)</h5>
@@ -166,7 +166,7 @@
                     </table>
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Support Needed</h5>
-                        <textarea class = "form-control" name = "support_need"></textarea>
+                        <textarea rows = 10 class = "form-control" name = "support_need"></textarea>
                     </div>  
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Follow Up Date</h5>

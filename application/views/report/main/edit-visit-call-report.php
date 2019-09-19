@@ -58,15 +58,15 @@
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">Dialog</h5> 
-                                    <textarea class = "form-control" name = "conversation"><?php echo $report[0]["action_conversation"];?></textarea>
+                                    <textarea rows = 30 class = "form-control" name = "conversation"><?php echo $report[0]["action_conversation"];?></textarea>
                                 </div>  
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">Potential Machine</h5>
-                                    <textarea class = "form-control" name = "potential_machine"><?php echo $report[0]["potential_machine"];?></textarea>
+                                    <textarea rows = 10 class = "form-control" name = "potential_machine"><?php echo $report[0]["potential_machine"];?></textarea>
                                 </div>  
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">Conclusion</h5>
-                                    <textarea class = "form-control" name = "action_conclusion"><?php echo $report[0]["action_conclusion"];?></textarea>
+                                    <textarea rows = 30 class = "form-control" name = "action_conclusion"><?php echo $report[0]["action_conclusion"];?></textarea>
                                 </div>  
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">Percentage (Isi persennya saja)</h5>
@@ -74,7 +74,7 @@
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">Support Needed</h5>
-                                    <textarea class = "form-control" name = "support_need"><?php echo $report[0]["support_need"];?></textarea>
+                                    <textarea rows = 10 class = "form-control" name = "support_need"><?php echo $report[0]["support_need"];?></textarea>
                                 </div>  
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">Follow Up Date</h5>
