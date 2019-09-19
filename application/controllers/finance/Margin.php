@@ -45,7 +45,7 @@ class Margin extends CI_Controller{
         }
         else{
             for($a = 0; $a<5; $a++){
-                $data["numbers"][$a] = $i+$a-2;
+                $data["numbers"][$a] = $page+$a-2;
                 $data["prev"] = 0;
                 $data["search"] = 1;
             }
