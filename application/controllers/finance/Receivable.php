@@ -387,7 +387,7 @@ class Receivable extends CI_Controller{
             "id_submit_invoice" => $id_submit_invoice
         );
         $field = array(
-            "no_invoice","id_submit_oc","no_oc","no_po_customer","nama_perusahaan","nama_cp","franco_invoice","nominal_invoice","total_oc_price","att","jatuh_tempo","durasi_pembayaran","alamat_penagihan","tipe_invoice","id_submit_invoice","is_ppn","no_rekening","sign_off"
+            "no_invoice","id_submit_oc","no_oc","no_po_customer","nama_perusahaan","nama_cp","franco_invoice","nominal_invoice","total_oc_price","att","jatuh_tempo","durasi_pembayaran","alamat_penagihan","tipe_invoice","id_submit_invoice","is_ppn","no_rekening","sign_off","id_invoice","bulan_invoice","tahun_invoice"
         );
         $result = selectRow("detail_invoice",$where,$field);
         $data["invoice"] = $result->result_array();
@@ -559,6 +559,10 @@ class Receivable extends CI_Controller{
         }
 
         $data = array(
+            "no_invoice" => $this->input->post("no_invoice"),
+            "id_invoice" => $this->input->post("id_invoice"),
+            "tahun_invoice" => $this->input->post("tahun_invoice"),
+            "bulan_invoice" => $this->input->post("bulan_invoice"),
             "tipe_invoice" => $this->input->post("tipe_invoice"),
             "id_submit_od" => $this->input->post("od"),
             "is_ppn" =>  $is_ppn,

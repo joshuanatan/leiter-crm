@@ -15,8 +15,33 @@
                             <div class="tab-pane active" id="primaryData" role="tabpanel">
                                 <div class = "form-group"> <!-- nanti bentuknya nomorquotation/versi -->
                                     <h5 style = "color:darkgrey; opacity:0.8">Invoice No</h5> <!-- max id -->
-                                    <input name = "no_invoice" type ="text" value = "<?php echo $invoice[0]["no_invoice"];?>" class = "form-control" readonly>
+                                    <input name = "no_invoice" type ="text" value = "<?php echo $invoice[0]["no_invoice"];?>" class = "form-control" >
                                     <input id="" name = "id_submit_invoice" type ="hidden" value = "<?php echo $invoice[0]["id_submit_invoice"];?>" class = "form-control" readonly>
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Id Invoice</h5>
+                                    <input name = "id_invoice" type ="text" value = "<?php echo $invoice[0]["id_invoice"];?>" class = "form-control" >
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Tahun Invoice</h5>
+                                    <input 
+                                        type ="text" 
+                                        value = "<?php echo $invoice[0]["tahun_invoice"];?>"
+                                        class = "form-control" 
+                                        required 
+                                        name = "tahun_invoice"
+                                    />
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Bulan Invoice</h5>
+                                    <select class = "form-control" name = "bulan_invoice" data-plugin = "select2">
+                                        <?php
+                                        $name = array('Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember');
+                                        $bulan = array('01','02','03','04','05','06','07','08','09','10','11','12');
+                                        for($b = 0; $b<count($name); $b++):?>
+                                        <option <?php if($bulan[$b] == $invoice[0]["bulan_invoice"]) echo "selected";?> value = "<?php echo $bulan[$b];?>"><?php echo $name[$b];?></option>
+                                        <?php endfor;?>
+                                    </select>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Customer PO</h5>
