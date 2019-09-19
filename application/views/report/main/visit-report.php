@@ -42,7 +42,7 @@
                 <td><?php echo nl2br($visit[$a]["action_pic"]);?></td>
                 <td>
                     <?php echo ucwords($visit[$a]["action_location"]);?> <br/>
-                    <?php $split = explode(":",$visit[$a]["action_duration"]);echo $split[0] ." Jam ". $split[1]. " Menit";?>
+                    <?php echo $visit[$a]["action_duration"];?>
                 </td>
                 <td><?php echo nl2br($visit[$a]["action_conversation"]);?><br/><a href = "<?php echo base_url();?>assets/report/visit/<?php echo $visit[$a]["conversation_image"];?>" target = "_blank" class = "btn btn-sm btn-primary">Attachment</a></td>
                 <td><?php echo nl2br($visit[$a]["action_conclusion"]);?></td>
