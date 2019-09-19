@@ -22,7 +22,32 @@
                             <input type = "hidden" name = "id_submit_oc" value = "<?php echo $detail[0]["id_submit_oc"];?>">
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">No OC</h5>
-                                    <input type = "text" value = "<?php echo $detail[0]["no_oc"];?>" class = "form-control" readonly> <!-- keisi sendiri dari db max(), bentuknya berformat -->
+                                    <input type = "text" value = "<?php echo $detail[0]["no_oc"];?>" class = "form-control" name = "no_oc">
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Id OC</h5>
+                                    <input type = "text" value = "<?php echo $detail[0]["id_oc"];?>" class = "form-control" name = "id_oc">
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Tahun OC</h5>
+                                    <input 
+                                        type ="text" 
+                                        value = "<?php echo $detail[0]["tahun_oc"];?>"
+                                        class = "form-control" 
+                                        required 
+                                        name = "tahun_oc"
+                                    />
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Bulan OC</h5>
+                                    <select class = "form-control" name = "bulan_oc" data-plugin = "select2">
+                                        <?php
+                                        $name = array('Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember');
+                                        $bulan = array('01','02','03','04','05','06','07','08','09','10','11','12');
+                                        for($b = 0; $b<count($name); $b++):?>
+                                        <option <?php if($bulan[$b] == $detail[0]["bulan_oc"]) echo "selected";?> value = "<?php echo $bulan[$b];?>"><?php echo $name[$b];?></option>
+                                        <?php endfor;?>
+                                    </select>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>
@@ -140,10 +165,6 @@
                             </div>
                             <!-- dokumen -->
                             <div class="tab-pane" id="detail" role="tabpanel">
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">No OC</h5>
-                                    <input name ="no_oc" value = "<?php echo $detail[0]["no_oc"];?>" type ="text" class = "form-control" readonly> <!-- keisi sendiri dari db max(), bentuknya berformat -->
-                                </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">No PO Customer</h5>
                                     <input name = "no_po_customer" value = "<?php echo $detail[0]["no_po_customer"];?>" type ="text" class = "form-control">

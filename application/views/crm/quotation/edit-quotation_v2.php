@@ -36,25 +36,57 @@
                                         readonly
                                     />
                                 </div>
+                                
                                 <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">Quotation No</h5> <!-- nanti ganti jadi select -->
+                                    <h5 style = "color:darkgrey; opacity:0.8">No Quotation</h5>
                                     <input 
                                         type ="text" 
                                         value = "<?php echo $quotation[0]["no_quotation"];?>"
-                                        id = "no_quotation" 
                                         class = "form-control" 
                                         required 
-                                        readonly  
+                                        name = "no_quotation"
                                     />
                                 </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Id Quotation</h5>
+                                    <input 
+                                        type ="text" 
+                                        value = "<?php echo $quotation[0]["id_quotation"];?>"
+                                        class = "form-control" 
+                                        required 
+                                        name = "id_quotation"
+                                    />
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Tahun Quotation</h5>
+                                    <input 
+                                        type ="text" 
+                                        value = "<?php echo $quotation[0]["tahun_quotation"];?>"
+                                        class = "form-control" 
+                                        required 
+                                        name = "tahun_quotation"
+                                    />
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "color:darkgrey; opacity:0.8">Bulan Quotation</h5>
+                                    <select class = "form-control" name = "bulan_quotation" data-plugin = "select2">
+                                        <?php
+                                        $name = array('Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember');
+                                        $bulan = array('01','02','03','04','05','06','07','08','09','10','11','12');
+                                        for($b = 0; $b<count($name); $b++):?>
+                                        <option <?php if($bulan[$b] == $quotation[0]["bulan_quotation"]) echo "selected";?> value = "<?php echo $bulan[$b];?>"><?php echo $name[$b];?></option>
+                                        <?php endfor;?>
+                                    </select>
+                                </div>
+                                
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Quotation Versi</h5>
                                     <input 
                                         type ="text" 
-                                        value = "1" 
+                                        value = "<?php echo $quotation[0]["versi_quotation"];?>" 
                                         id = "versi_quotation" 
                                         class = "form-control"
-                                        readonly 
+                                        name = "versi_quotation" 
                                     />
                                 </div>
                                 <div class = "form-group">
@@ -331,16 +363,6 @@
                             </div>
                             <!-- dokumen -->
                             <div class="tab-pane" id="detail" role="tabpanel">
-                                <div class = "form-group">
-                                    <h5 style = "color:darkgrey; opacity:0.8">No Quotation</h5>
-                                    <input 
-                                        type ="text" 
-                                        value = "<?php echo $quotation[0]["no_quotation"];?>"
-                                        class = "form-control" 
-                                        required 
-                                        readonly
-                                    />
-                                </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Quotation Perihal</h5>
                                     <input 

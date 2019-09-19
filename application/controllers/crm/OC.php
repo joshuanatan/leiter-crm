@@ -88,7 +88,7 @@ class Oc extends CI_Controller{
             "id_submit_oc" => $id_submit_oc
         );
         $field = array(
-            "id_submit_quotation","no_oc","id_submit_oc","total_oc_price","no_po_customer","tgl_po_customer","up_cp_oc","durasi_pengiriman_oc","metode_pengiriman","franco_oc","durasi_pembayaran_oc","nama_perusahaan","nama_cp","alamat_perusahaan_oc"
+            "id_submit_quotation","no_oc","id_submit_oc","total_oc_price","no_po_customer","tgl_po_customer","up_cp_oc","durasi_pengiriman_oc","metode_pengiriman","franco_oc","durasi_pembayaran_oc","nama_perusahaan","nama_cp","alamat_perusahaan_oc","id_oc","tahun_oc","bulan_oc"
         );
         $result = selectRow("order_detail",$where,$field);
         $data["detail"] = $result->result_array();
@@ -127,6 +127,10 @@ class Oc extends CI_Controller{
             "id_submit_oc" => $this->input->post("id_submit_oc")
         );
         $data = array(
+            "no_oc" => $this->input->post("no_oc"),
+            "id_oc" => $this->input->post("id_oc"),
+            "tahun_oc" => $this->input->post("tahun_oc"),
+            "bulan_oc" => $this->input->post("bulan_oc"),
             "no_po_customer" => $this->input->post("no_po_customer"),
             "tgl_po_customer" => $this->input->post("tgl_po_customer"),
             "up_cp" => $this->input->post("up_cp"),

@@ -187,7 +187,7 @@ class Quotation extends CI_Controller{
             "id_submit_quotation" => $id_submit_quotation
         );
         $field = array(
-            "no_quotation","total_quotation_price","hal_quotation","up_cp_quotation","durasi_pengiriman_quotation","franco_quotation","durasi_pembayaran_quotation","alamat_perusahaan","dateline_quotation","id_submit_quotation","versi_quotation","id_request","nama_perusahaan","nama_cp","no_request","id_submit_request"
+            "no_quotation","total_quotation_price","hal_quotation","up_cp_quotation","durasi_pengiriman_quotation","franco_quotation","durasi_pembayaran_quotation","alamat_perusahaan","dateline_quotation","id_submit_quotation","versi_quotation","id_request","nama_perusahaan","nama_cp","no_request","id_submit_request","id_quotation","bulan_quotation","tahun_quotation","versi_quotation"
         );
         $result = selectRow("order_detail",$where,$field);
         $data["quotation"] = $result->result_array();
@@ -719,6 +719,11 @@ class Quotation extends CI_Controller{
             "id_submit_quotation" => $this->input->post("id_submit_quotation") //dapet dari hidden
         );
         $data = array(
+            "no_quotation" => $this->input->post("no_quotation"), 
+            "id_quotation" => $this->input->post("id_quotation"), 
+            "tahun_quotation" => $this->input->post("tahun_quotation"),
+            "bulan_quotation" => $this->input->post("bulan_quotation"),
+            "versi_quotation" => $this->input->post("versi_quotation"),
             "total_quotation_price" => splitterMoney($this->input->post("total_quotation_price"),","),
             "hal_quotation" => $this->input->post("hal_quotation") ,
             "up_cp" => $this->input->post("up_cp") ,
