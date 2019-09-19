@@ -261,7 +261,7 @@ class Margin extends CI_Controller{
             "notes" => $this->input->post("notes")
         );
         updateRow("order_confirmation",$data,$where);
-        redirect("finance/margin");
+        redirect("finance/margin/page/".$this->session->page);
     }
 }
 
