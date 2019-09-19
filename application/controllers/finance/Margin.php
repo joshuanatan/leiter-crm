@@ -4,6 +4,7 @@ class Margin extends CI_Controller{
         parent::__construct();
         $this->load->model("Mdmargin_calculation");
         $this->load->model("Mdorder_data");
+        $this->load->model("Mdorder_confirmation");
     }
     public function req(){
         $this->load->view("req/head");
@@ -26,22 +27,72 @@ class Margin extends CI_Controller{
     }
     public function index(){
         if($this->session->id_user == "") redirect("login/welcome");
-        $kolom = array(
+        $this->session->page = 1;
+        $this->removeFilter();
+        redirect("finance/margin/page/".$this->session->page);
+    }
+    public function page($page){
+        if($this->session->id_user == "") redirect("login/welcome");
+        $this->session->page = $page;
+        
+        $limit = 10;
+        $offset = 10*($page-1);
+        
+        if($page <= 3){
+            $data["numbers"] = array(1,2,3,4,5);
+            $data["prev"] = 1;
+            $data["search"] = 1;
+        }
+        else{
+            for($a = 0; $a<5; $a++){
+                $data["numbers"][$a] = $i+$a-2;
+                $data["prev"] = 0;
+                $data["search"] = 1;
+            }
+        }
+        $data["search"] = array(
             "no_po_customer","tgl_po_customer","nama_perusahaan","no_oc","total_oc_price","id_submit_oc","notes_oc"
         );
+        $data["search_print"] = array(
+            "no po customer","tanggal po customer","nama perusahaan","no oc","oc price","id oc","notes oc"
+        );
+        $field = array(
+            "no_po_customer","tgl_po_customer","nama_perusahaan","no_oc","total_oc_price","id_submit_oc","notes_oc"
+        );
+        if($this->session->search != ""){
+            $or_like = array(
+                "no_po_customer" => $this->session->search,
+                "tgl_po_customer" => $this->session->search,
+                "nama_perusahaan" => $this->session->search,
+                "no_oc" => $this->session->search,
+                "total_oc_price" => $this->session->search,
+                "id_submit_oc" => $this->session->search,
+                "notes_oc" => $this->session->search,
+            );
+        }
+        else{
+            $or_like = "";
+        }
+        if($this->session->order_by != ""){
+            $order_by = $this->session->order_by;
+        }
+        else{
+            $order_by = "tgl_po_customer";
+        }
+        if($this->session->order_direction != ""){
+            $direction = $this->session->order_direction;
+        }
+        else{
+            $direction = "DESC";
+        }
         $where = array(
             "status_aktif_request" => 0,
             "status_aktif_quotation" => 0,
             "status_aktif_oc" => 0
         );
-        $limit  = array(
-            "offset" => 0,
-            "limit" => 10
-        );
-        $result = $this->Mdorder_data->getListInvoice($kolom,$where,$limit);
+        
+        $result = $this->Mdorder_confirmation->getDataTable($where,$field,$or_like,$order_by,$direction,$limit,$offset);
         $data["oc"] = $result->result_array();
-        $data["total"] = ($this->Mdorder_data->getTotalData($where)->row()->total_item)/10;
-        $data["page"] = 1;
         $this->req();
         $this->load->view("finance/content-open");
         $this->load->view("finance/margin/category-header");
@@ -49,31 +100,21 @@ class Margin extends CI_Controller{
         $this->load->view("finance/content-close");
         $this->close();
     }
-    public function page($page){
-        if($this->session->id_user == "") redirect("login/welcome");
-        $kolom = array(
-            "no_po_customer","tgl_po_customer","nama_perusahaan","no_oc","total_oc_price","id_submit_oc"
-        );
-        $where = array(
-            "status_aktif_request" => 0,
-            "status_aktif_quotation" => 0,
-            "status_aktif_oc" => 0
-        );
-        $limit  = array(
-            "offset" => 10*($page-1),
-            "limit" => 10
-        );
-        $result = $this->Mdorder_data->getListInvoice($kolom,$where,$limit);
-        $data["oc"] = $result->result_array();
-        $data["total"] = ($this->Mdorder_data->getTotalData($where)->row()->total_item)/10;
-        $data["page"] = $page;
-        $data["kolom"] = $kolom;
-        $this->req();
-        $this->load->view("finance/content-open");
-        $this->load->view("finance/margin/category-header");
-        $this->load->view("finance/margin/category-body",$data);
-        $this->load->view("finance/content-close");
-        $this->close();
+    public function sort(){
+        $this->session->order_by = $this->input->post("order_by");
+        $this->session->order_direction = $this->input->post("order_direction");
+        redirect("finance/margin/page/".$this->session->page);
+    }
+    public function search(){
+        $search = $this->input->post("search");
+        $this->session->search = $search;
+        redirect("finance/margin/page/".$this->session->page);
+    }
+    public function removeFilter(){
+        $this->session->unset_userdata("order_by");
+        $this->session->unset_userdata("order_direction");
+        $this->session->unset_userdata("search");
+        redirect("finance/margin/page/".$this->session->page);
     }
     public function detail($id_oc){
         $where = array(
