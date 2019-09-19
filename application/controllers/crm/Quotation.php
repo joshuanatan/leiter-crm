@@ -781,7 +781,7 @@ class Quotation extends CI_Controller{
                             $report .= $key." = ".$value."<br/>";
                         }
                         $this->session->set_flashdata("report",$report);
-                        redirect("crm/quotation/edit/".$where["id_submit_quotation"]);
+                        redirect("crm/quotation/edit/".$this->input->post("id_submit_quotation"));
                     }
                     updateRow("harga_vendor",$data,$where);
                     
