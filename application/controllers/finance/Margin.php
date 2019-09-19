@@ -27,7 +27,7 @@ class Margin extends CI_Controller{
     public function index(){
         if($this->session->id_user == "") redirect("login/welcome");
         $kolom = array(
-            "no_po_customer","tgl_po_customer","nama_perusahaan","no_oc","total_oc_price","id_submit_oc"
+            "no_po_customer","tgl_po_customer","nama_perusahaan","no_oc","total_oc_price","id_submit_oc","notes_oc"
         );
         $where = array(
             "status_aktif_request" => 0,
@@ -211,6 +211,16 @@ class Margin extends CI_Controller{
         );
         deleteRow("tambahan_transaksi",$where);
         redirect("finance/margin/detail/".$this->input->post("id_submit_oc"));
+    }
+    public function insertnotes(){
+        $where = array(
+            "id_submit_oc" => $this->input->post("id_submit_oc")
+        );
+        $data = array(
+            "notes" => $this->input->post("notes")
+        );
+        updateRow("order_confirmation",$data,$where);
+        redirect("finance/margin");
     }
 }
 

@@ -1,3 +1,5 @@
+alter table order_confirmation 
+add notes varchar(300);
 drop view if exists order_detail;
 create view order_detail AS 
 select 

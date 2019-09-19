@@ -10,9 +10,10 @@
                 <th>Customer PO No</th> <!-- nanti ini keisi waktu nambahin OC-->
                 <th>Tanggal Order</th>
                 <th>Nama Customer</th>
-                <th>Order Confirmation No</th>
+                <th>No OC</th>
                 <th>PO Price</th>
                 <th>Action</th>
+                <th>Notes</th>
             </tr>
         </thead>
         <tbody>
@@ -25,6 +26,13 @@
                 <td><?php echo number_format($oc[$a]["total_oc_price"]);?></td>
                 <td>
                     <a href = "<?php echo base_url();?>finance/margin/detail/<?php echo $oc[$a]["id_submit_oc"];?>" class = "btn btn-primary btn-sm">TRANSAKSI</a>
+                </td>
+                <td>
+                    <form action = "<?php echo base_url();?>finance/margin/insertnotes" method = "post">
+                        <input type = "hidden" name = "id_submit_oc" value = "<?php echo $oc[$a]["id_submit_oc"];?>">
+                        <input type = "text" name = "notes" class = "form-control" placeholder="Input margin disini dan catatan lainnya.." value = "<?php echo $oc[$a]["notes_oc"];?>"><br/>
+                        <button type = "submit" class = "btn btn-primary btn-sm">SUBMIT</button>
+                    </form>
                 </td>
             </tr>
             <?php endfor;?>
