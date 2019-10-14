@@ -33,6 +33,7 @@
                                     <h5 style = "opacity:0.5">Tahun PO</h5>
                                     <input name = "tahun_po" type = "text" value = "<?php echo $po_core[0]["tahun_po"] ?>" class = "form-control">
                                 </div>
+                                
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">Bulan PO</h5>
                                     <select class = "form-control" name = "bulan_po" data-plugin = "select2">
@@ -43,6 +44,10 @@
                                         <option <?php if($bulan[$b] == $po_core[0]["bulan_po"]) echo "selected";?> value = "<?php echo $bulan[$b];?>"><?php echo $name[$b];?></option>
                                         <?php endfor;?>
                                     </select>
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "opacity:0.5">Tanggal Buat (YYYY-MM-DD HH:MM:SS)</h5>
+                                    <input name = "date_po_core_add" type = "text" value = "<?php echo $po_core[0]["date_po_core_add"] ?>" class = "form-control">
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>

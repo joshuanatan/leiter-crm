@@ -150,7 +150,7 @@ class Po extends CI_Controller{
             "id_submit_po" => $id_submit_po
         );
         $field = array(
-            "id_submit_oc","id_submit_po","no_po","id_supplier","id_cp_supplier","id_shipper","id_cp_shipper","shipping_method","shipping_term","requirement_date","destination","nama_supplier_po","alamat_supplier_po","notelp_supplier_po","nofax_supplier_po","nama_shipper_po","alamat_shipper_po","notelp_shipper_po","nofax_shipper_po","no_po_customer","nama_perusahaan","nama_cp","nama_cp_shipper","nama_cp_supplier","mata_uang_pembayaran","id_po","bulan_po","tahun_po"      
+            "id_submit_oc","id_submit_po","no_po","id_supplier","id_cp_supplier","id_shipper","id_cp_shipper","shipping_method","shipping_term","requirement_date","destination","nama_supplier_po","alamat_supplier_po","notelp_supplier_po","nofax_supplier_po","nama_shipper_po","alamat_shipper_po","notelp_shipper_po","nofax_shipper_po","no_po_customer","nama_perusahaan","nama_cp","nama_cp_shipper","nama_cp_supplier","mata_uang_pembayaran","id_po","bulan_po","tahun_po","date_po_core_add"      
         );
         $result = selectRow("po_detail", $where,$field);
         $data["po_core"] = $result->result_array();
@@ -214,6 +214,7 @@ class Po extends CI_Controller{
             "requirement_date" => $this->input->post("requirement_date"), 
             "destination" => $this->input->post("destination"),
             "mata_uang_pembayaran" => $this->input->post("mata_uang_pembayaran"),
+            "date_po_core_add" => $this->input->post("date_po_core_add")
         );
         updateRow("po_core",$data["po_core"],$where["main"]);
         
