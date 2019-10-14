@@ -89,6 +89,7 @@
                     <th style="text-align:center; font-weight:bold; width:100px;">Jumlah (IDR)</th>
                 </tr>';
                 $jum = 0;
+                $counter = 1;
                 foreach($barang->result() as $brnya){
                     $baris="$brnya->nama_oc_item";
 
@@ -98,7 +99,7 @@
 
                     $content= $content.'
                     <tr>
-                        <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">1</td>
+                        <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.$counter.'</td>
                         <td>'. nl2br($baris).'
                         </td>
                         <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'. $brnya->final_amount. ' '.$brnya->satuan_produk .'</td>
@@ -106,6 +107,7 @@
                         <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.number_format($brnya->final_selling_price*$brnya->final_amount,2,".",",").'</td>
                     </tr>';
                     $jum=$jum+ ($brnya->final_selling_price * $brnya->final_amount);
+                    $counter++;
                 }
 
                 $content=$content.'

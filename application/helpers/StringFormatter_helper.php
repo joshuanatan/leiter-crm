@@ -51,7 +51,7 @@ if(!function_exists("tanggalCantik")){
 if(!function_exists("hariCantik")){
     function hariCantik($harii){
         $cantikk = explode(",",$harii);
-        switch((int)$cantikk){
+        switch((int)$cantikk[0]){
             case 1: return "Senin"; break;
             case 2: return "Selasa"; break;
             case 3: return "Rabu"; break;
