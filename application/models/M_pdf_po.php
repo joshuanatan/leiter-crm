@@ -22,5 +22,8 @@ class M_pdf_po extends CI_Model{
         );
         return $this->db->get_where("po_stock_item_detail",$where);
     }
+    function selectShipper($where){
+        return $this->db->query("select * from perusahaan join po_core on po_core.id_shipper = perusahaan.id_perusahaan join contact_person on contact_person.id_cp = po_core.id_cp_supplier where id_submit_po=" . $where['id_submit_po']);
+    }
 }
 ?>

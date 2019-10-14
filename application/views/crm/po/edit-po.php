@@ -23,7 +23,26 @@
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "opacity:0.5">No PO</h5>
-                                    <input type = "text" value = "<?php echo $po_core[0]["no_po"] ?>" class = "form-control" id = "no_po" readonly>
+                                    <input name = "no_po" type = "text" value = "<?php echo $po_core[0]["no_po"] ?>" class = "form-control" id = "no_po">
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "opacity:0.5">ID PO</h5>
+                                    <input name = "id_po" type = "text" value = "<?php echo $po_core[0]["id_po"] ?>" class = "form-control">
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "opacity:0.5">Tahun PO</h5>
+                                    <input name = "tahun_po" type = "text" value = "<?php echo $po_core[0]["tahun_po"] ?>" class = "form-control">
+                                </div>
+                                <div class = "form-group">
+                                    <h5 style = "opacity:0.5">Bulan PO</h5>
+                                    <select class = "form-control" name = "bulan_po" data-plugin = "select2">
+                                        <?php
+                                        $name = array('Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember');
+                                        $bulan = array('01','02','03','04','05','06','07','08','09','10','11','12');
+                                        for($b = 0; $b<count($name); $b++):?>
+                                        <option <?php if($bulan[$b] == $po_core[0]["bulan_po"]) echo "selected";?> value = "<?php echo $bulan[$b];?>"><?php echo $name[$b];?></option>
+                                        <?php endfor;?>
+                                    </select>
                                 </div>
                                 <div class = "form-group">
                                     <h5 style = "color:darkgrey; opacity:0.8">Perusahaan Customer</h5>

@@ -109,13 +109,6 @@
                 }
                 
                 $content=$content.'
-                <br>Attn: ';
-                
-                foreach($customer->result() as $y){
-                    $content=$content.$y->up_cp;
-                }
-                
-                $content=$content.'
 
                 </td>
             </tr>
