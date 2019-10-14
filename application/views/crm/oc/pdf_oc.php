@@ -101,10 +101,21 @@
                     <tr>
                         <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.$counter.'</td>
                         <td>'. nl2br($baris).'
-                        </td>
-                        <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'. $brnya->final_amount. ' '.$brnya->satuan_produk .'</td>
-                        <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.number_format($brnya->final_selling_price,2,".",",").'</td>
-                        <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.number_format($brnya->final_selling_price*$brnya->final_amount,2,".",",").'</td>
+                        </td>'; 
+                        if($brnya->final_selling_price > 0){
+                            $content .='
+                            <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'. $brnya->final_amount. ' '.$brnya->satuan_produk .'</td>
+                            <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.number_format($brnya->final_selling_price,2,".",",").'</td>
+                            <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'.number_format($brnya->final_selling_price*$brnya->final_amount,2,".",",").'</td>'; 
+                        }
+                        else{
+                            $content .='
+                            <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">'. $brnya->final_amount. ' '.$brnya->satuan_produk .'</td>
+                            <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">-</td>
+                            <td style="text-align:center;height:20px;line-height:'.$line_height.'px;">-</td>'; 
+                        }
+                        $content .='
+                        
                     </tr>';
                     $jum=$jum+ ($brnya->final_selling_price * $brnya->final_amount);
                     $counter++;
