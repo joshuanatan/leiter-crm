@@ -102,13 +102,6 @@
                 }
                 
                 $content=$content.'
-                <br>Tel: ';
-                
-                foreach($customer->result() as $y){
-                    $content=$content.$y->notelp_perusahaan;
-                }
-                
-                $content=$content.'
 
                 </td>
             </tr>
