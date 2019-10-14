@@ -238,7 +238,6 @@ class Po extends CI_Controller{
                     "jumlah_item" => $split[0],
                     "satuan_item" => $split[1],
                 );
-                print_r($data);
                 insertRow("po_item",$data);
                 /*masukin po item*/
             }   
