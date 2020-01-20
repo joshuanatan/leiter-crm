@@ -56,7 +56,7 @@ class Mdprice_request extends CI_Model{
         }
         $this->db->group_by($group_by);
         $this->db->order_by($order_by,$direction);
-        return $this->db->get("order_detail");
+        return $this->db->get("v_base_rfq");
     }
 }
 ?>

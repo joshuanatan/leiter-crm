@@ -3,45 +3,45 @@
         <input required type = "hidden" name = "id_submit_request" value = "<?php echo $id_submit_request;?>">
         <div class = "form-group">
             <h5 style = "opacity:0.5">Price Request ID</h5>
-            <input required name = "no_request" type = "text" class = "form-control" value = "<?php echo $price_request["no_request"];?>" readonly>
+            <input required name = "no_request" type = "text" class = "form-control" value = "<?php echo $price_request[0]["no_request"];?>" readonly>
         </div>
         <div class = "form-group">
             <h5 style = "opacity:0.5">Customer Name</h5>
             <select required id = "idperusahaan" onchange = "getContactPerson()" class = "form-control" name = "id_perusahaan" data-plugin = "select2">
                 <?php for($a = 0; $a<count($perusahaan);$a++):?>
-                <option value = "<?php echo $perusahaan[$a]["id_perusahaan"];?>" <?php if($perusahaan[$a]["id_perusahaan"] == $price_request["id_perusahaan"]) echo "selected"; ?> ><?php echo $perusahaan[$a]["nama_perusahaan"];?></option>
+                <option value = "<?php echo $perusahaan[$a]["id_perusahaan"];?>" <?php if($perusahaan[$a]["id_perusahaan"] == $price_request[0]["id_perusahaan"]) echo "selected"; ?> ><?php echo $perusahaan[$a]["nama_perusahaan"];?></option>
                 <?php endfor;?>
             </select>
-            <span class="text-help">Before:<?php echo get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $price_request["id_perusahaan"]));?></span>
+            <span class="text-help">Before:<?php echo get1Value("perusahaan","nama_perusahaan",array("id_perusahaan" => $price_request[0]["id_perusahaan"]));?></span>
         </div>
         <div class = "form-group">
             <h5 style = "opacity:0.5">Customer PIC</h5>
             <select required class = "form-control" name = "id_cp" id = "cpperusahaan" onchange = "getDetailContactPerson()" data-plugin="select2">
                 <?php for($a = 0; $a<count($cp); $a++):?>
-                <option value = "<?php echo $cp[$a]["id_cp"]?>" <?php if($cp[$a]["id_cp"] == $price_request["id_cp"]) echo "selected"; ?> ><?php echo $cp[$a]["jk_cp"];?>. <?php echo $cp[$a]["nama_cp"]?></option>    
+                <option value = "<?php echo $cp[$a]["id_cp"]?>" <?php if($cp[$a]["id_cp"] == $price_request[0]["id_cp"]) echo "selected"; ?> ><?php echo $cp[$a]["jk_cp"];?>. <?php echo $cp[$a]["nama_cp"]?></option>    
                 <?php endfor;?>
             </select>
-            <span class="text-help">Before:<?php echo get1Value("contact_person","nama_cp",array("id_cp" => $price_request["id_cp"]));?></span>
+            <span class="text-help">Before:<?php echo get1Value("contact_person","nama_cp",array("id_cp" => $price_request[0]["id_cp"]));?></span>
         </div>
         <div class = "form-group">
             <h5 style = "opacity:0.5">Email PIC</h5>
-            <input type = "text" class = "form-control" value = "<?php echo $detail_cp["email_cp"];?>" id = "email_cp" readonly>
+            <input type = "text" class = "form-control" value = "<?php echo $detail_cp[0]["email_cp"];?>" id = "email_cp" readonly>
         </div>
         <div class = "form-group">
             <h5 style = "opacity:0.5">Phone Number PIC</h5>
-            <input type = "text" class = "form-control" value = "<?php echo $detail_cp["nohp_cp"];?>" id = "nohp_cp" readonly>
+            <input type = "text" class = "form-control" value = "<?php echo $detail_cp[0]["nohp_cp"];?>" id = "nohp_cp" readonly>
         </div>
         <div class = "form-group">
             <h5 style = "opacity:0.5">Franco</h5>
-            <input required type = "text" name = "franco" value = "<?php echo $price_request["franco"];?>" class = "form-control">
-            <span class="text-help">Before:<?php echo $price_request["franco"];?></span>
+            <input required type = "text" name = "franco" value = "<?php echo $price_request[0]["franco"];?>" class = "form-control">
+            <span class="text-help">Before:<?php echo $price_request[0]["franco"];?></span>
         </div>
         <div class = "form-group">
             <h5 style = "opacity:0.5">Dateline</h5>
             <?php
-            $date = date_create($price_request["tgl_dateline_request"]); 
+            $date = date_create($price_request[0]["tgl_dateline_request"]); 
             ?>
-            <input required type = "date" name = "tgl_dateline_request" value = "<?php echo $price_request["tgl_dateline_request"];?>" class = "form-control">
+            <input required type = "date" name = "tgl_dateline_request" value = "<?php echo $price_request[0]["tgl_dateline_request"];?>" class = "form-control">
             <span class="text-help">Before: <?php echo date_format($date,"d-m-Y");?></span>
         </div>
         <div class="form-group">
@@ -72,7 +72,7 @@
                         <td>
                             <input type="text" name="ordered_attachment<?php echo $a;?>" value = "<?php echo $items[$a]["file"];?>" class = "form-control" readonly style = "margin-bottom:10px">
                             <?php if($items[$a]["file"] != "-"):?>
-                            <a href = "<?php echo $items[$a]["notes_produk"];?>" class = "btn btn-outline btn-primary btn-sm">See Attachment</a>
+                            <a href = "<?php echo base_url();?>assets/rfq/<?php echo $items[$a]["file"];?>" target = "_blank" class = "btn btn-outline btn-primary btn-sm">See Attachment</a>
                             <?php endif;?>
                         </td>
                         <td>

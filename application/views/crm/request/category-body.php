@@ -121,9 +121,9 @@
                     
                     <?php endif;?>
                     <?php if(isExistsInTable("privilage", array("id_user" => $this->session->id_user,"id_menu" => "delete_rfq")) == 0):?>
-                    <a href = "<?php echo base_url();?>crm/request/delete/<?php echo $request[$a]["id_submit_request"];?>" class="btn btn-outline btn-danger btn-sm col-lg-12" data-toggle="tooltip">DELETE</a>
+                    <a href = "#" data-toggle = "modal" data-target = "#deleteConfirmation<?php echo $a;?>" class="btn btn-outline btn-danger btn-sm col-lg-12" data-toggle="tooltip">DELETE</a>
                     <?php endif;?>
-                    <a href = "<?php echo base_url();?>crm/request/confirm/<?php echo $request[$a]["id_submit_request"];?>" class="btn btn-outline btn-success btn-sm col-lg-12"
+                    <a href = "#" data-toggle = "modal" data-target = "#finalConfirmation<?php echo $a;?>" class="btn btn-outline btn-success btn-sm col-lg-12"
                     data-toggle="tooltip">CONFIRM</a>
                     <?php endif;?>
                     
@@ -152,3 +152,31 @@
     </nav>
     <?php endif;?>
 </div>
+<?php for($a = 0; $a<count($request); $a++): ?> 
+<div class = "modal fade" id = "deleteConfirmation<?php echo $a;?>">
+    <div class = "modal-dialog modal-lg modal-center">
+        <div class = "modal-content">
+            <div class = "modal-header">
+                <h4 class = "modal-title">Delete Confirmation</h4>
+            </div>
+            <div class = "modal-body">
+                <h5 align = "center">Confirm Delete on <?php echo $request[$a]["no_request"];?>?</h5>
+                <a href = "<?php echo base_url();?>crm/request/delete/<?php echo $request[$a]["id_submit_request"];?>" class = "btn btn-danger btn-sm col-lg-12">CONFIRM DELETE</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class = "modal fade" id = "finalConfirmation<?php echo $a;?>">
+    <div class = "modal-dialog modal-lg modal-center">
+        <div class = "modal-content">
+            <div class = "modal-header">
+                <h4 class = "modal-title">Final Confirmation</h4>
+            </div>
+            <div class = "modal-body">
+                <h5 align = "center">Finish Editing on <?php echo $request[$a]["no_request"];?>?</h5>
+                <a href = "<?php echo base_url();?>crm/request/confirm/<?php echo $request[$a]["id_submit_request"];?>" class = "btn btn-success btn-sm col-lg-12">CONFIRM FINISH EDITING</a>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endfor;?>

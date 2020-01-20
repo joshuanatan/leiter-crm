@@ -29,8 +29,16 @@ if ( ! function_exists('deleteRow')){
 }
 
 if ( ! function_exists('selectRow')){
-    function selectRow($table,$where,$field = "",$limit = "",$offset = "",$order = "", $order_direction = "",$group_by = "",$like = "",$or_like = ""){
+    function selectRow($table,$where = "",$field = "",$limit = "",$offset = "",$order = "", $order_direction = "",$group_by = "",$like = "",$or_like = ""){
         $CI =& get_instance();
+        if($where != ""){
+            if(is_array($where)){
+                $CI->db->where($where);
+            }
+            else{
+                $CI->db->where($where,NULL,FALSE);
+            }
+        }
         if($like != ""){
             $CI->db->like($like);
         }
@@ -59,7 +67,56 @@ if ( ! function_exists('selectRow')){
         if($field != ""){
             $CI->db->select($field);
         }
-        return $CI->db->get_where($table,$where);
+        return $CI->db->get($table);
+    }
+}
+/*exists karena bakal sering pake join, tapi telat sehingga gabisa diselipin di depan karena bakal jadi ngacauin script yang lain, terpaksa bkin fungsi baru supaya bisa diselipin di depan*/
+if ( ! function_exists('selectJoin')){
+    function selectJoin($table,$join = "",$where = "",$field = "",$limit = "",$offset = "",$order = "", $order_direction = "",$group_by = "",$like = "",$or_like = ""){
+        $CI =& get_instance();
+        if($join != ""){
+            /*masuknya akan bentuk array, susunnanya table-join_key-type*/
+            for($a = 0; $a<count($join); $a++){
+                $CI->db->join($join[$a]["table"],$join[$a]["key"],$join[$a]["type"]);
+            }
+        }
+        if($where != ""){
+            if(is_array($where)){
+                $CI->db->where($where);
+            }
+            else{
+                $CI->db->where($where,NULL,FALSE);
+            }
+        }
+        if($like != ""){
+            $CI->db->like($like);
+        }
+        if($or_like != ""){
+            $CI->db->or_like($or_like);
+        }
+        if($group_by != ""){
+            $CI->db->group_by($group_by);
+        }
+        if($order != ""){
+            if($order_direction != ""){
+                $CI->db->order_by($order,$order_direction);
+            }
+            else{
+                $CI->db->order_by($order,'ASC');
+            }
+        }
+        if($limit != ""){
+            if($offset != ""){
+                $CI->db->limit($limit,$offset);
+            }
+            else{
+                $CI->db->limit($limit);
+            }
+        }
+        if($field != ""){
+            $CI->db->select($field);
+        }
+        return $CI->db->get($table);
     }
 }
 if ( ! function_exists('isExistsInTable')){

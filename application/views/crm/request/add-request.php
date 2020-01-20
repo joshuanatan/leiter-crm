@@ -1,3 +1,8 @@
+<?php if($this->session->status != ""):?>
+<div class = "alert col-lg-12 alert-dismissible alert-<?php echo $this->session->status;?>">
+    <?php echo $this->session->msg;?>
+</div>
+<?php endif;?>
 <div class="panel-body col-lg-12">
     <form action = "<?php echo base_url();?>crm/request/insert" method = "POST" enctype="multipart/form-data">
         <div class = "form-group">
@@ -49,7 +54,28 @@
                     </tr>
                 </thead>
                 <tbody id = "t1">
-                    <?php for($a = 0; $a<25; $a++):?>
+                    <?php /*baris pertama di required biar pasti ada isi minimal 1*/?>
+                    <tr class='gradeA'>
+                        <td>
+                            <div class = "checkbox-custom checkbox-primary">
+                                <input checked type = "checkbox" value = "<?php echo $a;?>" name = "checks[]">
+                                <label></label>
+                            </div>
+                        </td>
+                        <td>
+                            <textarea required class = "form-control" name = "item<?php echo $a;?>" placeholder="Item Description"></textarea>
+                        </td>
+                        <td>
+                            <input required type='text' class='form-control' name='jumlah_produk<?php echo $a;?>' placeholder = "Amount + Unit of Measure"/>
+                        </td>
+                        <td> 
+                            <textarea class = "form-control" name = "notes<?php echo $a;?>"></textarea>
+                        </td>
+                        <td> 
+                            <input type="file" name="attachment<?php echo $a;?>" class = "form-control">
+                        </td>
+                    </tr>
+                    <?php for($a = 1; $a<25; $a++):?>
                     <tr class='gradeA'>
                         <td>
                             <div class = "checkbox-custom checkbox-primary">
@@ -93,23 +119,23 @@
                 <div class = "modal-body">
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Nama Perusahaan Customer</h5>
-                        <input type = "text" class = "form-control" name = "add_nama_customer">
+                        <input required type = "text" class = "form-control" name = "add_nama_customer">
                     </div>
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Alamat Invoice</h5>
-                        <textarea class = "form-control" name = "add_address_customer"></textarea>
+                        <textarea required class = "form-control" name = "add_address_customer"></textarea>
                     </div>
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Alamat Pengiriman</h5>
-                        <textarea class = "form-control" name = "add_pengiriman_customer"></textarea>
+                        <textarea required class = "form-control" name = "add_pengiriman_customer"></textarea>
                     </div>
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Segment</h5>
-                        <input type = "text" class = "form-control" name = "add_segment_customer">
+                        <input required type = "text" class = "form-control" name = "add_segment_customer">
                     </div>
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">PIC Customer</h5>
-                        <input type = "text" class = "form-control" name = "add_pic">
+                        <input required type = "text" class = "form-control" name = "add_pic">
                     </div>
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Jenis Kelamin PIC</h5>
@@ -120,11 +146,11 @@
                     </div>
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">Email PIC</h5>
-                        <input type = "text" class = "form-control" name = "add_email_pic">
+                        <input required type = "email" class = "form-control" name = "add_email_pic">
                     </div>
                     <div class = "form-group">
                         <h5 style = "opacity:0.5">No Handphone PIC</h5>
-                        <input type = "text" class = "form-control" name = "add_phone_pic">
+                        <input required type = "number" class = "form-control" name = "add_phone_pic">
                     </div>
                     <div class = "form-group">
                         <button type = "submit" class = "btn btn-primary btn-outline btn-sm">SUBMIT</button>

@@ -7,7 +7,7 @@ function getContactPerson(){
             url: "<?php echo base_url();?>interface/contact_person/getContactPerson/"+id_perusahaan,
             dataType:"JSON",
             success:function(respond){
-                var html = "<option>Choose CP</option>";
+                var html = "";
                 for(var a = 0; a<respond.length; a++){
                     html += "<option value ='"+respond[a]["id_cp"]+"'>"+respond[a]["jk_cp"]+". "+respond[a]["nama_cp"]+"</option>";
                 }
